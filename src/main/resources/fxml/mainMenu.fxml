@@ -7,5 +7,6 @@
 		alignment="center" spacing="10">
 	
 	<Button text="Employees" onAction="#goToEmployeeList" />
+	<Button text="Salaries" onAction="#goToSalaryList" />
 
 </VBox>

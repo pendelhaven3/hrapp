@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.pj.hrapp.ControllerFactory;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.Salary;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -75,7 +76,7 @@ public class StageController {
 	}
 
 	public void setTitle(String title) {
-		stage.setTitle(title);
+		stage.setTitle("HR App - " + title);
 	}
 
 	public void showMainMenuScreen() {
@@ -92,6 +93,18 @@ public class StageController {
 
 	public void showUpdateEmployeeScreen(Employee employee) {
 		loadSceneFromFXML("employee", Collections.singletonMap("employee", employee));
+	}
+
+	public void showSalaryListScreen() {
+		loadSceneFromFXML("salaryList");
+	}
+
+	public void showAddSalaryScreen() {
+		loadSceneFromFXML("salary");
+	}
+
+	public void showUpdateSalaryScreen(Salary salary) {
+		loadSceneFromFXML("salary", Collections.singletonMap("salary", salary));
 	}
 
 }

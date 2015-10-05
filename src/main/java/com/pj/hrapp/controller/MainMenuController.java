@@ -8,11 +8,15 @@ public class MainMenuController extends AbstractController {
 
 	@Override
 	public void updateDisplay() {
-		stageController.setTitle("HR App");
+		stageController.setTitle("Main Menu");
 	}
 
 	@FXML public void goToEmployeeList() {
 		stageController.showEmployeeListScreen();
+	}
+
+	@FXML public void goToSalaryList() {
+		stageController.showSalaryListScreen();
 	}
 
 }

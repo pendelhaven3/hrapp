@@ -27,6 +27,14 @@ public class Employee {
 	private Date birthday;
 	private String sssNumber;
 
+	public Employee() {
+		// default constructor
+	}
+	
+	public Employee(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -112,4 +120,9 @@ public class Employee {
 		this.sssNumber = sssNumber;
 	}
 
+	@Override
+	public String toString() {
+		return nickname + " #" + employeeNumber.toString();
+	}
+	
 }
