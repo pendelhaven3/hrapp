@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.PayPeriod;
 import com.pj.hrapp.model.Salary;
 
 public interface SalaryDao {
@@ -17,5 +18,7 @@ public interface SalaryDao {
 	Salary findByEmployeeAndEffectiveDate(Employee employee, Date effectiveDate);
 
 	void delete(Salary salary);
+
+	List<Salary> findAllCurrentByPayPeriod(PayPeriod payPeriod);
 	
 }

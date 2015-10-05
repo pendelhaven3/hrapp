@@ -81,6 +81,7 @@ public class AddEditPayrollBatchController extends AbstractController {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();
+			return;
 		}
 		
 		ShowDialog.info("Payroll Batch saved");

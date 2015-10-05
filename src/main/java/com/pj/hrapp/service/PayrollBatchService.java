@@ -16,4 +16,6 @@ public interface PayrollBatchService {
 
 	void delete(PayrollBatch payrollBatch);
 
+	void autoGenerateEmployeePays(PayrollBatch payrollBatch);
+
 }

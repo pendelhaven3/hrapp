@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.PayPeriod;
 import com.pj.hrapp.model.Salary;
 
 @Repository
@@ -59,6 +60,15 @@ public class SalaryDaoImpl implements SalaryDao {
 	@Override
 	public void delete(Salary salary) {
 		entityManager.remove(get(salary.getId()));
+	}
+
+	@Override
+	public List<Salary> findAllCurrentByPayPeriod(PayPeriod payPeriod) {
+		TypedQuery<Salary> query = entityManager.createQuery(
+				"select s from Salary s where s.payPeriod = :payPeriod and s.effectiveDateTo is null", 
+				Salary.class);
+		query.setParameter("payPeriod", payPeriod);
+		return query.getResultList();
 	}
 
 }

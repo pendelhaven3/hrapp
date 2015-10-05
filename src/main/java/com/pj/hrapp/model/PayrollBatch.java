@@ -1,9 +1,12 @@
 package com.pj.hrapp.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,10 +24,12 @@ public class PayrollBatch {
 	
 	private Long batchNumber;
 	private Date payDate;
+	
+	@Enumerated(EnumType.STRING)
 	private PayPeriod payPeriod;
 	
 	@OneToMany(fetch = FetchType.LAZY)
-	private List<Pay> pays;
+	private List<Pay> pays = new ArrayList<>();
 
 	public Long getId() {
 		return id;

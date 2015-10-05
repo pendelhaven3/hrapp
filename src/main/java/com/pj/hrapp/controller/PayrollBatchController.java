@@ -9,12 +9,14 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
+import com.pj.hrapp.model.Pay;
 import com.pj.hrapp.model.PayrollBatch;
 import com.pj.hrapp.service.PayrollBatchService;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -27,6 +29,7 @@ public class PayrollBatchController extends AbstractController {
 	@FXML private Label batchNumberLabel;
 	@FXML private Label payDateLabel;
 	@FXML private Label payPeriodLabel;
+	@FXML private TableView<Pay> paysTable;
 	
 	@Parameter private PayrollBatch payrollBatch;
 	
@@ -36,6 +39,7 @@ public class PayrollBatchController extends AbstractController {
 		batchNumberLabel.setText(payrollBatch.getBatchNumber().toString());
 		payDateLabel.setText(FormatterUtil.formatDate(payrollBatch.getPayDate()));
 		payPeriodLabel.setText(payrollBatch.getPayPeriod().toString());
+		paysTable.getItems().setAll(payrollBatch.getPays());
 	}
 
 	@FXML public void doOnBack() {
@@ -57,6 +61,21 @@ public class PayrollBatchController extends AbstractController {
 			
 			ShowDialog.info("Payroll batch deleted");
 			stageController.showPayrollBatchListScreen();
+		}
+	}
+
+	@FXML public void autoGenerateEmployeePays() {
+		if (ShowDialog.confirm("Auto generate employee pays?")) {
+			try {
+				payrollBatchService.autoGenerateEmployeePays(payrollBatch);
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				ShowDialog.unexpectedError();
+				return;
+			}
+			
+			ShowDialog.info("Employee pays generated");
+			stageController.showPayrollBatchScreen(payrollBatch);
 		}
 	}
 

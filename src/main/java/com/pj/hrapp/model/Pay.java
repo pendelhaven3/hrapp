@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -17,6 +18,9 @@ public class Pay {
 	@Id
 	@GeneratedValue
 	private Long id;
+
+	@ManyToOne
+	private PayrollBatch payrollBatch;
 	
 	@OneToOne
 	private Employee employee;
@@ -84,6 +88,14 @@ public class Pay {
 		return new EqualsBuilder()
 				.append(id, other.getId())
 				.isEquals();
+	}
+
+	public PayrollBatch getPayrollBatch() {
+		return payrollBatch;
+	}
+
+	public void setPayrollBatch(PayrollBatch payrollBatch) {
+		this.payrollBatch = payrollBatch;
 	}
 
 }
