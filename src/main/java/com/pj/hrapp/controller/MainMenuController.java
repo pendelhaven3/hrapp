@@ -19,4 +19,8 @@ public class MainMenuController extends AbstractController {
 		stageController.showSalaryListScreen();
 	}
 
+	@FXML public void goToPayrollBatchList() {
+		stageController.showPayrollBatchListScreen();
+	}
+
 }

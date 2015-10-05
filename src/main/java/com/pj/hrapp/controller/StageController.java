@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.pj.hrapp.ControllerFactory;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.PayrollBatch;
 import com.pj.hrapp.model.Salary;
 
 import javafx.fxml.FXMLLoader;
@@ -105,6 +106,22 @@ public class StageController {
 
 	public void showUpdateSalaryScreen(Salary salary) {
 		loadSceneFromFXML("salary", Collections.singletonMap("salary", salary));
+	}
+
+	public void showPayrollBatchListScreen() {
+		loadSceneFromFXML("payrollBatchList");
+	}
+
+	public void showAddPayrollBatchScreen() {
+		loadSceneFromFXML("addEditPayrollBatch");
+	}
+
+	public void showPayrollBatchScreen(PayrollBatch payrollBatch) {
+		loadSceneFromFXML("payrollBatch", Collections.singletonMap("payrollBatch", payrollBatch));
+	}
+
+	public void showUpdatePayrollBatchScreen(PayrollBatch payrollBatch) {
+		loadSceneFromFXML("addEditPayrollBatch", Collections.singletonMap("payrollBatch", payrollBatch));
 	}
 
 }
