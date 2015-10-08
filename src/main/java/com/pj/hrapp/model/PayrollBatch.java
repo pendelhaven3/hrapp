@@ -29,7 +29,7 @@ public class PayrollBatch {
 	private PayPeriod payPeriod;
 	
 	@OneToMany(fetch = FetchType.LAZY)
-	private List<Pay> pays = new ArrayList<>();
+	private List<Payslip> pays = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -55,11 +55,11 @@ public class PayrollBatch {
 		this.payDate = payDate;
 	}
 
-	public List<Pay> getPays() {
+	public List<Payslip> getPays() {
 		return pays;
 	}
 
-	public void setPays(List<Pay> pays) {
+	public void setPays(List<Payslip> pays) {
 		this.pays = pays;
 	}
 

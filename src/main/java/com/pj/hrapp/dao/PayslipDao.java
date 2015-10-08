@@ -2,15 +2,15 @@ package com.pj.hrapp.dao;
 
 import java.util.List;
 
-import com.pj.hrapp.model.Pay;
+import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayrollBatch;
 
-public interface PayDao {
+public interface PayslipDao {
 
 	void deleteAllByPayrollBatch(PayrollBatch payrollBatch);
 
-	void save(Pay pay);
+	void save(Payslip pay);
 
-	List<Pay> findAllByPayrollBatch(PayrollBatch payrollBatch);
+	List<Payslip> findAllByPayrollBatch(PayrollBatch payrollBatch);
 	
 }

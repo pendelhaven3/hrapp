@@ -9,36 +9,36 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
-import com.pj.hrapp.dao.PayDao;
-import com.pj.hrapp.model.Pay;
+import com.pj.hrapp.dao.PayslipDao;
+import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayrollBatch;
 
 @Repository
-public class PayDaoImpl implements PayDao {
+public class PayslipDaoImpl implements PayslipDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
 	
 	@Override
 	public void deleteAllByPayrollBatch(PayrollBatch payrollBatch) {
-		Query query = entityManager.createQuery("delete from Pay p where p.payrollBatch = :payrollBatch");
+		Query query = entityManager.createQuery("delete from Payslip p where p.payrollBatch = :payrollBatch");
 		query.setParameter("payrollBatch", payrollBatch);
 		query.executeUpdate();
 	}
 
 	@Override
-	public void save(Pay pay) {
-		if (pay.getId() == null) {
-			entityManager.persist(pay);
+	public void save(Payslip payslip) {
+		if (payslip.getId() == null) {
+			entityManager.persist(payslip);
 		} else {
-			entityManager.merge(pay);
+			entityManager.merge(payslip);
 		}
 	}
 
 	@Override
-	public List<Pay> findAllByPayrollBatch(PayrollBatch payrollBatch) {
-		TypedQuery<Pay> query = entityManager.createQuery(
-				"select p from Pay p where p.payrollBatch = :payrollBatch", Pay.class);
+	public List<Payslip> findAllByPayrollBatch(PayrollBatch payrollBatch) {
+		TypedQuery<Payslip> query = entityManager.createQuery(
+				"select p from Payslip p where p.payrollBatch = :payrollBatch", Payslip.class);
 		query.setParameter("payrollBatch", payrollBatch);
 		return query.getResultList();
 	}

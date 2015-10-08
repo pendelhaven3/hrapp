@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
-import com.pj.hrapp.model.Pay;
+import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayrollBatch;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
@@ -29,7 +29,7 @@ public class PayrollBatchController extends AbstractController {
 	@FXML private Label batchNumberLabel;
 	@FXML private Label payDateLabel;
 	@FXML private Label payPeriodLabel;
-	@FXML private TableView<Pay> paysTable;
+	@FXML private TableView<Payslip> paysTable;
 	
 	@Parameter private PayrollBatch payrollBatch;
 	

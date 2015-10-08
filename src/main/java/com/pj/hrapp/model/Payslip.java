@@ -13,7 +13,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
-public class Pay {
+public class Payslip {
 
 	@Id
 	@GeneratedValue
@@ -84,7 +84,7 @@ public class Pay {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pay other = (Pay) obj;
+		Payslip other = (Payslip) obj;
 		return new EqualsBuilder()
 				.append(id, other.getId())
 				.isEquals();

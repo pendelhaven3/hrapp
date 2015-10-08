@@ -11,11 +11,11 @@ import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pj.hrapp.dao.PayDao;
+import com.pj.hrapp.dao.PayslipDao;
 import com.pj.hrapp.dao.PayrollBatchDao;
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
-import com.pj.hrapp.model.Pay;
+import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayrollBatch;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.service.PayrollService;
@@ -24,7 +24,7 @@ import com.pj.hrapp.service.PayrollService;
 public class PayrollServiceImpl implements PayrollService {
 
 	@Autowired private PayrollBatchDao payrollBatchDao;
-	@Autowired private PayDao payDao;
+	@Autowired private PayslipDao payslipDao;
 	@Autowired private SalaryDao salaryDao;
 	
 	@Override
@@ -41,7 +41,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Override
 	public PayrollBatch getPayrollBatch(long id) {
 		PayrollBatch payrollBatch = payrollBatchDao.get(id);
-		payrollBatch.setPays(payDao.findAllByPayrollBatch(payrollBatch));
+		payrollBatch.setPays(payslipDao.findAllByPayrollBatch(payrollBatch));
 		return payrollBatch;
 	}
 
@@ -59,13 +59,13 @@ public class PayrollServiceImpl implements PayrollService {
 	@Transactional
 	@Override
 	public void autoGenerateEmployeePays(PayrollBatch payrollBatch) {
-		payDao.deleteAllByPayrollBatch(payrollBatch);
+		payslipDao.deleteAllByPayrollBatch(payrollBatch);
 		Date payDate = payrollBatch.getPayDate();
 		List<Employee> employees = 
 				salaryDao.findAllCurrentByPayPeriod(payrollBatch.getPayPeriod())
 				.stream().map(s -> s.getEmployee()).collect(Collectors.toList());
 		for (Employee employee : employees) {
-			Pay pay = new Pay();
+			Payslip pay = new Payslip();
 			pay.setPayrollBatch(payrollBatch);
 			pay.setEmployee(employee);
 			
@@ -75,7 +75,7 @@ public class PayrollServiceImpl implements PayrollService {
 			pay.setPeriodCoveredFrom(DateUtils.addDays(payDate, -5));
 			pay.setPeriodCoveredTo(payDate);
 			
-			payDao.save(pay);
+			payslipDao.save(pay);
 		}
 	}
 
