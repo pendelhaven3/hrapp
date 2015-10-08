@@ -11,7 +11,7 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Pay;
 import com.pj.hrapp.model.PayrollBatch;
-import com.pj.hrapp.service.PayrollBatchService;
+import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
@@ -24,7 +24,7 @@ public class PayrollBatchController extends AbstractController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PayrollBatchController.class);
 	
-	@Autowired private PayrollBatchService payrollBatchService;
+	@Autowired private PayrollService payrollService;
 	
 	@FXML private Label batchNumberLabel;
 	@FXML private Label payDateLabel;
@@ -35,7 +35,7 @@ public class PayrollBatchController extends AbstractController {
 	
 	@Override
 	public void updateDisplay() {
-		payrollBatch = payrollBatchService.getPayrollBatch(payrollBatch.getId());
+		payrollBatch = payrollService.getPayrollBatch(payrollBatch.getId());
 		batchNumberLabel.setText(payrollBatch.getBatchNumber().toString());
 		payDateLabel.setText(FormatterUtil.formatDate(payrollBatch.getPayDate()));
 		payPeriodLabel.setText(payrollBatch.getPayPeriod().toString());
@@ -53,7 +53,7 @@ public class PayrollBatchController extends AbstractController {
 	@FXML public void deletePayrollBatch() {
 		if (ShowDialog.confirm("Delete payroll batch?")) {
 			try {
-				payrollBatchService.delete(payrollBatch);
+				payrollService.delete(payrollBatch);
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				ShowDialog.unexpectedError();
@@ -67,7 +67,7 @@ public class PayrollBatchController extends AbstractController {
 	@FXML public void autoGenerateEmployeePays() {
 		if (ShowDialog.confirm("Auto generate employee pays?")) {
 			try {
-				payrollBatchService.autoGenerateEmployeePays(payrollBatch);
+				payrollService.autoGenerateEmployeePays(payrollBatch);
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				ShowDialog.unexpectedError();

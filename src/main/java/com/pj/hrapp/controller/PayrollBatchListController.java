@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.EnterKeyEventHandler;
 import com.pj.hrapp.model.PayrollBatch;
-import com.pj.hrapp.service.PayrollBatchService;
+import com.pj.hrapp.service.PayrollService;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class PayrollBatchListController extends AbstractController {
 
-	@Autowired private PayrollBatchService payrollBatchService;
+	@Autowired private PayrollService payrollBatchService;
 	
 	@FXML private TableView<PayrollBatch> payrollBatchesTable;
 	

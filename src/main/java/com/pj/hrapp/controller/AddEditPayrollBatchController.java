@@ -11,7 +11,7 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.PayPeriod;
 import com.pj.hrapp.model.PayrollBatch;
-import com.pj.hrapp.service.PayrollBatchService;
+import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
 
 import javafx.fxml.FXML;
@@ -25,7 +25,7 @@ public class AddEditPayrollBatchController extends AbstractController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AddEditPayrollBatchController.class);
 	
-	@Autowired private PayrollBatchService payrollBatchService;
+	@Autowired private PayrollService payrollBatchService;
 	
 	@FXML private TextField batchNumberField;
 	@FXML private DatePicker payDateDatePicker;

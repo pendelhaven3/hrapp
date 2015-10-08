@@ -18,10 +18,10 @@ import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Pay;
 import com.pj.hrapp.model.PayrollBatch;
 import com.pj.hrapp.model.Salary;
-import com.pj.hrapp.service.PayrollBatchService;
+import com.pj.hrapp.service.PayrollService;
 
 @Service
-public class PayrollBatchServiceImpl implements PayrollBatchService {
+public class PayrollServiceImpl implements PayrollService {
 
 	@Autowired private PayrollBatchDao payrollBatchDao;
 	@Autowired private PayDao payDao;

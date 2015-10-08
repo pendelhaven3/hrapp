@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.pj.hrapp.model.PayrollBatch;
 
-public interface PayrollBatchService {
+public interface PayrollService {
 
 	List<PayrollBatch> getAllPayrollBatches();
 	
