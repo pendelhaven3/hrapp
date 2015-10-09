@@ -12,6 +12,7 @@ import com.pj.hrapp.ControllerFactory;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.Salary;
 
 import javafx.fxml.FXMLLoader;
@@ -122,6 +123,14 @@ public class StageController {
 
 	public void showUpdatePayrollBatchScreen(PayrollBatch payrollBatch) {
 		loadSceneFromFXML("addEditPayrollBatch", Collections.singletonMap("payrollBatch", payrollBatch));
+	}
+
+	public void showPayslipScreen(Payslip payslip) {
+		loadSceneFromFXML("payslip", Collections.singletonMap("payslip", payslip));
+	}
+
+	public void showEditPayslipScreen(Payslip payslip) {
+		loadSceneFromFXML("editPayslip", Collections.singletonMap("payslip", payslip));
 	}
 
 }

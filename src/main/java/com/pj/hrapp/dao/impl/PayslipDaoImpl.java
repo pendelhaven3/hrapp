@@ -21,6 +21,11 @@ public class PayslipDaoImpl implements PayslipDao {
 	
 	@Override
 	public void deleteAllByPayrollBatch(PayrollBatch payrollBatch) {
+		PayrollBatch updated = entityManager.find(PayrollBatch.class, payrollBatch.getId());
+		updated.getPayslips().clear();
+		
+		entityManager.merge(updated);
+		
 		Query query = entityManager.createQuery("delete from Payslip p where p.payrollBatch = :payrollBatch");
 		query.setParameter("payrollBatch", payrollBatch);
 		query.executeUpdate();
@@ -41,6 +46,11 @@ public class PayslipDaoImpl implements PayslipDao {
 				"select p from Payslip p where p.payrollBatch = :payrollBatch", Payslip.class);
 		query.setParameter("payrollBatch", payrollBatch);
 		return query.getResultList();
+	}
+
+	@Override
+	public Payslip get(long id) {
+		return entityManager.find(Payslip.class, id);
 	}
 
 }

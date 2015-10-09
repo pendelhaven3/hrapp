@@ -122,7 +122,8 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return nickname + " #" + employeeNumber.toString();
+		return nickname;
+//		return nickname + " #" + employeeNumber.toString();
 	}
 	
 }

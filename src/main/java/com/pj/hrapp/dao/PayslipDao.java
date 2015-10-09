@@ -9,8 +9,10 @@ public interface PayslipDao {
 
 	void deleteAllByPayrollBatch(PayrollBatch payrollBatch);
 
-	void save(Payslip pay);
+	void save(Payslip payslip);
 
 	List<Payslip> findAllByPayrollBatch(PayrollBatch payrollBatch);
+
+	Payslip get(long id);
 	
 }

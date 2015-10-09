@@ -18,6 +18,7 @@ import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayrollBatch;
 import com.pj.hrapp.model.Salary;
+import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.service.PayrollService;
 
 @Service
@@ -77,6 +78,30 @@ public class PayrollServiceImpl implements PayrollService {
 			
 			payslipDao.save(pay);
 		}
+	}
+
+	@Override
+	public Payslip getPayslip(long id) {
+		Payslip payslip = payslipDao.get(id);
+		if (payslip != null) {
+			payslip.setEffectiveSalaries(findEffectiveSalaries(payslip));
+		}
+		return payslip;
+	}
+
+	private List<Salary> findEffectiveSalaries(Payslip payslip) {
+		SalarySearchCriteria criteria = new SalarySearchCriteria();
+		criteria.setEmployee(payslip.getEmployee());
+		criteria.setEffectiveDateFrom(payslip.getPeriodCoveredFrom());
+		criteria.setEffectiveDateTo(payslip.getPeriodCoveredTo());
+		
+		return salaryDao.search(criteria);
+	}
+
+	@Transactional
+	@Override
+	public void save(Payslip payslip) {
+		payslipDao.save(payslip);
 	}
 
 }

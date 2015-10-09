@@ -3,6 +3,7 @@ package com.pj.hrapp.service;
 import java.util.List;
 
 import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payslip;
 
 public interface PayrollService {
 
@@ -18,4 +19,8 @@ public interface PayrollService {
 
 	void autoGenerateEmployeePays(PayrollBatch payrollBatch);
 
+	Payslip getPayslip(long id);
+
+	void save(Payslip payslip);
+	
 }
