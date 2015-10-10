@@ -86,7 +86,7 @@ public class SalaryDaoImpl implements SalaryDao {
 		if (criteria.getEffectiveDateFrom() != null) {
 			sql.append(" and (")
 				.append("s.effectiveDateFrom >= :effectiveDateFrom")
-				.append(" or (s.effectiveDateFrom <= :effectiveDateFrom and s.effectiveDateTo >= :effectiveDateFrom)")
+				.append(" or (s.effectiveDateFrom <= :effectiveDateFrom and (s.effectiveDateTo is null or s.effectiveDateTo >= :effectiveDateFrom))")
 				.append(")");
 			paramMap.put("effectiveDateFrom", criteria.getEffectiveDateFrom());
 		}
