@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.PayPeriod;
-import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
 
@@ -22,74 +22,74 @@ import javafx.scene.control.TextField;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class AddEditPayrollBatchController extends AbstractController {
+public class AddEditPayrollController extends AbstractController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(AddEditPayrollBatchController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AddEditPayrollController.class);
 	
-	@Autowired private PayrollService payrollBatchService;
+	@Autowired private PayrollService payrollService;
 	
 	@FXML private TextField batchNumberField;
 	@FXML private DatePicker payDateDatePicker;
 	@FXML private ComboBox<PayPeriod> payPeriodComboBox;
 	@FXML private CheckBox includeSSSPagibigPhilhealthCheckbox;
 	
-	@Parameter private PayrollBatch payrollBatch;
+	@Parameter private Payroll payroll;
 	
 	@Override
 	public void updateDisplay() {
 		setTitle();
 		payPeriodComboBox.getItems().setAll(PayPeriod.values());
 		
-		if (payrollBatch != null) {
-			payrollBatch = payrollBatchService.getPayrollBatch(payrollBatch.getId());
-			batchNumberField.setText(payrollBatch.getBatchNumber().toString());
-			payDateDatePicker.setValue(DateUtil.toLocalDate(payrollBatch.getPayDate()));
-			payPeriodComboBox.setValue(payrollBatch.getPayPeriod());
-			includeSSSPagibigPhilhealthCheckbox.setSelected(payrollBatch.isIncludeSSSPagibigPhilhealth());
+		if (payroll != null) {
+			payroll = payrollService.getPayroll(payroll.getId());
+			batchNumberField.setText(payroll.getBatchNumber().toString());
+			payDateDatePicker.setValue(DateUtil.toLocalDate(payroll.getPayDate()));
+			payPeriodComboBox.setValue(payroll.getPayPeriod());
+			includeSSSPagibigPhilhealthCheckbox.setSelected(payroll.isIncludeSSSPagibigPhilhealth());
 		}
 		
 		batchNumberField.requestFocus();
 	}
 
 	private void setTitle() {
-		if (payrollBatch == null) {
-			stageController.setTitle("Add New Payroll Batch");
+		if (payroll == null) {
+			stageController.setTitle("Add New Payroll");
 		} else {
-			stageController.setTitle("Edit Payroll Batch");
+			stageController.setTitle("Edit Payroll");
 		}
 	}
 
 	@FXML public void doOnBack() {
-		if (payrollBatch == null) {
-			stageController.showPayrollBatchListScreen();
+		if (payroll == null) {
+			stageController.showPayrollListScreen();
 		} else {
-			stageController.showPayrollBatchScreen(payrollBatch);
+			stageController.showPayrollScreen(payroll);
 		}
 	}
 
-	@FXML public void savePayrollBatch() {
+	@FXML public void savePayroll() {
 		if (!validateFields()) {
 			return;
 		}
 		
-		if (payrollBatch == null) {
-			payrollBatch = new PayrollBatch();
+		if (payroll == null) {
+			payroll = new Payroll();
 		}
-		payrollBatch.setBatchNumber(Long.parseLong(batchNumberField.getText()));
-		payrollBatch.setPayDate(DateUtil.toDate(payDateDatePicker.getValue()));
-		payrollBatch.setPayPeriod(payPeriodComboBox.getValue());
-		payrollBatch.setIncludeSSSPagibigPhilhealth(includeSSSPagibigPhilhealthCheckbox.isSelected());
+		payroll.setBatchNumber(Long.parseLong(batchNumberField.getText()));
+		payroll.setPayDate(DateUtil.toDate(payDateDatePicker.getValue()));
+		payroll.setPayPeriod(payPeriodComboBox.getValue());
+		payroll.setIncludeSSSPagibigPhilhealth(includeSSSPagibigPhilhealthCheckbox.isSelected());
 		
 		try {
-			payrollBatchService.save(payrollBatch);
+			payrollService.save(payroll);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();
 			return;
 		}
 		
-		ShowDialog.info("Payroll Batch saved");
-		stageController.showPayrollBatchScreen(payrollBatch);
+		ShowDialog.info("Payroll saved");
+		stageController.showPayrollScreen(payroll);
 	}
 
 	private boolean validateFields() {
@@ -129,13 +129,13 @@ public class AddEditPayrollBatchController extends AbstractController {
 	}
 
 	private boolean isBatchNumberAlreadyUsed() {
-		PayrollBatch existing = payrollBatchService.findPayrollBatchByBatchNumber(
+		Payroll existing = payrollService.findPayrollByBatchNumber(
 				Long.parseLong(batchNumberField.getText()));
 		if (existing != null) {
-			if (payrollBatch == null) {
+			if (payroll == null) {
 				return true;
 			} else {
-				return !existing.equals(payrollBatch);
+				return !existing.equals(payroll);
 			}
 		}
 		return false;

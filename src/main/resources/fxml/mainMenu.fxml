@@ -8,6 +8,6 @@
 	
 	<Button text="Employees" onAction="#goToEmployeeList" />
 	<Button text="Salaries" onAction="#goToSalaryList" />
-	<Button text="Payroll" onAction="#goToPayrollBatchList" />
+	<Button text="Payroll" onAction="#goToPayrollList" />
 
 </VBox>

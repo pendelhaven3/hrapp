@@ -23,9 +23,9 @@
 	<center>
 		<VBox spacing="10" alignment="center">
 			<GridPane vgap="10" alignment="center">
-				<Label text="Payroll Batch" prefWidth="200"
+				<Label text="Batch Number" prefWidth="200"
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
-				<Label fx:id="payrollBatchLabel"
+				<Label fx:id="payrollBatchNumberLabel"
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
 				<Label text="Employee"
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />

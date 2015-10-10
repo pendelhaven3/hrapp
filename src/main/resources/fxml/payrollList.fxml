@@ -9,15 +9,15 @@
 <?import com.pj.hrapp.gui.component.AppPropertyValueFactory?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" 
-		fx:controller="com.pj.hrapp.controller.PayrollBatchListController" 
+		fx:controller="com.pj.hrapp.controller.PayrollListController" 
 	alignment="center">
 	
 	<ToolBar>
 		<Button text="Back" onAction="#doOnBack" />
-		<Button text="Add" onAction="#addPayrollBatch" />
+		<Button text="Add" onAction="#addPayroll" />
 	</ToolBar>
 	
-	<TableView fx:id="payrollBatchesTable" VBox.vgrow="always">
+	<TableView fx:id="payrollsTable" VBox.vgrow="always">
 		<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 		<columns>
 			<TableColumn text="Batch Number">

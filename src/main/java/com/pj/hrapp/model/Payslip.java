@@ -31,7 +31,7 @@ public class Payslip {
 	private Long id;
 
 	@ManyToOne
-	private PayrollBatch payrollBatch;
+	private Payroll payroll;
 	
 	@OneToOne
 	private Employee employee;
@@ -123,12 +123,12 @@ public class Payslip {
 				.isEquals();
 	}
 
-	public PayrollBatch getPayrollBatch() {
-		return payrollBatch;
+	public Payroll getPayroll() {
+		return payroll;
 	}
 
-	public void setPayrollBatch(PayrollBatch payrollBatch) {
-		this.payrollBatch = payrollBatch;
+	public void setPayroll(Payroll payroll) {
+		this.payroll = payroll;
 	}
 	
 	public void setEffectiveSalaries(List<Salary> effectiveSalaries) {

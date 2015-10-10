@@ -16,7 +16,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
-public class PayrollBatch {
+public class Payroll {
 
 	@Id
 	@GeneratedValue
@@ -80,7 +80,7 @@ public class PayrollBatch {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PayrollBatch other = (PayrollBatch) obj;
+		Payroll other = (Payroll) obj;
 		return new EqualsBuilder()
 				.append(id, other.getId())
 				.isEquals();

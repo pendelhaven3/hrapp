@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.PayslipDao;
-import com.pj.hrapp.dao.PayrollBatchDao;
+import com.pj.hrapp.dao.PayrollDao;
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payslip;
-import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.service.PayrollService;
@@ -24,50 +24,50 @@ import com.pj.hrapp.service.PayrollService;
 @Service
 public class PayrollServiceImpl implements PayrollService {
 
-	@Autowired private PayrollBatchDao payrollBatchDao;
+	@Autowired private PayrollDao payrollDao;
 	@Autowired private PayslipDao payslipDao;
 	@Autowired private SalaryDao salaryDao;
 	
 	@Override
-	public List<PayrollBatch> getAllPayrollBatches() {
-		return payrollBatchDao.getAll();
+	public List<Payroll> getAllPayroll() {
+		return payrollDao.getAll();
 	}
 
 	@Transactional
 	@Override
-	public void save(PayrollBatch payrollBatch) {
-		payrollBatchDao.save(payrollBatch);
+	public void save(Payroll payroll) {
+		payrollDao.save(payroll);
 	}
 
 	@Override
-	public PayrollBatch getPayrollBatch(long id) {
-		PayrollBatch payrollBatch = payrollBatchDao.get(id);
-		payrollBatch.setPayslips(payslipDao.findAllByPayrollBatch(payrollBatch));
-		return payrollBatch;
+	public Payroll getPayroll(long id) {
+		Payroll payroll = payrollDao.get(id);
+		payroll.setPayslips(payslipDao.findAllByPayroll(payroll));
+		return payroll;
 	}
 
 	@Override
-	public PayrollBatch findPayrollBatchByBatchNumber(long batchNumber) {
-		return payrollBatchDao.findByBatchNumber(batchNumber);
-	}
-
-	@Transactional
-	@Override
-	public void delete(PayrollBatch payrollBatch) {
-		payrollBatchDao.delete(payrollBatch);
+	public Payroll findPayrollByBatchNumber(long batchNumber) {
+		return payrollDao.findByBatchNumber(batchNumber);
 	}
 
 	@Transactional
 	@Override
-	public void autoGenerateEmployeePays(PayrollBatch payrollBatch) {
-		payslipDao.deleteAllByPayrollBatch(payrollBatch);
-		Date payDate = payrollBatch.getPayDate();
+	public void delete(Payroll payroll) {
+		payrollDao.delete(payroll);
+	}
+
+	@Transactional
+	@Override
+	public void autoGeneratePayslips(Payroll payroll) {
+		payslipDao.deleteAllByPayroll(payroll);
+		Date payDate = payroll.getPayDate();
 		List<Employee> employees = 
-				salaryDao.findAllCurrentByPayPeriod(payrollBatch.getPayPeriod())
+				salaryDao.findAllCurrentByPayPeriod(payroll.getPayPeriod())
 				.stream().map(s -> s.getEmployee()).collect(Collectors.toList());
 		for (Employee employee : employees) {
 			Payslip pay = new Payslip();
-			pay.setPayrollBatch(payrollBatch);
+			pay.setPayroll(payroll);
 			pay.setEmployee(employee);
 			
 			Salary salary = salaryDao.findByEmployeeAndEffectiveDate(employee, payDate);

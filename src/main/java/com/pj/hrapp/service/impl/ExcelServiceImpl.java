@@ -16,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.Payslip.BasicPayBreakdownItem;
 import com.pj.hrapp.service.ExcelService;
@@ -58,7 +58,7 @@ public class ExcelServiceImpl implements ExcelService {
 	};
 	
 	@Override
-	public XSSFWorkbook generate(PayrollBatch payrollBatch) throws IOException {
+	public XSSFWorkbook generate(Payroll payroll) throws IOException {
 		XSSFWorkbook workbook = new XSSFWorkbook(getClass().getResourceAsStream("/excel/payslip.xlsx"));
 		CellStyle amountCellStyle = createAmountCellStyle(workbook);
 		
@@ -66,7 +66,7 @@ public class ExcelServiceImpl implements ExcelService {
 		Cell cell = null;
 		Row row = null;
 		
-		List<Payslip> payslips = payrollBatch.getPayslips();
+		List<Payslip> payslips = payroll.getPayslips();
 		for (int i = 0; i < payslips.size(); i++) {
 			Payslip payslip = payrollService.getPayslip(payslips.get(i).getId());
 			int currentRow = payslipRows[i];
@@ -77,7 +77,7 @@ public class ExcelServiceImpl implements ExcelService {
 			currentRow++;
 			
 			cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0]);
-			cell.setCellValue(payslip.getPayrollBatch().getPayDate());
+			cell.setCellValue(payslip.getPayroll().getPayDate());
 			
 			currentRow += 2;
 

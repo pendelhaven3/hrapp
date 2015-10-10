@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" 
-		fx:controller="com.pj.hrapp.controller.AddEditPayrollBatchController" >
+		fx:controller="com.pj.hrapp.controller.AddEditPayrollController" >
 	<top>
 		<ToolBar>
 			<Button text="Back" onAction="#doOnBack" />
@@ -46,7 +46,7 @@
 			<Region prefHeight="10" />
 			
 			<HBox spacing="10" alignment="center">
-				<Button text="Save" onAction="#savePayrollBatch" />
+				<Button text="Save" onAction="#savePayroll" />
 				<Button text="Cancel" onAction="#doOnBack" />
 			</HBox>
 		</VBox>

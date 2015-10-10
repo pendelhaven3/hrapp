@@ -25,7 +25,7 @@ public class EditPayslipController extends AbstractController {
 	
 	@Autowired private PayrollService payrollService;
 	
-	@FXML private Label payrollBatchLabel;
+	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;
 	@FXML private DatePicker periodCoveredFromDatePicker;
 	@FXML private DatePicker periodCoveredToDatePicker;
@@ -38,7 +38,7 @@ public class EditPayslipController extends AbstractController {
 		
 		if (payslip != null) {
 			payslip = payrollService.getPayslip(payslip.getId());
-			payrollBatchLabel.setText(payslip.getPayrollBatch().getBatchNumber().toString());
+			payrollBatchNumberLabel.setText(payslip.getPayroll().getBatchNumber().toString());
 			employeeLabel.setText(payslip.getEmployee().getNickname());
 			periodCoveredFromDatePicker.setValue(DateUtil.toLocalDate(payslip.getPeriodCoveredFrom()));
 			periodCoveredToDatePicker.setValue(DateUtil.toLocalDate(payslip.getPeriodCoveredTo()));

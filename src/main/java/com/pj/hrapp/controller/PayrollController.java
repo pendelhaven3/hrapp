@@ -17,7 +17,7 @@ import org.springframework.stereotype.Controller;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
-import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.service.ExcelService;
 import com.pj.hrapp.service.PayrollService;
@@ -32,9 +32,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class PayrollBatchController extends AbstractController {
+public class PayrollController extends AbstractController {
 
-	private static final Logger logger = LoggerFactory.getLogger(PayrollBatchController.class);
+	private static final Logger logger = LoggerFactory.getLogger(PayrollController.class);
 	
 	@Autowired private PayrollService payrollService;
 	@Autowired private ExcelService excelService;
@@ -45,18 +45,18 @@ public class PayrollBatchController extends AbstractController {
 	@FXML private Label includeSSSPagibigPhilhealthLabel;
 	@FXML private TableView<Payslip> payslipsTable;
 	
-	@Parameter private PayrollBatch payrollBatch;
+	@Parameter private Payroll payroll;
 	
 	@Override
 	public void updateDisplay() {
-		payrollBatch = payrollService.getPayrollBatch(payrollBatch.getId());
-		batchNumberLabel.setText(payrollBatch.getBatchNumber().toString());
-		payDateLabel.setText(FormatterUtil.formatDate(payrollBatch.getPayDate()));
-		payPeriodLabel.setText(payrollBatch.getPayPeriod().toString());
+		payroll = payrollService.getPayroll(payroll.getId());
+		batchNumberLabel.setText(payroll.getBatchNumber().toString());
+		payDateLabel.setText(FormatterUtil.formatDate(payroll.getPayDate()));
+		payPeriodLabel.setText(payroll.getPayPeriod().toString());
 		includeSSSPagibigPhilhealthLabel.setText(
-				payrollBatch.isIncludeSSSPagibigPhilhealth() ? "Yes" : "No");
+				payroll.isIncludeSSSPagibigPhilhealth() ? "Yes" : "No");
 		
-		payslipsTable.getItems().setAll(payrollBatch.getPayslips());
+		payslipsTable.getItems().setAll(payroll.getPayslips());
 		payslipsTable.setOnMouseClicked(new DoubleClickEventHandler() {
 			
 			@Override
@@ -71,39 +71,39 @@ public class PayrollBatchController extends AbstractController {
 	}
 
 	@FXML public void doOnBack() {
-		stageController.showPayrollBatchListScreen();
+		stageController.showPayrollListScreen();
 	}
 
-	@FXML public void updatePayrollBatch() {
-		stageController.showUpdatePayrollBatchScreen(payrollBatch);
+	@FXML public void updatePayroll() {
+		stageController.showUpdatePayrollScreen(payroll);
 	}
 
-	@FXML public void deletePayrollBatch() {
-		if (ShowDialog.confirm("Delete payroll batch?")) {
+	@FXML public void deletePayroll() {
+		if (ShowDialog.confirm("Delete payroll?")) {
 			try {
-				payrollService.delete(payrollBatch);
+				payrollService.delete(payroll);
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				ShowDialog.unexpectedError();
 			}
 			
-			ShowDialog.info("Payroll batch deleted");
-			stageController.showPayrollBatchListScreen();
+			ShowDialog.info("Payroll deleted");
+			stageController.showPayrollListScreen();
 		}
 	}
 
-	@FXML public void autoGenerateEmployeePays() {
-		if (ShowDialog.confirm("Auto generate employee pays?")) {
+	@FXML public void autoGeneratePayslips() {
+		if (ShowDialog.confirm("Auto generate payslips?")) {
 			try {
-				payrollService.autoGenerateEmployeePays(payrollBatch);
+				payrollService.autoGeneratePayslips(payroll);
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				ShowDialog.unexpectedError();
 				return;
 			}
 			
-			ShowDialog.info("Employee pays generated");
-			stageController.showPayrollBatchScreen(payrollBatch);
+			ShowDialog.info("Payslips generated");
+			stageController.showPayrollScreen(payroll);
 		}
 	}
 
@@ -119,7 +119,7 @@ public class PayrollBatchController extends AbstractController {
         }
 		
 		try (
-			XSSFWorkbook workbook = excelService.generate(payrollBatch);
+			XSSFWorkbook workbook = excelService.generate(payroll);
 			FileOutputStream out = new FileOutputStream(file);
 		) {
 			workbook.write(out);
@@ -132,7 +132,7 @@ public class PayrollBatchController extends AbstractController {
 	private String getExcelFilename() {
 		return new StringBuilder()
 				.append("PAYSLIP as of ")
-				.append(new SimpleDateFormat("MM-dd").format(payrollBatch.getPayDate()))
+				.append(new SimpleDateFormat("MM-dd").format(payroll.getPayDate()))
 				.append(".xlsx")
 				.toString();
 	}

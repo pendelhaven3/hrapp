@@ -17,7 +17,7 @@ public class PayslipController extends AbstractController {
 
 	@Autowired private PayrollService payrollService;
 	
-	@FXML private Label payrollBatchLabel;
+	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;
 	@FXML private Label periodCoveredFromLabel;
 	@FXML private Label periodCoveredToLabel;
@@ -31,7 +31,7 @@ public class PayslipController extends AbstractController {
 	@Override
 	public void updateDisplay() {
 		payslip = payrollService.getPayslip(payslip.getId());
-		payrollBatchLabel.setText(payslip.getPayrollBatch().getBatchNumber().toString());
+		payrollBatchNumberLabel.setText(payslip.getPayroll().getBatchNumber().toString());
 		employeeLabel.setText(payslip.getEmployee().toString());
 		periodCoveredFromLabel.setText(FormatterUtil.formatDate(payslip.getPeriodCoveredFrom()));
 		periodCoveredToLabel.setText(FormatterUtil.formatDate(payslip.getPeriodCoveredTo()));
@@ -43,7 +43,7 @@ public class PayslipController extends AbstractController {
 	}
 
 	@FXML public void doOnBack() {
-		stageController.showPayrollBatchScreen(payslip.getPayrollBatch());
+		stageController.showPayrollScreen(payslip.getPayroll());
 	}
 
 	@FXML public void editPaySlip() {

@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payroll;
 
 public interface ExcelService {
 
-	XSSFWorkbook generate(PayrollBatch payrollBatch) throws IOException ;
+	XSSFWorkbook generate(Payroll payroll) throws IOException ;
 	
 }

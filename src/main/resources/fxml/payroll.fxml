@@ -16,11 +16,11 @@
 <?import javafx.scene.control.Tab?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" 
-		fx:controller="com.pj.hrapp.controller.PayrollBatchController">
+		fx:controller="com.pj.hrapp.controller.PayrollController">
 	<top>
 		<ToolBar>
 			<Button text="Back" onAction="#doOnBack" />
-			<Button text="Delete" onAction="#deletePayrollBatch" />
+			<Button text="Delete" onAction="#deletePayroll" />
 			<Button text="Generate Excel" onAction="#generateExcel" />
 		</ToolBar>
 	</top>
@@ -47,8 +47,8 @@
 			</GridPane>
 		
 			<HBox spacing="10" alignment="center">
-				<Button text="Update Payroll Batch" onAction="#updatePayrollBatch" />
-				<Button text="Autogenerate Payslips" onAction="#autoGenerateEmployeePays" />
+				<Button text="Update Payroll" onAction="#updatePayroll" />
+				<Button text="Autogenerate Payslips" onAction="#autoGeneratePayslips" />
 			</HBox>
 			
 			<TabPane VBox.vgrow="always">

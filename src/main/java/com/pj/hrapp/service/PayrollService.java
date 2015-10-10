@@ -2,22 +2,22 @@ package com.pj.hrapp.service;
 
 import java.util.List;
 
-import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 
 public interface PayrollService {
 
-	List<PayrollBatch> getAllPayrollBatches();
+	List<Payroll> getAllPayroll();
 	
-	void save(PayrollBatch payrollBatch);
+	void save(Payroll payroll);
 	
-	PayrollBatch getPayrollBatch(long id);
+	Payroll getPayroll(long id);
 
-	PayrollBatch findPayrollBatchByBatchNumber(long batchNumber);
+	Payroll findPayrollByBatchNumber(long batchNumber);
 
-	void delete(PayrollBatch payrollBatch);
+	void delete(Payroll payroll);
 
-	void autoGenerateEmployeePays(PayrollBatch payrollBatch);
+	void autoGeneratePayslips(Payroll payroll);
 
 	Payslip getPayslip(long id);
 

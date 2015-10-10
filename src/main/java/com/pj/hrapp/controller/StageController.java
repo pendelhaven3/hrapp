@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.pj.hrapp.ControllerFactory;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
-import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.Salary;
 
@@ -109,20 +109,20 @@ public class StageController {
 		loadSceneFromFXML("salary", Collections.singletonMap("salary", salary));
 	}
 
-	public void showPayrollBatchListScreen() {
-		loadSceneFromFXML("payrollBatchList");
+	public void showPayrollListScreen() {
+		loadSceneFromFXML("payrollList");
 	}
 
-	public void showAddPayrollBatchScreen() {
-		loadSceneFromFXML("addEditPayrollBatch");
+	public void showAddPayrollScreen() {
+		loadSceneFromFXML("addEditPayroll");
 	}
 
-	public void showPayrollBatchScreen(PayrollBatch payrollBatch) {
-		loadSceneFromFXML("payrollBatch", Collections.singletonMap("payrollBatch", payrollBatch));
+	public void showPayrollScreen(Payroll payroll) {
+		loadSceneFromFXML("payroll", Collections.singletonMap("payroll", payroll));
 	}
 
-	public void showUpdatePayrollBatchScreen(PayrollBatch payrollBatch) {
-		loadSceneFromFXML("addEditPayrollBatch", Collections.singletonMap("payrollBatch", payrollBatch));
+	public void showUpdatePayrollScreen(Payroll payroll) {
+		loadSceneFromFXML("addEditPayroll", Collections.singletonMap("payroll", payroll));
 	}
 
 	public void showPayslipScreen(Payslip payslip) {
