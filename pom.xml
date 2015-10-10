@@ -6,6 +6,7 @@
 	<version>0.0.1</version>
 	<properties>
 		<spring.version>4.2.1.RELEASE</spring.version>
+		<poi.version>3.13</poi.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -64,6 +65,16 @@
 			<version>4.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
@@ -102,7 +113,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.pj.hrapp.Main</mainClass>
+							<mainClass>com.pj.hrapp.HRapp</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

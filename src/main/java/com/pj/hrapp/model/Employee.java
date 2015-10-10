@@ -125,5 +125,13 @@ public class Employee {
 		return nickname;
 //		return nickname + " #" + employeeNumber.toString();
 	}
+
+	public String getFirstAndLastName() {
+		return new StringBuilder()
+				.append(firstName)
+				.append(" ")
+				.append(lastName)
+				.toString();
+	}
 	
 }

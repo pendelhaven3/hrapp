@@ -21,6 +21,7 @@
 		<ToolBar>
 			<Button text="Back" onAction="#doOnBack" />
 			<Button text="Delete" onAction="#deletePayrollBatch" />
+			<Button text="Generate Excel" onAction="#generateExcel" />
 		</ToolBar>
 	</top>
 	<center>

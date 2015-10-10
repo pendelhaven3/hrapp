@@ -1,5 +1,12 @@
 package com.pj.hrapp.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +17,9 @@ import org.springframework.stereotype.Controller;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
-import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayrollBatch;
+import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.service.ExcelService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
 
@@ -19,6 +27,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -27,6 +37,7 @@ public class PayrollBatchController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(PayrollBatchController.class);
 	
 	@Autowired private PayrollService payrollService;
+	@Autowired private ExcelService excelService;
 	
 	@FXML private Label batchNumberLabel;
 	@FXML private Label payDateLabel;
@@ -94,6 +105,36 @@ public class PayrollBatchController extends AbstractController {
 			ShowDialog.info("Employee pays generated");
 			stageController.showPayrollBatchScreen(payrollBatch);
 		}
+	}
+
+	@FXML public void generateExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.setInitialDirectory(Paths.get(System.getProperty("user.home"), "Desktop").toFile());
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel files", "*.xlsx"));
+        fileChooser.setInitialFileName(getExcelFilename());
+        File file = fileChooser.showSaveDialog(stageController.getStage());
+        if (file == null) {
+        	return;
+        }
+		
+		try (
+			XSSFWorkbook workbook = excelService.generate(payrollBatch);
+			FileOutputStream out = new FileOutputStream(file);
+		) {
+			workbook.write(out);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+		}
+	}
+
+	private String getExcelFilename() {
+		return new StringBuilder()
+				.append("PAYSLIP as of ")
+				.append(new SimpleDateFormat("MM-dd").format(payrollBatch.getPayDate()))
+				.append(".xlsx")
+				.toString();
 	}
 
 }

@@ -133,4 +133,8 @@ public class StageController {
 		loadSceneFromFXML("editPayslip", Collections.singletonMap("payslip", payslip));
 	}
 
+	public Stage getStage() {
+		return stage;
+	}
+
 }
