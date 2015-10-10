@@ -42,7 +42,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Override
 	public PayrollBatch getPayrollBatch(long id) {
 		PayrollBatch payrollBatch = payrollBatchDao.get(id);
-		payrollBatch.setPays(payslipDao.findAllByPayrollBatch(payrollBatch));
+		payrollBatch.setPayslips(payslipDao.findAllByPayrollBatch(payrollBatch));
 		return payrollBatch;
 	}
 

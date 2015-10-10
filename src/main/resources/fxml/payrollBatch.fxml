@@ -27,7 +27,7 @@
 		<VBox alignment="center" spacing="10">
 			<padding><Insets top="10" bottom="10" /></padding>
 			<GridPane vgap="10" alignment="center">
-				<Label text="Batch Number" prefWidth="150"
+				<Label text="Batch Number" prefWidth="270"
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
 				<Label fx:id="batchNumberLabel" prefWidth="100"
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -39,6 +39,10 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
 				<Label fx:id="payPeriodLabel"
 					GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Include SSS/Pag-ibig/Philhealth"
+					GridPane.columnIndex="0" GridPane.rowIndex="3" />
+				<Label fx:id="includeSSSPagibigPhilhealthLabel"
+					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 			</GridPane>
 		
 			<HBox spacing="10" alignment="center">

@@ -30,6 +30,8 @@ public class PayrollBatch {
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Payslip> payslips = new ArrayList<>();
+	
+	private boolean includeSSSPagibigPhilhealth;
 
 	public Long getId() {
 		return id;
@@ -59,7 +61,7 @@ public class PayrollBatch {
 		return payslips;
 	}
 
-	public void setPays(List<Payslip> pays) {
+	public void setPayslips(List<Payslip> pays) {
 		this.payslips = pays;
 	}
 
@@ -90,6 +92,14 @@ public class PayrollBatch {
 
 	public void setPayPeriod(PayPeriod payPeriod) {
 		this.payPeriod = payPeriod;
+	}
+
+	public boolean isIncludeSSSPagibigPhilhealth() {
+		return includeSSSPagibigPhilhealth;
+	}
+
+	public void setIncludeSSSPagibigPhilhealth(boolean includeSSSPagibigPhilhealth) {
+		this.includeSSSPagibigPhilhealth = includeSSSPagibigPhilhealth;
 	}
 	
 }
