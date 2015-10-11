@@ -34,7 +34,7 @@ public class EditPayslipController extends AbstractController {
 	
 	@Override
 	public void updateDisplay() {
-		setTitle();
+		stageController.setTitle("Edit Payslip");
 		
 		if (payslip != null) {
 			payslip = payrollService.getPayslip(payslip.getId());
@@ -45,10 +45,6 @@ public class EditPayslipController extends AbstractController {
 		}
 		
 		periodCoveredFromDatePicker.requestFocus();
-	}
-
-	private void setTitle() {
-		stageController.setTitle("Edit Payslip");
 	}
 
 	@FXML public void doOnBack() {

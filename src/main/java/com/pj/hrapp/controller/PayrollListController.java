@@ -24,6 +24,8 @@ public class PayrollListController extends AbstractController {
 	
 	@Override
 	public void updateDisplay() {
+		stageController.setTitle("Payroll List");
+		
 		payrollsTable.getItems().setAll(payrollService.getAllPayroll());
 		if (!payrollsTable.getItems().isEmpty()) {
 			payrollsTable.getSelectionModel().select(0);

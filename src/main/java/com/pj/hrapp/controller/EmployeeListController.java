@@ -24,6 +24,8 @@ public class EmployeeListController extends AbstractController {
 	
 	@Override
 	public void updateDisplay() {
+		stageController.setTitle("Employee List");
+		
 		employeesTable.getItems().setAll(employeeService.getAllEmployees());
 		if (!employeesTable.getItems().isEmpty()) {
 			employeesTable.getSelectionModel().select(0);

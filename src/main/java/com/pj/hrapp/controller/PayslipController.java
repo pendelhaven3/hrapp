@@ -44,6 +44,8 @@ public class PayslipController extends AbstractController {
 
 	@Override
 	public void updateDisplay() {
+		stageController.setTitle("Payslip");
+		
 		payslip = payrollService.getPayslip(payslip.getId());
 		payrollBatchNumberLabel.setText(payslip.getPayroll().getBatchNumber().toString());
 		employeeLabel.setText(payslip.getEmployee().toString());

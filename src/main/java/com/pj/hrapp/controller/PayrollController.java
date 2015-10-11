@@ -49,6 +49,8 @@ public class PayrollController extends AbstractController {
 	
 	@Override
 	public void updateDisplay() {
+		stageController.setTitle("Payroll");
+		
 		payroll = payrollService.getPayroll(payroll.getId());
 		for (int i = 0; i < payroll.getPayslips().size(); i++) {
 			payroll.getPayslips().set(i, payrollService.getPayslip(payroll.getPayslips().get(i).getId()));

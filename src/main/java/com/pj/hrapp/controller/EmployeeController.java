@@ -39,6 +39,8 @@ public class EmployeeController extends AbstractController {
 	
 	@Override
 	public void updateDisplay() {
+		stageController.setTitle(getTitle());
+		
 		if (employee != null) {
 			employee = employeeService.getEmployee(employee.getId());
 			employeeNumberField.setText(employee.getEmployeeNumber().toString());
@@ -55,6 +57,14 @@ public class EmployeeController extends AbstractController {
 		employeeNumberField.requestFocus();
 		if (employee != null) {
 			employeeNumberField.positionCaret(employeeNumberField.getText().length());
+		}
+	}
+
+	private String getTitle() {
+		if (employee == null) {
+			return "Add New Employee";
+		} else {
+			return "Edit Employee";
 		}
 	}
 
