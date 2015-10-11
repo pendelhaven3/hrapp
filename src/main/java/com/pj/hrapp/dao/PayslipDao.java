@@ -14,5 +14,7 @@ public interface PayslipDao {
 	List<Payslip> findAllByPayroll(Payroll payroll);
 
 	Payslip get(long id);
+
+	void delete(Payslip payslip);
 	
 }

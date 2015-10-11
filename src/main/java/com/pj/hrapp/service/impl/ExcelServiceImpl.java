@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.Payslip.BasicPayBreakdownItem;
 import com.pj.hrapp.service.ExcelService;
 import com.pj.hrapp.service.PayrollService;
@@ -60,7 +61,8 @@ public class ExcelServiceImpl implements ExcelService {
 	@Override
 	public XSSFWorkbook generate(Payroll payroll) throws IOException {
 		XSSFWorkbook workbook = new XSSFWorkbook(getClass().getResourceAsStream("/excel/payslip.xlsx"));
-		CellStyle amountCellStyle = createAmountCellStyle(workbook);
+		CellStyle leftBorderCellStyle = createCellStyleWithLeftBorder(workbook);
+		CellStyle rightBorderedAmountCellStyle = createAmountCellStyleWithRightBorder(workbook);
 		
 		Sheet sheet = workbook.getSheetAt(0);
 		Cell cell = null;
@@ -89,7 +91,7 @@ public class ExcelServiceImpl implements ExcelService {
 				cell = row.getCell(payslipColumns[i][0]);
 				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(item.getRate().doubleValue());
-				cell.setCellStyle(amountCellStyle);
+				cell.setCellStyle(leftBorderCellStyle);
 				
 				cell = row.getCell(payslipColumns[i][1]);
 				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
@@ -105,15 +107,39 @@ public class ExcelServiceImpl implements ExcelService {
 				
 				currentRow++;
 			}
+			
+			List<PayslipAdjustment> adjustments = payslip.getAdjustments();
+			for (int j = 0; j < adjustments.size(); j++) {
+				PayslipAdjustment adjustment = adjustments.get(j);
+				row = sheet.getRow(currentRow);
+				
+				cell = row.getCell(payslipColumns[i][0]);
+				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+				cell.setCellValue(adjustment.getDescription());
+				
+				cell = row.getCell(payslipColumns[i][2]);
+				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+				cell.setCellValue(adjustment.getAmount().doubleValue());
+				cell.setCellStyle(rightBorderedAmountCellStyle);
+				
+				currentRow++;
+			}
 		}
 		
 		XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
 		return workbook;
 	}
 
-	private CellStyle createAmountCellStyle(XSSFWorkbook workbook) {
+	private CellStyle createCellStyleWithLeftBorder(XSSFWorkbook workbook) {
 		CellStyle cellStyle = workbook.createCellStyle();
-		cellStyle.setDataFormat((short)BuiltinFormats.getBuiltinFormat("#,##0.00"));
+		cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
+		return cellStyle;
+	}
+	
+	private CellStyle createAmountCellStyleWithRightBorder(XSSFWorkbook workbook) {
+		CellStyle cellStyle = workbook.createCellStyle();
+		cellStyle.setDataFormat((short)BuiltinFormats.getBuiltinFormat("#,##0.00_);(#,##0.00)"));
+		cellStyle.setBorderRight(CellStyle.BORDER_THIN);
 		return cellStyle;
 	}
 	

@@ -6,10 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -42,6 +44,9 @@ public class Payslip {
 	
 	@Transient
 	private List<Salary> effectiveSalaries;
+	
+	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
+	private List<PayslipAdjustment> adjustments;
 	
 	public List<BasicPayBreakdownItem> getBasicPayItems() {
 		List<BasicPayBreakdownItem> items = new ArrayList<>();
@@ -187,12 +192,21 @@ public class Payslip {
 				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
 	}
 
-	public BigDecimal getTotalDeductions() {
-		return BigDecimal.ZERO;
+	public BigDecimal getTotalAdjustments() {
+		return adjustments.stream().map(adjustment -> adjustment.getAmount())
+				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
 	}
 
 	public BigDecimal getNetPay() {
-		return getBasicPay().subtract(getTotalDeductions());
+		return getBasicPay().add(getTotalAdjustments());
+	}
+
+	public List<PayslipAdjustment> getAdjustments() {
+		return adjustments;
+	}
+
+	public void setAdjustments(List<PayslipAdjustment> adjustments) {
+		this.adjustments = adjustments;
 	}
 	
 }

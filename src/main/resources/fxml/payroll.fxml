@@ -63,9 +63,9 @@
 											<AppPropertyValueFactory property="employee.nickname" />
 										</cellValueFactory>
 									</TableColumn>
-									<TableColumn text="Amount">
+									<TableColumn text="Net Pay">
 										<cellValueFactory>
-											<AppPropertyValueFactory property="amount" />
+											<AppPropertyValueFactory property="netPay" />
 										</cellValueFactory>
 									</TableColumn>
 									<TableColumn text="Period Covered From">

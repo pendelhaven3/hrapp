@@ -11,12 +11,14 @@ import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pj.hrapp.dao.PayslipDao;
 import com.pj.hrapp.dao.PayrollDao;
+import com.pj.hrapp.dao.PayslipAdjustmentDao;
+import com.pj.hrapp.dao.PayslipDao;
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
-import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.Payroll;
+import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.service.PayrollService;
@@ -27,6 +29,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private PayrollDao payrollDao;
 	@Autowired private PayslipDao payslipDao;
 	@Autowired private SalaryDao salaryDao;
+	@Autowired private PayslipAdjustmentDao payslipAdjustmentDao;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -60,7 +63,9 @@ public class PayrollServiceImpl implements PayrollService {
 	@Transactional
 	@Override
 	public void autoGeneratePayslips(Payroll payroll) {
-		payslipDao.deleteAllByPayroll(payroll);
+		for (Payslip payslip : payroll.getPayslips()) {
+			payslipDao.delete(payslip);
+		}
 		Date payDate = payroll.getPayDate();
 		List<Employee> employees = 
 				salaryDao.findAllCurrentByPayPeriod(payroll.getPayPeriod())
@@ -85,6 +90,7 @@ public class PayrollServiceImpl implements PayrollService {
 		Payslip payslip = payslipDao.get(id);
 		if (payslip != null) {
 			payslip.setEffectiveSalaries(findEffectiveSalaries(payslip));
+			payslip.setAdjustments(payslipAdjustmentDao.findAllByPayslip(payslip));
 		}
 		return payslip;
 	}
@@ -102,6 +108,18 @@ public class PayrollServiceImpl implements PayrollService {
 	@Override
 	public void save(Payslip payslip) {
 		payslipDao.save(payslip);
+	}
+
+	@Transactional
+	@Override
+	public void save(PayslipAdjustment payslipAdjustment) {
+		payslipAdjustmentDao.save(payslipAdjustment);
+	}
+
+	@Transactional
+	@Override
+	public void delete(PayslipAdjustment payslipAdjustment) {
+		payslipAdjustmentDao.delete(payslipAdjustment);
 	}
 
 }

@@ -24,7 +24,7 @@
 	</top>
 	<center>
 		<VBox spacing="10" alignment="center">
-			<padding><Insets top="10" /></padding>
+			<padding><Insets top="10" bottom="10" /></padding>
 			<GridPane vgap="10" alignment="center">
 				<Label text="Batch Number" prefWidth="200"
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
@@ -41,9 +41,9 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
 				<Label fx:id="employeeLabel"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Label text="Deductions"
+				<Label text="Adjustments"
 					GridPane.columnIndex="3" GridPane.rowIndex="1" />
-				<Label fx:id="deductionsLabel"
+				<Label fx:id="adjustmentsLabel"
 					GridPane.columnIndex="4" GridPane.rowIndex="1" />
 					
 				<Label text="Period Covered From"
@@ -92,7 +92,29 @@
 							</columns>
 						</TableView>
 					</Tab>
-					<Tab text="Deductions">
+					<Tab text="Adjustments" closable="false">
+						<VBox spacing="10" alignment="center">
+							<TableView fx:id="adjustmentsTable">
+								<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+								<columns>
+									<TableColumn text="Type">
+										<cellValueFactory>
+											<AppPropertyValueFactory property="description" />
+										</cellValueFactory>
+									</TableColumn>
+									<TableColumn text="Amount">
+										<cellValueFactory>
+											<AppPropertyValueFactory property="amount" />
+										</cellValueFactory>
+									</TableColumn>
+								</columns>
+							</TableView>
+							
+							<HBox alignment="center" spacing="10">
+								<Button text="Add Adjustment" onAction="#addPayslipAdjustment" />
+								<Button text="Delete Adjustment" onAction="#deletePayslipAdjustment" />
+							</HBox>
+						</VBox>
 					</Tab>
 				</tabs>
 			</TabPane>

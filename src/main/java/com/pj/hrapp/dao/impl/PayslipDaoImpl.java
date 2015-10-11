@@ -53,4 +53,9 @@ public class PayslipDaoImpl implements PayslipDao {
 		return entityManager.find(Payslip.class, id);
 	}
 
+	@Override
+	public void delete(Payslip payslip) {
+		entityManager.remove(get(payslip.getId()));
+	}
+
 }
