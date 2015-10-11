@@ -5,6 +5,7 @@ import java.util.List;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
+import com.pj.hrapp.model.PayslipBasicPayItem;
 
 public interface PayrollService {
 
@@ -27,5 +28,7 @@ public interface PayrollService {
 	void save(PayslipAdjustment payslipAdjustment);
 
 	void delete(PayslipAdjustment payslipAdjustment);
+
+	void save(PayslipBasicPayItem payslipBasicPayItem);
 	
 }

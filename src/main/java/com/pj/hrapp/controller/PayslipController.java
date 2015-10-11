@@ -10,24 +10,30 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.PayslipAdjustmentDialog;
+import com.pj.hrapp.dialog.PayslipBasicPayItemDialog;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
+import com.pj.hrapp.model.PayslipBasicPayItem;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 
 @Controller
 public class PayslipController extends AbstractController {
 
+	private static final int ADJUSTMENTS_TAB = 2;
+
 	private static final Logger logger = LoggerFactory.getLogger(PayslipController.class);
 	
 	@Autowired private PayrollService payrollService;
+	@Autowired private PayslipBasicPayItemDialog payslipBasicPayItemDialog;
 	@Autowired private PayslipAdjustmentDialog payslipAdjustmentDialog;
 	
 	@FXML private Label payrollBatchNumberLabel;
@@ -37,8 +43,9 @@ public class PayslipController extends AbstractController {
 	@FXML private Label basicPayLabel;
 	@FXML private Label adjustmentsLabel;
 	@FXML private Label netPayLabel;
-	@FXML private TableView<Payslip.BasicPayBreakdownItem> basicPayTable;
+	@FXML private TableView<PayslipBasicPayItem> basicPayItemsTable;
 	@FXML private TableView<PayslipAdjustment> adjustmentsTable;
+	@FXML private TabPane tabPane;
 
 	@Parameter private Payslip payslip;
 
@@ -55,7 +62,15 @@ public class PayslipController extends AbstractController {
 		adjustmentsLabel.setText(FormatterUtil.formatAmount(payslip.getTotalAdjustments()));
 		netPayLabel.setText(FormatterUtil.formatAmount(payslip.getNetPay()));
 		
-		basicPayTable.getItems().addAll(payslip.getBasicPayItems());
+		basicPayItemsTable.getItems().setAll(payslip.getBasicPayItems());
+		basicPayItemsTable.setOnMouseClicked(new DoubleClickEventHandler() {
+			
+			@Override
+			protected void onDoubleClick(MouseEvent event) {
+				editSelectedItem();
+			}
+		});
+		
 		adjustmentsTable.getItems().setAll(payslip.getAdjustments());
 		adjustmentsTable.setOnMouseClicked(new DoubleClickEventHandler() {
 			
@@ -64,6 +79,17 @@ public class PayslipController extends AbstractController {
 				editSelectedAdjustment();
 			}
 		});
+		
+		tabPane.getSelectionModel().select(ADJUSTMENTS_TAB);
+	}
+
+	protected void editSelectedItem() {
+		Map<String, Object> model = new HashMap<>();
+		model.put("payslipBasicPayItem", basicPayItemsTable.getSelectionModel().getSelectedItem());
+		
+		payslipBasicPayItemDialog.showAndWait(model);
+		
+		updateDisplay();
 	}
 
 	protected void editSelectedAdjustment() {
@@ -79,7 +105,7 @@ public class PayslipController extends AbstractController {
 		stageController.showPayrollScreen(payslip.getPayroll());
 	}
 
-	@FXML public void editPaySlip() {
+	@FXML public void editPayslip() {
 		stageController.showEditPayslipScreen(payslip);
 	}
 

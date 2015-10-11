@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
-import com.pj.hrapp.model.Payslip.BasicPayBreakdownItem;
+import com.pj.hrapp.model.PayslipBasicPayItem;
 import com.pj.hrapp.service.ExcelService;
 import com.pj.hrapp.service.PayrollService;
 
@@ -83,14 +83,14 @@ public class ExcelServiceImpl implements ExcelService {
 			
 			currentRow += 2;
 
-			List<BasicPayBreakdownItem> items = payslip.getBasicPayItems();
+			List<PayslipBasicPayItem> items = payslip.getBasicPayItems();
 			for (int j = 0; j < items.size(); j++) {
-				BasicPayBreakdownItem item = items.get(j);
+				PayslipBasicPayItem item = items.get(j);
 				row = sheet.getRow(currentRow);
 				
 				cell = row.getCell(payslipColumns[i][0]);
 				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(item.getRate().doubleValue());
+				cell.setCellValue(item.getSalary().getRatePerDay().doubleValue());
 				cell.setCellStyle(leftBorderCellStyle);
 				
 				cell = row.getCell(payslipColumns[i][1]);
