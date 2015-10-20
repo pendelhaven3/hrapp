@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
-import com.pj.hrapp.model.PayPeriod;
+import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
@@ -30,7 +30,7 @@ public class AddEditPayrollController extends AbstractController {
 	
 	@FXML private TextField batchNumberField;
 	@FXML private DatePicker payDateDatePicker;
-	@FXML private ComboBox<PayPeriod> payPeriodComboBox;
+	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
 	@FXML private CheckBox includeSSSPagibigPhilhealthCheckbox;
 	
 	@Parameter private Payroll payroll;
@@ -38,13 +38,13 @@ public class AddEditPayrollController extends AbstractController {
 	@Override
 	public void updateDisplay() {
 		setTitle();
-		payPeriodComboBox.getItems().setAll(PayPeriod.values());
+		payScheduleComboBox.getItems().setAll(PaySchedule.values());
 		
 		if (payroll != null) {
 			payroll = payrollService.getPayroll(payroll.getId());
 			batchNumberField.setText(payroll.getBatchNumber().toString());
 			payDateDatePicker.setValue(DateUtil.toLocalDate(payroll.getPayDate()));
-			payPeriodComboBox.setValue(payroll.getPayPeriod());
+			payScheduleComboBox.setValue(payroll.getPaySchedule());
 			includeSSSPagibigPhilhealthCheckbox.setSelected(payroll.isIncludeSSSPagibigPhilhealth());
 		}
 		
@@ -77,7 +77,7 @@ public class AddEditPayrollController extends AbstractController {
 		}
 		payroll.setBatchNumber(Long.parseLong(batchNumberField.getText()));
 		payroll.setPayDate(DateUtil.toDate(payDateDatePicker.getValue()));
-		payroll.setPayPeriod(payPeriodComboBox.getValue());
+		payroll.setPaySchedule(payScheduleComboBox.getValue());
 		payroll.setIncludeSSSPagibigPhilhealth(includeSSSPagibigPhilhealthCheckbox.isSelected());
 		
 		try {
@@ -111,17 +111,17 @@ public class AddEditPayrollController extends AbstractController {
 			return false;
 		}
 
-		if (isPayPeriodNotSpecified()) {
-			ShowDialog.error("Pay Period must be specified");
-			payPeriodComboBox.requestFocus();
+		if (isPayScheduleNotSpecified()) {
+			ShowDialog.error("Pay Schedule must be specified");
+			payScheduleComboBox.requestFocus();
 			return false;
 		}
 		
 		return true;
 	}
 
-	private boolean isPayPeriodNotSpecified() {
-		return payPeriodComboBox.getValue() == null;
+	private boolean isPayScheduleNotSpecified() {
+		return payScheduleComboBox.getValue() == null;
 	}
 
 	private boolean isPayDateNotSpecified() {

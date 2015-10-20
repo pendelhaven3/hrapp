@@ -72,7 +72,7 @@ public class PayrollServiceImpl implements PayrollService {
 		
 		Date payDate = payroll.getPayDate();
 		List<Employee> employees = 
-				salaryDao.findAllCurrentByPayPeriod(payroll.getPayPeriod())
+				salaryDao.findAllCurrentByPaySchedule(payroll.getPaySchedule())
 				.stream().map(s -> s.getEmployee()).collect(Collectors.toList());
 		for (Employee employee : employees) {
 			Payslip payslip = new Payslip();

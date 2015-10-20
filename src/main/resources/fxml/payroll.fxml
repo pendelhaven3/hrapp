@@ -36,9 +36,9 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
 				<Label fx:id="payDateLabel"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Label text="Pay Period" prefWidth="120"
+				<Label text="Pay Schedule" prefWidth="120"
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
-				<Label fx:id="payPeriodLabel"
+				<Label fx:id="payScheduleLabel"
 					GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				<Label text="Include SSS/Pag-ibig/Philhealth"
 					GridPane.columnIndex="0" GridPane.rowIndex="3" />

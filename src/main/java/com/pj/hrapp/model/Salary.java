@@ -30,7 +30,7 @@ public class Salary {
 	private BigDecimal ratePerDay;
 	
 	@Enumerated(EnumType.STRING)
-	private PayPeriod payPeriod;
+	private PaySchedule paySchedule;
 
 	public Long getId() {
 		return id;
@@ -93,12 +93,12 @@ public class Salary {
 		this.employee = employee;
 	}
 
-	public PayPeriod getPayPeriod() {
-		return payPeriod;
+	public PaySchedule getPaySchedule() {
+		return paySchedule;
 	}
 
-	public void setPayPeriod(PayPeriod payPeriod) {
-		this.payPeriod = payPeriod;
+	public void setPaySchedule(PaySchedule paySchedule) {
+		this.paySchedule = paySchedule;
 	}
 
 	public Interval getEffectivePeriod() {

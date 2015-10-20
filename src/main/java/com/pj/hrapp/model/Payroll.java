@@ -26,7 +26,7 @@ public class Payroll {
 	private Date payDate;
 	
 	@Enumerated(EnumType.STRING)
-	private PayPeriod payPeriod;
+	private PaySchedule paySchedule;
 	
 	@OneToMany(mappedBy = "payroll", cascade = CascadeType.REMOVE)
 	private List<Payslip> payslips = new ArrayList<>();
@@ -86,12 +86,12 @@ public class Payroll {
 				.isEquals();
 	}
 
-	public PayPeriod getPayPeriod() {
-		return payPeriod;
+	public PaySchedule getPaySchedule() {
+		return paySchedule;
 	}
 
-	public void setPayPeriod(PayPeriod payPeriod) {
-		this.payPeriod = payPeriod;
+	public void setPaySchedule(PaySchedule paySchedule) {
+		this.paySchedule = paySchedule;
 	}
 
 	public boolean isIncludeSSSPagibigPhilhealth() {

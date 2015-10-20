@@ -35,9 +35,9 @@
 					<AppPropertyValueFactory property="ratePerDay" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Pay Period">
+			<TableColumn text="Pay Schedule">
 				<cellValueFactory>
-					<AppPropertyValueFactory property="payPeriod" />
+					<AppPropertyValueFactory property="paySchedule" />
 				</cellValueFactory>
 			</TableColumn>
 		</columns>

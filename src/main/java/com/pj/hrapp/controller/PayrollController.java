@@ -41,7 +41,7 @@ public class PayrollController extends AbstractController {
 	
 	@FXML private Label batchNumberLabel;
 	@FXML private Label payDateLabel;
-	@FXML private Label payPeriodLabel;
+	@FXML private Label payScheduleLabel;
 	@FXML private Label includeSSSPagibigPhilhealthLabel;
 	@FXML private TableView<Payslip> payslipsTable;
 	
@@ -58,7 +58,7 @@ public class PayrollController extends AbstractController {
 		
 		batchNumberLabel.setText(payroll.getBatchNumber().toString());
 		payDateLabel.setText(FormatterUtil.formatDate(payroll.getPayDate()));
-		payPeriodLabel.setText(payroll.getPayPeriod().toString());
+		payScheduleLabel.setText(payroll.getPaySchedule().toString());
 		includeSSSPagibigPhilhealthLabel.setText(
 				payroll.isIncludeSSSPagibigPhilhealth() ? "Yes" : "No");
 		

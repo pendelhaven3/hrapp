@@ -30,9 +30,9 @@
 					<AppPropertyValueFactory property="payDate" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Pay Period">
+			<TableColumn text="Pay Schedule">
 				<cellValueFactory>
-					<PropertyValueFactory property="payPeriod" />
+					<PropertyValueFactory property="paySchedule" />
 				</cellValueFactory>
 			</TableColumn>
 		</columns>

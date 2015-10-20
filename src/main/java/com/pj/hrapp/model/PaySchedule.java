@@ -1,12 +1,12 @@
 package com.pj.hrapp.model;
 
-public enum PayPeriod {
+public enum PaySchedule {
 
 	WEEKLY("Weekly"), SEMIMONTHLY("Semimonthly");
 
 	private String description;
 	
-	private PayPeriod(String description) {
+	private PaySchedule(String description) {
 		this.description = description;
 	}
 	
