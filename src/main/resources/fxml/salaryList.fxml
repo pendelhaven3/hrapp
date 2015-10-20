@@ -30,9 +30,9 @@
 					<AppPropertyValueFactory property="employee.nickname" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Rate Per Day">
+			<TableColumn text="Rate">
 				<cellValueFactory>
-					<AppPropertyValueFactory property="ratePerDay" />
+					<AppPropertyValueFactory property="rate" />
 				</cellValueFactory>
 			</TableColumn>
 			<TableColumn text="Pay Schedule">

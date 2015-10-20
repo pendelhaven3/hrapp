@@ -113,7 +113,7 @@ public class Payslip {
 		List<PayslipBasicPayItem> items = new ArrayList<>();
 		for (Salary salary : effectiveSalaries) {
 			PayslipBasicPayItem item = new PayslipBasicPayItem();
-			item.setRate(salary.getRatePerDay());
+			item.setRate(salary.getRate());
 			item.setPeriod(getPeriodCovered().overlap(salary.getEffectivePeriod()));
 			item.setNumberOfDays(getNumberOfDaysWorked(salary.getEffectivePeriod()));
 			items.add(item);

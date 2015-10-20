@@ -27,7 +27,7 @@ public class Salary {
 	
 	private Date effectiveDateFrom;
 	private Date effectiveDateTo;
-	private BigDecimal ratePerDay;
+	private BigDecimal rate;
 	
 	@Enumerated(EnumType.STRING)
 	private PaySchedule paySchedule;
@@ -56,12 +56,12 @@ public class Salary {
 		this.effectiveDateTo = effectiveDateTo;
 	}
 
-	public BigDecimal getRatePerDay() {
-		return ratePerDay;
+	public BigDecimal getRate() {
+		return rate;
 	}
 
-	public void setRatePerDay(BigDecimal ratePerDay) {
-		this.ratePerDay = ratePerDay;
+	public void setRate(BigDecimal rate) {
+		this.rate = rate;
 	}
 
 	@Override

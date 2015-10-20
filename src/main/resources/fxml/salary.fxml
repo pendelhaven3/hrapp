@@ -26,9 +26,9 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
 				<ComboBox fx:id="employeeComboBox"
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
-				<Label text="Rate Per Day"
+				<Label text="Rate"
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
-				<TextField fx:id="ratePerDayField"
+				<TextField fx:id="rateField"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="Pay Schedule"
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />

@@ -34,7 +34,7 @@ public class SalaryController extends AbstractController {
 	@Autowired private SalaryService salaryService;
 	
 	@FXML ComboBox<Employee> employeeComboBox;
-	@FXML TextField ratePerDayField;
+	@FXML TextField rateField;
 	@FXML ComboBox<PaySchedule> payScheduleComboBox;
 	@FXML AppDatePicker effectiveDateFromDatePicker;
 	@FXML AppDatePicker effectiveDateToDatePicker;
@@ -56,7 +56,7 @@ public class SalaryController extends AbstractController {
 		if (salary != null) {
 			salary = salaryService.getSalary(salary.getId());
 			employeeComboBox.setValue(salary.getEmployee());
-			ratePerDayField.setText(FormatterUtil.formatAmount(salary.getRatePerDay()));
+			rateField.setText(FormatterUtil.formatAmount(salary.getRate()));
 			payScheduleComboBox.setValue(salary.getPaySchedule());
 			effectiveDateFromDatePicker.setValue(DateUtil.toLocalDate(salary.getEffectiveDateFrom()));
 			if (salary.getEffectiveDateTo() != null) {
@@ -98,7 +98,7 @@ public class SalaryController extends AbstractController {
 			salary = new Salary();
 		}
 		salary.setEmployee(employeeComboBox.getValue());
-		salary.setRatePerDay(NumberUtil.toBigDecimal(ratePerDayField.getText()));
+		salary.setRate(NumberUtil.toBigDecimal(rateField.getText()));
 		salary.setPaySchedule(payScheduleComboBox.getValue());
 		salary.setEffectiveDateFrom(DateUtil.toDate(effectiveDateFromDatePicker.getValue()));
 		if (effectiveDateToDatePicker.getValue() != null) {
@@ -127,13 +127,13 @@ public class SalaryController extends AbstractController {
 		
 		if (isAmountNotSpecified()) {
 			ShowDialog.error("Amount must be specified");
-			ratePerDayField.requestFocus();
+			rateField.requestFocus();
 			return false;
 		}
 		
 		if (isAmountNotValid()) {
 			ShowDialog.error("Amount must be a valid amount");
-			ratePerDayField.requestFocus();
+			rateField.requestFocus();
 			return false;
 		}
 
@@ -196,11 +196,11 @@ public class SalaryController extends AbstractController {
 	}
 
 	private boolean isAmountNotValid() {
-		return !NumberUtil.isAmount(ratePerDayField.getText());
+		return !NumberUtil.isAmount(rateField.getText());
 	}
 
 	private boolean isAmountNotSpecified() {
-		return ratePerDayField.getText().isEmpty();
+		return rateField.getText().isEmpty();
 	}
 
 	private boolean isEmployeeNotSpecified() {
