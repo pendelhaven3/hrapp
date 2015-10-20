@@ -10,19 +10,22 @@ import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pj.hrapp.dao.EmployeeAttendanceDao;
 import com.pj.hrapp.dao.PayrollDao;
 import com.pj.hrapp.dao.PayslipAdjustmentDao;
-import com.pj.hrapp.dao.PayslipBasicPayItemDao;
 import com.pj.hrapp.dao.PayslipDao;
 import com.pj.hrapp.dao.SalaryDao;
+import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
-import com.pj.hrapp.model.PayslipBasicPayItem;
 import com.pj.hrapp.model.Salary;
+import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.service.PayrollService;
+import com.pj.hrapp.util.DateUtil;
 
 @Service
 public class PayrollServiceImpl implements PayrollService {
@@ -30,8 +33,8 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private PayrollDao payrollDao;
 	@Autowired private PayslipDao payslipDao;
 	@Autowired private SalaryDao salaryDao;
-	@Autowired private PayslipBasicPayItemDao payslipBasicPayItemDao;
 	@Autowired private PayslipAdjustmentDao payslipAdjustmentDao;
+	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -79,12 +82,13 @@ public class PayrollServiceImpl implements PayrollService {
 			payslip.setPeriodCoveredTo(payDate);
 			payslipDao.save(payslip);
 			
-			for (Salary salary : findEffectiveSalaries(payslip)) {
-				PayslipBasicPayItem item = new PayslipBasicPayItem();
-				item.setPayslip(payslip);
-				item.setSalary(salary);
-				item.calculatePeriodCovered();
-				payslipBasicPayItemDao.save(item);
+			for (Date date : 
+					DateUtil.generateDailyDateSet(payslip.getPeriodCoveredFrom(), payslip.getPeriodCoveredTo())) {
+				EmployeeAttendance attendance = new EmployeeAttendance();
+				attendance.setEmployee(employee);
+				attendance.setDate(date);
+				attendance.setAttendance(Attendance.WHOLE_DAY);
+				employeeAttendanceDao.save(attendance);
 			}
 		}
 	}
@@ -100,10 +104,19 @@ public class PayrollServiceImpl implements PayrollService {
 		Payslip payslip = payslipDao.get(id);
 		if (payslip != null) {
 			payslip.setEffectiveSalaries(findEffectiveSalaries(payslip));
-			payslip.setBasicPayItems(payslipBasicPayItemDao.findAllByPayslip(payslip));
+			payslip.setAttendances(findAllEmployeeAttendances(payslip));
 			payslip.setAdjustments(payslipAdjustmentDao.findAllByPayslip(payslip));
 		}
 		return payslip;
+	}
+
+	private List<EmployeeAttendance> findAllEmployeeAttendances(Payslip payslip) {
+		EmployeeAttendanceSearchCriteria criteria = new EmployeeAttendanceSearchCriteria();
+		criteria.setEmployee(payslip.getEmployee());
+		criteria.setDateFrom(payslip.getPeriodCoveredFrom());
+		criteria.setDateTo(payslip.getPeriodCoveredTo());
+		
+		return employeeAttendanceDao.search(criteria);
 	}
 
 	private List<Salary> findEffectiveSalaries(Payslip payslip) {
@@ -131,12 +144,6 @@ public class PayrollServiceImpl implements PayrollService {
 	@Override
 	public void delete(PayslipAdjustment payslipAdjustment) {
 		payslipAdjustmentDao.delete(payslipAdjustment);
-	}
-
-	@Transactional
-	@Override
-	public void save(PayslipBasicPayItem payslipBasicPayItem) {
-		payslipBasicPayItemDao.save(payslipBasicPayItem);
 	}
 
 }

@@ -1,118 +1,53 @@
 package com.pj.hrapp.model;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
-import org.apache.commons.lang.time.DateUtils;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 
 import com.pj.hrapp.model.util.Interval;
-import com.pj.hrapp.util.DateUtil;
-import com.pj.hrapp.util.FormatterUtil;
 
-@Entity
 public class PayslipBasicPayItem {
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@ManyToOne
-	private Payslip payslip;
-	
-	@OneToOne
-	private Salary salary;
-	
-	private Date periodCoveredFrom;
-	private Date periodCoveredTo;
-	private Double numberOfDays;
-	
-	public String getPeriod() {
-		if (periodCoveredFrom.equals(periodCoveredTo)) {
-			return FormatterUtil.formatDate(periodCoveredFrom);
-		} else {
-			return new StringBuilder()
-					.append(FormatterUtil.formatDate(periodCoveredFrom))
-					.append(" - ")
-					.append(FormatterUtil.formatDate(periodCoveredTo))
-					.toString();
-		}
-	}
-	
-	public BigDecimal getAmount() {
-		return salary.getRatePerDay().multiply(new BigDecimal(getNumberOfDays()));
-	}
-	
-	public void setPeriodCoveredFrom(Date periodCoveredFrom) {
-		this.periodCoveredFrom = periodCoveredFrom;
-	}
-	
-	public void setPeriodCoveredTo(Date periodCoveredTo) {
-		this.periodCoveredTo = periodCoveredTo;
-	}
+	private BigDecimal rate;
+	private Interval period;
+	private double numberOfDays;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Salary getSalary() {
-		return salary;
-	}
-
-	public void setSalary(Salary salary) {
-		this.salary = salary;
-	}
-
-	public Date getPeriodCoveredFrom() {
-		return periodCoveredFrom;
-	}
-
-	public Date getPeriodCoveredTo() {
-		return periodCoveredTo;
-	}
-
-	public Payslip getPayslip() {
-		return payslip;
-	}
-
-	public void setPayslip(Payslip payslip) {
-		this.payslip = payslip;
-	}
-
-	public void calculatePeriodCovered() {
-		Interval periodCovered = DateUtil.getOverlappingInterval(
-				new Interval(payslip.getPeriodCoveredFrom(), payslip.getPeriodCoveredTo()),
-				new Interval(salary.getEffectiveDateFrom(), 
-						salary.getEffectiveDateTo() != null ? 
-								salary.getEffectiveDateTo() : DateUtils.truncate(new Date(), Calendar.DATE)));
+	public String getPeriodAsString() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("M/d");
 		
-		periodCoveredFrom = periodCovered.getDateFrom();
-		periodCoveredTo = periodCovered.getDateTo();
-		
-		numberOfDays = (double)(Days.daysBetween(
-				new LocalDate(periodCoveredFrom.getTime()),
-				new LocalDate(periodCoveredTo.getTime()))
-					.getDays() + 1);
+		return new StringBuilder()
+			.append(dateFormat.format(period.getDateFrom()))
+			.append(" - ")
+			.append(dateFormat.format(period.getDateTo()))
+			.toString();
+	}
+	
+	public BigDecimal getRate() {
+		return rate;
 	}
 
-	public Double getNumberOfDays() {
+	public void setRate(BigDecimal rate) {
+		this.rate = rate;
+	}
+
+	public Interval getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Interval period) {
+		this.period = period;
+	}
+
+	public double getNumberOfDays() {
 		return numberOfDays;
 	}
 
-	public void setNumberOfDays(Double numberOfDays) {
+	public void setNumberOfDays(double numberOfDays) {
 		this.numberOfDays = numberOfDays;
 	}
-	
+
+	public BigDecimal getAmount() {
+		return rate.multiply(new BigDecimal(numberOfDays)).setScale(2, RoundingMode.HALF_UP);
+	}
+
 }

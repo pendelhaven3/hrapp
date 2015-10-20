@@ -3,6 +3,7 @@ package com.pj.hrapp.service;
 import java.util.List;
 
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeAttendance;
 
 public interface EmployeeService {
 
@@ -15,5 +16,9 @@ public interface EmployeeService {
 	Employee findEmployeeByEmployeeNumber(long employeeNumber);
 
 	void deleteEmployee(Employee employee);
+
+	EmployeeAttendance getEmployeeAttendance(long id);
+
+	void save(EmployeeAttendance attendance);
 	
 }

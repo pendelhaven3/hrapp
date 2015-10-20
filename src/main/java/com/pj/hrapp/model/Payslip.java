@@ -1,6 +1,7 @@
 package com.pj.hrapp.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import com.pj.hrapp.model.util.Interval;
 
 @Entity
 public class Payslip {
@@ -35,11 +38,11 @@ public class Payslip {
 	@Transient
 	private List<Salary> effectiveSalaries;
 	
-	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
-	private List<PayslipAdjustment> adjustments;
+	@Transient
+	private List<EmployeeAttendance> attendances;
 	
 	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
-	private List<PayslipBasicPayItem> basicPayItems;
+	private List<PayslipAdjustment> adjustments;
 	
 	public Employee getEmployee() {
 		return employee;
@@ -106,6 +109,29 @@ public class Payslip {
 		this.effectiveSalaries = effectiveSalaries;
 	}
 
+	public List<PayslipBasicPayItem> getBasicPayItems() {
+		List<PayslipBasicPayItem> items = new ArrayList<>();
+		for (Salary salary : effectiveSalaries) {
+			PayslipBasicPayItem item = new PayslipBasicPayItem();
+			item.setRate(salary.getRatePerDay());
+			item.setPeriod(getPeriodCovered().overlap(salary.getEffectivePeriod()));
+			item.setNumberOfDays(getNumberOfDaysWorked(salary.getEffectivePeriod()));
+			items.add(item);
+		}
+		return items;
+	}
+	
+	private double getNumberOfDaysWorked(Interval period) {
+		return attendances.stream()
+				.filter(attendance -> period.contains(attendance.getDate()))
+				.map(attendance -> attendance.getValue())
+				.reduce(0d, (x,y) -> x + y);
+	}
+
+	private Interval getPeriodCovered() {
+		return new Interval(periodCoveredFrom, periodCoveredTo);
+	}
+	
 	public BigDecimal getBasicPay() {
 		return getBasicPayItems().stream().map(item -> item.getAmount())
 				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
@@ -128,12 +154,12 @@ public class Payslip {
 		this.adjustments = adjustments;
 	}
 
-	public void setBasicPayItems(List<PayslipBasicPayItem> basicPayItems) {
-		this.basicPayItems = basicPayItems;
+	public List<EmployeeAttendance> getAttendances() {
+		return attendances;
 	}
 
-	public List<PayslipBasicPayItem> getBasicPayItems() {
-		return basicPayItems;
+	public void setAttendances(List<EmployeeAttendance> attendances) {
+		this.attendances = attendances;
 	}
 	
 }

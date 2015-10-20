@@ -90,7 +90,7 @@ public class ExcelServiceImpl implements ExcelService {
 				
 				cell = row.getCell(payslipColumns[i][0]);
 				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(item.getSalary().getRatePerDay().doubleValue());
+				cell.setCellValue(item.getRate().doubleValue());
 				cell.setCellStyle(leftBorderCellStyle);
 				
 				cell = row.getCell(payslipColumns[i][1]);

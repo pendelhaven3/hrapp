@@ -4,15 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import com.pj.hrapp.Constants;
 import com.pj.hrapp.model.util.Interval;
@@ -53,14 +48,4 @@ public class DateUtil {
 		return generateDailyDateSet(interval.getDateFrom(), interval.getDateTo());
 	}
 
-	public static Interval getOverlappingInterval(Interval interval1, Interval interval2) {
-		Set<Date> intervalDates1 = generateDailyDateSet(interval1);
-		Set<Date> intervalDates2 = generateDailyDateSet(interval2);
-
-		List<Date> overlapDates = new ArrayList<>(CollectionUtils.intersection(intervalDates1, intervalDates2));
-		Collections.sort(overlapDates);
-		
-		return new Interval(overlapDates.get(0), overlapDates.get(overlapDates.size()-1));
-	}
-	
 }

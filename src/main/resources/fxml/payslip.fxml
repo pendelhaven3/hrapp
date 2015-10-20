@@ -65,18 +65,35 @@
 			
 			<TabPane fx:id="tabPane" VBox.vgrow="always">
 				<tabs>
+					<Tab text="Attendance" closable="false">
+						<TableView fx:id="attendancesTable">
+							<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+							<columns>
+								<TableColumn text="Date">
+									<cellValueFactory>
+										<AppPropertyValueFactory property="date" />
+									</cellValueFactory>
+								</TableColumn>
+								<TableColumn text="Attendance">
+									<cellValueFactory>
+										<AppPropertyValueFactory property="attendance" />
+									</cellValueFactory>
+								</TableColumn>
+							</columns>
+						</TableView>
+					</Tab>
 					<Tab text="Basic Pay" closable="false">
 						<TableView fx:id="basicPayItemsTable">
 							<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 							<columns>
 								<TableColumn text="Rate">
 									<cellValueFactory>
-										<AppPropertyValueFactory property="salary.ratePerDay" />
+										<AppPropertyValueFactory property="rate" />
 									</cellValueFactory>
 								</TableColumn>
 								<TableColumn text="Period">
 									<cellValueFactory>
-										<AppPropertyValueFactory property="period" />
+										<AppPropertyValueFactory property="periodAsString" />
 									</cellValueFactory>
 								</TableColumn>
 								<TableColumn text="No. of Days">
