@@ -161,5 +161,5 @@ public class Payslip {
 	public void setAttendances(List<EmployeeAttendance> attendances) {
 		this.attendances = attendances;
 	}
-	
+
 }

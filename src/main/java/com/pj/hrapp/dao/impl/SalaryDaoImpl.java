@@ -105,21 +105,17 @@ public class SalaryDaoImpl implements SalaryDao {
 		return query.getResultList();
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public Salary findByEmployee(Employee employee) {
+		TypedQuery<Salary> query = 
+				entityManager.createQuery("select s from Salary s where s.employee = :employee", Salary.class);
+		query.setParameter("employee", employee);
+		
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 	
 }

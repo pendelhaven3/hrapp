@@ -23,5 +23,7 @@ public interface SalaryDao {
 	List<Salary> findAllCurrentByPaySchedule(PaySchedule paySchedule);
 
 	List<Salary> search(SalarySearchCriteria criteria);
+
+	Salary findByEmployee(Employee employee);
 	
 }

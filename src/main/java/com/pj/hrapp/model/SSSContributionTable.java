@@ -52,5 +52,12 @@ public class SSSContributionTable {
 		}
 		return true;
 	}
+
+	public BigDecimal getEmployeeContribution(BigDecimal compensation) {
+		return entries.stream()
+			.filter(entry -> entry.contains(compensation))
+			.findFirst()
+			.get().getEmployeeContribution();
+	}
 	
 }

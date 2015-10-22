@@ -1,5 +1,8 @@
 package com.pj.hrapp.service.impl;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,10 +24,13 @@ import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
+import com.pj.hrapp.model.PayslipAdjustmentType;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
+import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.service.PayrollService;
+import com.pj.hrapp.service.SSSService;
 import com.pj.hrapp.util.DateUtil;
 
 @Service
@@ -35,6 +41,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private SalaryDao salaryDao;
 	@Autowired private PayslipAdjustmentDao payslipAdjustmentDao;
 	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
+	@Autowired private SSSService sssService;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -90,7 +97,23 @@ public class PayrollServiceImpl implements PayrollService {
 				attendance.setAttendance(Attendance.WHOLE_DAY);
 				employeeAttendanceDao.save(attendance);
 			}
+			
+			if (payroll.isIncludeSSSPagibigPhilhealth()) {
+				addSSSContributionAdjustment(payslip);
+			}
 		}
+	}
+
+	private void addSSSContributionAdjustment(Payslip payslip) {
+		BigDecimal employeeContribution = getEmployeeSSSContributionForMonthYear(
+				payslip.getEmployee(), DateUtil.getYearMonth(payslip.getPeriodCoveredFrom()));
+		
+		PayslipAdjustment adjustment = new PayslipAdjustment();
+		adjustment.setPayslip(payslip);
+		adjustment.setType(PayslipAdjustmentType.SSS);
+		adjustment.setDescription("SSS");
+		adjustment.setAmount(employeeContribution.negate());
+		payslipAdjustmentDao.save(adjustment);
 	}
 
 	private void clearExistingPayslips(Payroll payroll) {
@@ -146,4 +169,33 @@ public class PayrollServiceImpl implements PayrollService {
 		payslipAdjustmentDao.delete(payslipAdjustment);
 	}
 
+	private BigDecimal getEmployeeSSSContributionForMonthYear(Employee employee, YearMonth yearMonth) {
+		return sssService.getSSSContributionTable()
+				.getEmployeeContribution(getEmployeeCompensationForMonthYear(employee, yearMonth));
+	}
+
+	private BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
+		Salary salary = salaryDao.findByEmployee(employee);
+		return salary.getRate().multiply(new BigDecimal(
+				getDaysWorkedByEmployeeForMonthYear(employee, yearMonth))).setScale(2, RoundingMode.HALF_UP);
+	}
+
+	private double getDaysWorkedByEmployeeForMonthYear(Employee employee, YearMonth yearMonth) {
+		List<EmployeeAttendance> attendances = findAllEmployeeAttendancesInMonthYear(employee, yearMonth);
+		return attendances.stream()
+				.map(attendance -> attendance.getValue())
+				.reduce(0d, (x,y) -> x + y);
+	}
+
+	private List<EmployeeAttendance> findAllEmployeeAttendancesInMonthYear(Employee employee, YearMonth yearMonth) {
+		DateInterval monthInterval = DateUtil.generateMonthYearInterval(yearMonth);
+		
+		EmployeeAttendanceSearchCriteria criteria = new EmployeeAttendanceSearchCriteria();
+		criteria.setEmployee(employee);
+		criteria.setDateFrom(monthInterval.getDateFrom());
+		criteria.setDateTo(monthInterval.getDateTo());
+		
+		return employeeAttendanceDao.search(criteria);
+	}
+	
 }

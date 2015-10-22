@@ -112,4 +112,9 @@ public class SSSContributionTableEntry {
 				.toString();
 	}
 	
+	public boolean contains(BigDecimal compensation) {
+		return compensationFrom.compareTo(compensation) <= 0 &&
+				(compensationTo == null || compensation.compareTo(compensationTo) <= 0);
+	}
+	
 }

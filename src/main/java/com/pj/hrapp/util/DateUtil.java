@@ -3,11 +3,14 @@ package com.pj.hrapp.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.commons.lang.time.DateUtils;
 
 import com.pj.hrapp.Constants;
 import com.pj.hrapp.model.util.DateInterval;
@@ -48,4 +51,34 @@ public class DateUtil {
 		return generateDailyDateSet(interval.getDateFrom(), interval.getDateTo());
 	}
 
+	public static int getMonth(Date date) {
+		return DateUtils.toCalendar(date).get(Calendar.MONTH);
+	}
+
+	public static DateInterval generateMonthYearInterval(YearMonth yearMonth) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, yearMonth.getYear());
+		calendar.set(Calendar.MONTH, yearMonth.getMonthValue() - 1);
+		calendar.set(Calendar.DATE, 1);
+		Date startDate = calendar.getTime();
+		
+		calendar.add(Calendar.MONTH, 1);
+		calendar.add(Calendar.DATE, -1);
+		Date endDate = calendar.getTime();
+		
+		return new DateInterval(startDate, endDate);
+	}
+	
+	public static Date getFirstDateOfMonth(int month) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DATE, 1);
+		
+		return calendar.getTime();
+	}
+	
+	public static YearMonth getYearMonth(Date date) {
+		return YearMonth.from(DateUtil.toLocalDate(date));
+	}
+	
 }
