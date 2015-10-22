@@ -1,7 +1,6 @@
 package com.pj.hrapp.service;
 
-import java.util.List;
-
+import com.pj.hrapp.model.SSSContributionTable;
 import com.pj.hrapp.model.SSSContributionTableEntry;
 
 public interface SSSService {
@@ -10,6 +9,6 @@ public interface SSSService {
 
 	void save(SSSContributionTableEntry entry);
 
-	List<SSSContributionTableEntry> getAllSSSContributionTableEntries();
+	SSSContributionTable getSSSContributionTable();
 	
 }

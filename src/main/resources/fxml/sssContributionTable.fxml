@@ -8,15 +8,22 @@
 <?import javafx.scene.control.ToolBar?>
 <?import com.pj.hrapp.gui.component.AppPropertyValueFactory?>
 <?import com.pj.hrapp.gui.component.AppTableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" 
 		fx:controller="com.pj.hrapp.controller.SSSContributionTableController" 
-	alignment="center">
+	alignment="center" spacing="10">
 	
 	<ToolBar>
 		<Button text="Back" onAction="#doOnBack" />
 		<Button text="Add" onAction="#addEntry" />
 	</ToolBar>
+	
+	<HBox alignment="center">
+		<Label text="Table complete:" prefWidth="150" />
+		<Label fx:id="tableCompleteLabel" />
+	</HBox>
 	
 	<AppTableView fx:id="entriesTable" VBox.vgrow="always">
 		<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>

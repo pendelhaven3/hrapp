@@ -1,13 +1,12 @@
 package com.pj.hrapp.service.impl;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.SSSContributionTableEntryDao;
+import com.pj.hrapp.model.SSSContributionTable;
 import com.pj.hrapp.model.SSSContributionTableEntry;
 import com.pj.hrapp.service.SSSService;
 
@@ -28,8 +27,8 @@ public class SSSServiceImpl implements SSSService {
 	}
 
 	@Override
-	public List<SSSContributionTableEntry> getAllSSSContributionTableEntries() {
-		return sssContributonTableEntryDao.getAll();
+	public SSSContributionTable getSSSContributionTable() {
+		return new SSSContributionTable(sssContributonTableEntryDao.getAll());
 	}
 
 }

@@ -58,4 +58,8 @@ public class SSSContributionTableEntry {
 		this.employeeContribution = employeeContribution;
 	}
 
+	public boolean isCompensationToSpecified() {
+		return compensationTo != null;
+	}
+
 }
