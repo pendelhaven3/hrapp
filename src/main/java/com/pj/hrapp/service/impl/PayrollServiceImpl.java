@@ -89,17 +89,22 @@ public class PayrollServiceImpl implements PayrollService {
 			payslip.setPeriodCoveredTo(payDate);
 			payslipDao.save(payslip);
 			
-			for (Date date : 
-					DateUtil.generateDailyDateSet(payslip.getPeriodCoveredFrom(), payslip.getPeriodCoveredTo())) {
-				EmployeeAttendance attendance = new EmployeeAttendance();
-				attendance.setEmployee(employee);
-				attendance.setDate(date);
-				attendance.setAttendance(Attendance.WHOLE_DAY);
-				employeeAttendanceDao.save(attendance);
-			}
+			generateEmployeeAttendance(payslip);
 			
 			if (payroll.isIncludeSSSPagibigPhilhealth()) {
 				addSSSContributionAdjustment(payslip);
+			}
+		}
+	}
+
+	private void generateEmployeeAttendance(Payslip payslip) {
+		for (Date date : payslip.getPeriodCovered().toDateList()) {
+			if (employeeAttendanceDao.findByEmployeeAndDate(payslip.getEmployee(), date) == null) {
+				EmployeeAttendance attendance = new EmployeeAttendance();
+				attendance.setEmployee(payslip.getEmployee());
+				attendance.setDate(date);
+				attendance.setAttendance(Attendance.WHOLE_DAY);
+				employeeAttendanceDao.save(attendance);
 			}
 		}
 	}

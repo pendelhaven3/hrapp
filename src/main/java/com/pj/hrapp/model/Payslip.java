@@ -128,7 +128,7 @@ public class Payslip {
 				.reduce(0d, (x,y) -> x + y);
 	}
 
-	private DateInterval getPeriodCovered() {
+	public DateInterval getPeriodCovered() {
 		return new DateInterval(periodCoveredFrom, periodCoveredTo);
 	}
 	

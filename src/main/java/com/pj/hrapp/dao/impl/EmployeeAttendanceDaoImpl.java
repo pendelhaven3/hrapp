@@ -1,16 +1,19 @@
 package com.pj.hrapp.dao.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
+import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 
@@ -59,6 +62,21 @@ public class EmployeeAttendanceDaoImpl implements EmployeeAttendanceDao {
 	@Override
 	public EmployeeAttendance get(long id) {
 		return entityManager.find(EmployeeAttendance.class, id);
+	}
+
+	@Override
+	public EmployeeAttendance findByEmployeeAndDate(Employee employee, Date date) {
+		TypedQuery<EmployeeAttendance> query = entityManager.createQuery(
+				"select ea from EmployeeAttendance ea where ea.employee = :employee and date = :date",
+				EmployeeAttendance.class);
+		query.setParameter("employee", employee);
+		query.setParameter("date", date);
+		
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }
