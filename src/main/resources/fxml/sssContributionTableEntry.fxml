@@ -16,6 +16,7 @@
 	<top>
 		<ToolBar>
 			<Button text="Back" onAction="#doOnBack" />
+			<Button text="Delete" onAction="#deleteEntry" />
 		</ToolBar>
 	</top>
 	<center>
@@ -36,7 +37,7 @@
 			</GridPane>
 		
 			<HBox spacing="10" alignment="center">
-				<Button text="Save" onAction="#saveSSSContributionTableEntry" />
+				<Button text="Save" onAction="#saveEntry" />
 				<Button text="Cancel" onAction="#cancel" />
 			</HBox>
 		</VBox>

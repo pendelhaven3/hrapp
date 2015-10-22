@@ -11,5 +11,7 @@ public interface SSSContributionTableEntryDao {
 	void save(SSSContributionTableEntry entry);
 
 	List<SSSContributionTableEntry> getAll();
+
+	void delete(SSSContributionTableEntry entry);
 	
 }

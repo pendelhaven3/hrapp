@@ -28,14 +28,9 @@
 	<AppTableView fx:id="entriesTable" VBox.vgrow="always">
 		<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 		<columns>
-			<TableColumn text="Compensation From" styleClass="right">
+			<TableColumn text="Compensation" styleClass="center">
 				<cellValueFactory>
-					<AppPropertyValueFactory property="compensationFrom" />
-				</cellValueFactory>
-			</TableColumn>
-			<TableColumn text="Compensation To" styleClass="right">
-				<cellValueFactory>
-					<AppPropertyValueFactory property="compensationTo" />
+					<AppPropertyValueFactory property="compensationRangeAsString" />
 				</cellValueFactory>
 			</TableColumn>
 			<TableColumn text="EE" styleClass="right">

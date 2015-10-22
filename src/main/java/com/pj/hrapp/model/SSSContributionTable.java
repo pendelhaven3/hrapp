@@ -41,5 +41,16 @@ public class SSSContributionTable {
 	public List<SSSContributionTableEntry> getEntries() {
 		return entries;
 	}
+
+	public boolean isValidEntry(SSSContributionTableEntry other) {
+		sortEntriesByCompensationFrom();
+		
+		for (SSSContributionTableEntry entry : entries) {
+			if (entry.overlapsWith(other)) {
+				return false;
+			}
+		}
+		return true;
+	}
 	
 }

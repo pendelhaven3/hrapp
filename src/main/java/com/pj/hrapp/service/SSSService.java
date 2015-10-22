@@ -10,5 +10,7 @@ public interface SSSService {
 	void save(SSSContributionTableEntry entry);
 
 	SSSContributionTable getSSSContributionTable();
+
+	void delete(SSSContributionTableEntry entry);
 	
 }

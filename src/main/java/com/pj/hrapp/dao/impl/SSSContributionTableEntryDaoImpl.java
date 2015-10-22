@@ -39,4 +39,10 @@ public class SSSContributionTableEntryDaoImpl implements SSSContributionTableEnt
 				SSSContributionTableEntry.class).getResultList();
 	}
 
+
+	@Override
+	public void delete(SSSContributionTableEntry entry) {
+		entityManager.remove(get(entry.getId()));
+	}
+
 }

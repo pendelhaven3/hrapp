@@ -31,4 +31,10 @@ public class SSSServiceImpl implements SSSService {
 		return new SSSContributionTable(sssContributonTableEntryDao.getAll());
 	}
 
+	@Transactional
+	@Override
+	public void delete(SSSContributionTableEntry entry) {
+		sssContributonTableEntryDao.delete(entry);
+	}
+
 }

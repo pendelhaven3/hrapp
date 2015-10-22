@@ -41,15 +41,20 @@ public class AppPropertyValueFactory <T>
 		}
 		
 		String value = null;
-		if (item instanceof String) {
-			value = (String)item;
-		} else if (item instanceof Date) {
-			value = FormatterUtil.formatDate((Date)item);
-		} else if (item instanceof BigDecimal) {
-			value = FormatterUtil.formatAmount((BigDecimal)item);
+		if (item != null) {
+			if (item instanceof String) {
+				value = (String)item;
+			} else if (item instanceof Date) {
+				value = FormatterUtil.formatDate((Date)item);
+			} else if (item instanceof BigDecimal) {
+				value = FormatterUtil.formatAmount((BigDecimal)item);
+			} else {
+				value = item.toString();
+			}
 		} else {
-			value = item.toString();
+			value = "";
 		}
+		
 		return new ReadOnlyStringWrapper(value);
 	}
 

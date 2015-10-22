@@ -38,7 +38,8 @@ public class SSSContributionTableEntryController extends AbstractController {
 		
 		if (entry != null) {
 			compensationFromField.setText(FormatterUtil.formatAmount(entry.getCompensationFrom()));
-			compensationToField.setText(FormatterUtil.formatAmount(entry.getCompensationTo()));
+			compensationToField.setText(
+					entry.getCompensationTo() != null ? FormatterUtil.formatAmount(entry.getCompensationTo()) : null);
 			employeeContributionField.setText(FormatterUtil.formatAmount(entry.getEmployeeContribution()));
 		}
 		
@@ -53,7 +54,7 @@ public class SSSContributionTableEntryController extends AbstractController {
 		}
 	}
 
-	@FXML public void saveSSSContributionTableEntry() {
+	@FXML public void saveEntry() {
 		if (!validateFields()) {
 			return;
 		}
@@ -63,7 +64,8 @@ public class SSSContributionTableEntryController extends AbstractController {
 		}
 		
 		entry.setCompensationFrom(NumberUtil.toBigDecimal(compensationFromField.getText()));
-		entry.setCompensationTo(NumberUtil.toBigDecimal(compensationToField.getText()));
+		entry.setCompensationTo(
+				isCompensationToSpecified() ? NumberUtil.toBigDecimal(compensationToField.getText()) : null);
 		entry.setEmployeeContribution(NumberUtil.toBigDecimal(employeeContributionField.getText()));
 		
 		try {
@@ -91,13 +93,7 @@ public class SSSContributionTableEntryController extends AbstractController {
 			return false;
 		}
 		
-		if (isCompensationToNotSpecified()) {
-			ShowDialog.error("Compensation To must be specified");
-			compensationToField.requestFocus();
-			return false;
-		}
-		
-		if (isCompensationToNotAValidAmount()) {
+		if (isCompensationToSpecified() && isCompensationToNotAValidAmount()) {
 			ShowDialog.error("Compensation To must be a valid amount");
 			compensationToField.requestFocus();
 			return false;
@@ -115,7 +111,23 @@ public class SSSContributionTableEntryController extends AbstractController {
 			return false;
 		}
 		
+		if (doesCompensationRangeOverlapWithAnotherEntry()) {
+			ShowDialog.error("Compensation range overlaps with another entry");
+			compensationFromField.requestFocus();
+			return false;
+		}
+		
 		return true;
+	}
+
+	private boolean doesCompensationRangeOverlapWithAnotherEntry() {
+		SSSContributionTableEntry other = new SSSContributionTableEntry();
+		other.setId(entry != null ? entry.getId() : null);
+		other.setCompensationFrom(NumberUtil.toBigDecimal(compensationFromField.getText()));
+		other.setCompensationTo(
+				isCompensationToSpecified() ? NumberUtil.toBigDecimal(compensationToField.getText()) : null);
+		
+		return !sssService.getSSSContributionTable().isValidEntry(other);
 	}
 
 	private boolean isEmployeeContributionNotAValidAmount() {
@@ -134,8 +146,8 @@ public class SSSContributionTableEntryController extends AbstractController {
 		return !NumberUtil.isAmount(compensationFromField.getText());
 	}
 
-	private boolean isCompensationToNotSpecified() {
-		return StringUtils.isEmpty(compensationToField.getText());
+	private boolean isCompensationToSpecified() {
+		return !StringUtils.isEmpty(compensationToField.getText());
 	}
 
 	private boolean isCompensationFromNotSpecified() {
@@ -147,6 +159,23 @@ public class SSSContributionTableEntryController extends AbstractController {
 	}
 
 	@FXML public void doOnBack() {
+		stageController.showSSSContributionTableScreen();
+	}
+
+	@FXML public void deleteEntry() {
+		if (!ShowDialog.confirm("Delete SSS contribution table entry?")) {
+			return;
+		}
+		
+		try {
+			sssService.delete(entry);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		ShowDialog.info("SSS contribution table entry deleted");
 		stageController.showSSSContributionTableScreen();
 	}
 
