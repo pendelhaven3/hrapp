@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 
-import com.pj.hrapp.model.util.Interval;
+import com.pj.hrapp.model.util.DateInterval;
 
 public class PayslipBasicPayItem {
 
 	private BigDecimal rate;
-	private Interval period;
+	private DateInterval period;
 	private double numberOfDays;
 
 	public String getPeriodAsString() {
@@ -30,11 +30,11 @@ public class PayslipBasicPayItem {
 		this.rate = rate;
 	}
 
-	public Interval getPeriod() {
+	public DateInterval getPeriod() {
 		return period;
 	}
 
-	public void setPeriod(Interval period) {
+	public void setPeriod(DateInterval period) {
 		this.period = period;
 	}
 

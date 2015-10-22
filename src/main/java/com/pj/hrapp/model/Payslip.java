@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.pj.hrapp.model.util.Interval;
+import com.pj.hrapp.model.util.DateInterval;
 
 @Entity
 public class Payslip {
@@ -121,15 +121,15 @@ public class Payslip {
 		return items;
 	}
 	
-	private double getNumberOfDaysWorked(Interval period) {
+	private double getNumberOfDaysWorked(DateInterval period) {
 		return attendances.stream()
 				.filter(attendance -> period.contains(attendance.getDate()))
 				.map(attendance -> attendance.getValue())
 				.reduce(0d, (x,y) -> x + y);
 	}
 
-	private Interval getPeriodCovered() {
-		return new Interval(periodCoveredFrom, periodCoveredTo);
+	private DateInterval getPeriodCovered() {
+		return new DateInterval(periodCoveredFrom, periodCoveredTo);
 	}
 	
 	public BigDecimal getBasicPay() {

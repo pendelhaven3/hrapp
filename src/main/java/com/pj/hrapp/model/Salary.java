@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.pj.hrapp.model.util.Interval;
+import com.pj.hrapp.model.util.DateInterval;
 
 @Entity
 public class Salary {
@@ -101,8 +101,8 @@ public class Salary {
 		this.paySchedule = paySchedule;
 	}
 
-	public Interval getEffectivePeriod() {
-		return new Interval(
+	public DateInterval getEffectivePeriod() {
+		return new DateInterval(
 				effectiveDateFrom, 
 				effectiveDateTo != null ? effectiveDateTo : new Date());
 	}

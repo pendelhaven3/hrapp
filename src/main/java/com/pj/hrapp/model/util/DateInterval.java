@@ -17,22 +17,22 @@ import org.apache.commons.lang.time.DateUtils;
  * @author PJ Miranda
  *
  */
-public class Interval {
+public class DateInterval {
 
 	private Date dateFrom;
 	private Date dateTo;
 
-	public Interval(Date dateFrom, Date dateTo) {
+	public DateInterval(Date dateFrom, Date dateTo) {
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
 	}
 	
-	public Interval overlap(Interval interval) {
+	public DateInterval overlap(DateInterval interval) {
 		List<Date> overlapDates = new ArrayList<>(CollectionUtils.intersection(
 				toDateList(), interval.toDateList()));
 		if (!overlapDates.isEmpty()) {
 			Collections.sort(overlapDates);
-			return new Interval(overlapDates.get(0), overlapDates.get(overlapDates.size() - 1));
+			return new DateInterval(overlapDates.get(0), overlapDates.get(overlapDates.size() - 1));
 		} else {
 			return null;
 		}
@@ -82,7 +82,7 @@ public class Interval {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Interval other = (Interval) obj;
+		DateInterval other = (DateInterval) obj;
 		return new EqualsBuilder()
 				.append(dateFrom, other.getDateFrom())
 				.append(dateTo, other.getDateTo())

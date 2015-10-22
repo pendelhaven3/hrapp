@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.pj.hrapp.Constants;
-import com.pj.hrapp.model.util.Interval;
+import com.pj.hrapp.model.util.DateInterval;
 
 public class DateUtil {
 
@@ -44,7 +44,7 @@ public class DateUtil {
 		return dates;
 	}
 	
-	public static Set<Date> generateDailyDateSet(Interval interval) {
+	public static Set<Date> generateDailyDateSet(DateInterval interval) {
 		return generateDailyDateSet(interval.getDateFrom(), interval.getDateTo());
 	}
 
