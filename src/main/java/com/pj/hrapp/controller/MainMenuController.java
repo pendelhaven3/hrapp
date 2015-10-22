@@ -23,4 +23,8 @@ public class MainMenuController extends AbstractController {
 		stageController.showPayrollListScreen();
 	}
 
+	@FXML public void goToSSSContributionTable() {
+		stageController.showSSSContributionTableScreen();
+	}
+
 }

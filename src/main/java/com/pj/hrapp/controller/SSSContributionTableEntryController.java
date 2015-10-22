@@ -1,0 +1,153 @@
+package com.pj.hrapp.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+
+import com.pj.hrapp.Parameter;
+import com.pj.hrapp.gui.component.ShowDialog;
+import com.pj.hrapp.model.SSSContributionTableEntry;
+import com.pj.hrapp.service.SSSService;
+import com.pj.hrapp.util.FormatterUtil;
+import com.pj.hrapp.util.NumberUtil;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+
+@Controller
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+public class SSSContributionTableEntryController extends AbstractController {
+
+	private static final Logger logger = LoggerFactory.getLogger(SSSContributionTableEntryController.class);
+	
+	@Autowired private SSSService sssService;
+	
+	@FXML private TextField compensationFromField;
+	@FXML private TextField compensationToField;
+	@FXML private TextField employeeContributionField;
+	
+	@Parameter private SSSContributionTableEntry entry;
+	
+	@Override
+	public void updateDisplay() {
+		setTitle();
+		
+		if (entry != null) {
+			compensationFromField.setText(FormatterUtil.formatAmount(entry.getCompensationFrom()));
+			compensationToField.setText(FormatterUtil.formatAmount(entry.getCompensationTo()));
+			employeeContributionField.setText(FormatterUtil.formatAmount(entry.getEmployeeContribution()));
+		}
+		
+		compensationFromField.requestFocus();
+	}
+
+	private void setTitle() {
+		if (entry == null) {
+			stageController.setTitle("Add New SSS Contribution Table Entry");
+		} else {
+			stageController.setTitle("Edit SSS Contribution Table Entry");
+		}
+	}
+
+	@FXML public void saveSSSContributionTableEntry() {
+		if (!validateFields()) {
+			return;
+		}
+		
+		if (entry == null) {
+			entry = new SSSContributionTableEntry();
+		}
+		
+		entry.setCompensationFrom(NumberUtil.toBigDecimal(compensationFromField.getText()));
+		entry.setCompensationTo(NumberUtil.toBigDecimal(compensationToField.getText()));
+		entry.setEmployeeContribution(NumberUtil.toBigDecimal(employeeContributionField.getText()));
+		
+		try {
+			sssService.save(entry);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		ShowDialog.info("SSS contribution table entry saved");
+		stageController.showSSSContributionTableScreen();
+	}
+
+	private boolean validateFields() {
+		if (isCompensationFromNotSpecified()) {
+			ShowDialog.error("Compensation From must be specified");
+			compensationFromField.requestFocus();
+			return false;
+		}
+		
+		if (isCompensationFromNotAValidAmount()) {
+			ShowDialog.error("Compensation From must be a valid amount");
+			compensationFromField.requestFocus();
+			return false;
+		}
+		
+		if (isCompensationToNotSpecified()) {
+			ShowDialog.error("Compensation To must be specified");
+			compensationToField.requestFocus();
+			return false;
+		}
+		
+		if (isCompensationToNotAValidAmount()) {
+			ShowDialog.error("Compensation To must be a valid amount");
+			compensationToField.requestFocus();
+			return false;
+		}
+		
+		if (isEmployeeContributionNotSpecified()) {
+			ShowDialog.error("Employee Contribution must be specified");
+			employeeContributionField.requestFocus();
+			return false;
+		}
+		
+		if (isEmployeeContributionNotAValidAmount()) {
+			ShowDialog.error("Employee Contribution must be a valid amount");
+			employeeContributionField.requestFocus();
+			return false;
+		}
+		
+		return true;
+	}
+
+	private boolean isEmployeeContributionNotAValidAmount() {
+		return !NumberUtil.isAmount(employeeContributionField.getText());
+	}
+
+	private boolean isEmployeeContributionNotSpecified() {
+		return StringUtils.isEmpty(employeeContributionField.getText());
+	}
+
+	private boolean isCompensationToNotAValidAmount() {
+		return !NumberUtil.isAmount(compensationToField.getText());
+	}
+
+	private boolean isCompensationFromNotAValidAmount() {
+		return !NumberUtil.isAmount(compensationFromField.getText());
+	}
+
+	private boolean isCompensationToNotSpecified() {
+		return StringUtils.isEmpty(compensationToField.getText());
+	}
+
+	private boolean isCompensationFromNotSpecified() {
+		return StringUtils.isEmpty(compensationFromField.getText());
+	}
+
+	@FXML public void cancel() {
+		stageController.showSSSContributionTableScreen();
+	}
+
+	@FXML public void doOnBack() {
+		stageController.showSSSContributionTableScreen();
+	}
+
+}
