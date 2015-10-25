@@ -33,7 +33,7 @@
 					<AppPropertyValueFactory property="salaryRangeAsString" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Employee Share" styleClass="right">
+			<TableColumn text="Employee Share" styleClass="center">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="employeeShare" />
 				</cellValueFactory>

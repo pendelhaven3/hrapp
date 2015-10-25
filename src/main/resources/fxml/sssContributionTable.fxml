@@ -33,7 +33,7 @@
 					<AppPropertyValueFactory property="compensationRangeAsString" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="EE" styleClass="right">
+			<TableColumn text="EE" styleClass="center">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="employeeContribution" />
 				</cellValueFactory>
