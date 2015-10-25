@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public class AmountInterval {
 
+	private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(9999999L);
+	
 	private BigDecimal amountFrom;
 	private BigDecimal amountTo;
 
@@ -13,10 +15,13 @@ public class AmountInterval {
 	}
 	
 	public boolean overlapsWith(AmountInterval other) {
-		return (amountFrom.compareTo(other.getAmountFrom()) <= 0 
-				&& (amountTo == null || other.getAmountFrom().compareTo(amountTo) <= 0))
-				|| (other.getAmountFrom().compareTo(amountFrom) <= 0 
-				&& (other.getAmountTo() == null || other.getAmountTo().compareTo(amountFrom) >= 0));
+		BigDecimal from1 = amountFrom != null ? amountFrom : BigDecimal.ZERO;
+		BigDecimal to1 = amountTo != null ? amountTo : MAX_VALUE;
+		BigDecimal from2 = other.getAmountFrom() != null ? other.getAmountFrom() : BigDecimal.ZERO;
+		BigDecimal to2 = other.getAmountTo() != null ? other.getAmountTo() : MAX_VALUE;
+		
+		return (from1.compareTo(from2) <= 0 && from2.compareTo(to1) <= 0)
+				|| (from2.compareTo(from1) <= 0 && to2.compareTo(from1) >= 0);
 	}
 
 	public BigDecimal getAmountFrom() {

@@ -55,4 +55,31 @@ public class AmountIntervalTest {
 		assertTrue(other.overlapsWith(interval));
 	}
 	
+	@Test
+	public void overlapsWith_noAmountTo_otherIntersectsInterval() {
+		interval = new AmountInterval(new BigDecimal("1000"), null);
+		AmountInterval other = new AmountInterval(new BigDecimal("900"), new BigDecimal("1100"));
+		
+		assertTrue(interval.overlapsWith(other));
+		assertTrue(other.overlapsWith(interval));
+	}
+	
+	@Test
+	public void overlapsWith_noAmountFrom_otherInsideInterval() {
+		interval = new AmountInterval(null, new BigDecimal("1000"));
+		AmountInterval other = new AmountInterval(new BigDecimal("700"), new BigDecimal("900"));
+		
+		assertTrue(interval.overlapsWith(other));
+		assertTrue(other.overlapsWith(interval));
+	}
+	
+	@Test
+	public void overlapsWith_noAmountFrom_otherIntersectsInterval() {
+		interval = new AmountInterval(null, new BigDecimal("1000"));
+		AmountInterval other = new AmountInterval(new BigDecimal("900"), new BigDecimal("1100"));
+		
+		assertTrue(interval.overlapsWith(other));
+		assertTrue(other.overlapsWith(interval));
+	}
+	
 }

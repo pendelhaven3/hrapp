@@ -13,6 +13,7 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.PhilHealthContributionTableEntry;
 import com.pj.hrapp.model.SSSContributionTableEntry;
 import com.pj.hrapp.model.Salary;
 
@@ -148,6 +149,19 @@ public class StageController {
 
 	public void showEditSSSContributionTableEntryScreen(SSSContributionTableEntry entry) {
 		loadSceneFromFXML("sssContributionTableEntry", 
+				Collections.singletonMap("entry", entry));
+	}
+
+	public void showPhilHealthContributionTableScreen() {
+		loadSceneFromFXML("philHealthContributionTable");
+	}
+
+	public void addPhilHealthContributionTableEntryScreen() {
+		loadSceneFromFXML("philHealthContributionTableEntry");
+	}
+
+	public void showEditPhilHealthContributionTableEntryScreen(PhilHealthContributionTableEntry entry) {
+		loadSceneFromFXML("philHealthContributionTableEntry", 
 				Collections.singletonMap("entry", entry));
 	}
 
