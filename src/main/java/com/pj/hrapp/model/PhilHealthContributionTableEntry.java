@@ -72,7 +72,10 @@ public class PhilHealthContributionTableEntry {
 	}
 
 	public boolean contains(BigDecimal compensation) {
-		return salaryFrom.compareTo(compensation) <= 0 && (salaryTo == null || compensation.compareTo(salaryTo) <= 0);
+		BigDecimal from = (salaryFrom != null) ? salaryFrom : BigDecimal.ZERO;
+		BigDecimal to = (salaryTo != null) ? salaryTo : BigDecimal.valueOf(999999999L);
+		
+		return from.compareTo(compensation) <= 0 && compensation.compareTo(to) <= 0;
 	}
 
 	public BigDecimal getSalaryFrom() {

@@ -30,6 +30,7 @@ import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.service.PayrollService;
+import com.pj.hrapp.service.PhilHealthService;
 import com.pj.hrapp.service.SSSService;
 import com.pj.hrapp.util.DateUtil;
 
@@ -42,6 +43,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private PayslipAdjustmentDao payslipAdjustmentDao;
 	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	@Autowired private SSSService sssService;
+	@Autowired private PhilHealthService philHealthService;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -92,7 +94,7 @@ public class PayrollServiceImpl implements PayrollService {
 			generateEmployeeAttendance(payslip);
 			
 			if (payroll.isIncludeSSSPagibigPhilhealth()) {
-				addSSSContributionAdjustment(payslip);
+				addSSSPagibigPhilHealthContributionAdjustments(payslip);
 			}
 		}
 	}
@@ -109,15 +111,34 @@ public class PayrollServiceImpl implements PayrollService {
 		}
 	}
 
-	private void addSSSContributionAdjustment(Payslip payslip) {
-		BigDecimal employeeContribution = getEmployeeSSSContributionForMonthYear(
+	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip) {
+		BigDecimal employeeCompensation = getEmployeeCompensationForMonthYear(
 				payslip.getEmployee(), DateUtil.getYearMonth(payslip.getPeriodCoveredFrom()));
+		BigDecimal sssContribution = sssService.getSSSContributionTable()
+				.getEmployeeContribution(employeeCompensation);
+		BigDecimal philHealthContribution = philHealthService.getContributionTable()
+				.getEmployeeShare(employeeCompensation);
+		BigDecimal pagibigContribution = BigDecimal.valueOf(100L);
 		
 		PayslipAdjustment adjustment = new PayslipAdjustment();
 		adjustment.setPayslip(payslip);
 		adjustment.setType(PayslipAdjustmentType.SSS);
 		adjustment.setDescription("SSS");
-		adjustment.setAmount(employeeContribution.negate());
+		adjustment.setAmount(sssContribution.negate());
+		payslipAdjustmentDao.save(adjustment);
+
+		adjustment = new PayslipAdjustment();
+		adjustment.setPayslip(payslip);
+		adjustment.setType(PayslipAdjustmentType.PHILHEALTH);
+		adjustment.setDescription("PhilHealth");
+		adjustment.setAmount(philHealthContribution.negate());
+		payslipAdjustmentDao.save(adjustment);
+		
+		adjustment = new PayslipAdjustment();
+		adjustment.setPayslip(payslip);
+		adjustment.setType(PayslipAdjustmentType.PAGIBIG);
+		adjustment.setDescription("Pag-ibig");
+		adjustment.setAmount(pagibigContribution.negate());
 		payslipAdjustmentDao.save(adjustment);
 	}
 
@@ -172,11 +193,6 @@ public class PayrollServiceImpl implements PayrollService {
 	@Override
 	public void delete(PayslipAdjustment payslipAdjustment) {
 		payslipAdjustmentDao.delete(payslipAdjustment);
-	}
-
-	private BigDecimal getEmployeeSSSContributionForMonthYear(Employee employee, YearMonth yearMonth) {
-		return sssService.getSSSContributionTable()
-				.getEmployeeContribution(getEmployeeCompensationForMonthYear(employee, yearMonth));
 	}
 
 	private BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
