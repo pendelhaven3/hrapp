@@ -32,8 +32,12 @@ public class PayslipController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(PayslipController.class);
 	
 	@Autowired private PayrollService payrollService;
-	@Autowired private PayslipAdjustmentDialog payslipAdjustmentDialog;
-	@Autowired private EmployeeAttendanceDialog employeeAttendanceDialog;
+	
+	@Autowired(required = false)
+	private PayslipAdjustmentDialog payslipAdjustmentDialog;
+	
+	@Autowired(required = false)
+	private EmployeeAttendanceDialog employeeAttendanceDialog;
 	
 	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;

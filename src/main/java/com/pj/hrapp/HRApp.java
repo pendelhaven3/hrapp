@@ -15,7 +15,7 @@ public class HRApp extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		String[] configLocations = new String[] {"applicationContext.xml", "datasource.xml"};
+		String[] configLocations = new String[] {"applicationContext.xml"};
 		
 		@SuppressWarnings("resource")
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(configLocations);
