@@ -73,12 +73,12 @@ public class ExcelServiceImpl implements ExcelService {
 			Payslip payslip = payrollService.getPayslip(payslips.get(i).getId());
 			int currentRow = payslipRows[i];
 			
-			cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0]);
+			cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 			cell.setCellValue(payslip.getEmployee().getFirstAndLastName());
 			
 			currentRow++;
 			
-			cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0]);
+			cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 			cell.setCellValue(payslip.getPayroll().getPayDate());
 			
 			currentRow += 2;
@@ -88,16 +88,16 @@ public class ExcelServiceImpl implements ExcelService {
 				PayslipBasicPayItem item = items.get(j);
 				row = sheet.getRow(currentRow);
 				
-				cell = row.getCell(payslipColumns[i][0]);
+				cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(item.getRate().doubleValue());
 				cell.setCellStyle(leftBorderCellStyle);
 				
-				cell = row.getCell(payslipColumns[i][1]);
+				cell = row.getCell(payslipColumns[i][1], Row.CREATE_NULL_AS_BLANK);
 				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(item.getNumberOfDays());
 				
-				cell = row.getCell(payslipColumns[i][2]);
+				cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
 				cell.setCellType(XSSFCell.CELL_TYPE_FORMULA);
 				cell.setCellFormula(new StringBuilder()
 						.append(cellNames[row.getRowNum() + 1][payslipColumns[i][0]])
@@ -113,11 +113,11 @@ public class ExcelServiceImpl implements ExcelService {
 				PayslipAdjustment adjustment = adjustments.get(j);
 				row = sheet.getRow(currentRow);
 				
-				cell = row.getCell(payslipColumns[i][0]);
+				cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
 				cell.setCellValue(adjustment.getDescription());
 				
-				cell = row.getCell(payslipColumns[i][2]);
+				cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
 				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
 				cell.setCellValue(adjustment.getAmount().doubleValue());
 				cell.setCellStyle(rightBorderedAmountCellStyle);
