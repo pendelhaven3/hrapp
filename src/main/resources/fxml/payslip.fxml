@@ -116,6 +116,11 @@
 								<columns>
 									<TableColumn text="Type">
 										<cellValueFactory>
+											<AppPropertyValueFactory property="type" />
+										</cellValueFactory>
+									</TableColumn>
+									<TableColumn text="Description">
+										<cellValueFactory>
 											<AppPropertyValueFactory property="description" />
 										</cellValueFactory>
 									</TableColumn>

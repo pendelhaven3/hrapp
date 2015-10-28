@@ -7,7 +7,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import com.pj.hrapp.gui.component.UppercaseTextField?>
 <?import com.pj.hrapp.gui.component.AppDatePicker?>
 <?import javafx.scene.control.ComboBox?>
 
@@ -21,7 +20,7 @@
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
 				<Label text="Description"
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
-				<UppercaseTextField fx:id="descriptionField"
+				<TextField fx:id="descriptionField"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Label text="Amount:"
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
