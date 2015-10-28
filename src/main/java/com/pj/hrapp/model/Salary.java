@@ -102,9 +102,7 @@ public class Salary {
 	}
 
 	public DateInterval getEffectivePeriod() {
-		return new DateInterval(
-				effectiveDateFrom, 
-				effectiveDateTo != null ? effectiveDateTo : new Date());
+		return new DateInterval(effectiveDateFrom, effectiveDateTo);
 	}
 	
 }

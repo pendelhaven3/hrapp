@@ -162,4 +162,9 @@ public class Payslip {
 		this.attendances = attendances;
 	}
 
+	public void setPeriodCovered(DateInterval periodCovered) {
+		periodCoveredFrom = periodCovered.getDateFrom();
+		periodCoveredTo = periodCovered.getDateTo();
+	}
+
 }

@@ -11,6 +11,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.time.DateUtils;
 
+import com.pj.hrapp.util.DateUtil;
+
 /**
  * Represents a period between two dates
  * 
@@ -28,6 +30,42 @@ public class DateInterval {
 	}
 	
 	public DateInterval overlap(DateInterval interval) {
+		if (dateFrom == null) {
+			if (interval.getDateFrom() == null) {
+				return new DateInterval(null, DateUtil.min(dateTo, interval.getDateTo()));
+			} else if (interval.getDateTo() == null) {
+				if (interval.getDateFrom().compareTo(dateTo) <= 0) {
+					return new DateInterval(interval.getDateFrom(), dateTo);
+				} else {
+					return null;
+				}
+			} else if (dateTo.compareTo(interval.getDateTo()) >= 0) {
+				return interval;
+			} else if (dateTo.compareTo(interval.getDateFrom()) < 0) {
+				return null;
+			} else {
+				return new DateInterval(interval.getDateFrom(), dateTo);
+			}
+		} else if (dateTo == null) {
+			if (interval.getDateTo() == null) {
+				return new DateInterval(DateUtil.max(dateFrom, interval.getDateFrom()), null);
+			} else if (interval.getDateFrom() == null) {
+				if (interval.getDateTo().compareTo(dateFrom) >= 0) {
+					return new DateInterval(dateFrom, interval.getDateTo());
+				} else {
+					return null;
+				}
+			} else if (dateFrom.compareTo(interval.getDateFrom()) <= 0) {
+				return interval;
+			} else if (dateFrom.compareTo(interval.getDateTo()) > 0) {
+				return null;
+			} else {
+				return new DateInterval(dateFrom, interval.getDateTo());
+			}
+		} else if (interval.getDateFrom() == null || interval.getDateTo() == null) {
+			return interval.overlap(this);
+		}
+		
 		List<Date> overlapDates = new ArrayList<>(CollectionUtils.intersection(
 				toDateList(), interval.toDateList()));
 		if (!overlapDates.isEmpty()) {
@@ -90,7 +128,13 @@ public class DateInterval {
 	}
 
 	public boolean contains(Date date) {
-		return dateFrom.compareTo(date) <= 0 && date.compareTo(dateTo) <= 0;
+		if (dateFrom == null && date.compareTo(dateTo) <= 0) {
+			return true;
+		} else if (dateTo == null && date.compareTo(dateFrom) >= 0) {
+			return true;
+		} else {
+			return dateFrom.compareTo(date) <= 0 && date.compareTo(dateTo) <= 0;
+		}
 	}
 
 }

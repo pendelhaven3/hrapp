@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,7 +78,6 @@ public class PayrollServiceImpl implements PayrollService {
 	public void autoGeneratePayslips(Payroll payroll) {
 		clearExistingPayslips(payroll);
 		
-		Date payDate = payroll.getPayDate();
 		List<Employee> employees = 
 				salaryDao.findAllCurrentByPaySchedule(payroll.getPaySchedule())
 				.stream().map(s -> s.getEmployee()).collect(Collectors.toList());
@@ -87,8 +85,7 @@ public class PayrollServiceImpl implements PayrollService {
 			Payslip payslip = new Payslip();
 			payslip.setPayroll(payroll);
 			payslip.setEmployee(employee);
-			payslip.setPeriodCoveredFrom(DateUtils.addDays(payDate, -5));
-			payslip.setPeriodCoveredTo(payDate);
+			payslip.setPeriodCovered(payroll.getPeriodCovered());
 			payslipDao.save(payslip);
 			
 			generateEmployeeAttendance(payslip);
@@ -101,7 +98,7 @@ public class PayrollServiceImpl implements PayrollService {
 
 	private void generateEmployeeAttendance(Payslip payslip) {
 		for (Date date : payslip.getPeriodCovered().toDateList()) {
-			if (employeeAttendanceDao.findByEmployeeAndDate(payslip.getEmployee(), date) == null) {
+			if (shouldGenerateEmployeeAttendance(payslip.getEmployee(), date)) {
 				EmployeeAttendance attendance = new EmployeeAttendance();
 				attendance.setEmployee(payslip.getEmployee());
 				attendance.setDate(date);
@@ -109,6 +106,14 @@ public class PayrollServiceImpl implements PayrollService {
 				employeeAttendanceDao.save(attendance);
 			}
 		}
+	}
+
+	private boolean shouldGenerateEmployeeAttendance(Employee employee, Date date) {
+		return !DateUtil.isSunday(date) && isEmployeeAttendanceNotYetGenerated(employee, date);
+	}
+
+	private boolean isEmployeeAttendanceNotYetGenerated(Employee employee, Date date) {
+		return employeeAttendanceDao.findByEmployeeAndDate(employee, date) == null;
 	}
 
 	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip) {
