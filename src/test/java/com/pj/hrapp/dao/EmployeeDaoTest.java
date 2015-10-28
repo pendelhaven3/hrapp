@@ -7,12 +7,21 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import com.pj.hrapp.HRApp;
 import com.pj.hrapp.model.Employee;
 
-public class EmployeeDaoTest extends IntegrationTest {
+@ContextConfiguration(
+		loader = AnnotationConfigContextLoader.class,
+		classes = HRApp.class)
+@ActiveProfiles("test")
+public class EmployeeDaoTest extends AbstractTransactionalJUnit4SpringContextTests {
 	
-	@Autowired private EmployeeDao employeeDao;
+	@Autowired private EmployeeRepository employeeDao;
 	
 	@PersistenceContext private EntityManager entityManager;
 	
@@ -62,7 +71,7 @@ public class EmployeeDaoTest extends IntegrationTest {
 	public void get() {
 		insertTestEmployee();
 		
-		Employee employee = employeeDao.get(1L);
+		Employee employee = employeeDao.findOne(1L);
 		
 		assertNotNull(employee);
 		assertEquals(1L, employee.getEmployeeNumber().longValue());
@@ -74,7 +83,7 @@ public class EmployeeDaoTest extends IntegrationTest {
 	public void getAll() {
 		insertTestEmployees();
 		
-		assertEquals(3, employeeDao.getAll().size());
+		assertEquals(3, employeeDao.findAll().size());
 	}
 	
 	@Test

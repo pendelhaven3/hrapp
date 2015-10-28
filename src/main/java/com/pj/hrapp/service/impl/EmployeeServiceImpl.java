@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
-import com.pj.hrapp.dao.EmployeeDao;
+import com.pj.hrapp.dao.EmployeeRepository;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.service.EmployeeService;
@@ -16,12 +16,12 @@ import com.pj.hrapp.service.EmployeeService;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	@Autowired private EmployeeDao employeeDao;
+	@Autowired private EmployeeRepository employeeDao;
 	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	
 	@Override
 	public List<Employee> getAllEmployees() {
-		return employeeDao.getAll();
+		return employeeDao.findAll();
 	}
 
 	@Transactional
@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public Employee getEmployee(long id) {
-		return employeeDao.get(id);
+		return employeeDao.findOne(id);
 	}
 
 	@Override
