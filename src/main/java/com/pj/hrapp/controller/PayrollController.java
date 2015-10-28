@@ -133,6 +133,8 @@ public class PayrollController extends AbstractController {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();
 		}
+		
+		ShowDialog.info("Excel file generated");
 	}
 
 	private String getExcelFilename() {
