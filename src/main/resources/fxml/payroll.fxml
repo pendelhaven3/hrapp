@@ -81,12 +81,9 @@
 								</columns>
 							</TableView>
 							
-							<!-- 
 							<HBox spacing="10" alignment="center">
-								<Button text="Mark As Paid" onAction="#markRentAsPaid" />
-								<Button text="Mark As Unpaid" onAction="#markRentAsUnpaid" />
+								<Button text="Delete Payslip" onAction="#deletePayslip" />
 							</HBox>
-							-->
 						</VBox>
 					</Tab>
 				</tabs>

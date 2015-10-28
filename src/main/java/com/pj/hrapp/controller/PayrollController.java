@@ -143,4 +143,32 @@ public class PayrollController extends AbstractController {
 				.toString();
 	}
 
+	@FXML public void deletePayslip() {
+		if (!isPayslipSelected()) {
+			ShowDialog.error("No payslip selected");
+			return;
+		}
+		
+		if (ShowDialog.confirm("Delete selected payslip?")) {
+			try {
+				payrollService.delete(getSelectedPayslip());
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				ShowDialog.unexpectedError();
+				return;
+			}
+			
+			ShowDialog.info("Payslip deleted");
+			updateDisplay();
+		}
+	}
+
+	private boolean isPayslipSelected() {
+		return getSelectedPayslip() != null;
+	}
+
+	private Payslip getSelectedPayslip() {
+		return payslipsTable.getSelectionModel().getSelectedItem();
+	}
+
 }

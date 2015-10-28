@@ -223,5 +223,11 @@ public class PayrollServiceImpl implements PayrollService {
 		
 		return employeeAttendanceDao.search(criteria);
 	}
+
+	@Transactional
+	@Override
+	public void delete(Payslip payslip) {
+		payslipDao.delete(payslip);
+	}
 	
 }

@@ -28,4 +28,6 @@ public interface PayrollService {
 
 	void delete(PayslipAdjustment payslipAdjustment);
 
+	void delete(Payslip payslip);
+
 }
