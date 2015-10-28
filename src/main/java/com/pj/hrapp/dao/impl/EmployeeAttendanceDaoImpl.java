@@ -79,4 +79,9 @@ public class EmployeeAttendanceDaoImpl implements EmployeeAttendanceDao {
 		}
 	}
 
+	@Override
+	public void delete(EmployeeAttendance employeeAttendance) {
+		entityManager.remove(get(employeeAttendance.getId()));
+	}
+
 }

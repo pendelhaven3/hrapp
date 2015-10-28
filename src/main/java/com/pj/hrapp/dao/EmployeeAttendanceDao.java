@@ -16,5 +16,7 @@ public interface EmployeeAttendanceDao {
 	EmployeeAttendance get(long id);
 
 	EmployeeAttendance findByEmployeeAndDate(Employee employee, Date date);
+
+	void delete(EmployeeAttendance employeeAttendance);
 	
 }

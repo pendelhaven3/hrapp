@@ -66,21 +66,27 @@
 			<TabPane fx:id="tabPane" VBox.vgrow="always">
 				<tabs>
 					<Tab text="Attendance" closable="false">
-						<TableView fx:id="attendancesTable">
-							<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
-							<columns>
-								<TableColumn text="Date">
-									<cellValueFactory>
-										<AppPropertyValueFactory property="date" />
-									</cellValueFactory>
-								</TableColumn>
-								<TableColumn text="Attendance">
-									<cellValueFactory>
-										<AppPropertyValueFactory property="attendance" />
-									</cellValueFactory>
-								</TableColumn>
-							</columns>
-						</TableView>
+						<VBox spacing="10" alignment="center">
+							<TableView fx:id="attendancesTable">
+								<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+								<columns>
+									<TableColumn text="Date">
+										<cellValueFactory>
+											<AppPropertyValueFactory property="date" />
+										</cellValueFactory>
+									</TableColumn>
+									<TableColumn text="Attendance">
+										<cellValueFactory>
+											<AppPropertyValueFactory property="attendance" />
+										</cellValueFactory>
+									</TableColumn>
+								</columns>
+							</TableView>
+							
+							<HBox alignment="center" spacing="10">
+								<Button text="Delete Attendance" onAction="#deleteEmployeeAttendance" />
+							</HBox>
+						</VBox>
 					</Tab>
 					<Tab text="Basic Pay" closable="false">
 						<TableView fx:id="basicPayItemsTable">

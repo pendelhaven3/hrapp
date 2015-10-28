@@ -57,4 +57,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeAttendanceDao.save(attendance);
 	}
 
+	@Transactional
+	@Override
+	public void deleteEmployeeAttendance(EmployeeAttendance employeeAttendance) {
+		employeeAttendanceDao.delete(employeeAttendance);
+	}
+
 }

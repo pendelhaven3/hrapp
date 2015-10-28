@@ -20,5 +20,7 @@ public interface EmployeeService {
 	EmployeeAttendance getEmployeeAttendance(long id);
 
 	void save(EmployeeAttendance attendance);
+
+	void deleteEmployeeAttendance(EmployeeAttendance employeeAttendance);
 	
 }
