@@ -49,6 +49,10 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="6" />
 				<UppercaseTextField fx:id="sssNumberField"
 					GridPane.columnIndex="1" GridPane.rowIndex="6" />
+				<Label text="Magic Customer Code"
+					GridPane.columnIndex="0" GridPane.rowIndex="7" />
+				<UppercaseTextField fx:id="magicCustomerCodeField"
+					GridPane.columnIndex="1" GridPane.rowIndex="7" />
 			</GridPane>
 			<Button text="Save" onAction="#saveEmployee" />
 		</VBox>

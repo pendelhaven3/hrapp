@@ -1,5 +1,6 @@
 package com.pj.hrapp.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class EmployeeController extends AbstractController {
 	@FXML private TextField middleNameField;
 	@FXML private DatePicker birthdayDatePicker;
 	@FXML private TextField sssNumberField;
+	@FXML private TextField magicCustomerCodeField;
 	@FXML private Button deleteButton;
 	
 	@Parameter private Employee employee;
@@ -50,6 +52,7 @@ public class EmployeeController extends AbstractController {
 			middleNameField.setText(employee.getMiddleName());
 			birthdayDatePicker.setValue(DateUtil.toLocalDate(employee.getBirthday()));
 			sssNumberField.setText(employee.getSssNumber());
+			magicCustomerCodeField.setText(employee.getMagicCustomerCode());
 			
 			deleteButton.setDisable(false);
 		}
@@ -88,6 +91,7 @@ public class EmployeeController extends AbstractController {
 		employee.setMiddleName(middleNameField.getText());
 		employee.setBirthday(DateUtil.toDate(birthdayDatePicker.getValue()));
 		employee.setSssNumber(sssNumberField.getText());
+		employee.setMagicCustomerCode(StringUtils.trimToNull(magicCustomerCodeField.getText()));
 		try {
 			employeeService.save(employee);
 		} catch (Exception e) {

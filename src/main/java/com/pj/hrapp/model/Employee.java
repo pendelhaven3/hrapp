@@ -26,6 +26,7 @@ public class Employee {
 	private String nickname;
 	private Date birthday;
 	private String sssNumber;
+	private String magicCustomerCode;
 
 	public Employee() {
 		// default constructor
@@ -123,7 +124,6 @@ public class Employee {
 	@Override
 	public String toString() {
 		return nickname;
-//		return nickname + " #" + employeeNumber.toString();
 	}
 
 	public String getFirstAndLastName() {
@@ -132,6 +132,14 @@ public class Employee {
 				.append(" ")
 				.append(lastName)
 				.toString();
+	}
+
+	public String getMagicCustomerCode() {
+		return magicCustomerCode;
+	}
+
+	public void setMagicCustomerCode(String magicCustomerCode) {
+		this.magicCustomerCode = magicCustomerCode;
 	}
 	
 }
