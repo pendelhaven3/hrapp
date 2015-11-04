@@ -41,6 +41,14 @@
         </property>
     </bean>
     
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="messageConverters">
+		    <list>
+		        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+		    </list>
+		</property>
+	</bean>
+    
     <beans profile="test">
 		<jdbc:embedded-database id="dataSource" type="H2" />
     </beans>
@@ -54,6 +62,7 @@
 		</bean>
 		<bean id="employeeAttendanceDialog" class="com.pj.hrapp.dialog.EmployeeAttendanceDialog" />
 		<bean id="payslipAdjustmentDialog" class="com.pj.hrapp.dialog.PayslipAdjustmentDialog" />
+		<bean id="addValeProductDialog" class="com.pj.hrapp.dialog.AddValeProductDialog" />
     </beans>
     
 </beans>

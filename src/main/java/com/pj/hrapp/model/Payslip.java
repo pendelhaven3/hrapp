@@ -42,6 +42,9 @@ public class Payslip {
 	private List<EmployeeAttendance> attendances;
 	
 	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
+	private List<ValeProduct> valeProducts;
+	
+	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
 	private List<PayslipAdjustment> adjustments;
 	
 	public Employee getEmployee() {
@@ -165,6 +168,14 @@ public class Payslip {
 	public void setPeriodCovered(DateInterval periodCovered) {
 		periodCoveredFrom = periodCovered.getDateFrom();
 		periodCoveredTo = periodCovered.getDateTo();
+	}
+
+	public List<ValeProduct> getValeProducts() {
+		return valeProducts;
+	}
+
+	public void setValeProducts(List<ValeProduct> valeProducts) {
+		this.valeProducts = valeProducts;
 	}
 
 }

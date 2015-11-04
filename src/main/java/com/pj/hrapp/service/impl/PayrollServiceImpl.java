@@ -17,6 +17,7 @@ import com.pj.hrapp.dao.PayrollDao;
 import com.pj.hrapp.dao.PayslipAdjustmentDao;
 import com.pj.hrapp.dao.PayslipDao;
 import com.pj.hrapp.dao.SalaryDao;
+import com.pj.hrapp.dao.ValeProductRepository;
 import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
@@ -25,6 +26,7 @@ import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipAdjustmentType;
 import com.pj.hrapp.model.Salary;
+import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.model.util.DateInterval;
@@ -43,6 +45,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	@Autowired private SSSService sssService;
 	@Autowired private PhilHealthService philHealthService;
+	@Autowired private ValeProductRepository valeProductRepository;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -160,6 +163,7 @@ public class PayrollServiceImpl implements PayrollService {
 			payslip.setEffectiveSalaries(findEffectiveSalaries(payslip));
 			payslip.setAttendances(findAllEmployeeAttendances(payslip));
 			payslip.setAdjustments(payslipAdjustmentDao.findAllByPayslip(payslip));
+			payslip.setValeProducts(valeProductRepository.findAllByPayslip(payslip));
 		}
 		return payslip;
 	}
@@ -228,6 +232,12 @@ public class PayrollServiceImpl implements PayrollService {
 	@Override
 	public void delete(Payslip payslip) {
 		payslipDao.delete(payslip);
+	}
+
+	@Transactional
+	@Override
+	public void delete(ValeProduct valeProduct) {
+		valeProductRepository.delete(valeProduct.getId());
 	}
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
+import com.pj.hrapp.dialog.AddValeProductDialog;
 import com.pj.hrapp.dialog.EmployeeAttendanceDialog;
 import com.pj.hrapp.dialog.PayslipAdjustmentDialog;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
@@ -17,6 +18,7 @@ import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipBasicPayItem;
+import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
@@ -41,6 +43,9 @@ public class PayslipController extends AbstractController {
 	@Autowired(required = false)
 	private EmployeeAttendanceDialog employeeAttendanceDialog;
 	
+	@Autowired(required = false)
+	private AddValeProductDialog addValeProductDialog;
+	
 	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;
 	@FXML private Label periodCoveredFromLabel;
@@ -51,6 +56,7 @@ public class PayslipController extends AbstractController {
 	@FXML private TableView<EmployeeAttendance> attendancesTable;
 	@FXML private TableView<PayslipBasicPayItem> basicPayItemsTable;
 	@FXML private TableView<PayslipAdjustment> adjustmentsTable;
+	@FXML private TableView<ValeProduct> valeProductsTable;
 	@FXML private TabPane tabPane;
 
 	@Parameter private Payslip payslip;
@@ -87,6 +93,8 @@ public class PayslipController extends AbstractController {
 				editSelectedAttendance();
 			}
 		});
+		
+		valeProductsTable.getItems().setAll(payslip.getValeProducts());
 	}
 
 	protected void editSelectedAttendance() {
@@ -185,6 +193,38 @@ public class PayslipController extends AbstractController {
 	
 	private EmployeeAttendance getSelectedEmployeeAttendance() {
 		return attendancesTable.getSelectionModel().getSelectedItem();
+	}
+
+	@FXML public void addValeProduct() {
+		Map<String, Object> model = new HashMap<>();
+		model.put("payslip", payslip);
+		
+		addValeProductDialog.showAndWait(model);
+		
+		updateDisplay();
+	}
+
+	@FXML public void deleteValeProduct() {
+		if (hasValeProductSelected() && ShowDialog.confirm("Delete selected vale product?")) {
+			try {
+				payrollService.delete(getSelectedValeProduct());
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				ShowDialog.unexpectedError();
+				return;
+			}
+			
+			ShowDialog.info("Vale product deleted");
+			updateDisplay();
+		}
+	}
+
+	private boolean hasValeProductSelected() {
+		return getSelectedValeProduct() != null;
+	}
+
+	private ValeProduct getSelectedValeProduct() {
+		return valeProductsTable.getSelectionModel().getSelectedItem();
 	}
 
 }
