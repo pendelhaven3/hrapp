@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pj.hrapp.Parameter;
+import com.pj.hrapp.exception.ValeProductsNotMarkedException;
 import com.pj.hrapp.gui.component.SelectableTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payslip;
@@ -65,8 +66,15 @@ public class AddValeProductDialog extends AbstractDialog {
 	}
 
 	private void addValeProductsToPayslip(List<ValeProduct> valeProducts) {
+		if (!ShowDialog.confirm("Adding vale products will mark them as paid. Proceed?")) {
+			return;
+		}
+		
 		try {
 			valeProductService.addValeProductsToPayslip(valeProducts, payslip);
+		} catch (ValeProductsNotMarkedException e) {
+			ShowDialog.error("Error marking vale products as paid in MAGIC system");
+			return;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();

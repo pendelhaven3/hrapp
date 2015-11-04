@@ -1,17 +1,25 @@
 package com.pj.hrapp.service.impl;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.pj.hrapp.dao.ValeProductRepository;
+import com.pj.hrapp.exception.ValeProductsNotMarkedException;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.ValeProduct;
@@ -22,6 +30,7 @@ import com.pj.hrapp.util.UrlUtil;
 public class ValeProductServiceImpl implements ValeProductService {
 
 	private static final String SEARCH_URL = "http://magic-db:8080/salesInvoice/search?";
+	private static final String MARK_AS_PAID_URL = "http://magic-db:8080/salesInvoice/markAsPaid?";
 	
 	@Autowired private RestTemplate restTemplate;
 	@Autowired private ValeProductRepository valeProductRepository;
@@ -40,9 +49,30 @@ public class ValeProductServiceImpl implements ValeProductService {
 	@Transactional
 	@Override
 	public void addValeProductsToPayslip(List<ValeProduct> valeProducts, Payslip payslip) {
+		markValeProductsAsPaid(valeProducts);
+		
 		for (ValeProduct valeProduct : valeProducts) {
 			valeProduct.setPayslip(payslip);
 			valeProductRepository.save(valeProduct);
+		}
+	}
+
+	private void markValeProductsAsPaid(List<ValeProduct> valeProducts) {
+		List<Long> salesInvoiceNumbers = valeProducts.stream()
+				.map(valeProduct -> valeProduct.getSalesInvoiceNumber())
+				.collect(Collectors.toList());
+		
+		String url = MARK_AS_PAID_URL + UrlUtil.mapToQueryString("salesInvoiceNumber", salesInvoiceNumbers);
+		System.out.println(url);
+		
+		HttpClient httpClient = HttpClientBuilder.create().build();
+		try {
+			HttpResponse response = httpClient.execute(new HttpPost(url));
+			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				throw new ValeProductsNotMarkedException();
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import com.pj.hrapp.model.util.TableItem;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -23,9 +22,7 @@ public class SelectableTableView<T> extends TableView<TableItem<T>> {
 	private void addCheckBoxColumn() {
 		TableColumn<TableItem<T>, Boolean> column = new TableColumn<>();
 		column.setCellFactory(param -> new CheckBoxTableCell<>());
-		column.setCellValueFactory(param -> {
-			return new SimpleBooleanProperty(param.getValue().isSelected());
-		});
+		column.setCellValueFactory(param -> param.getValue().selectedProperty());
 		column.getStyleClass().add(CHECKBOX_COLUMN_STYLE_CLASS);
 		column.setMinWidth(CHECKBOX_COLUMN_WIDTH);
 		column.setMaxWidth(CHECKBOX_COLUMN_WIDTH);

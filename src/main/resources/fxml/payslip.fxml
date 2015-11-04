@@ -130,7 +130,7 @@
 											<AppPropertyValueFactory property="transactionDate" />
 										</cellValueFactory>
 									</TableColumn>
-									<TableColumn text="Amount">
+									<TableColumn text="Amount" styleClass="right">
 										<cellValueFactory>
 											<AppPropertyValueFactory property="amount" />
 										</cellValueFactory>

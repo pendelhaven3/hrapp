@@ -1,9 +1,12 @@
 package com.pj.hrapp.model.util;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class TableItem<T> {
 	
 	private T item;
-	private boolean selected;
+	private BooleanProperty selected = new SimpleBooleanProperty();
 
 	public TableItem(T item) {
 		this.item = item;
@@ -14,11 +17,15 @@ public class TableItem<T> {
 	}
 	
 	public boolean isSelected() {
-		return selected;
+		return selected.get();
 	}
 
 	public void setSelected(boolean selected) {
-		this.selected = selected;
+		this.selected.set(selected);
 	}
 
+	 public BooleanProperty selectedProperty() {  
+         return selected;  
+     }
+	 
 }
