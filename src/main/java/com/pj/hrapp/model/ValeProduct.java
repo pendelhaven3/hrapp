@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pj.hrapp.Constants;
+import com.pj.hrapp.util.FormatterUtil;
 
 @Entity
 public class ValeProduct {
@@ -62,6 +63,12 @@ public class ValeProduct {
 
 	public void setPayslip(Payslip payslip) {
 		this.payslip = payslip;
+	}
+
+	public String getDescription() {
+		return new StringBuilder("vp ")
+				.append(FormatterUtil.formatDateMonth(transactionDate))
+				.toString();
 	}
 	
 }

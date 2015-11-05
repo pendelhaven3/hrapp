@@ -15,6 +15,7 @@ import com.pj.hrapp.Constants;
 public class FormatterUtil {
 
 	private static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
+	private static DateTimeFormatter dateMonthFormatter = DateTimeFormatter.ofPattern(Constants.DATE_MONTH_FORMAT);
 	
 	public static String formatDate(Date date) {
 		if (date == null) {
@@ -25,6 +26,13 @@ public class FormatterUtil {
 
 	public static String formatAmount(BigDecimal amount) {
 		return new DecimalFormat(Constants.AMOUNT_FORMAT).format(amount);
+	}
+
+	public static String formatDateMonth(Date date) {
+		if (date == null) {
+			return "";
+		}
+		return dateMonthFormatter.format(DateUtil.toLocalDate(date));
 	}
 	
 }
