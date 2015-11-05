@@ -34,6 +34,10 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
 				<TextField fx:id="employeeContributionField"
 					GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Employer Contribution:" 
+					GridPane.columnIndex="0" GridPane.rowIndex="3" />
+				<TextField fx:id="employerContributionField"
+					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 			</GridPane>
 		
 			<HBox spacing="10" alignment="center">

@@ -29,6 +29,7 @@ public class SSSContributionTableEntryController extends AbstractController {
 	@FXML private TextField compensationFromField;
 	@FXML private TextField compensationToField;
 	@FXML private TextField employeeContributionField;
+	@FXML private TextField employerContributionField;
 	
 	@Parameter private SSSContributionTableEntry entry;
 	
@@ -41,6 +42,9 @@ public class SSSContributionTableEntryController extends AbstractController {
 			compensationToField.setText(
 					entry.getCompensationTo() != null ? FormatterUtil.formatAmount(entry.getCompensationTo()) : null);
 			employeeContributionField.setText(FormatterUtil.formatAmount(entry.getEmployeeContribution()));
+			employerContributionField.setText(
+					entry.getEmployerContribution() != null ? 
+							FormatterUtil.formatAmount(entry.getEmployerContribution()) : null);
 		}
 		
 		compensationFromField.requestFocus();
@@ -67,6 +71,7 @@ public class SSSContributionTableEntryController extends AbstractController {
 		entry.setCompensationTo(
 				isCompensationToSpecified() ? NumberUtil.toBigDecimal(compensationToField.getText()) : null);
 		entry.setEmployeeContribution(NumberUtil.toBigDecimal(employeeContributionField.getText()));
+		entry.setEmployerContribution(NumberUtil.toBigDecimal(employerContributionField.getText()));
 		
 		try {
 			sssService.save(entry);
@@ -105,6 +110,12 @@ public class SSSContributionTableEntryController extends AbstractController {
 			return false;
 		}
 		
+		if (isEmployerContributionNotSpecified()) {
+			ShowDialog.error("Employer Contribution must be specified");
+			employerContributionField.requestFocus();
+			return false;
+		}
+		
 		if (isEmployeeContributionNotAValidAmount()) {
 			ShowDialog.error("Employee Contribution must be a valid amount");
 			employeeContributionField.requestFocus();
@@ -136,6 +147,10 @@ public class SSSContributionTableEntryController extends AbstractController {
 
 	private boolean isEmployeeContributionNotSpecified() {
 		return StringUtils.isEmpty(employeeContributionField.getText());
+	}
+
+	private boolean isEmployerContributionNotSpecified() {
+		return StringUtils.isEmpty(employerContributionField.getText());
 	}
 
 	private boolean isCompensationToNotAValidAmount() {
