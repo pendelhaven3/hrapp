@@ -74,7 +74,7 @@ public class PayslipController extends AbstractController {
 		periodCoveredFromLabel.setText(FormatterUtil.formatDate(payslip.getPeriodCoveredFrom()));
 		periodCoveredToLabel.setText(FormatterUtil.formatDate(payslip.getPeriodCoveredTo()));
 		basicPayLabel.setText(FormatterUtil.formatAmount(payslip.getBasicPay()));
-		adjustmentsLabel.setText(FormatterUtil.formatAmount(payslip.getTotalAdjustments()));
+		adjustmentsLabel.setText(FormatterUtil.formatAmount(payslip.getTotalPayslipAdjustments()));
 		netPayLabel.setText(FormatterUtil.formatAmount(payslip.getNetPay()));
 		
 		basicPayItemsTable.getItems().setAll(payslip.getBasicPayItems());

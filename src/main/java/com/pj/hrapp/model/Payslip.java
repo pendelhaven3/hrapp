@@ -146,7 +146,7 @@ public class Payslip {
 	}
 
 	public BigDecimal getNetPay() {
-		return getBasicPay().add(getTotalAdjustments());
+		return getBasicPay().add(getTotalPayslipAdjustments());
 	}
 
 	public List<PayslipAdjustment> getAdjustments() {
@@ -178,4 +178,14 @@ public class Payslip {
 		this.valeProducts = valeProducts;
 	}
 
+	public BigDecimal getTotalPayslipAdjustments() {
+		return getTotalAdjustments().add(getTotalValeProducts().negate());
+	}
+
+	private BigDecimal getTotalValeProducts() {
+		return valeProducts.stream()
+				.map(valeProduct -> valeProduct.getAmount())
+				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+	}
+	
 }
