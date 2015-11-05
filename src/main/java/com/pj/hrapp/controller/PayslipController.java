@@ -12,6 +12,7 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.AddValeProductDialog;
 import com.pj.hrapp.dialog.EmployeeAttendanceDialog;
 import com.pj.hrapp.dialog.PayslipAdjustmentDialog;
+import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.EmployeeAttendance;
@@ -21,6 +22,7 @@ import com.pj.hrapp.model.PayslipBasicPayItem;
 import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
+import com.pj.hrapp.service.ValeProductService;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
@@ -36,6 +38,7 @@ public class PayslipController extends AbstractController {
 	
 	@Autowired private PayrollService payrollService;
 	@Autowired private EmployeeService employeeService;
+	@Autowired private ValeProductService valeProductService;
 	
 	@Autowired(required = false)
 	private PayslipAdjustmentDialog payslipAdjustmentDialog;
@@ -196,12 +199,27 @@ public class PayslipController extends AbstractController {
 	}
 
 	@FXML public void addValeProduct() {
+		if (!canConnectToMagic()) {
+			ShowDialog.error("Cannot connet to MAGIC");
+			return;
+		};
+		
 		Map<String, Object> model = new HashMap<>();
 		model.put("payslip", payslip);
 		
 		addValeProductDialog.showAndWait(model);
 		
 		updateDisplay();
+	}
+
+	private boolean canConnectToMagic() {
+		try {
+			valeProductService.findUnpaidValeProductsByEmployee(payslip.getEmployee());
+		} catch (ConnectToMagicException e) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	@FXML public void deleteValeProduct() {

@@ -14,11 +14,15 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.pj.hrapp.dao.ValeProductRepository;
+import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.exception.ValeProductsNotMarkedException;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payslip;
@@ -29,6 +33,8 @@ import com.pj.hrapp.util.UrlUtil;
 @Service
 public class ValeProductServiceImpl implements ValeProductService {
 
+	private static final Logger logger = LoggerFactory.getLogger(ValeProductServiceImpl.class);
+	
 	private static final String SEARCH_URL = "http://magic-db:8080/salesInvoice/search?";
 	private static final String MARK_AS_PAID_URL = "http://magic-db:8080/salesInvoice/markAsPaid?";
 	
@@ -43,7 +49,12 @@ public class ValeProductServiceImpl implements ValeProductService {
 		
 		String url = SEARCH_URL + UrlUtil.mapToQueryString(params);
 		
-		return Arrays.asList(restTemplate.getForObject(url, ValeProduct[].class));
+		try {
+			return Arrays.asList(restTemplate.getForObject(url, ValeProduct[].class));
+		} catch (RestClientException e) {
+			logger.error(e.getMessage(), e);
+			throw new ConnectToMagicException();
+		}
 	}
 
 	@Transactional
