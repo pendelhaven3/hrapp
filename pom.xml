@@ -139,7 +139,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.pj.hrapp.HRapp</mainClass>
+							<mainClass>com.pj.hrapp.HRApp</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
