@@ -63,17 +63,17 @@
 											<AppPropertyValueFactory property="employee.nickname" />
 										</cellValueFactory>
 									</TableColumn>
-									<TableColumn text="Net Pay">
+									<TableColumn text="Net Pay" styleClass="right">
 										<cellValueFactory>
 											<AppPropertyValueFactory property="netPay" />
 										</cellValueFactory>
 									</TableColumn>
-									<TableColumn text="Period Covered From">
+									<TableColumn text="Period Covered From" styleClass="center">
 										<cellValueFactory>
 											<AppPropertyValueFactory property="periodCoveredFrom" />
 										</cellValueFactory>
 									</TableColumn>
-									<TableColumn text="Period Covered To">
+									<TableColumn text="Period Covered To" styleClass="center">
 										<cellValueFactory>
 											<AppPropertyValueFactory property="periodCoveredTo" />
 										</cellValueFactory>
