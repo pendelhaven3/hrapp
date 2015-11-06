@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
@@ -26,6 +27,8 @@ import com.pj.hrapp.service.PayrollService;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
+
+	private static final int PAYSLIPS_PER_SHEET = 9;
 
 	@Autowired private PayrollService payrollService;
 	
@@ -65,82 +68,87 @@ public class ExcelServiceImpl implements ExcelService {
 		CellStyle leftBorderCellStyle = createCellStyleWithLeftBorder(workbook);
 		CellStyle rightBorderedAmountCellStyle = createAmountCellStyleWithRightBorder(workbook);
 		
-		Sheet sheet = workbook.getSheetAt(0);
+		Sheet sheet = null;
 		Cell cell = null;
 		Row row = null;
 		
-		List<Payslip> payslips = payroll.getPayslips();
-		for (int i = 0; i < payslips.size(); i++) {
-			Payslip payslip = payrollService.getPayslip(payslips.get(i).getId());
-			int currentRow = payslipRows[i];
+		List<List<Payslip>> payslipGroups = Lists.partition(payroll.getPayslips(), PAYSLIPS_PER_SHEET);
+		for (int s = 0; s < payslipGroups.size(); s++) {
+			sheet = workbook.getSheetAt(s);
+			List<Payslip> payslips = payslipGroups.get(s);
 			
-			cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
-			cell.setCellValue(payslip.getEmployee().getFirstAndLastName());
-			
-			currentRow++;
-			
-			cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
-			cell.setCellValue(payslip.getPayroll().getPayDate());
-			
-			currentRow += 2;
+			for (int i = 0; i < payslips.size(); i++) {
+				Payslip payslip = payrollService.getPayslip(payslips.get(i).getId());
+				int currentRow = payslipRows[i];
+				
+				cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+				cell.setCellValue(payslip.getEmployee().getFirstAndLastName());
+				
+				currentRow++;
+				
+				cell = sheet.getRow(currentRow).getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+				cell.setCellValue(payslip.getPayroll().getPayDate());
+				
+				currentRow += 2;
 
-			List<PayslipBasicPayItem> items = payslip.getBasicPayItems();
-			for (int j = 0; j < items.size(); j++) {
-				PayslipBasicPayItem item = items.get(j);
-				row = sheet.getRow(currentRow);
+				List<PayslipBasicPayItem> items = payslip.getBasicPayItems();
+				for (int j = 0; j < items.size(); j++) {
+					PayslipBasicPayItem item = items.get(j);
+					row = sheet.getRow(currentRow);
+					
+					cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(item.getRate().doubleValue());
+					cell.setCellStyle(leftBorderCellStyle);
+					
+					cell = row.getCell(payslipColumns[i][1], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(item.getNumberOfDays());
+					
+					cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+					cell.setCellFormula(new StringBuilder()
+							.append(cellNames[row.getRowNum() + 1][payslipColumns[i][0]])
+							.append("*")
+							.append(cellNames[row.getRowNum() + 1][payslipColumns[i][1]])
+							.toString());
+					
+					currentRow++;
+				}
 				
-				cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
-				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(item.getRate().doubleValue());
-				cell.setCellStyle(leftBorderCellStyle);
+				List<ValeProduct> valeProducts = payslip.getValeProducts();
+				for (int j = 0; j < valeProducts.size(); j++) {
+					ValeProduct valeProduct = valeProducts.get(j);
+					row = sheet.getRow(currentRow);
+					
+					cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					cell.setCellValue(valeProduct.getDescription());
+					
+					cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(valeProduct.getAmount().negate().doubleValue());
+					cell.setCellStyle(rightBorderedAmountCellStyle);
+					
+					currentRow++;
+				}
 				
-				cell = row.getCell(payslipColumns[i][1], Row.CREATE_NULL_AS_BLANK);
-				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(item.getNumberOfDays());
-				
-				cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
-				cell.setCellType(XSSFCell.CELL_TYPE_FORMULA);
-				cell.setCellFormula(new StringBuilder()
-						.append(cellNames[row.getRowNum() + 1][payslipColumns[i][0]])
-						.append("*")
-						.append(cellNames[row.getRowNum() + 1][payslipColumns[i][1]])
-						.toString());
-				
-				currentRow++;
-			}
-			
-			List<ValeProduct> valeProducts = payslip.getValeProducts();
-			for (int j = 0; j < valeProducts.size(); j++) {
-				ValeProduct valeProduct = valeProducts.get(j);
-				row = sheet.getRow(currentRow);
-				
-				cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
-				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-				cell.setCellValue(valeProduct.getDescription());
-				
-				cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
-				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(valeProduct.getAmount().negate().doubleValue());
-				cell.setCellStyle(rightBorderedAmountCellStyle);
-				
-				currentRow++;
-			}
-			
-			List<PayslipAdjustment> adjustments = payslip.getAdjustments();
-			for (int j = 0; j < adjustments.size(); j++) {
-				PayslipAdjustment adjustment = adjustments.get(j);
-				row = sheet.getRow(currentRow);
-				
-				cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
-				cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-				cell.setCellValue(adjustment.getDescription());
-				
-				cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
-				cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-				cell.setCellValue(adjustment.getAmount().doubleValue());
-				cell.setCellStyle(rightBorderedAmountCellStyle);
-				
-				currentRow++;
+				List<PayslipAdjustment> adjustments = payslip.getAdjustments();
+				for (int j = 0; j < adjustments.size(); j++) {
+					PayslipAdjustment adjustment = adjustments.get(j);
+					row = sheet.getRow(currentRow);
+					
+					cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					cell.setCellValue(adjustment.getDescription());
+					
+					cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(adjustment.getAmount().doubleValue());
+					cell.setCellStyle(rightBorderedAmountCellStyle);
+					
+					currentRow++;
+				}
 			}
 		}
 		
