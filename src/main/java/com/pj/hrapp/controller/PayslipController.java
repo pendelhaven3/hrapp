@@ -19,6 +19,7 @@ import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipBasicPayItem;
+import com.pj.hrapp.model.PreviewPayslipItem;
 import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
@@ -60,6 +61,7 @@ public class PayslipController extends AbstractController {
 	@FXML private TableView<PayslipBasicPayItem> basicPayItemsTable;
 	@FXML private TableView<PayslipAdjustment> adjustmentsTable;
 	@FXML private TableView<ValeProduct> valeProductsTable;
+	@FXML private TableView<PreviewPayslipItem> previewPayslipTable;
 	@FXML private TabPane tabPane;
 
 	@Parameter private Payslip payslip;
@@ -98,6 +100,7 @@ public class PayslipController extends AbstractController {
 		});
 		
 		valeProductsTable.getItems().setAll(payslip.getValeProducts());
+		previewPayslipTable.getItems().setAll(payslip.getPreviewItems());
 	}
 
 	protected void editSelectedAttendance() {

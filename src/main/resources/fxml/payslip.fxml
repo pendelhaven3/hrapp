@@ -173,6 +173,25 @@
 							</HBox>
 						</VBox>
 					</Tab>
+					<Tab text="Preview" closable="false">
+						<VBox spacing="10" alignment="center">
+							<TableView fx:id="previewPayslipTable">
+								<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+								<columns>
+									<TableColumn>
+										<cellValueFactory>
+											<AppPropertyValueFactory property="description" />
+										</cellValueFactory>
+									</TableColumn>
+									<TableColumn styleClass="right">
+										<cellValueFactory>
+											<AppPropertyValueFactory property="amount" />
+										</cellValueFactory>
+									</TableColumn>
+								</columns>
+							</TableView>
+						</VBox>
+					</Tab>
 				</tabs>
 			</TabPane>
 		</VBox>

@@ -68,6 +68,8 @@ public class ValeProduct {
 	public String getDescription() {
 		return new StringBuilder("vp ")
 				.append(FormatterUtil.formatDateMonth(transactionDate))
+				.append(" #")
+				.append(salesInvoiceNumber.toString())
 				.toString();
 	}
 	

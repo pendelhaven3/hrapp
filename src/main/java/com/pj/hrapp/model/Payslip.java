@@ -188,4 +188,24 @@ public class Payslip {
 				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
 	}
 	
+	public List<PreviewPayslipItem> getPreviewItems() {
+		List<PreviewPayslipItem> items = new ArrayList<>();
+		
+		for (ValeProduct valeProduct : valeProducts) {
+			PreviewPayslipItem item = new PreviewPayslipItem();
+			item.setDescription(valeProduct.getDescription());
+			item.setAmount(valeProduct.getAmount());
+			items.add(item);
+		}
+		
+		for (PayslipAdjustment adjustment : adjustments) {
+			PreviewPayslipItem item = new PreviewPayslipItem();
+			item.setDescription(adjustment.getDescription());
+			item.setAmount(adjustment.getAmount());
+			items.add(item);
+		}
+		
+		return items;
+	}
+	
 }
