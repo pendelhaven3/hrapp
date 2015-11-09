@@ -33,8 +33,14 @@ public class EmployeeController extends AbstractController {
 	@FXML private TextField firstNameField;
 	@FXML private TextField middleNameField;
 	@FXML private DatePicker birthdayDatePicker;
+	@FXML private TextField addressField;
+	@FXML private TextField contactNumberField;
 	@FXML private TextField sssNumberField;
+	@FXML private TextField philHealthNumberField;
+	@FXML private TextField tinField;
+	@FXML private TextField atmAccountNumberField;
 	@FXML private TextField magicCustomerCodeField;
+	@FXML private DatePicker dateHiredDatePicker;
 	@FXML private Button deleteButton;
 	
 	@Parameter private Employee employee;
@@ -50,9 +56,19 @@ public class EmployeeController extends AbstractController {
 			lastNameField.setText(employee.getLastName());
 			firstNameField.setText(employee.getFirstName());
 			middleNameField.setText(employee.getMiddleName());
-			birthdayDatePicker.setValue(DateUtil.toLocalDate(employee.getBirthday()));
+			if (employee.getBirthday() != null) {
+				birthdayDatePicker.setValue(DateUtil.toLocalDate(employee.getBirthday()));
+			}
+			addressField.setText(employee.getAddress());
+			contactNumberField.setText(employee.getContactNumber());
 			sssNumberField.setText(employee.getSssNumber());
+			philHealthNumberField.setText(employee.getPhilHealthNumber());
+			tinField.setText(employee.getTin());
+			atmAccountNumberField.setText(employee.getAtmAccountNumber());
 			magicCustomerCodeField.setText(employee.getMagicCustomerCode());
+			if (employee.getHireDate() != null) {
+				dateHiredDatePicker.setValue(DateUtil.toLocalDate(employee.getHireDate()));
+			}
 			
 			deleteButton.setDisable(false);
 		}
@@ -80,7 +96,6 @@ public class EmployeeController extends AbstractController {
 			return;
 		}
 		
-		
 		if (employee == null) {
 			employee = new Employee();
 		}
@@ -89,9 +104,15 @@ public class EmployeeController extends AbstractController {
 		employee.setLastName(lastNameField.getText());
 		employee.setFirstName(firstNameField.getText());
 		employee.setMiddleName(middleNameField.getText());
-		employee.setBirthday(DateUtil.toDate(birthdayDatePicker.getValue()));
+		employee.setBirthday(DateUtil.getDatePickerValue(birthdayDatePicker));
+		employee.setAddress(addressField.getText());
+		employee.setContactNumber(contactNumberField.getText());
 		employee.setSssNumber(sssNumberField.getText());
+		employee.setPhilHealthNumber(philHealthNumberField.getText());
+		employee.setTin(tinField.getText());
+		employee.setAtmAccountNumber(atmAccountNumberField.getText());
 		employee.setMagicCustomerCode(StringUtils.trimToNull(magicCustomerCodeField.getText()));
+		employee.setHireDate(DateUtil.getDatePickerValue(dateHiredDatePicker));
 		try {
 			employeeService.save(employee);
 		} catch (Exception e) {
@@ -133,31 +154,11 @@ public class EmployeeController extends AbstractController {
 			return false;
 		}
 
-		if (isMiddleNameNotSpecified()) {
-			ShowDialog.error("Middle Name must be specified");
-			middleNameField.requestFocus();
-			return false;
-		}
-
-		if (isBirthdayNotSpecified()) {
-			ShowDialog.error("Birthday must be specified");
-			birthdayDatePicker.requestFocus();
-			return false;
-		}
-		
 		return true;
 	}
 
 	private boolean isNicknameNotSpecified() {
 		return nicknameField.getText().isEmpty();
-	}
-
-	private boolean isBirthdayNotSpecified() {
-		return birthdayDatePicker.getValue() == null;
-	}
-
-	private boolean isMiddleNameNotSpecified() {
-		return middleNameField.getText().isEmpty();
 	}
 
 	private boolean isFirstNameNotSpecified() {

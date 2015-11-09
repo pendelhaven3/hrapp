@@ -25,8 +25,14 @@ public class Employee {
 	private String middleName;
 	private String nickname;
 	private Date birthday;
+	private String address;
+	private String contactNumber;
 	private String sssNumber;
+	private String philHealthNumber;
+	private String tin;
+	private String atmAccountNumber;
 	private String magicCustomerCode;
+	private Date hireDate;
 
 	public Employee() {
 		// default constructor
@@ -140,6 +146,54 @@ public class Employee {
 
 	public void setMagicCustomerCode(String magicCustomerCode) {
 		this.magicCustomerCode = magicCustomerCode;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public String getPhilHealthNumber() {
+		return philHealthNumber;
+	}
+
+	public void setPhilHealthNumber(String philHealthNumber) {
+		this.philHealthNumber = philHealthNumber;
+	}
+
+	public String getAtmAccountNumber() {
+		return atmAccountNumber;
+	}
+
+	public void setAtmAccountNumber(String atmAccountNumber) {
+		this.atmAccountNumber = atmAccountNumber;
+	}
+
+	public Date getHireDate() {
+		return hireDate;
+	}
+
+	public void setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
+	}
+
+	public String getTin() {
+		return tin;
+	}
+
+	public void setTin(String tin) {
+		this.tin = tin;
 	}
 	
 }
