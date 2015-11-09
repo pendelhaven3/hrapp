@@ -33,6 +33,7 @@ public class Employee {
 	private String atmAccountNumber;
 	private String magicCustomerCode;
 	private Date hireDate;
+	private PaySchedule paySchedule;
 
 	public Employee() {
 		// default constructor
@@ -194,6 +195,14 @@ public class Employee {
 
 	public void setTin(String tin) {
 		this.tin = tin;
+	}
+
+	public PaySchedule getPaySchedule() {
+		return paySchedule;
+	}
+
+	public void setPaySchedule(PaySchedule paySchedule) {
+		this.paySchedule = paySchedule;
 	}
 	
 }

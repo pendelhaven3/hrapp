@@ -9,6 +9,7 @@
 <?import com.pj.hrapp.gui.component.UppercaseTextField?>
 <?import javafx.scene.layout.GridPane?>
 <?import com.pj.hrapp.gui.component.AppDatePicker?>
+<?import javafx.scene.control.ComboBox?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" 
 		fx:controller="com.pj.hrapp.controller.EmployeeController" >
@@ -80,6 +81,10 @@
 						GridPane.columnIndex="0" GridPane.rowIndex="5" />
 					<AppDatePicker fx:id="dateHiredDatePicker"
 						GridPane.columnIndex="1" GridPane.rowIndex="5" />
+					<Label text="Pay Schedule"
+						GridPane.columnIndex="0" GridPane.rowIndex="6" />
+					<ComboBox fx:id="payScheduleComboBox"
+						GridPane.columnIndex="1" GridPane.rowIndex="6" />
 				</GridPane>
 			</HBox>
 			<Button text="Save" onAction="#saveEmployee" />
