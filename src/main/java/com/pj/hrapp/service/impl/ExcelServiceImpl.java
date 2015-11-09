@@ -96,22 +96,34 @@ public class ExcelServiceImpl implements ExcelService {
 					PayslipBasicPayItem item = items.get(j);
 					row = sheet.getRow(currentRow);
 					
-					cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
-					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-					cell.setCellValue(item.getRate().doubleValue());
-					cell.setCellStyle(leftBorderCellStyle);
+					switch (payslip.getEmployee().getPaySchedule()) {
+					case WEEKLY:
+						cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+						cell.setCellValue(item.getRate().doubleValue());
+						cell.setCellStyle(leftBorderCellStyle);
+						
+						cell = row.getCell(payslipColumns[i][1], Row.CREATE_NULL_AS_BLANK);
+						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+						cell.setCellValue(item.getNumberOfDays());
+						
+						cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
+						cell.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+						cell.setCellFormula(new StringBuilder()
+								.append(cellNames[row.getRowNum() + 1][payslipColumns[i][0]])
+								.append("*")
+								.append(cellNames[row.getRowNum() + 1][payslipColumns[i][1]])
+								.toString());
+						break;
+					case SEMIMONTHLY:
+						cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+						cell.setCellValue("@");
+						
+						cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
+						cell.setCellValue(item.getRate().doubleValue());
+						break;
+					}
 					
-					cell = row.getCell(payslipColumns[i][1], Row.CREATE_NULL_AS_BLANK);
-					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-					cell.setCellValue(item.getNumberOfDays());
-					
-					cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
-					cell.setCellType(XSSFCell.CELL_TYPE_FORMULA);
-					cell.setCellFormula(new StringBuilder()
-							.append(cellNames[row.getRowNum() + 1][payslipColumns[i][0]])
-							.append("*")
-							.append(cellNames[row.getRowNum() + 1][payslipColumns[i][1]])
-							.toString());
 					
 					currentRow++;
 				}
