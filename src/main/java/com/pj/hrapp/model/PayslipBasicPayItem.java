@@ -1,17 +1,18 @@
 package com.pj.hrapp.model;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 
 import com.pj.hrapp.model.util.DateInterval;
 
-public class PayslipBasicPayItem {
+public abstract class PayslipBasicPayItem {
 
-	private BigDecimal rate;
-	private DateInterval period;
-	private double numberOfDays;
+	protected BigDecimal rate;
+	protected DateInterval period;
+	protected double numberOfDays;
 
+	public abstract BigDecimal getAmount();
+	
 	public String getPeriodAsString() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("M/d");
 		
@@ -44,10 +45,6 @@ public class PayslipBasicPayItem {
 
 	public void setNumberOfDays(double numberOfDays) {
 		this.numberOfDays = numberOfDays;
-	}
-
-	public BigDecimal getAmount() {
-		return rate.multiply(new BigDecimal(numberOfDays)).setScale(2, RoundingMode.HALF_UP);
 	}
 
 }

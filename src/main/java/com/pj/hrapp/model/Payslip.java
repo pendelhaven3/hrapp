@@ -115,7 +115,7 @@ public class Payslip {
 	public List<PayslipBasicPayItem> getBasicPayItems() {
 		List<PayslipBasicPayItem> items = new ArrayList<>();
 		for (Salary salary : effectiveSalaries) {
-			PayslipBasicPayItem item = new PayslipBasicPayItem();
+			PayslipBasicPayItem item = createPayslipBasicPayItem();
 			item.setRate(salary.getRate());
 			item.setPeriod(getPeriodCovered().overlap(salary.getEffectivePeriod()));
 			item.setNumberOfDays(getNumberOfDaysWorked(salary.getEffectivePeriod()));
@@ -124,6 +124,16 @@ public class Payslip {
 		return items;
 	}
 	
+	private PayslipBasicPayItem createPayslipBasicPayItem() {
+		switch (employee.getPaySchedule()) {
+		case WEEKLY:
+			return new WeeklyPayslipBasicPayItem();
+		case SEMIMONTHLY:
+			return new SemimonthlyPayslipBasicPayItem();
+		}
+		return null;
+	}
+
 	private double getNumberOfDaysWorked(DateInterval period) {
 		return attendances.stream()
 				.filter(attendance -> period.contains(attendance.getDate()))
