@@ -132,9 +132,22 @@ public class PayrollController extends AbstractController {
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();
+			return;
 		}
 		
-		ShowDialog.info("Excel file generated");
+		if (ShowDialog.confirm("Excel file generated.\nDo you wish to open the file?")) {
+			openExcelFile(file);
+		}
+	}
+
+	private void openExcelFile(File file) {
+		String[] cmdarray = new String[]{"cmd.exe", "/c", file.getAbsolutePath()}; 
+		try {
+			Runtime.getRuntime().exec(cmdarray);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+		} 	
 	}
 
 	private String getExcelFilename() {
