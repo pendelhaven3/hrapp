@@ -11,39 +11,40 @@ import com.pj.hrapp.dao.EmployeeAttendanceDao;
 import com.pj.hrapp.dao.EmployeeRepository;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.service.EmployeeService;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	@Autowired private EmployeeRepository employeeDao;
+	@Autowired private EmployeeRepository employeeRepository;
 	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	
 	@Override
 	public List<Employee> getAllEmployees() {
-		return employeeDao.findAll();
+		return employeeRepository.findAll();
 	}
 
 	@Transactional
 	@Override
 	public void save(Employee employee) {
-		employeeDao.save(employee);
+		employeeRepository.save(employee);
 	}
 
 	@Override
 	public Employee getEmployee(long id) {
-		return employeeDao.findOne(id);
+		return employeeRepository.findOne(id);
 	}
 
 	@Override
 	public Employee findEmployeeByEmployeeNumber(long employeeNumber) {
-		return employeeDao.findByEmployeeNumber(employeeNumber);
+		return employeeRepository.findByEmployeeNumber(employeeNumber);
 	}
 
 	@Transactional
 	@Override
 	public void deleteEmployee(Employee employee) {
-		employeeDao.delete(employee);
+		employeeRepository.delete(employee);
 	}
 
 	@Override
