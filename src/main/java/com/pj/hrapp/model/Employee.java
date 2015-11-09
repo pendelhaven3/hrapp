@@ -130,7 +130,7 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return nickname;
+		return getFullName();
 	}
 
 	public String getFirstAndLastName() {
@@ -205,4 +205,7 @@ public class Employee {
 		this.paySchedule = paySchedule;
 	}
 	
+	public String getFullName() {
+		return new StringBuilder().append(firstName).append(" ").append(lastName).toString();
+	}
 }

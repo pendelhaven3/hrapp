@@ -60,7 +60,7 @@
 								<columns>
 									<TableColumn text="Employee">
 										<cellValueFactory>
-											<AppPropertyValueFactory property="employee.nickname" />
+											<AppPropertyValueFactory property="employee.fullName" />
 										</cellValueFactory>
 									</TableColumn>
 									<TableColumn text="Net Pay" styleClass="right">

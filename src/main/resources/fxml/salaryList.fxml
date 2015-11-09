@@ -27,7 +27,7 @@
 			</TableColumn>
 			<TableColumn text="Nickname">
 				<cellValueFactory>
-					<AppPropertyValueFactory property="employee.nickname" />
+					<AppPropertyValueFactory property="employee" />
 				</cellValueFactory>
 			</TableColumn>
 			<TableColumn text="Rate">
