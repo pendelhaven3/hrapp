@@ -64,4 +64,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeAttendanceDao.delete(employeeAttendance);
 	}
 
+	@Override
+	public List<Employee> findAllEmployeesNotInPayroll(Payroll payroll) {
+		return employeeRepository.findAllNotInPayroll(payroll);
+	}
+
 }

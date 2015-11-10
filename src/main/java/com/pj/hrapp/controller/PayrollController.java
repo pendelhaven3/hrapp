@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
+import com.pj.hrapp.dialog.AddPayslipDialog;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payroll;
@@ -38,6 +41,9 @@ public class PayrollController extends AbstractController {
 	
 	@Autowired private PayrollService payrollService;
 	@Autowired private ExcelService excelService;
+	
+	@Autowired(required = false)
+	private AddPayslipDialog addPayslipDialog;
 	
 	@FXML private Label batchNumberLabel;
 	@FXML private Label payDateLabel;
@@ -186,4 +192,14 @@ public class PayrollController extends AbstractController {
 		return payslipsTable.getSelectionModel().getSelectedItem();
 	}
 
+	@FXML
+	public void addPayslip() {
+		Map<String, Object> model = new HashMap<>();
+		model.put("payroll", payroll);
+		
+		addPayslipDialog.showAndWait(model);
+		
+		updateDisplay();
+	}
+	
 }

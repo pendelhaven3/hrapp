@@ -63,6 +63,7 @@
 		<bean id="employeeAttendanceDialog" class="com.pj.hrapp.dialog.EmployeeAttendanceDialog" />
 		<bean id="payslipAdjustmentDialog" class="com.pj.hrapp.dialog.PayslipAdjustmentDialog" />
 		<bean id="addValeProductDialog" class="com.pj.hrapp.dialog.AddValeProductDialog" />
+		<bean id="addPayslipDialog" class="com.pj.hrapp.dialog.AddPayslipDialog" />
     </beans>
     
 </beans>

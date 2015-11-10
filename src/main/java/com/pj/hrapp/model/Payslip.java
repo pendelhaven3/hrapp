@@ -217,5 +217,9 @@ public class Payslip {
 		
 		return items;
 	}
+
+	public boolean isNew() {
+		return id == null;
+	}
 	
 }

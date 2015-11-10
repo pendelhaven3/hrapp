@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.Payroll;
 
 public interface EmployeeService {
 
@@ -22,5 +23,7 @@ public interface EmployeeService {
 	void save(EmployeeAttendance attendance);
 
 	void deleteEmployeeAttendance(EmployeeAttendance employeeAttendance);
+
+	List<Employee> findAllEmployeesNotInPayroll(Payroll payroll);
 	
 }

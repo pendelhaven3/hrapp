@@ -89,9 +89,7 @@ public class PayrollServiceImpl implements PayrollService {
 			payslip.setPayroll(payroll);
 			payslip.setEmployee(employee);
 			payslip.setPeriodCovered(payroll.getPeriodCovered());
-			payslipDao.save(payslip);
-			
-			generateEmployeeAttendance(payslip);
+			save(payslip);
 			
 			if (payroll.isIncludeSSSPagibigPhilhealth()) {
 				addSSSPagibigPhilHealthContributionAdjustments(payslip);
@@ -189,7 +187,11 @@ public class PayrollServiceImpl implements PayrollService {
 	@Transactional
 	@Override
 	public void save(Payslip payslip) {
+		boolean isNew = payslip.isNew();
 		payslipDao.save(payslip);
+		if (isNew) {
+			generateEmployeeAttendance(payslip);
+		}
 	}
 
 	@Transactional
@@ -239,5 +241,5 @@ public class PayrollServiceImpl implements PayrollService {
 	public void delete(ValeProduct valeProduct) {
 		valeProductRepository.delete(valeProduct.getId());
 	}
-	
+
 }

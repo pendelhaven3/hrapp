@@ -82,6 +82,7 @@
 							</TableView>
 							
 							<HBox spacing="10" alignment="center">
+								<Button text="Add Payslip" onAction="#addPayslip" />
 								<Button text="Delete Payslip" onAction="#deletePayslip" />
 							</HBox>
 						</VBox>

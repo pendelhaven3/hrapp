@@ -45,5 +45,9 @@ public class SelectableTableView<T> extends TableView<TableItem<T>> {
 	public boolean hasSelected() {
 		return getItems().stream().anyMatch(item -> item.isSelected());
 	}
+
+	public boolean hasNoItems() {
+		return getItems().isEmpty();
+	}
 	
 }

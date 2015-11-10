@@ -2,6 +2,8 @@ package com.pj.hrapp.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,6 +16,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.pj.hrapp.HRApp;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.Payroll;
 
 @ContextConfiguration(
 		loader = AnnotationConfigContextLoader.class,
@@ -37,6 +40,19 @@ public class EmployeeDaoTest extends AbstractTransactionalJUnit4SpringContextTes
 				+ " values (2, 2, 'Montgomery', 'Burns')");
 		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
 				+ " values (3, 3, 'Nick', 'Riviera')");
+	}
+	
+	private void insertTestPayroll() {
+		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
+				+ " values (1, 1, 'Homer', 'Simpson')");
+		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
+				+ " values (2, 2, 'Montgomery', 'Burns')");
+		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
+				+ " values (3, 3, 'Nick', 'Riviera')");
+		
+		jdbcTemplate.update("insert into Payroll (id, includeSSSPagibigPhilhealth) values (1, false)");
+		
+		jdbcTemplate.update("insert into Payslip (id, payroll_id, employee_id) values (1, 1, 1)");
 	}
 	
 	@Test
@@ -113,4 +129,17 @@ public class EmployeeDaoTest extends AbstractTransactionalJUnit4SpringContextTes
 		assertEquals(0, countRowsInTableWhere("Employee", "id = 1"));
 	}
 	
+	@Test
+	public void findAllNotInPayroll() {
+		insertTestPayroll();
+		
+		Payroll payroll = new Payroll();
+		payroll.setId(1L);
+		
+		List<Employee> result = employeeDao.findAllNotInPayroll(payroll);
+		assertEquals(2, result.size());
+		assertTrue(result.contains(new Employee(2L)));
+		assertTrue(result.contains(new Employee(3L)));
+	}
+
 }

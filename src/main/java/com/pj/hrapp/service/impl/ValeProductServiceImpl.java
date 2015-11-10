@@ -18,11 +18,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.pj.hrapp.dao.ValeProductRepository;
 import com.pj.hrapp.exception.ConnectToMagicException;
+import com.pj.hrapp.exception.NoMagicCustomerCodeException;
 import com.pj.hrapp.exception.ValeProductsNotMarkedException;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payslip;
@@ -43,6 +45,10 @@ public class ValeProductServiceImpl implements ValeProductService {
 	
 	@Override
 	public List<ValeProduct> findUnpaidValeProductsByEmployee(Employee employee) {
+		if (StringUtils.isEmpty(employee.getMagicCustomerCode())) {
+			throw new NoMagicCustomerCodeException();
+		}
+		
 		Map<String, String> params = new HashMap<>();
 		params.put("customerCode", employee.getMagicCustomerCode());
 		params.put("paid", "false");
