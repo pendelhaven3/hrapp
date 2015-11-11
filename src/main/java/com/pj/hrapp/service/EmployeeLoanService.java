@@ -5,6 +5,7 @@ import java.util.List;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.EmployeeLoanPayment;
+import com.pj.hrapp.model.Payslip;
 
 public interface EmployeeLoanService {
 
@@ -23,5 +24,7 @@ public interface EmployeeLoanService {
 	void delete(EmployeeLoanPayment payment);
 
 	List<EmployeeLoan> findAllUnpaidLoansByEmployee(Employee employee);
+
+	void createLoanPayments(List<EmployeeLoan> loans, Payslip payslip);
 
 }

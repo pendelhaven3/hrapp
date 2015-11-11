@@ -14,10 +14,12 @@ import com.pj.hrapp.exception.ValeProductsNotMarkedException;
 import com.pj.hrapp.gui.component.SelectableTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.model.util.TableItem;
+import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.ValeProductService;
@@ -35,9 +37,11 @@ public class AddPayslipDialog extends AbstractDialog {
 	@Autowired private EmployeeService employeeService;
 	@Autowired private PayrollService payrollService;
 	@Autowired private ValeProductService valeProductService;
+	@Autowired private EmployeeLoanService employeeLoanService;
 	
 	@FXML private TableView<Employee> employeesTable;
 	@FXML private SelectableTableView<ValeProduct> valeProductsTable;
+	@FXML private SelectableTableView<EmployeeLoan> employeeLoansTable;
 	
 	@Parameter private Payroll payroll;
 	
@@ -97,10 +101,21 @@ public class AddPayslipDialog extends AbstractDialog {
 			return;
 		}
 		
-		switchToAddValeProductScreen();
+		switchToAddLoanPaymentsScreen();
 	}
 	
-	private void switchToAddValeProductScreen() {
+	private void switchToAddLoanPaymentsScreen() {
+		changeScene("addPayslipDialog-loanPayment");
+		setTitle("Add Payslip - Add Loan Payments");
+		updateEmployeeLoansTable();
+	}
+
+	private void updateEmployeeLoansTable() {
+		employeeLoansTable.setItems(employeeLoanService.findAllUnpaidLoansByEmployee(payslip.getEmployee()));
+	}
+
+	@FXML
+	public void switchToAddValeProductScreen() {
 		changeScene("addPayslipDialog-valeProduct");
 		setTitle("Add Payslip - Add Vale Products");
 		updateValeProductsTable();
@@ -178,4 +193,44 @@ public class AddPayslipDialog extends AbstractDialog {
 		hide();
 	}
 	
+	@FXML
+	public void addAllLoanPayments() {
+		if (employeeHasNoUnpaidLoans()) {
+			ShowDialog.error("No loan payments to add");
+		} else {
+			addLoanPaymentsToPayslip(employeeLoansTable.getAllItems());
+		}
+	}
+
+	private boolean employeeHasNoUnpaidLoans() {
+		return employeeLoansTable.hasNoItems();
+	}
+
+	@FXML
+	public void addSelectedLoanPayments() {
+		if (hasNoLoanPaymentsSelected()) {
+			ShowDialog.error("No loan payments selected");
+		} else {
+			addLoanPaymentsToPayslip(employeeLoansTable.getSelectedItems());
+		}
+	}
+
+	private boolean hasNoLoanPaymentsSelected() {
+		return !employeeLoansTable.hasSelected();
+	}
+	
+	private void addLoanPaymentsToPayslip(List<EmployeeLoan> loans) {
+		try {
+			employeeLoanService.createLoanPayments(loans, payslip);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			hide();
+			return;
+		}
+		
+		ShowDialog.info("Loan payments saved");
+		switchToAddValeProductScreen();
+	}
+
 }

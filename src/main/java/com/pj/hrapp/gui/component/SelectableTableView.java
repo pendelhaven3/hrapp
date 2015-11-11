@@ -50,4 +50,13 @@ public class SelectableTableView<T> extends TableView<TableItem<T>> {
 		return getItems().isEmpty();
 	}
 	
+	public void setItems(List<T> items) {
+		getItems().clear();
+		
+		for (T item : items) {
+			TableItem<T> tableItem = new TableItem<>(item);
+			getItems().add(tableItem);
+		}
+	}
+	
 }
