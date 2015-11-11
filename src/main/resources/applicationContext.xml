@@ -49,6 +49,10 @@
 		</property>
 	</bean>
     
+    <bean id="namedParameterJbdcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+    	<constructor-arg ref="dataSource" />
+    </bean>
+    
     <beans profile="test">
 		<jdbc:embedded-database id="dataSource" type="H2" />
     </beans>

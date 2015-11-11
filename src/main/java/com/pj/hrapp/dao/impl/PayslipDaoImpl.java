@@ -1,6 +1,8 @@
 package com.pj.hrapp.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,8 +12,9 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.PayslipDao;
-import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.Payroll;
+import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.search.PayslipSearchCriteria;
 
 @Repository
 public class PayslipDaoImpl implements PayslipDao {
@@ -56,6 +59,28 @@ public class PayslipDaoImpl implements PayslipDao {
 	@Override
 	public void delete(Payslip payslip) {
 		entityManager.remove(get(payslip.getId()));
+	}
+
+	@Override
+	public List<Payslip> search(PayslipSearchCriteria criteria) {
+		Map<String, Object> paramMap = new HashMap<>();
+		
+		StringBuilder sql = new StringBuilder("select p from Payslip p where 1 = 1");
+		if (criteria.getEmployee() != null) {
+			sql.append(" and p.employee = :employee");
+			paramMap.put("employee", criteria.getEmployee());
+		}
+		if (criteria.getPayDateLessThan() != null) {
+			sql.append(" and p.payroll.payDate < :payDate");
+			paramMap.put("payDate", criteria.getPayDateLessThan());
+		}
+		sql.append(" order by p.payroll.payDate desc");
+		
+		TypedQuery<Payslip> query = entityManager.createQuery(sql.toString(), Payslip.class);
+		for (String key : paramMap.keySet()) {
+			query.setParameter(key, paramMap.get(key));
+		}
+		return query.getResultList();
 	}
 
 }

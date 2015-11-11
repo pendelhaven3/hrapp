@@ -208,4 +208,8 @@ public class Employee {
 	public String getFullName() {
 		return new StringBuilder().append(firstName).append(" ").append(lastName).toString();
 	}
+
+	public static Employee withId(long id) {
+		return new Employee(id);
+	}
 }

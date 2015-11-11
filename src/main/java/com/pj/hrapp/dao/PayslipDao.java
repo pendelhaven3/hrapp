@@ -3,6 +3,7 @@ package com.pj.hrapp.dao;
 import java.util.List;
 
 import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.search.PayslipSearchCriteria;
 import com.pj.hrapp.model.Payroll;
 
 public interface PayslipDao {
@@ -16,5 +17,7 @@ public interface PayslipDao {
 	Payslip get(long id);
 
 	void delete(Payslip payslip);
+
+	List<Payslip> search(PayslipSearchCriteria criteria);
 	
 }

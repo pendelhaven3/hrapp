@@ -221,5 +221,15 @@ public class Payslip {
 	public boolean isNew() {
 		return id == null;
 	}
+
+	public boolean hasNegativeBalance() {
+		return getNetPay().compareTo(BigDecimal.ZERO) < 0;
+	}
+
+	public static Payslip withId(long id) {
+		Payslip payslip = new Payslip();
+		payslip.setId(id);
+		return payslip;
+	}
 	
 }

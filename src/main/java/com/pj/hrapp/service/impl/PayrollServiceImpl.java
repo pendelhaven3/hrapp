@@ -28,6 +28,7 @@ import com.pj.hrapp.model.PayslipAdjustmentType;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
+import com.pj.hrapp.model.search.PayslipSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.service.PayrollService;
@@ -191,6 +192,40 @@ public class PayrollServiceImpl implements PayrollService {
 		payslipDao.save(payslip);
 		if (isNew) {
 			generateEmployeeAttendance(payslip);
+			if (hasNegativeBalanceInPreviousPayslip(payslip)) {
+				generateAdjustmentForNegativeBalance(payslip);
+			}
+		}
+	}
+
+	private void generateAdjustmentForNegativeBalance(Payslip payslip) {
+		PayslipAdjustment adjustment = new PayslipAdjustment();
+		adjustment.setPayslip(payslip);
+		adjustment.setType(PayslipAdjustmentType.OTHERS);
+		adjustment.setDescription("balance");
+		adjustment.setAmount(findPreviousPayslip(payslip).getNetPay());
+		payslipAdjustmentDao.save(adjustment);
+	}
+
+	private boolean hasNegativeBalanceInPreviousPayslip(Payslip payslip) {
+		Payslip previousPayslip = findPreviousPayslip(payslip);
+		if (previousPayslip != null) {
+			return previousPayslip.hasNegativeBalance();
+		} else {
+			return false;
+		}
+	}
+
+	private Payslip findPreviousPayslip(Payslip payslip) {
+		PayslipSearchCriteria criteria = new PayslipSearchCriteria();
+		criteria.setEmployee(payslip.getEmployee());
+		criteria.setPayDateLessThan(payslip.getPayroll().getPayDate());
+		
+		List<Payslip> result = payslipDao.search(criteria);
+		if (!result.isEmpty()) {
+			return getPayslip(result.get(0).getId());
+		} else {
+			return null;
 		}
 	}
 

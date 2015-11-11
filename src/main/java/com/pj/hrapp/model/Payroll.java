@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,6 +28,8 @@ public class Payroll {
 	private Long id;
 	
 	private Long batchNumber;
+	
+	@Column(columnDefinition = "date")
 	private Date payDate;
 	
 	@Enumerated(EnumType.STRING)
@@ -35,6 +38,7 @@ public class Payroll {
 	@OneToMany(mappedBy = "payroll", cascade = CascadeType.REMOVE)
 	private List<Payslip> payslips = new ArrayList<>();
 	
+	@Column(columnDefinition = "boolean default false")
 	private boolean includeSSSPagibigPhilhealth;
 
 	public Long getId() {
