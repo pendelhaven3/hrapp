@@ -19,8 +19,6 @@ public interface PayrollService {
 
 	void delete(Payroll payroll);
 
-	void autoGeneratePayslips(Payroll payroll);
-
 	Payslip getPayslip(long id);
 
 	void save(Payslip payslip);

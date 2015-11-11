@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -79,27 +78,6 @@ public class PayrollServiceImpl implements PayrollService {
 		payrollDao.delete(payroll);
 	}
 
-	@Transactional
-	@Override
-	public void autoGeneratePayslips(Payroll payroll) {
-		clearExistingPayslips(payroll);
-		
-		List<Employee> employees = 
-				salaryDao.findAllCurrentByPaySchedule(payroll.getPaySchedule())
-				.stream().map(s -> s.getEmployee()).collect(Collectors.toList());
-		for (Employee employee : employees) {
-			Payslip payslip = new Payslip();
-			payslip.setPayroll(payroll);
-			payslip.setEmployee(employee);
-			payslip.setPeriodCovered(payroll.getPeriodCovered());
-			save(payslip);
-			
-			if (payroll.isIncludeSSSPagibigPhilhealth()) {
-				addSSSPagibigPhilHealthContributionAdjustments(payslip);
-			}
-		}
-	}
-
 	private void generateEmployeeAttendance(Payslip payslip) {
 		for (Date date : payslip.getPeriodCovered().toDateList()) {
 			if (shouldGenerateEmployeeAttendance(payslip.getEmployee(), date)) {
@@ -149,12 +127,6 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment.setDescription("Pag-ibig");
 		adjustment.setAmount(pagibigContribution.negate());
 		payslipAdjustmentDao.save(adjustment);
-	}
-
-	private void clearExistingPayslips(Payroll payroll) {
-		for (Payslip payslip : payroll.getPayslips()) {
-			payslipDao.delete(payslip);
-		}
 	}
 
 	@Override

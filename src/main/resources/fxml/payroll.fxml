@@ -48,7 +48,6 @@
 		
 			<HBox spacing="10" alignment="center">
 				<Button text="Update Payroll" onAction="#updatePayroll" />
-				<Button text="Autogenerate Payslips" onAction="#autoGeneratePayslips" />
 			</HBox>
 			
 			<TabPane VBox.vgrow="always">

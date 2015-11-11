@@ -104,21 +104,6 @@ public class PayrollController extends AbstractController {
 		}
 	}
 
-	@FXML public void autoGeneratePayslips() {
-		if (ShowDialog.confirm("Auto generate payslips?")) {
-			try {
-				payrollService.autoGeneratePayslips(payroll);
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
-				ShowDialog.unexpectedError();
-				return;
-			}
-			
-			ShowDialog.info("Payslips generated");
-			stageController.showPayrollScreen(payroll);
-		}
-	}
-
 	@FXML public void generateExcel() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
