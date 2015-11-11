@@ -171,10 +171,14 @@ public class StageController {
 	}
 
 	public void showAddEmployeeLoanScreen() {
-		loadSceneFromFXML("employeeLoan");
+		loadSceneFromFXML("addEditEmployeeLoan");
 	}
 
 	public void showUpdateEmployeeLoanScreen(EmployeeLoan loan) {
+		loadSceneFromFXML("addEditEmployeeLoan", Collections.singletonMap("loan", loan));
+	}
+
+	public void showEmployeeLoanScreen(EmployeeLoan loan) {
 		loadSceneFromFXML("employeeLoan", Collections.singletonMap("loan", loan));
 	}
 

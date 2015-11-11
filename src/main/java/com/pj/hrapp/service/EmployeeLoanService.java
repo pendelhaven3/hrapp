@@ -3,6 +3,7 @@ package com.pj.hrapp.service;
 import java.util.List;
 
 import com.pj.hrapp.model.EmployeeLoan;
+import com.pj.hrapp.model.EmployeeLoanPayment;
 
 public interface EmployeeLoanService {
 
@@ -13,5 +14,11 @@ public interface EmployeeLoanService {
 	void delete(EmployeeLoan loan);
 
 	void save(EmployeeLoan loan);
+
+	EmployeeLoanPayment findEmployeeLoanPayment(Long id);
+
+	void save(EmployeeLoanPayment payment);
+
+	void delete(EmployeeLoanPayment payment);
 
 }

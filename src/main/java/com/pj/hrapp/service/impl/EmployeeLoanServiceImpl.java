@@ -7,14 +7,17 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
 import com.pj.hrapp.dao.EmployeeLoanRepository;
 import com.pj.hrapp.model.EmployeeLoan;
+import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.service.EmployeeLoanService;
 
 @Service
 public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 
 	@Autowired private EmployeeLoanRepository employeeLoanRepository;
+	@Autowired private EmployeeLoanPaymentRepository employeeLoanPaymentRepository;
 	
 	@Override
 	public List<EmployeeLoan> findAllEmployeeLoans() {
@@ -23,7 +26,9 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 
 	@Override
 	public EmployeeLoan findEmployeeLoan(Long id) {
-		return employeeLoanRepository.findOne(id);
+		EmployeeLoan loan = employeeLoanRepository.findOne(id);
+		loan.setPayments(employeeLoanPaymentRepository.findAllByEmployeeLoan(loan));
+		return loan;
 	}
 
 	@Transactional
@@ -36,6 +41,23 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 	@Override
 	public void save(EmployeeLoan loan) {
 		employeeLoanRepository.save(loan);
+	}
+
+	@Override
+	public EmployeeLoanPayment findEmployeeLoanPayment(Long id) {
+		return employeeLoanPaymentRepository.findOne(id);
+	}
+
+	@Transactional
+	@Override
+	public void save(EmployeeLoanPayment payment) {
+		employeeLoanPaymentRepository.save(payment);
+	}
+
+	@Transactional
+	@Override
+	public void delete(EmployeeLoanPayment payment) {
+		employeeLoanPaymentRepository.delete(payment);
 	}
 
 }

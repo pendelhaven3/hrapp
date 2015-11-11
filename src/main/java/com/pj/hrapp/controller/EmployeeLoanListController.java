@@ -24,12 +24,12 @@ public class EmployeeLoanListController extends AbstractController {
 		stageController.setTitle("Employee Loan List");
 		
 		employeeLoansTable.setItemsThenFocus(employeeLoanService.findAllEmployeeLoans());
-		employeeLoansTable.addDoubleClickAndEnterKeyAction(() -> updateSelectedEmployeeLoan());
+		employeeLoansTable.setDoubleClickAndEnterKeyAction(() -> updateSelectedEmployeeLoan());
 	}
 
 	private void updateSelectedEmployeeLoan() {
 		if (employeeLoansTable.hasSelectedItem()) {
-			stageController.showUpdateEmployeeLoanScreen(employeeLoansTable.getSelectedItem());
+			stageController.showEmployeeLoanScreen(employeeLoansTable.getSelectedItem());
 		}
 	}
 

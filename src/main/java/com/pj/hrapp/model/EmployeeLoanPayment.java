@@ -1,6 +1,7 @@
 package com.pj.hrapp.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,7 @@ public class EmployeeLoanPayment {
 	@OneToOne
 	private Payslip payslip;
 
+	private Date paymentDate;
 	private BigDecimal amount;
 	private Integer paymentNumber;
 
@@ -64,4 +66,12 @@ public class EmployeeLoanPayment {
 		this.paymentNumber = paymentNumber;
 	}
 
+	public Date getPaymentDate() {
+		return paymentDate;
+	}
+
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
+	}
+	
 }

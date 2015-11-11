@@ -12,23 +12,25 @@ public class AppTableView<T> extends TableView<T> {
 		return getSelectionModel().getSelectedItem();
 	}
 	
-	public void setItemsThenFocus(List<T> items) {
+	public void setItems(List<T> items) {
 		getItems().setAll(items);
+	}
+	
+	public void setItemsThenFocus(List<T> items) {
+		setItems(items);
+		
 		if (!items.isEmpty()) {
 			getSelectionModel().select(0);
 		}
 		requestFocus();
 	}
 	
-	public void addDoubleClickAndEnterKeyAction(CustomAction action) {
-		setOnMouseClicked(new DoubleClickEventHandler() {
-			
-			@Override
-			protected void onDoubleClick(MouseEvent event) {
-				action.doAction();
-			}
-		});
-		
+	public void setDoubleClickAndEnterKeyAction(CustomAction action) {
+		setDoubleClickAction(action);
+		setEnterKeyAction(action);
+	}
+
+	private void setEnterKeyAction(CustomAction action) {
 		setOnKeyPressed(e -> {
 			if (e.getCode().equals(KeyCode.ENTER)) {
 				action.doAction();
@@ -38,6 +40,16 @@ public class AppTableView<T> extends TableView<T> {
 
 	public boolean hasSelectedItem() {
 		return getSelectedItem() != null;
+	}
+	
+	public void setDoubleClickAction(CustomAction action) {
+		setOnMouseClicked(new DoubleClickEventHandler() {
+			
+			@Override
+			protected void onDoubleClick(MouseEvent event) {
+				action.doAction();
+			}
+		});
 	}
 	
 }
