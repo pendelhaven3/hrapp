@@ -11,16 +11,20 @@ import org.springframework.stereotype.Controller;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.AddValeProductDialog;
 import com.pj.hrapp.dialog.EmployeeAttendanceDialog;
+import com.pj.hrapp.dialog.EmployeeLoanPaymentDialog;
 import com.pj.hrapp.dialog.PayslipAdjustmentDialog;
 import com.pj.hrapp.exception.ConnectToMagicException;
+import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipBasicPayItem;
 import com.pj.hrapp.model.PreviewPayslipItem;
 import com.pj.hrapp.model.ValeProduct;
+import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.ValeProductService;
@@ -40,15 +44,19 @@ public class PayslipController extends AbstractController {
 	@Autowired private PayrollService payrollService;
 	@Autowired private EmployeeService employeeService;
 	@Autowired private ValeProductService valeProductService;
-	
-	@Autowired(required = false)
-	private PayslipAdjustmentDialog payslipAdjustmentDialog;
+	@Autowired private EmployeeLoanService employeeLoanService;
 	
 	@Autowired(required = false)
 	private EmployeeAttendanceDialog employeeAttendanceDialog;
 	
 	@Autowired(required = false)
+	private EmployeeLoanPaymentDialog employeeLoanPaymentDialog;
+	
+	@Autowired(required = false)
 	private AddValeProductDialog addValeProductDialog;
+	
+	@Autowired(required = false)
+	private PayslipAdjustmentDialog payslipAdjustmentDialog;
 	
 	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;
@@ -59,8 +67,9 @@ public class PayslipController extends AbstractController {
 	@FXML private Label netPayLabel;
 	@FXML private TableView<EmployeeAttendance> attendancesTable;
 	@FXML private TableView<PayslipBasicPayItem> basicPayItemsTable;
-	@FXML private TableView<PayslipAdjustment> adjustmentsTable;
+	@FXML private AppTableView<EmployeeLoanPayment> loanPaymentsTable;
 	@FXML private TableView<ValeProduct> valeProductsTable;
+	@FXML private TableView<PayslipAdjustment> adjustmentsTable;
 	@FXML private TableView<PreviewPayslipItem> previewPayslipTable;
 	@FXML private TabPane tabPane;
 
@@ -81,6 +90,19 @@ public class PayslipController extends AbstractController {
 		
 		basicPayItemsTable.getItems().setAll(payslip.getBasicPayItems());
 		
+		attendancesTable.getItems().setAll(payslip.getAttendances());
+		attendancesTable.setOnMouseClicked(new DoubleClickEventHandler() {
+			
+			@Override
+			protected void onDoubleClick(MouseEvent event) {
+				editSelectedAttendance();
+			}
+		});
+
+		loanPaymentsTable.setItems(payslip.getLoanPayments());
+		
+		valeProductsTable.getItems().setAll(payslip.getValeProducts());
+		
 		adjustmentsTable.getItems().setAll(payslip.getAdjustments());
 		adjustmentsTable.setOnMouseClicked(new DoubleClickEventHandler() {
 			
@@ -90,16 +112,6 @@ public class PayslipController extends AbstractController {
 			}
 		});
 		
-		attendancesTable.getItems().setAll(payslip.getAttendances());
-		attendancesTable.setOnMouseClicked(new DoubleClickEventHandler() {
-			
-			@Override
-			protected void onDoubleClick(MouseEvent event) {
-				editSelectedAttendance();
-			}
-		});
-		
-		valeProductsTable.getItems().setAll(payslip.getValeProducts());
 		previewPayslipTable.getItems().setAll(payslip.getPreviewItems());
 	}
 
@@ -246,6 +258,43 @@ public class PayslipController extends AbstractController {
 
 	private ValeProduct getSelectedValeProduct() {
 		return valeProductsTable.getSelectionModel().getSelectedItem();
+	}
+
+	@FXML public void addLoanPayment() {
+		Map<String, Object> model = new HashMap<>();
+		model.put("payslip", payslip);
+		
+		employeeLoanPaymentDialog.showAndWait(model);
+		
+		updateDisplay();
+	}
+
+	@FXML public void deleteLoanPayment() {
+		if (hasNoSelectedLoanPayment()) {
+			ShowDialog.error("No loan payment selected");
+			return;
+		}
+		
+		if (ShowDialog.confirm("Delete selected loan payment?")) {
+			try {
+				employeeLoanService.delete(getSelectedLoanPayment());
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				ShowDialog.unexpectedError();
+				return;
+			}
+			
+			ShowDialog.info("Loan payment deleted");
+			updateDisplay();
+		}
+	}
+
+	private boolean hasNoSelectedLoanPayment() {
+		return getSelectedLoanPayment() == null;
+	}
+
+	private EmployeeLoanPayment getSelectedLoanPayment() {
+		return loanPaymentsTable.getSelectedItem();
 	}
 
 }

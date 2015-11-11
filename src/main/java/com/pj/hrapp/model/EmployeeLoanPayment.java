@@ -7,7 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
 public class EmployeeLoanPayment {
@@ -19,7 +21,7 @@ public class EmployeeLoanPayment {
 	@ManyToOne
 	private EmployeeLoan loan;
 
-	@OneToOne
+	@ManyToOne
 	private Payslip payslip;
 
 	private Date paymentDate;
@@ -72,6 +74,35 @@ public class EmployeeLoanPayment {
 
 	public void setPaymentDate(Date paymentDate) {
 		this.paymentDate = paymentDate;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(id)
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmployeeLoanPayment other = (EmployeeLoanPayment) obj;
+		return new EqualsBuilder()
+				.append(id, other.getId())
+				.isEquals();
+	}
+	
+	public String getPaymentNumberDescription() {
+		return new StringBuilder()
+				.append(paymentNumber)
+				.append("x")
+				.append(loan.getNumberOfPayments())
+				.toString();
 	}
 	
 }

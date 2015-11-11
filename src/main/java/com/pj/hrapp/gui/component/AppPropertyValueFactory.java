@@ -31,12 +31,24 @@ public class AppPropertyValueFactory <T>
 		Object item = param.getValue();
 		StringTokenizer tokenizer = new StringTokenizer(property, ".");
 		while (tokenizer.hasMoreTokens()) {
+			String propertyName = tokenizer.nextToken();
+			boolean safeNavigation = false;
+			
+			if (propertyName.endsWith("?")) {
+				propertyName = propertyName.substring(0, propertyName.length() - 1);
+				safeNavigation = true;
+			}
+			
 			try {
 				Method method = item.getClass()
-						.getMethod(GET_PREFIX + WordUtils.capitalize(tokenizer.nextToken()));
+						.getMethod(GET_PREFIX + WordUtils.capitalize(propertyName));
 				item = method.invoke(item);
 			} catch (Exception e) {
 				throw new RuntimeException("Error getting property " + property, e);
+			}
+			
+			if (safeNavigation && item == null) {
+				break;
 			}
 		}
 		

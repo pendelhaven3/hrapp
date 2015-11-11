@@ -12,6 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import com.pj.hrapp.util.FormatterUtil;
+
 @Entity
 public class EmployeeLoan {
 
@@ -97,4 +102,39 @@ public class EmployeeLoan {
 		this.paymentAmount = paymentAmount;
 	}
 
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(id)
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmployeeLoan other = (EmployeeLoan) obj;
+		return new EqualsBuilder()
+				.append(id, other.getId())
+				.isEquals();
+	}
+
+	public Integer getNextPaymentNumber() {
+		return payments.stream()
+				.map(payment -> payment.getPaymentNumber())
+				.max((o1, o2) -> o1.compareTo(o2))
+				.orElseGet(() -> 0) + 1;
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder()
+				.append("Loan [").append(FormatterUtil.formatDate(loanDate)).append("]")
+				.toString();
+	}
+	
 }

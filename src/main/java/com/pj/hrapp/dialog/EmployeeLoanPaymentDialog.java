@@ -1,5 +1,8 @@
 package com.pj.hrapp.dialog;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,14 +11,17 @@ import org.springframework.util.StringUtils;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
+import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.EmployeeLoanPayment;
+import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.util.DateUtil;
 import com.pj.hrapp.util.FormatterUtil;
 import com.pj.hrapp.util.NumberUtil;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
@@ -25,10 +31,12 @@ public class EmployeeLoanPaymentDialog extends AbstractDialog {
 	
 	@Autowired private EmployeeLoanService employeeLoanService;
 	
+	@FXML private ComboBox<EmployeeLoan> employeeLoanComboBox;
 	@FXML private TextField paymentNumberField;
 	@FXML private DatePicker paymentDateDatePicker;
 	@FXML private TextField amountField;
 	
+	@Parameter private Payslip payslip;
 	@Parameter private EmployeeLoan loan;
 	@Parameter private EmployeeLoanPayment payment;
 	
@@ -43,12 +51,44 @@ public class EmployeeLoanPaymentDialog extends AbstractDialog {
 
 	@Override
 	protected void updateDisplay() {
+		employeeLoanComboBox.getItems().setAll(findAllUnpaidLoansByEmployee());
+		
 		if (payment != null) {
 			payment = employeeLoanService.findEmployeeLoanPayment(payment.getId());
+			employeeLoanComboBox.setValue(payment.getLoan());
 			paymentNumberField.setText(payment.getPaymentNumber().toString());
 			paymentDateDatePicker.setValue(DateUtil.toLocalDate(payment.getPaymentDate()));
 			amountField.setText(FormatterUtil.formatAmount(payment.getAmount()));
+		} else if (loan != null) {
+			employeeLoanComboBox.setValue(loan);
+			paymentNumberField.setText(loan.getNextPaymentNumber().toString());
+			amountField.setText(FormatterUtil.formatAmount(loan.getPaymentAmount()));
+		} else if (payslip != null) {
+			employeeLoanComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+				EmployeeLoan loan = employeeLoanService.findEmployeeLoan(newValue.getId());
+				paymentNumberField.setText(loan.getNextPaymentNumber().toString());
+				paymentDateDatePicker.setValue(DateUtil.toLocalDate(payslip.getPayroll().getPayDate()));
+				amountField.setText(FormatterUtil.formatAmount(loan.getPaymentAmount()));
+			});
 		}
+		
+		employeeLoanComboBox.setDisable(loan != null);
+		paymentNumberField.setDisable(payslip != null);
+		paymentDateDatePicker.setDisable(payslip != null);
+		amountField.setDisable(payslip != null);
+	}
+
+	private List<EmployeeLoan> findAllUnpaidLoansByEmployee() {
+		Employee employee = null;
+		if (loan != null) {
+			employee = loan.getEmployee();
+		} else if (payslip != null) {
+			employee = payslip.getEmployee();
+		} else {
+			return Collections.emptyList();
+		}
+		
+		return employeeLoanService.findAllUnpaidLoansByEmployee(employee);
 	}
 
 	@Override
@@ -65,10 +105,11 @@ public class EmployeeLoanPaymentDialog extends AbstractDialog {
 		if (payment == null) {
 			payment = new EmployeeLoanPayment();
 		}
-		payment.setLoan(loan);
+		payment.setLoan(employeeLoanComboBox.getValue());
 		payment.setPaymentNumber(Integer.valueOf(paymentNumberField.getText()));
 		payment.setPaymentDate(DateUtil.toDate(paymentDateDatePicker.getValue()));
 		payment.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
+		payment.setPayslip(payslip);;
 		
 		try {
 			employeeLoanService.save(payment);
@@ -83,6 +124,12 @@ public class EmployeeLoanPaymentDialog extends AbstractDialog {
 	}
 
 	private boolean validateFields() {
+		if (isEmployeeLoanNotSpecified()) {
+			ShowDialog.error("Employee Loan must be specified");
+			employeeLoanComboBox.requestFocus();
+			return false;
+		}
+		
 		if (isPaymentNumberNotSpecified()) {
 			ShowDialog.error("Payment Number must be specified");
 			paymentNumberField.requestFocus();
@@ -114,6 +161,10 @@ public class EmployeeLoanPaymentDialog extends AbstractDialog {
 		}
 		
 		return true;
+	}
+
+	private boolean isEmployeeLoanNotSpecified() {
+		return employeeLoanComboBox.getValue() == null;
 	}
 
 	private boolean isAmountNotSpecified() {

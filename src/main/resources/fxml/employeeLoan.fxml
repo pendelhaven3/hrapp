@@ -86,11 +86,9 @@
 										</cellValueFactory>
 									</TableColumn>
 									<TableColumn text="Payslip Batch No." styleClass="center">
-										<!-- 
 										<cellValueFactory>
-											<AppPropertyValueFactory property="payslip.batchNumber" />
+											<AppPropertyValueFactory property="payslip?.payroll.batchNumber" />
 										</cellValueFactory>
-										-->
 									</TableColumn>
 								</columns>
 							</AppTableView>

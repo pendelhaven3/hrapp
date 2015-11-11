@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
+import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
 import com.pj.hrapp.dao.PayrollDao;
 import com.pj.hrapp.dao.PayslipAdjustmentDao;
 import com.pj.hrapp.dao.PayslipDao;
@@ -47,6 +48,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private SSSService sssService;
 	@Autowired private PhilHealthService philHealthService;
 	@Autowired private ValeProductRepository valeProductRepository;
+	@Autowired private EmployeeLoanPaymentRepository employeeLoanPaymentRepository;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -161,8 +163,9 @@ public class PayrollServiceImpl implements PayrollService {
 		if (payslip != null) {
 			payslip.setEffectiveSalaries(findEffectiveSalaries(payslip));
 			payslip.setAttendances(findAllEmployeeAttendances(payslip));
-			payslip.setAdjustments(payslipAdjustmentDao.findAllByPayslip(payslip));
+			payslip.setLoanPayments(employeeLoanPaymentRepository.findAllByPayslip(payslip));
 			payslip.setValeProducts(valeProductRepository.findAllByPayslip(payslip));
+			payslip.setAdjustments(payslipAdjustmentDao.findAllByPayslip(payslip));
 		}
 		return payslip;
 	}

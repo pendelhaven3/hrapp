@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
 import com.pj.hrapp.dao.EmployeeLoanRepository;
+import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.service.EmployeeLoanService;
@@ -58,6 +59,11 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 	@Override
 	public void delete(EmployeeLoanPayment payment) {
 		employeeLoanPaymentRepository.delete(payment);
+	}
+
+	@Override
+	public List<EmployeeLoan> findAllUnpaidLoansByEmployee(Employee employee) {
+		return employeeLoanRepository.findAllByEmployee(employee);
 	}
 
 }

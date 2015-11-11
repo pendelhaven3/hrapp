@@ -42,6 +42,9 @@ public class Payslip {
 	private List<EmployeeAttendance> attendances;
 	
 	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
+	private List<EmployeeLoanPayment> loanPayments;
+	
+	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
 	private List<ValeProduct> valeProducts;
 	
 	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
@@ -189,7 +192,14 @@ public class Payslip {
 	}
 
 	public BigDecimal getTotalPayslipAdjustments() {
-		return getTotalAdjustments().add(getTotalValeProducts().negate());
+		return getTotalAdjustments().add(getTotalLoanPayments().negate())
+				.add(getTotalValeProducts().negate());
+	}
+
+	private BigDecimal getTotalLoanPayments() {
+		return loanPayments.stream()
+				.map(valeProduct -> valeProduct.getAmount())
+				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
 	}
 
 	private BigDecimal getTotalValeProducts() {
@@ -200,11 +210,18 @@ public class Payslip {
 	
 	public List<PreviewPayslipItem> getPreviewItems() {
 		List<PreviewPayslipItem> items = new ArrayList<>();
+
+		for (EmployeeLoanPayment loanPayment : loanPayments) {
+			PreviewPayslipItem item = new PreviewPayslipItem();
+			item.setDescription("hulog " + loanPayment.getPaymentNumberDescription());
+			item.setAmount(loanPayment.getAmount().negate());
+			items.add(item);
+		}
 		
 		for (ValeProduct valeProduct : valeProducts) {
 			PreviewPayslipItem item = new PreviewPayslipItem();
 			item.setDescription(valeProduct.getDescription());
-			item.setAmount(valeProduct.getAmount());
+			item.setAmount(valeProduct.getAmount().negate());
 			items.add(item);
 		}
 		
@@ -230,6 +247,14 @@ public class Payslip {
 		Payslip payslip = new Payslip();
 		payslip.setId(id);
 		return payslip;
+	}
+
+	public List<EmployeeLoanPayment> getLoanPayments() {
+		return loanPayments;
+	}
+
+	public void setLoanPayments(List<EmployeeLoanPayment> loanPayments) {
+		this.loanPayments = loanPayments;
 	}
 	
 }

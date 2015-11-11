@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
+import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
@@ -124,6 +125,23 @@ public class ExcelServiceImpl implements ExcelService {
 						break;
 					}
 					
+					
+					currentRow++;
+				}
+
+				List<EmployeeLoanPayment> loanPayments = payslip.getLoanPayments();
+				for (int j = 0; j < loanPayments.size(); j++) {
+					EmployeeLoanPayment loanPayment = loanPayments.get(j);
+					row = sheet.getRow(currentRow);
+					
+					cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+					cell.setCellValue("hulog " + loanPayment.getPaymentNumberDescription());
+					
+					cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
+					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+					cell.setCellValue(loanPayment.getAmount().negate().doubleValue());
+					cell.setCellStyle(rightBorderedAmountCellStyle);
 					
 					currentRow++;
 				}
