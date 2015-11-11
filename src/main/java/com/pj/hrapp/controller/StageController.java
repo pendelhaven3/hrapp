@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.pj.hrapp.ControllerFactory;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PhilHealthContributionTableEntry;
@@ -163,6 +164,18 @@ public class StageController {
 	public void showEditPhilHealthContributionTableEntryScreen(PhilHealthContributionTableEntry entry) {
 		loadSceneFromFXML("philHealthContributionTableEntry", 
 				Collections.singletonMap("entry", entry));
+	}
+
+	public void showEmployeeLoanListScreen() {
+		loadSceneFromFXML("employeeLoanList");
+	}
+
+	public void showAddEmployeeLoanScreen() {
+		loadSceneFromFXML("employeeLoan");
+	}
+
+	public void showUpdateEmployeeLoanScreen(EmployeeLoan loan) {
+		loadSceneFromFXML("employeeLoan", Collections.singletonMap("loan", loan));
 	}
 
 }

@@ -31,4 +31,9 @@ public class MainMenuController extends AbstractController {
 		stageController.showPhilHealthContributionTableScreen();
 	}
 
+	@FXML
+	public void goToEmployeeLoanList() {
+		stageController.showEmployeeLoanListScreen();
+	}
+
 }
