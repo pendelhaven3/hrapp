@@ -7,8 +7,6 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -35,28 +33,6 @@ public class DateUtil {
 		}
 	}
 
-	public static Set<Date> generateDailyDateSet(Date startDate, Date endDate) {
-		Set<Date> dates = new HashSet<>();
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(startDate);
-		
-		while (calendar.getTime().compareTo(endDate) <= 0) {
-			dates.add(calendar.getTime());
-			calendar.add(Calendar.DATE, 1);
-		}
-		
-		return dates;
-	}
-	
-	public static Set<Date> generateDailyDateSet(DateInterval interval) {
-		return generateDailyDateSet(interval.getDateFrom(), interval.getDateTo());
-	}
-
-	public static int getMonth(Date date) {
-		return DateUtils.toCalendar(date).get(Calendar.MONTH);
-	}
-
 	public static DateInterval generateMonthYearInterval(YearMonth yearMonth) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR, yearMonth.getYear());
@@ -69,14 +45,6 @@ public class DateUtil {
 		Date endDate = calendar.getTime();
 		
 		return new DateInterval(startDate, endDate);
-	}
-	
-	public static Date getFirstDateOfMonth(int month) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH, month);
-		calendar.set(Calendar.DATE, 1);
-		
-		return calendar.getTime();
 	}
 	
 	public static YearMonth getYearMonth(Date date) {
