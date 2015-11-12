@@ -9,20 +9,11 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.pj.hrapp.HRApp;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payroll;
 
-@ContextConfiguration(
-		loader = AnnotationConfigContextLoader.class,
-		classes = HRApp.class)
-@ActiveProfiles("test")
-public class EmployeeDaoTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class EmployeeRepositoryTest extends IntegrationTest {
 	
 	@Autowired private EmployeeRepository employeeDao;
 	
