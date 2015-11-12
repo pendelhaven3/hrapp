@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -33,6 +35,8 @@ public class Employee {
 	private String atmAccountNumber;
 	private String magicCustomerCode;
 	private Date hireDate;
+	
+	@Enumerated(EnumType.STRING)
 	private PaySchedule paySchedule;
 
 	public Employee() {
