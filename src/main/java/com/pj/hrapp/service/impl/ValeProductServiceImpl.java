@@ -84,7 +84,6 @@ public class ValeProductServiceImpl implements ValeProductService {
 				.collect(Collectors.toList());
 		
 		String url = MARK_AS_PAID_URL + UrlUtil.mapToQueryString("salesInvoiceNumber", salesInvoiceNumbers);
-		System.out.println(url);
 		
 		HttpClient httpClient = HttpClientBuilder.create().build();
 		try {
