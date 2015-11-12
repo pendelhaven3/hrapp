@@ -160,7 +160,17 @@ public class EmployeeController extends AbstractController {
 			return false;
 		}
 
+		if (isPayScheduleNotSpecified()) {
+			ShowDialog.error("Pay Schedule must be specified");
+			payScheduleComboBox.requestFocus();
+			return false;
+		}
+
 		return true;
+	}
+
+	private boolean isPayScheduleNotSpecified() {
+		return payScheduleComboBox.getValue() == null;
 	}
 
 	private boolean isNicknameNotSpecified() {
