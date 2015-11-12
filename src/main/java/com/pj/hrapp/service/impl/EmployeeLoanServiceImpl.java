@@ -65,7 +65,11 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 
 	@Override
 	public List<EmployeeLoan> findAllUnpaidLoansByEmployee(Employee employee) {
-		return employeeLoanRepository.findAllByEmployee(employee);
+		List<EmployeeLoan> loans = employeeLoanRepository.findAllByEmployee(employee);
+		for (EmployeeLoan loan : loans) {
+			loan.setPayments(employeeLoanPaymentRepository.findAllByEmployeeLoan(loan));
+		}
+		return loans;
 	}
 
 	@Transactional

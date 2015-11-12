@@ -25,28 +25,16 @@
 							<AppPropertyValueFactory property="item.loanDate" />
 						</cellValueFactory>
 					</TableColumn>
-					<TableColumn text="Amount" styleClass="center">
+					<TableColumn text="Payment Amount" styleClass="center">
 						<cellValueFactory>
 							<AppPropertyValueFactory property="item.amount" />
 						</cellValueFactory>
 					</TableColumn>
-					<TableColumn text="No. of Payments" styleClass="center">
+					<TableColumn text="Last Payment No." styleClass="center">
 						<cellValueFactory>
-							<AppPropertyValueFactory property="item.numberOfPayments" />
+							<AppPropertyValueFactory property="item.lastPaymentNumberDescription" />
 						</cellValueFactory>
 					</TableColumn>
-					<TableColumn text="Payment Amount" styleClass="center">
-						<cellValueFactory>
-							<AppPropertyValueFactory property="item.paymentAmount" />
-						</cellValueFactory>
-					</TableColumn>
-					<!-- 
-					<TableColumn text="Current No. of Payments" styleClass="center">
-						<cellValueFactory>
-							<AppPropertyValueFactory property="paymentAmount" />
-						</cellValueFactory>
-					</TableColumn>
-					-->
 				</columns>
 			</SelectableTableView>
 			

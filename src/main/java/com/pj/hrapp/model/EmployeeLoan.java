@@ -133,4 +133,17 @@ public class EmployeeLoan {
 				.toString();
 	}
 	
+	public String getLastPaymentNumberDescription() {
+		int lastPaymentNumber = payments.stream()
+				.map(payment -> payment.getPaymentNumber())
+				.max((o1, o2) -> o1.compareTo(o2))
+				.orElseGet(() -> 0);
+		
+		if (lastPaymentNumber == 0) {
+			return "None";
+		} else {
+			return new StringBuilder().append(lastPaymentNumber).append("x").append(numberOfPayments).toString();
+		}
+	}
+	
 }
