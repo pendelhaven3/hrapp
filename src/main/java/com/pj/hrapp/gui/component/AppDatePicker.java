@@ -12,6 +12,7 @@ public class AppDatePicker extends DatePicker {
 
 	public AppDatePicker() {
 		setPromptText(Constants.DATE_FORMAT.toLowerCase());
+		
 		setConverter(new StringConverter<LocalDate>() {
 
 			private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
@@ -29,6 +30,12 @@ public class AppDatePicker extends DatePicker {
 					return null;
 				}
 				return LocalDate.parse(dateString, dateTimeFormatter);
+			}
+		});
+		
+		focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue) {
+				setValue(getConverter().fromString(getEditor().getText()));			
 			}
 		});
 	}
