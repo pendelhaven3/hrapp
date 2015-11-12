@@ -1,6 +1,7 @@
 package com.pj.hrapp.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class EmployeeLoan {
 	
 	private BigDecimal amount;
 	private Integer numberOfPayments;
-	private BigDecimal paymentAmount;
 	private String remarks;
 
 	@OneToMany(mappedBy = "loan", cascade = CascadeType.REMOVE)
@@ -95,11 +95,7 @@ public class EmployeeLoan {
 	}
 
 	public BigDecimal getPaymentAmount() {
-		return paymentAmount;
-	}
-
-	public void setPaymentAmount(BigDecimal paymentAmount) {
-		this.paymentAmount = paymentAmount;
+		return amount.divide(new BigDecimal(numberOfPayments), 2, RoundingMode.HALF_UP);
 	}
 
 	@Override

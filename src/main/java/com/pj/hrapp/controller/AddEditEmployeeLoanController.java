@@ -1,6 +1,7 @@
 package com.pj.hrapp.controller;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -51,6 +52,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	public void updateDisplay() {
 		setTitle();
 		employeeComboBox.getItems().setAll(employeeService.getAllEmployees());
+		updatePaymentAmountWhenNumberOfPaymentsChange();
 		
 		if (loan != null) {
 			loan = employeeLoanService.findEmployeeLoan(loan.getId());
@@ -65,6 +67,19 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		}
 		
 		employeeComboBox.requestFocus();
+	}
+
+	private void updatePaymentAmountWhenNumberOfPaymentsChange() {
+		numberOfPaymentsField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (NumberUtil.isAmount(amountField.getText()) && NumberUtils.isDigits(newValue)) {
+				BigDecimal amount = NumberUtil.toBigDecimal(amountField.getText());
+				Integer numberOfPayments = Integer.valueOf(newValue);
+				paymentAmountField.setText(FormatterUtil.formatAmount(
+						amount.divide(new BigDecimal(numberOfPayments), 2, RoundingMode.HALF_UP)));
+			} else {
+				paymentAmountField.setText(null);
+			}
+		});
 	}
 
 	private void setTitle() {
@@ -107,7 +122,6 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		loan.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
 		loan.setLoanDate(DateUtil.toDate(loanDateDatePicker.getValue()));
 		loan.setNumberOfPayments(Integer.valueOf(numberOfPaymentsField.getText()));
-		loan.setPaymentAmount(NumberUtil.toBigDecimal(paymentAmountField.getText()));
 		loan.setRemarks(remarksTextArea.getText());
 		
 		try {

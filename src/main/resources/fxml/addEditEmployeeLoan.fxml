@@ -41,7 +41,7 @@
 					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 				<Label text="Payment Amount"
 					GridPane.columnIndex="0" GridPane.rowIndex="4" />
-				<TextField fx:id="paymentAmountField"
+				<TextField fx:id="paymentAmountField" disable="true"
 					GridPane.columnIndex="1" GridPane.rowIndex="4" />
 				<Label text="Remarks" GridPane.valignment="top"
 					GridPane.columnIndex="0" GridPane.rowIndex="5" />
