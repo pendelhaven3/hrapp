@@ -34,14 +34,14 @@ public class EmployeeRepositoryTest extends IntegrationTest {
 	}
 	
 	private void insertTestPayroll() {
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
-				+ " values (1, 1, 'Homer', 'Simpson')");
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
-				+ " values (2, 2, 'Montgomery', 'Burns')");
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
-				+ " values (3, 3, 'Nick', 'Riviera')");
+		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName, paySchedule)"
+				+ " values (1, 1, 'Homer', 'Simpson', 'WEEKLY')");
+		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName, paySchedule)"
+				+ " values (2, 2, 'Montgomery', 'Burns', 'WEEKLY')");
+		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName, paySchedule)"
+				+ " values (3, 3, 'Nick', 'Riviera', 'SEMIMONTHLY')");
 		
-		jdbcTemplate.update("insert into Payroll (id, includeSSSPagibigPhilhealth) values (1, false)");
+		jdbcTemplate.update("insert into Payroll (id, paySchedule) values (1, 'WEEKLY')");
 		
 		jdbcTemplate.update("insert into Payslip (id, payroll_id, employee_id) values (1, 1, 1)");
 	}
@@ -124,13 +124,9 @@ public class EmployeeRepositoryTest extends IntegrationTest {
 	public void findAllNotInPayroll() {
 		insertTestPayroll();
 		
-		Payroll payroll = new Payroll();
-		payroll.setId(1L);
-		
-		List<Employee> result = employeeDao.findAllNotInPayroll(payroll);
-		assertEquals(2, result.size());
-		assertTrue(result.contains(new Employee(2L)));
-		assertTrue(result.contains(new Employee(3L)));
+		List<Employee> result = employeeDao.findAllNotInPayroll(Payroll.withId(1L));
+		assertEquals(1, result.size());
+		assertTrue(result.contains(Employee.withId(2L)));
 	}
 
 }

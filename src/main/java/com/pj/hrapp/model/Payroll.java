@@ -155,4 +155,11 @@ public class Payroll {
 		return calendar.getTime();
 	}
 	
+	public static Payroll withId(long id) {
+		Payroll payroll = new Payroll();
+		payroll.setId(id);
+		
+		return payroll;
+	}
+	
 }

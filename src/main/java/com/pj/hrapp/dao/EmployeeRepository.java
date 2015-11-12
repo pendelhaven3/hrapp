@@ -16,8 +16,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	@Query("select e from Employee e order by e.nickname")
 	List<Employee> findAll();
 
-	@Query("select e from Employee e where e.id not in"
-			+ " (select payslip.employee.id from Payroll payroll, Payslip payslip where payslip.payroll = :payroll)")
+	@Query("select e from Employee e, Payroll p where e.id not in"
+			+ " (select payslip.employee.id from Payroll payroll, Payslip payslip where payslip.payroll = :payroll)"
+			+ " and e.paySchedule = p.paySchedule"
+			+ " and p = :payroll"
+			+ " order by e.firstName, e.lastName")
 	List<Employee> findAllNotInPayroll(@Param("payroll") Payroll payroll);
 	
 }
