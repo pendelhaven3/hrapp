@@ -2,6 +2,7 @@ package com.pj.hrapp.service.impl;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,10 @@ public class ValeProductServiceImpl implements ValeProductService {
 		String url = SEARCH_URL + UrlUtil.mapToQueryString(params);
 		
 		try {
-			return Arrays.asList(restTemplate.getForObject(url, ValeProduct[].class));
+			List<ValeProduct> valeProducts = Arrays.asList(restTemplate.getForObject(url, ValeProduct[].class));
+			Collections.sort(valeProducts, 
+					(o1,o2) -> o1.getSalesInvoiceNumber().compareTo(o2.getSalesInvoiceNumber()));
+			return valeProducts;
 		} catch (RestClientException e) {
 			logger.error(e.getMessage(), e);
 			throw new ConnectToMagicException();
