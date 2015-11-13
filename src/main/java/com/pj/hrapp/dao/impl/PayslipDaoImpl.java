@@ -48,7 +48,8 @@ public class PayslipDaoImpl implements PayslipDao {
 	@Override
 	public List<Payslip> findAllByPayroll(Payroll payroll) {
 		TypedQuery<Payslip> query = entityManager.createQuery(
-				"select p from Payslip p where p.payroll = :payroll order by p.employee.nickname", Payslip.class);
+				"select p from Payslip p where p.payroll = :payroll"
+				+ " order by p.employee.firstName, p.employee.lastName", Payslip.class);
 		query.setParameter("payroll", payroll);
 		return query.getResultList();
 	}
