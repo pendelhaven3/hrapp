@@ -147,7 +147,7 @@
 					</Tab>
 					<Tab text="Vale Products" closable="false">
 						<VBox alignment="center" spacing="10">
-							<TableView fx:id="valeProductsTable">
+							<AppTableView fx:id="valeProductsTable">
 								<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 								<columns>
 									<TableColumn text="SI No.">
@@ -166,7 +166,7 @@
 										</cellValueFactory>
 									</TableColumn>
 								</columns>
-							</TableView>
+							</AppTableView>
 							
 							<HBox alignment="center" spacing="10">
 								<Button text="Add Vale Product" onAction="#addValeProduct" />
@@ -176,7 +176,7 @@
 					</Tab>
 					<Tab text="Others" closable="false">
 						<VBox spacing="10" alignment="center">
-							<TableView fx:id="adjustmentsTable">
+							<AppTableView fx:id="adjustmentsTable">
 								<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 								<columns>
 									<TableColumn text="Type">
@@ -195,7 +195,7 @@
 										</cellValueFactory>
 									</TableColumn>
 								</columns>
-							</TableView>
+							</AppTableView>
 							
 							<HBox alignment="center" spacing="10">
 								<Button text="Add Adjustment" onAction="#addPayslipAdjustment" />

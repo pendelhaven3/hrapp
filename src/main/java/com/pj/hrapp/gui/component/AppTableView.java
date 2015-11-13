@@ -51,5 +51,13 @@ public class AppTableView<T> extends TableView<T> {
 			}
 		});
 	}
+
+	public void setDeleteKeyAction(CustomAction action) {
+		setOnKeyPressed(e -> {
+			if (e.getCode().equals(KeyCode.DELETE)) {
+				action.doAction();
+			}
+		});
+	}
 	
 }

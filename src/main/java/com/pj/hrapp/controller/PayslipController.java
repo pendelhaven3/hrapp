@@ -68,8 +68,8 @@ public class PayslipController extends AbstractController {
 	@FXML private TableView<EmployeeAttendance> attendancesTable;
 	@FXML private TableView<PayslipBasicPayItem> basicPayItemsTable;
 	@FXML private AppTableView<EmployeeLoanPayment> loanPaymentsTable;
-	@FXML private TableView<ValeProduct> valeProductsTable;
-	@FXML private TableView<PayslipAdjustment> adjustmentsTable;
+	@FXML private AppTableView<ValeProduct> valeProductsTable;
+	@FXML private AppTableView<PayslipAdjustment> adjustmentsTable;
 	@FXML private TableView<PreviewPayslipItem> previewPayslipTable;
 	@FXML private TabPane tabPane;
 
@@ -100,8 +100,10 @@ public class PayslipController extends AbstractController {
 		});
 
 		loanPaymentsTable.setItems(payslip.getLoanPayments());
+		loanPaymentsTable.setDeleteKeyAction(() -> deleteLoanPayment());
 		
 		valeProductsTable.getItems().setAll(payslip.getValeProducts());
+		valeProductsTable.setDeleteKeyAction(() -> deleteValeProduct());
 		
 		adjustmentsTable.getItems().setAll(payslip.getAdjustments());
 		adjustmentsTable.setOnMouseClicked(new DoubleClickEventHandler() {
@@ -111,6 +113,7 @@ public class PayslipController extends AbstractController {
 				editSelectedAdjustment();
 			}
 		});
+		adjustmentsTable.setDeleteKeyAction(() -> deletePayslipAdjustment());
 		
 		previewPayslipTable.getItems().setAll(payslip.getPreviewItems());
 	}
