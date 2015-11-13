@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.AddPayslipDialog;
+import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payroll;
@@ -28,7 +29,6 @@ import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -49,7 +49,7 @@ public class PayrollController extends AbstractController {
 	@FXML private Label payDateLabel;
 	@FXML private Label payScheduleLabel;
 	@FXML private Label includeSSSPagibigPhilhealthLabel;
-	@FXML private TableView<Payslip> payslipsTable;
+	@FXML private AppTableView<Payslip> payslipsTable;
 	
 	@Parameter private Payroll payroll;
 	
@@ -76,6 +76,7 @@ public class PayrollController extends AbstractController {
 				openSelectedPayslip();
 			}
 		});
+		payslipsTable.setDeleteKeyAction(() -> deletePayslip());
 	}
 
 	protected void openSelectedPayslip() {

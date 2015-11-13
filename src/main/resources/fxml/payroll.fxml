@@ -14,6 +14,7 @@
 <?import com.pj.hrapp.gui.component.AppPropertyValueFactory?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
+<?import com.pj.hrapp.gui.component.AppTableView?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" 
 		fx:controller="com.pj.hrapp.controller.PayrollController">
@@ -54,7 +55,7 @@
 				<tabs>
 					<Tab text="Payslips" closable="false">
 						<VBox alignment="center" spacing="10">
-							<TableView fx:id="payslipsTable">
+							<AppTableView fx:id="payslipsTable">
 								<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 								<columns>
 									<TableColumn text="Employee">
@@ -78,7 +79,7 @@
 										</cellValueFactory>
 									</TableColumn>
 								</columns>
-							</TableView>
+							</AppTableView>
 							
 							<HBox spacing="10" alignment="center">
 								<Button text="Add Payslip" onAction="#addPayslip" />
