@@ -90,8 +90,13 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		}
 	}
 
-	@FXML public void doOnBack() {
-		stageController.showEmployeeLoanListScreen();
+	@FXML 
+	public void doOnBack() {
+		if (loan != null) {
+			stageController.showEmployeeLoanScreen(loan);
+		} else {
+			stageController.showEmployeeLoanListScreen();
+		}
 	}
 
 	@FXML 

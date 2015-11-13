@@ -48,7 +48,12 @@
 				<TextArea fx:id="remarksTextArea" prefWidth="300" prefHeight="100"
 					GridPane.columnIndex="1" GridPane.rowIndex="5" />
 			</GridPane>
-			<Button text="Save" onAction="#saveEmployeeLoan" />
+			
+			<HBox spacing="10" alignment="center">
+				<Button text="Save" onAction="#saveEmployeeLoan" />
+				<Button text="Cancel" onAction="#doOnBack" />
+			</HBox>
+			
 		</VBox>
 	</center>
 </BorderPane>
