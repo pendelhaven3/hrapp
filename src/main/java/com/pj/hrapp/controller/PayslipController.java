@@ -300,4 +300,22 @@ public class PayslipController extends AbstractController {
 		return loanPaymentsTable.getSelectedItem();
 	}
 
+	@FXML 
+	public void deletePayslip() {
+		if (!ShowDialog.confirm("Delete payslip?")) {
+			return;
+		}
+		
+		try {
+			payrollService.delete(payslip);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		ShowDialog.info("Payslip deleted");
+		stageController.showPayrollScreen(payslip.getPayroll());
+	}
+
 }
