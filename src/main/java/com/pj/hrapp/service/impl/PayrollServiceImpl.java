@@ -255,4 +255,9 @@ public class PayrollServiceImpl implements PayrollService {
 		valeProductRepository.delete(valeProduct.getId());
 	}
 
+	@Override
+	public Payslip findAnyPayslipByEmployee(Employee employee) {
+		return payslipDao.findAnyPayslipByEmployee(employee);
+	}
+
 }

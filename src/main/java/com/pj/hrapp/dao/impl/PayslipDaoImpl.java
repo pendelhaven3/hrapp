@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -12,6 +13,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.PayslipDao;
+import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.search.PayslipSearchCriteria;
@@ -81,6 +83,19 @@ public class PayslipDaoImpl implements PayslipDao {
 			query.setParameter(key, paramMap.get(key));
 		}
 		return query.getResultList();
+	}
+
+	@Override
+	public Payslip findAnyPayslipByEmployee(Employee employee) {
+		TypedQuery<Payslip> query = entityManager.createQuery("select p from Payslip p where p.employee = :employee",
+				Payslip.class);
+		query.setParameter("employee", employee);
+		query.setMaxResults(1);
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }

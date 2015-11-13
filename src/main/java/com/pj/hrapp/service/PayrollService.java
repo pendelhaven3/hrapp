@@ -2,6 +2,7 @@ package com.pj.hrapp.service;
 
 import java.util.List;
 
+import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
@@ -30,5 +31,7 @@ public interface PayrollService {
 	void delete(Payslip payslip);
 
 	void delete(ValeProduct valeProduct);
+
+	Payslip findAnyPayslipByEmployee(Employee employee);
 
 }

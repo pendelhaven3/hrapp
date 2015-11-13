@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.search.PayslipSearchCriteria;
+import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Payroll;
 
 public interface PayslipDao {
@@ -19,5 +20,7 @@ public interface PayslipDao {
 	void delete(Payslip payslip);
 
 	List<Payslip> search(PayslipSearchCriteria criteria);
+
+	Payslip findAnyPayslipByEmployee(Employee employee);
 	
 }

@@ -13,6 +13,7 @@ import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.service.EmployeeService;
+import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
 
 import javafx.fxml.FXML;
@@ -28,6 +29,7 @@ public class EmployeeController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 	
 	@Autowired private EmployeeService employeeService;
+	@Autowired private PayrollService payrollService;
 	
 	@FXML private TextField employeeNumberField;
 	@FXML private TextField nicknameField;
@@ -200,6 +202,11 @@ public class EmployeeController extends AbstractController {
 	}
 
 	@FXML public void deleteEmployee() {
+		if (employeeHasPayslipRecord()) {
+			ShowDialog.error("Cannot delete employee with payslip record");
+			return;
+		}
+		
 		if (!ShowDialog.confirm("Delete employee?")) {
 			return;
 		}
@@ -212,6 +219,10 @@ public class EmployeeController extends AbstractController {
 		}
 		ShowDialog.info("Employee deleted");
 		stageController.showEmployeeListScreen();
+	}
+
+	private boolean employeeHasPayslipRecord() {
+		return payrollService.findAnyPayslipByEmployee(employee) != null;
 	}
 
 }
