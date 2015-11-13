@@ -29,14 +29,9 @@
 					<PropertyValueFactory property="nickname" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Last Name">
+			<TableColumn text="Full Name">
 				<cellValueFactory>
-					<PropertyValueFactory property="lastName" />
-				</cellValueFactory>
-			</TableColumn>
-			<TableColumn text="First Name">
-				<cellValueFactory>
-					<PropertyValueFactory property="firstName" />
+					<PropertyValueFactory property="fullName" />
 				</cellValueFactory>
 			</TableColumn>
 		</columns>
