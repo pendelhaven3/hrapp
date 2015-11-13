@@ -3,8 +3,6 @@ package com.pj.hrapp.service.impl;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -14,7 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 import com.pj.hrapp.model.EmployeeLoanPayment;
@@ -23,31 +21,14 @@ import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipBasicPayItem;
 import com.pj.hrapp.model.ValeProduct;
-import com.pj.hrapp.service.ExcelService;
 import com.pj.hrapp.service.PayrollService;
 
-@Service
-public class ExcelServiceImpl implements ExcelService {
+@Component
+public class PayrollToExcelGenerator {
 
 	private static final int PAYSLIPS_PER_SHEET = 9;
 
 	@Autowired private PayrollService payrollService;
-	
-	private String[][] cellNames;
-	
-	@PostConstruct
-	private void generateCellNames() {
-		int rows = 50;
-		int columns = 8;
-		String[] columnNames = new String[] {"A", "B", "C", "D", "E", "F", "G", "H"};
-		
-		cellNames = new String[rows][columns];
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				cellNames[i][j] = columnNames[j] + String.valueOf(i);
-			}
-		}
-	}
 	
 	private int[] payslipRows = new int[] {0, 0, 0, 17, 17, 17, 34, 34, 34};
 	
@@ -63,7 +44,25 @@ public class ExcelServiceImpl implements ExcelService {
 		{6, 7, 8}
 	};
 	
-	@Override
+	private String[][] cellNames;
+	
+	public PayrollToExcelGenerator() {
+		generateCellNames();
+	}
+	
+	private void generateCellNames() {
+		int rows = 50;
+		int columns = 8;
+		String[] columnNames = new String[] {"A", "B", "C", "D", "E", "F", "G", "H"};
+		
+		cellNames = new String[rows][columns];
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				cellNames[i][j] = columnNames[j] + String.valueOf(i);
+			}
+		}
+	}
+	
 	public XSSFWorkbook generate(Payroll payroll) throws IOException {
 		XSSFWorkbook workbook = new XSSFWorkbook(getClass().getResourceAsStream("/excel/payslip.xlsx"));
 		CellStyle leftBorderCellStyle = createCellStyleWithLeftBorder(workbook);

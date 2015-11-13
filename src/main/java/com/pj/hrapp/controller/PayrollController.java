@@ -23,8 +23,8 @@ import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
-import com.pj.hrapp.service.ExcelService;
 import com.pj.hrapp.service.PayrollService;
+import com.pj.hrapp.service.impl.PayrollToExcelGenerator;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
@@ -40,7 +40,7 @@ public class PayrollController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(PayrollController.class);
 	
 	@Autowired private PayrollService payrollService;
-	@Autowired private ExcelService excelService;
+	@Autowired private PayrollToExcelGenerator excelGenerator;
 	
 	@Autowired(required = false)
 	private AddPayslipDialog addPayslipDialog;
@@ -117,7 +117,7 @@ public class PayrollController extends AbstractController {
         }
 		
 		try (
-			XSSFWorkbook workbook = excelService.generate(payroll);
+			XSSFWorkbook workbook = excelGenerator.generate(payroll);
 			FileOutputStream out = new FileOutputStream(file);
 		) {
 			workbook.write(out);
