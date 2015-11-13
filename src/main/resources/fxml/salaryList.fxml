@@ -20,22 +20,17 @@
 	<TableView fx:id="salariesTable" VBox.vgrow="always">
 		<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 		<columns>
-			<TableColumn text="Employee Number">
-				<cellValueFactory>
-					<AppPropertyValueFactory property="employee.employeeNumber" />
-				</cellValueFactory>
-			</TableColumn>
-			<TableColumn text="Nickname">
+			<TableColumn text="Employee">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="employee" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Rate">
+			<TableColumn text="Rate" styleClass="right">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="rate" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Pay Schedule">
+			<TableColumn text="Pay Schedule" styleClass="center">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="paySchedule" />
 				</cellValueFactory>
