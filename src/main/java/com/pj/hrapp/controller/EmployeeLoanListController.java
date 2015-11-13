@@ -23,7 +23,7 @@ public class EmployeeLoanListController extends AbstractController {
 	public void updateDisplay() {
 		stageController.setTitle("Employee Loan List");
 		
-		employeeLoansTable.setItemsThenFocus(employeeLoanService.findAllEmployeeLoans());
+		employeeLoansTable.setItemsThenFocus(employeeLoanService.findAllUnpaidEmployeeLoans());
 		employeeLoansTable.setDoubleClickAndEnterKeyAction(() -> updateSelectedEmployeeLoan());
 	}
 

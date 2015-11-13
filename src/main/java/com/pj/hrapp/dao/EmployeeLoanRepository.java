@@ -11,4 +11,8 @@ public interface EmployeeLoanRepository extends JpaRepository<EmployeeLoan, Long
 
 	List<EmployeeLoan> findAllByEmployee(Employee employee);
 	
+	List<EmployeeLoan> findAllByPaid(Boolean paid);
+
+	List<EmployeeLoan> findAllByEmployeeAndPaid(Employee employee, boolean paid);
+	
 }

@@ -9,7 +9,7 @@ import com.pj.hrapp.model.Payslip;
 
 public interface EmployeeLoanService {
 
-	List<EmployeeLoan> findAllEmployeeLoans();
+	List<EmployeeLoan> findAllUnpaidEmployeeLoans();
 
 	EmployeeLoan findEmployeeLoan(Long id);
 
@@ -26,5 +26,7 @@ public interface EmployeeLoanService {
 	List<EmployeeLoan> findAllUnpaidLoansByEmployee(Employee employee);
 
 	void createLoanPayments(List<EmployeeLoan> loans, Payslip payslip);
+
+	void markAsPaid(EmployeeLoan loan);
 
 }

@@ -3,10 +3,9 @@ package com.pj.hrapp.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
 import com.pj.hrapp.dao.EmployeeLoanRepository;
@@ -23,8 +22,12 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 	@Autowired private EmployeeLoanPaymentRepository employeeLoanPaymentRepository;
 	
 	@Override
-	public List<EmployeeLoan> findAllEmployeeLoans() {
-		return employeeLoanRepository.findAll();
+	public List<EmployeeLoan> findAllUnpaidEmployeeLoans() {
+		List<EmployeeLoan> loans = employeeLoanRepository.findAllByPaid(false);
+		for (EmployeeLoan loan : loans) {
+			loan.setPayments(employeeLoanPaymentRepository.findAllByEmployeeLoan(loan));
+		}
+		return loans;
 	}
 
 	@Override
@@ -65,7 +68,7 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 
 	@Override
 	public List<EmployeeLoan> findAllUnpaidLoansByEmployee(Employee employee) {
-		List<EmployeeLoan> loans = employeeLoanRepository.findAllByEmployee(employee);
+		List<EmployeeLoan> loans = employeeLoanRepository.findAllByEmployeeAndPaid(employee, false);
 		for (EmployeeLoan loan : loans) {
 			loan.setPayments(employeeLoanPaymentRepository.findAllByEmployeeLoan(loan));
 		}
@@ -88,6 +91,13 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 			payments.add(payment);
 		}
 		employeeLoanPaymentRepository.save(payments);
+	}
+
+	@Transactional
+	@Override
+	public void markAsPaid(EmployeeLoan loan) {
+		loan.setPaid(true);
+		employeeLoanRepository.save(loan);
 	}
 
 }

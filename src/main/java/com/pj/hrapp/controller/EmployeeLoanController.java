@@ -3,6 +3,7 @@ package com.pj.hrapp.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class EmployeeLoanController extends AbstractController {
 	@FXML private Label amountLabel;
 	@FXML private Label numberOfPaymentsLabel;
 	@FXML private Label paymentAmountLabel;
+	@FXML private Label paidLabel;
 	@FXML private Label remarksLabel;
 	
 	@FXML private AppTableView<EmployeeLoanPayment> paymentsTable;
@@ -54,7 +56,8 @@ public class EmployeeLoanController extends AbstractController {
 		amountLabel.setText(FormatterUtil.formatAmount(loan.getAmount()));
 		numberOfPaymentsLabel.setText(loan.getNumberOfPayments().toString());
 		paymentAmountLabel.setText(FormatterUtil.formatAmount(loan.getPaymentAmount()));
-		remarksLabel.setText(loan.getRemarks());
+		paidLabel.setText(loan.isPaid() ? "Yes" : "No");
+		remarksLabel.setText(StringUtils.defaultIfBlank(loan.getRemarks(), "(none)"));
 		
 		paymentsTable.setItems(loan.getPayments());
 		paymentsTable.setDoubleClickAction(() -> updateSelectedPayment());
@@ -128,6 +131,22 @@ public class EmployeeLoanController extends AbstractController {
 	@FXML
 	public void updateLoan() {
 		stageController.showUpdateEmployeeLoanScreen(loan);
+	}
+
+	@FXML 
+	public void markAsPaid() {
+		if (ShowDialog.confirm("Mark employee loan as paid?")) {
+			try {
+				employeeLoanService.markAsPaid(loan);
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				ShowDialog.unexpectedError();
+				return;
+			}
+			
+			ShowDialog.info("Employee loan marked as paid");
+			updateDisplay();
+		}
 	}
 
 }

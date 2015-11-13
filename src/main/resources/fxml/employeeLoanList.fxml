@@ -36,6 +36,11 @@
 					<AppPropertyValueFactory property="amount" />
 				</cellValueFactory>
 			</TableColumn>
+			<TableColumn text="Payment Status" styleClass="center">
+				<cellValueFactory>
+					<AppPropertyValueFactory property="paymentStatus" />
+				</cellValueFactory>
+			</TableColumn>
 		</columns>
 	</AppTableView>
 	

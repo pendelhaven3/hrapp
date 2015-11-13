@@ -29,7 +29,7 @@
 			<padding><Insets top="10" bottom="10" /></padding>
 			<HBox alignment="center" spacing="100">
 				<GridPane vgap="10" alignment="center">
-					<Label text="Employee" prefWidth="200"
+					<Label text="Employee" prefWidth="150"
 						GridPane.columnIndex="0" GridPane.rowIndex="0" />
 					<Label fx:id="employeeLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -52,15 +52,21 @@
 						GridPane.columnIndex="0" GridPane.rowIndex="1" />
 					<Label fx:id="paymentAmountLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="1" />
-					<Label text="Remarks"
+					<Label text="Paid"
 						GridPane.columnIndex="0" GridPane.rowIndex="2" />
-					<Label fx:id="remarksLabel"
+					<Label fx:id="paidLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				</GridPane>
 			</HBox>
 			
+			<HBox alignment="center" spacing="50">
+				<Label text="Remarks" />
+				<Label fx:id="remarksLabel" />
+			</HBox>
+			
 			<HBox spacing="10" alignment="center">
 				<Button text="Update Loan" onAction="#updateLoan" />
+				<Button text="Mark As Paid" onAction="#markAsPaid" />
 			</HBox>
 			
 			<TabPane VBox.vgrow="always">

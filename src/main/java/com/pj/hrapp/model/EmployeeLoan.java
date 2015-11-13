@@ -35,9 +35,12 @@ public class EmployeeLoan {
 	private Integer numberOfPayments;
 	private String remarks;
 
+	@Column(columnDefinition = "boolean default false")
+	private boolean paid;
+	
 	@OneToMany(mappedBy = "loan", cascade = CascadeType.REMOVE)
 	private List<EmployeeLoanPayment> payments;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -143,6 +146,22 @@ public class EmployeeLoan {
 			return "None";
 		} else {
 			return new StringBuilder().append(lastPaymentNumber).append("x").append(numberOfPayments).toString();
+		}
+	}
+	
+	public boolean isPaid() {
+		return paid;
+	}
+
+	public void setPaid(boolean paid) {
+		this.paid = paid;
+	}
+
+	public String getPaymentStatus() {
+		if (paid) {
+			return "Paid";
+		} else {
+			return getLastPaymentNumberDescription();
 		}
 	}
 	
