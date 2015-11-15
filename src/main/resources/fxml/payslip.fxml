@@ -122,9 +122,14 @@
 							<AppTableView fx:id="loanPaymentsTable">
 								<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 								<columns>
-									<TableColumn text="Loan" styleClass="center">
+									<TableColumn text="Loan Date" styleClass="center">
 										<cellValueFactory>
-											<AppPropertyValueFactory property="loan" />
+											<AppPropertyValueFactory property="loan.loanDate" />
+										</cellValueFactory>
+									</TableColumn>
+									<TableColumn text="Loan Description" styleClass="center">
+										<cellValueFactory>
+											<AppPropertyValueFactory property="loan.description" />
 										</cellValueFactory>
 									</TableColumn>
 									<TableColumn text="Payment Number" styleClass="center">

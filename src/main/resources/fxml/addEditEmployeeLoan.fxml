@@ -27,26 +27,30 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
 				<ComboBox fx:id="employeeComboBox"
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
-				<Label text="Amount"
+				<Label text="Loan Description"
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
-				<TextField fx:id="amountField"
+				<TextField fx:id="descriptionField"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Label text="Loan Date"
+				<Label text="Amount"
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
-				<AppDatePicker fx:id="loanDateDatePicker"
+				<TextField fx:id="amountField"
 					GridPane.columnIndex="1" GridPane.rowIndex="2" />
-				<Label text="Number of Payments"
+				<Label text="Loan Date"
 					GridPane.columnIndex="0" GridPane.rowIndex="3" />
-				<TextField fx:id="numberOfPaymentsField"
+				<AppDatePicker fx:id="loanDateDatePicker"
 					GridPane.columnIndex="1" GridPane.rowIndex="3" />
-				<Label text="Payment Amount"
+				<Label text="Number of Payments"
 					GridPane.columnIndex="0" GridPane.rowIndex="4" />
-				<TextField fx:id="paymentAmountField" disable="true"
+				<TextField fx:id="numberOfPaymentsField"
 					GridPane.columnIndex="1" GridPane.rowIndex="4" />
-				<Label text="Remarks" GridPane.valignment="top"
+				<Label text="Payment Amount"
 					GridPane.columnIndex="0" GridPane.rowIndex="5" />
-				<TextArea fx:id="remarksTextArea" prefWidth="300" prefHeight="100"
+				<TextField fx:id="paymentAmountField" disable="true"
 					GridPane.columnIndex="1" GridPane.rowIndex="5" />
+				<Label text="Remarks" GridPane.valignment="top"
+					GridPane.columnIndex="0" GridPane.rowIndex="6" />
+				<TextArea fx:id="remarksTextArea" prefWidth="300" prefHeight="100"
+					GridPane.columnIndex="1" GridPane.rowIndex="6" />
 			</GridPane>
 			
 			<HBox spacing="10" alignment="center">

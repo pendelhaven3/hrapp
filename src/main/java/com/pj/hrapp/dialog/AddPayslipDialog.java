@@ -105,7 +105,7 @@ public class AddPayslipDialog extends AbstractDialog {
 	}
 	
 	private void switchToAddLoanPaymentsScreen() {
-		changeScene("addPayslipDialog-loanPayment");
+		changeScene("addPayslipDialog-loanPayment", 800d, 400d);
 		setTitle("Add Payslip - Add Loan Payments");
 		updateEmployeeLoansTable();
 	}
@@ -128,8 +128,12 @@ public class AddPayslipDialog extends AbstractDialog {
 	private Employee getSelectedEmployee() {
 		return employeesTable.getSelectionModel().getSelectedItem();
 	}
-	
+
 	private void changeScene(String sceneName) {
+		changeScene(sceneName, sceneWidth, sceneHeight);
+	}
+	
+	private void changeScene(String sceneName, double sceneWidth, double sceneHeight) {
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		fxmlLoader.setController(this);
 		

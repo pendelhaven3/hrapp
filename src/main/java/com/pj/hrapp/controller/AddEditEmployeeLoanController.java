@@ -39,6 +39,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	@Autowired private EmployeeLoanService employeeLoanService;
 	
 	@FXML private ComboBox<Employee> employeeComboBox;
+	@FXML private TextField descriptionField;
 	@FXML private TextField amountField;
 	@FXML private DatePicker loanDateDatePicker;
 	@FXML private TextField numberOfPaymentsField;
@@ -57,6 +58,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		if (loan != null) {
 			loan = employeeLoanService.findEmployeeLoan(loan.getId());
 			employeeComboBox.setValue(loan.getEmployee());
+			descriptionField.setText(loan.getDescription());
 			amountField.setText(FormatterUtil.formatAmount(loan.getAmount()));
 			loanDateDatePicker.setValue(DateUtil.toLocalDate(loan.getLoanDate()));
 			numberOfPaymentsField.setText(loan.getNumberOfPayments().toString());
@@ -124,6 +126,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 			loan = new EmployeeLoan();
 		}
 		loan.setEmployee(employeeComboBox.getValue());
+		loan.setDescription(descriptionField.getText());
 		loan.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
 		loan.setLoanDate(DateUtil.toDate(loanDateDatePicker.getValue()));
 		loan.setNumberOfPayments(Integer.valueOf(numberOfPaymentsField.getText()));
@@ -145,6 +148,12 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		if (isEmployeeNotSpecified()) {
 			ShowDialog.error("Employee must be specified");
 			employeeComboBox.requestFocus();
+			return false;
+		}
+		
+		if (isDescriptionNotSpecified()) {
+			ShowDialog.error("Loan Description must be specified");
+			descriptionField.requestFocus();
 			return false;
 		}
 		
@@ -197,6 +206,10 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		}
 		
 		return true;
+	}
+
+	private boolean isDescriptionNotSpecified() {
+		return StringUtils.isEmpty(descriptionField.getText());
 	}
 
 	private boolean doesPaymentAmountAndNumberOfPaymentsNotMatchLoanAmount() {

@@ -31,6 +31,7 @@ public class EmployeeLoan {
 	@Column(columnDefinition = "date")
 	private Date loanDate;
 	
+	private String description;
 	private BigDecimal amount;
 	private Integer numberOfPayments;
 	private String remarks;
@@ -55,6 +56,14 @@ public class EmployeeLoan {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public BigDecimal getAmount() {

@@ -26,6 +26,11 @@
 					<AppPropertyValueFactory property="employee"/>
 				</cellValueFactory>
 			</TableColumn>
+			<TableColumn text="Loan Description" styleClass="center">
+				<cellValueFactory>
+					<AppPropertyValueFactory property="description" />
+				</cellValueFactory>
+			</TableColumn>
 			<TableColumn text="Loan Date" styleClass="center">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="loanDate" />

@@ -104,5 +104,12 @@ public class EmployeeLoanPayment {
 				.append(loan.getNumberOfPayments())
 				.toString();
 	}
+
+	public String getDescription() {
+		return new StringBuilder()
+				.append(loan.getDescription())
+				.append(" (").append(getPaymentNumberDescription()).append(")")
+				.toString();
+	}
 	
 }

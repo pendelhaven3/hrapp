@@ -213,7 +213,7 @@ public class Payslip {
 
 		for (EmployeeLoanPayment loanPayment : loanPayments) {
 			PreviewPayslipItem item = new PreviewPayslipItem();
-			item.setDescription("hulog " + loanPayment.getPaymentNumberDescription());
+			item.setDescription(loanPayment.getDescription());
 			item.setAmount(loanPayment.getAmount().negate());
 			items.add(item);
 		}

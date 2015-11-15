@@ -139,7 +139,7 @@ public class PayrollToExcelGenerator {
 					
 					cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 					cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-					cell.setCellValue("hulog " + loanPayment.getPaymentNumberDescription());
+					cell.setCellValue(loanPayment.getDescription());
 					
 					cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
 					cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
