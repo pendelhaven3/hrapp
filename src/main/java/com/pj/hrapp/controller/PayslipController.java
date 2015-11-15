@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
+import com.pj.hrapp.dialog.AddPayslipLoanPaymentDialog;
 import com.pj.hrapp.dialog.AddValeProductDialog;
 import com.pj.hrapp.dialog.EmployeeAttendanceDialog;
-import com.pj.hrapp.dialog.EmployeeLoanPaymentDialog;
 import com.pj.hrapp.dialog.PayslipAdjustmentDialog;
 import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
@@ -50,13 +50,13 @@ public class PayslipController extends AbstractController {
 	private EmployeeAttendanceDialog employeeAttendanceDialog;
 	
 	@Autowired(required = false)
-	private EmployeeLoanPaymentDialog employeeLoanPaymentDialog;
-	
-	@Autowired(required = false)
 	private AddValeProductDialog addValeProductDialog;
 	
 	@Autowired(required = false)
 	private PayslipAdjustmentDialog payslipAdjustmentDialog;
+	
+	@Autowired(required = false)
+	private AddPayslipLoanPaymentDialog addPayslipLoanPaymentDialog;
 	
 	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;
@@ -267,7 +267,7 @@ public class PayslipController extends AbstractController {
 		Map<String, Object> model = new HashMap<>();
 		model.put("payslip", payslip);
 		
-		employeeLoanPaymentDialog.showAndWait(model);
+		addPayslipLoanPaymentDialog.showAndWait(model);
 		
 		updateDisplay();
 	}
