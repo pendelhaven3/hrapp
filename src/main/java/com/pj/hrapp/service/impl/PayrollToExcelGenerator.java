@@ -118,9 +118,13 @@ public class PayrollToExcelGenerator {
 					case SEMIMONTHLY:
 						cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 						cell.setCellValue("@");
+
+						cell = row.getCell(payslipColumns[i][1], Row.CREATE_NULL_AS_BLANK);
+						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+						cell.setCellValue(item.getNumberOfDays());
 						
 						cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
-						cell.setCellValue(item.getRate().doubleValue());
+						cell.setCellValue(item.getAmount().doubleValue());
 						break;
 					}
 					
