@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -32,7 +33,10 @@ public class Payslip {
 	@OneToOne
 	private Employee employee;
 
+	@Column(columnDefinition = "date")
 	private Date periodCoveredFrom;
+	
+	@Column(columnDefinition = "date")
 	private Date periodCoveredTo;
 	
 	@Transient

@@ -216,4 +216,9 @@ public class Employee {
 	public static Employee withId(long id) {
 		return new Employee(id);
 	}
+
+	public Employee withPaySchedule(PaySchedule paySchedule) {
+		this.paySchedule = paySchedule;
+		return this;
+	}
 }

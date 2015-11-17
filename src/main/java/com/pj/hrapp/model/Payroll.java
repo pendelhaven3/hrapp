@@ -162,4 +162,9 @@ public class Payroll {
 		return payroll;
 	}
 	
+	public Payroll withIncludeSSSPagibigPhilhealth(boolean includeSSSPagibigPhilhealth) {
+		this.includeSSSPagibigPhilhealth = includeSSSPagibigPhilhealth;
+		return this;
+	}
+	
 }

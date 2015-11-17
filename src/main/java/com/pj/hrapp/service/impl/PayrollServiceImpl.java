@@ -25,6 +25,8 @@ import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipAdjustmentType;
+import com.pj.hrapp.model.PhilHealthContributionTable;
+import com.pj.hrapp.model.SSSContributionTable;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
@@ -99,12 +101,25 @@ public class PayrollServiceImpl implements PayrollService {
 	}
 
 	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip) {
-		BigDecimal employeeCompensation = getEmployeeCompensationForMonthYear(
-				payslip.getEmployee(), DateUtil.getYearMonth(payslip.getPeriodCoveredFrom()));
-		BigDecimal sssContribution = sssService.getSSSContributionTable()
-				.getEmployeeContribution(employeeCompensation);
-		BigDecimal philHealthContribution = philHealthService.getContributionTable()
-				.getEmployeeShare(employeeCompensation);
+		BigDecimal sssContribution = null;
+		BigDecimal philHealthContribution = null;
+		SSSContributionTable sssContributionTable = sssService.getSSSContributionTable();
+		PhilHealthContributionTable philHealthContributionTable = philHealthService.getContributionTable();
+		
+		switch (payslip.getEmployee().getPaySchedule()) {
+		case WEEKLY:
+			BigDecimal employeeCompensation = getEmployeeCompensationForMonthYear(
+					payslip.getEmployee(), DateUtil.getYearMonth(payslip.getPeriodCoveredFrom()));
+			sssContribution = sssContributionTable.getEmployeeContribution(employeeCompensation);
+			philHealthContribution = philHealthContributionTable.getEmployeeShare(employeeCompensation);
+			break;
+		case SEMIMONTHLY:
+			BigDecimal rate = salaryDao.findByEmployee(payslip.getEmployee()).getRate();
+			sssContribution = sssContributionTable.getEmployeeContribution(rate);
+			philHealthContribution = philHealthContributionTable.getEmployeeShare(rate);
+			break;
+		}
+		
 		BigDecimal pagibigContribution = BigDecimal.valueOf(100L);
 		
 		PayslipAdjustment adjustment = new PayslipAdjustment();
