@@ -45,18 +45,10 @@ public class PayslipController extends AbstractController {
 	@Autowired private EmployeeService employeeService;
 	@Autowired private ValeProductService valeProductService;
 	@Autowired private EmployeeLoanService employeeLoanService;
-	
-	@Autowired(required = false)
-	private EmployeeAttendanceDialog employeeAttendanceDialog;
-	
-	@Autowired(required = false)
-	private AddValeProductDialog addValeProductDialog;
-	
-	@Autowired(required = false)
-	private PayslipAdjustmentDialog payslipAdjustmentDialog;
-	
-	@Autowired(required = false)
-	private AddPayslipLoanPaymentDialog addPayslipLoanPaymentDialog;
+	@Autowired private EmployeeAttendanceDialog employeeAttendanceDialog;
+	@Autowired private AddValeProductDialog addValeProductDialog;
+	@Autowired private PayslipAdjustmentDialog payslipAdjustmentDialog;
+	@Autowired private AddPayslipLoanPaymentDialog addPayslipLoanPaymentDialog;
 	
 	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;

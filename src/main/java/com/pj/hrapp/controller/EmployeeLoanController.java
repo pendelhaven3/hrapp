@@ -30,9 +30,7 @@ public class EmployeeLoanController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeLoanController.class);
 	
 	@Autowired private EmployeeLoanService employeeLoanService;
-	
-	@Autowired(required = false)
-	private EmployeeLoanPaymentDialog employeeLoanPaymentDialog;
+	@Autowired private EmployeeLoanPaymentDialog employeeLoanPaymentDialog;
 	
 	@FXML private Label employeeLabel;
 	@FXML private Label descriptionLabel;

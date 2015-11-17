@@ -3,6 +3,7 @@ package com.pj.hrapp.dialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
@@ -17,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+@Component
 public class PayslipAdjustmentDialog extends AbstractDialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(PayslipAdjustmentDialog.class);

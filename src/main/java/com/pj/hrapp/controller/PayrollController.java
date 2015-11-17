@@ -41,9 +41,7 @@ public class PayrollController extends AbstractController {
 	
 	@Autowired private PayrollService payrollService;
 	@Autowired private PayrollToExcelGenerator excelGenerator;
-	
-	@Autowired(required = false)
-	private AddPayslipDialog addPayslipDialog;
+	@Autowired private AddPayslipDialog addPayslipDialog;
 	
 	@FXML private Label batchNumberLabel;
 	@FXML private Label payDateLabel;

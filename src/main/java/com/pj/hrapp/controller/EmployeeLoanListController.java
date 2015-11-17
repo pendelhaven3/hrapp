@@ -42,5 +42,10 @@ public class EmployeeLoanListController extends AbstractController {
 	public void addEmployeeLoan() {
 		stageController.showAddEmployeeLoanScreen();
 	}
+
+	@FXML 
+	public void searchEmployeeLoans() {
+		
+	}
 	
 }

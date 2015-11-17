@@ -48,7 +48,7 @@
 		    </list>
 		</property>
 	</bean>
-    
+	
     <bean id="namedParameterJbdcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
     	<constructor-arg ref="dataSource" />
     </bean>
@@ -64,12 +64,6 @@
 			<property name="username" value="root" />
 			<property name="password" value="root" />
 		</bean>
-		<bean id="employeeAttendanceDialog" class="com.pj.hrapp.dialog.EmployeeAttendanceDialog" />
-		<bean id="payslipAdjustmentDialog" class="com.pj.hrapp.dialog.PayslipAdjustmentDialog" />
-		<bean id="addValeProductDialog" class="com.pj.hrapp.dialog.AddValeProductDialog" />
-		<bean id="addPayslipDialog" class="com.pj.hrapp.dialog.AddPayslipDialog" />
-		<bean id="employeeLoanPaymentDialog" class="com.pj.hrapp.dialog.EmployeeLoanPaymentDialog" />
-		<bean id="addPayslipLoanPaymentDialog" class="com.pj.hrapp.dialog.AddPayslipLoanPaymentDialog" />
     </beans>
     
 </beans>

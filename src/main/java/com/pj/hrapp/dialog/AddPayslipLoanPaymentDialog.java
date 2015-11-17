@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.SelectableTableView;
@@ -17,6 +18,7 @@ import com.pj.hrapp.service.EmployeeLoanService;
 
 import javafx.fxml.FXML;
 
+@Component
 public class AddPayslipLoanPaymentDialog extends AbstractDialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(AddPayslipLoanPaymentDialog.class);

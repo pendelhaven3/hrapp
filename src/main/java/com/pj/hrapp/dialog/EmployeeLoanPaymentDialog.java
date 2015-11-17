@@ -7,6 +7,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.pj.hrapp.Parameter;
@@ -25,6 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
+@Component
 public class EmployeeLoanPaymentDialog extends AbstractDialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeLoanPaymentDialog.class);
