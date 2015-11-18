@@ -16,6 +16,7 @@
 	<ToolBar>
 		<Button text="Back" onAction="#doOnBack" />
 		<Button text="Add" onAction="#addEmployeeLoan" />
+		<Button text="Search" onAction="#searchEmployeeLoans" />
 	</ToolBar>
 	
 	<AppTableView fx:id="employeeLoansTable" VBox.vgrow="always">

@@ -1,9 +1,14 @@
 package com.pj.hrapp.service.impl;
 
+import static com.pj.hrapp.model.search.BaseSpecifications.build;
+import static com.pj.hrapp.model.search.EmployeeLoanSpecifications.withEmployee;
+import static com.pj.hrapp.model.search.EmployeeLoanSpecifications.withPaid;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +18,7 @@ import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.search.EmployeeLoanSearchCriteria;
 import com.pj.hrapp.service.EmployeeLoanService;
 
 @Service
@@ -98,6 +104,25 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 	public void markAsPaid(EmployeeLoan loan) {
 		loan.setPaid(true);
 		employeeLoanRepository.save(loan);
+	}
+
+	@Override
+	public List<EmployeeLoan> searchEmployeeLoans(EmployeeLoanSearchCriteria criteria) {
+		Specifications<EmployeeLoan> specifications = build();
+		
+		if (criteria.getEmployee() != null) {
+			specifications = specifications.and(withEmployee(criteria.getEmployee()));
+		}
+		
+		if (criteria.getPaid() != null) {
+			specifications = specifications.and(withPaid(criteria.getPaid()));
+		}
+		
+		List<EmployeeLoan> loans = employeeLoanRepository.findAll(specifications);
+		for (EmployeeLoan loan : loans) {
+			loan.setPayments(employeeLoanPaymentRepository.findAllByEmployeeLoan(loan));
+		}
+		return loans;
 	}
 
 }

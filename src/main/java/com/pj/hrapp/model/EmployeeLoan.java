@@ -173,5 +173,11 @@ public class EmployeeLoan {
 			return getLastPaymentNumberDescription();
 		}
 	}
+
+	public static EmployeeLoan withId(long id) {
+		EmployeeLoan loan = new EmployeeLoan();
+		loan.setId(id);
+		return loan;
+	}
 	
 }

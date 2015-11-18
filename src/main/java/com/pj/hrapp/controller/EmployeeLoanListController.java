@@ -1,12 +1,16 @@
 package com.pj.hrapp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.pj.hrapp.dialog.SearchEmployeeLoansDialog;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.model.EmployeeLoan;
+import com.pj.hrapp.model.search.EmployeeLoanSearchCriteria;
 import com.pj.hrapp.service.EmployeeLoanService;
 
 import javafx.fxml.FXML;
@@ -16,6 +20,7 @@ import javafx.fxml.FXML;
 public class EmployeeLoanListController extends AbstractController {
 
 	@Autowired private EmployeeLoanService employeeLoanService;
+	@Autowired private SearchEmployeeLoansDialog searchEmployeeLoansDialog;
 	
 	@FXML private AppTableView<EmployeeLoan> employeeLoansTable;
 	
@@ -45,7 +50,13 @@ public class EmployeeLoanListController extends AbstractController {
 
 	@FXML 
 	public void searchEmployeeLoans() {
+		searchEmployeeLoansDialog.showAndWait();
 		
+		EmployeeLoanSearchCriteria criteria = searchEmployeeLoansDialog.getSearchCriteria();
+		if (criteria != null) {
+			List<EmployeeLoan> loans = employeeLoanService.searchEmployeeLoans(criteria);
+			employeeLoansTable.setItemsThenFocus(loans);
+		}
 	}
 	
 }

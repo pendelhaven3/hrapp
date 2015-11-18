@@ -6,6 +6,7 @@ import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.search.EmployeeLoanSearchCriteria;
 
 public interface EmployeeLoanService {
 
@@ -28,5 +29,7 @@ public interface EmployeeLoanService {
 	void createLoanPayments(List<EmployeeLoan> loans, Payslip payslip);
 
 	void markAsPaid(EmployeeLoan loan);
+
+	List<EmployeeLoan> searchEmployeeLoans(EmployeeLoanSearchCriteria criteria);
 
 }

@@ -23,6 +23,8 @@ public class HRApp extends Application {
 	private static String[] args;
 	
 	public static void main(String[] args) {
+		System.setProperty("glass.accessible.force", "false"); // https://bugs.openjdk.java.net/browse/JDK-8132897
+		
 		HRApp.args = args;
 		launch(args);
 	}
