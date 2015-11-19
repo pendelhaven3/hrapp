@@ -19,19 +19,19 @@
 	<TableView fx:id="employeesTable" VBox.vgrow="always">
 		<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 		<columns>
-			<TableColumn text="Employee Number">
+			<TableColumn text="Employee Number" styleClass="center">
 				<cellValueFactory>
 					<PropertyValueFactory property="employeeNumber" />
-				</cellValueFactory>
-			</TableColumn>
-			<TableColumn text="Nickname">
-				<cellValueFactory>
-					<PropertyValueFactory property="nickname" />
 				</cellValueFactory>
 			</TableColumn>
 			<TableColumn text="Full Name">
 				<cellValueFactory>
 					<PropertyValueFactory property="fullName" />
+				</cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Nickname">
+				<cellValueFactory>
+					<PropertyValueFactory property="nickname" />
 				</cellValueFactory>
 			</TableColumn>
 		</columns>
