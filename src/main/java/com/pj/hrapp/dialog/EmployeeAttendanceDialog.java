@@ -44,7 +44,7 @@ public class EmployeeAttendanceDialog extends AbstractDialog {
 
 	@Override
 	protected String getSceneName() {
-		return "employeeAttendance";
+		return "employeeAttendanceDialog";
 	}
 
 	@FXML 

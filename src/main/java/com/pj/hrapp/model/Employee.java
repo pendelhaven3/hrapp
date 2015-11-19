@@ -13,7 +13,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
-public class Employee {
+public class Employee implements Comparable<Employee> {
 
 	@Id
 	@GeneratedValue
@@ -221,4 +221,10 @@ public class Employee {
 		this.paySchedule = paySchedule;
 		return this;
 	}
+
+	@Override
+	public int compareTo(Employee o) {
+		return getFullName().compareTo(o.getFullName());
+	}
+	
 }

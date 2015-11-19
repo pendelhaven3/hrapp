@@ -182,4 +182,8 @@ public class StageController {
 		loadSceneFromFXML("employeeLoan", Collections.singletonMap("loan", loan));
 	}
 
+	public void showEmployeeAttendanceScreen() {
+		loadSceneFromFXML("employeeAttendance");
+	}
+
 }

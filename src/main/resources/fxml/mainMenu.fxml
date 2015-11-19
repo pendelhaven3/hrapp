@@ -12,5 +12,6 @@
 	<Button text="Payroll" onAction="#goToPayrollList" />
 	<Button text="SSS Contribution Table" onAction="#goToSSSContributionTable" />
 	<Button text="PhilHealth Contribution Table" onAction="#goToPhilHealthContributionTable" />
+	<Button text="Employee Attendances" onAction="#goToEmployeeAttendanceList" />
 
 </VBox>
