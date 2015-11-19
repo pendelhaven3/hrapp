@@ -18,6 +18,7 @@ import com.pj.hrapp.util.DateUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -46,6 +47,8 @@ public class EmployeeController extends AbstractController {
 	@FXML private TextField magicCustomerCodeField;
 	@FXML private DatePicker dateHiredDatePicker;
 	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
+	@FXML private CheckBox resignedCheckBox;
+	@FXML private DatePicker dateResignedDatePicker;
 	@FXML private Button deleteButton;
 	
 	@Parameter private Employee employee;
@@ -76,6 +79,8 @@ public class EmployeeController extends AbstractController {
 				dateHiredDatePicker.setValue(DateUtil.toLocalDate(employee.getHireDate()));
 			}
 			payScheduleComboBox.setValue(employee.getPaySchedule());
+			resignedCheckBox.setSelected(employee.isResigned());
+			dateResignedDatePicker.setValue(DateUtil.toLocalDate(employee.getResignDate()));
 			
 			deleteButton.setDisable(false);
 		}
@@ -121,11 +126,14 @@ public class EmployeeController extends AbstractController {
 		employee.setMagicCustomerCode(StringUtils.trimToNull(magicCustomerCodeField.getText()));
 		employee.setHireDate(DateUtil.getDatePickerValue(dateHiredDatePicker));
 		employee.setPaySchedule(payScheduleComboBox.getValue());
+		employee.setResigned(resignedCheckBox.isSelected());
+		employee.setResignDate(DateUtil.toDate(dateResignedDatePicker.getValue()));
 		try {
 			employeeService.save(employee);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();
+			return;
 		}
 		ShowDialog.info("Employee saved");
 		stageController.showEmployeeListScreen();

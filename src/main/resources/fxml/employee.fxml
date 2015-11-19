@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import com.pj.hrapp.gui.component.AppDatePicker?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CheckBox?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" 
 		fx:controller="com.pj.hrapp.controller.EmployeeController" >
@@ -85,6 +86,14 @@
 						GridPane.columnIndex="0" GridPane.rowIndex="6" />
 					<ComboBox fx:id="payScheduleComboBox"
 						GridPane.columnIndex="1" GridPane.rowIndex="6" />
+					<Label text="Resigned?"
+						GridPane.columnIndex="0" GridPane.rowIndex="7" />
+					<CheckBox fx:id="resignedCheckBox"
+						GridPane.columnIndex="1" GridPane.rowIndex="7" />
+					<Label text="Date Resigned"
+						GridPane.columnIndex="0" GridPane.rowIndex="8" />
+					<AppDatePicker fx:id="dateResignedDatePicker"
+						GridPane.columnIndex="1" GridPane.rowIndex="8" />
 				</GridPane>
 			</HBox>
 			<Button text="Save" onAction="#saveEmployee" />
