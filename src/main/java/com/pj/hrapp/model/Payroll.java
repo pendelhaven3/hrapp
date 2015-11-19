@@ -1,5 +1,6 @@
 package com.pj.hrapp.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -69,8 +70,8 @@ public class Payroll {
 		return payslips;
 	}
 
-	public void setPayslips(List<Payslip> pays) {
-		this.payslips = pays;
+	public void setPayslips(List<Payslip> payslips) {
+		this.payslips = payslips;
 	}
 
 	@Override
@@ -165,6 +166,12 @@ public class Payroll {
 	public Payroll withIncludeSSSPagibigPhilhealth(boolean includeSSSPagibigPhilhealth) {
 		this.includeSSSPagibigPhilhealth = includeSSSPagibigPhilhealth;
 		return this;
+	}
+	
+	public BigDecimal getTotalAmount() {
+		return payslips.stream()
+				.map(payslip -> payslip.getNetPay())
+				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
 	}
 	
 }
