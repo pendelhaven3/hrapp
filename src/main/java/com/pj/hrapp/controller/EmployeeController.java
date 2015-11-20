@@ -116,7 +116,7 @@ public class EmployeeController extends AbstractController {
 		employee.setLastName(lastNameField.getText());
 		employee.setFirstName(firstNameField.getText());
 		employee.setMiddleName(middleNameField.getText());
-		employee.setBirthday(DateUtil.getDatePickerValue(birthdayDatePicker));
+		employee.setBirthday(DateUtil.toDate(birthdayDatePicker.getValue()));
 		employee.setAddress(addressField.getText());
 		employee.setContactNumber(contactNumberField.getText());
 		employee.setSssNumber(sssNumberField.getText());
@@ -124,7 +124,7 @@ public class EmployeeController extends AbstractController {
 		employee.setTin(tinField.getText());
 		employee.setAtmAccountNumber(atmAccountNumberField.getText());
 		employee.setMagicCustomerCode(StringUtils.trimToNull(magicCustomerCodeField.getText()));
-		employee.setHireDate(DateUtil.getDatePickerValue(dateHiredDatePicker));
+		employee.setHireDate(DateUtil.toDate(dateHiredDatePicker.getValue()));
 		employee.setPaySchedule(payScheduleComboBox.getValue());
 		employee.setResigned(resignedCheckBox.isSelected());
 		employee.setResignDate(DateUtil.toDate(dateResignedDatePicker.getValue()));

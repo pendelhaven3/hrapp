@@ -118,8 +118,8 @@ public class EmployeeAttendanceController extends AbstractController {
 	@FXML 
 	public void searchEmployeeAttendances() {
 		EmployeeAttendanceSearchCriteria criteria = new EmployeeAttendanceSearchCriteria();
-		criteria.setDateFrom(DateUtil.getDatePickerValue(dateFromDatePicker));
-		criteria.setDateTo(DateUtil.getDatePickerValue(dateToDatePicker));
+		criteria.setDateFrom(DateUtil.toDate(dateFromDatePicker.getValue()));
+		criteria.setDateTo(DateUtil.toDate(dateToDatePicker.getValue()));
 		
 		attendancesTable.getItems()
 				.setAll(toAttendanceSummaries(employeeService.searchEmployeeAttendances(criteria)));
