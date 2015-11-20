@@ -40,7 +40,7 @@
 							<AppPropertyValueFactory property="item.lastPaymentNumberDescription" />
 						</cellValueFactory>
 					</TableColumn>
-					<TableColumn text="Remarks" minWidth="300.0">
+					<TableColumn text="Remarks" minWidth="250.0">
 						<cellValueFactory>
 							<AppPropertyValueFactory property="item.remarks" />
 						</cellValueFactory>
