@@ -66,8 +66,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> findAllEmployeesNotInPayroll(Payroll payroll) {
-		return employeeRepository.findAllNotInPayroll(payroll);
+	public List<Employee> findAllActiveEmployeesNotInPayroll(Payroll payroll) {
+		return employeeRepository.findAllActiveNotInPayroll(payroll);
 	}
 
 	@Override

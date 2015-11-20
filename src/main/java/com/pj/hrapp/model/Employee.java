@@ -39,6 +39,12 @@ public class Employee implements Comparable<Employee> {
 	@Enumerated(EnumType.STRING)
 	private PaySchedule paySchedule;
 
+	@Column(columnDefinition = "date")
+	private Date resignDate;
+	
+	@Column(columnDefinition = "boolean default false")
+	private boolean resigned;
+	
 	public Employee() {
 		// default constructor
 	}
@@ -225,6 +231,22 @@ public class Employee implements Comparable<Employee> {
 	@Override
 	public int compareTo(Employee o) {
 		return getFullName().compareTo(o.getFullName());
+	}
+
+	public Date getResignDate() {
+		return resignDate;
+	}
+
+	public void setResignDate(Date resignDate) {
+		this.resignDate = resignDate;
+	}
+
+	public boolean isResigned() {
+		return resigned;
+	}
+
+	public void setResigned(boolean resigned) {
+		this.resigned = resigned;
 	}
 	
 }

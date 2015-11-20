@@ -18,10 +18,18 @@ import javafx.scene.control.DatePicker;
 public class DateUtil {
 
 	public static Date toDate(LocalDate localDate) {
+		if (localDate == null) {
+			return null;
+		}
+		
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 
 	public static LocalDate toLocalDate(Date date) {
+		if (date == null) {
+			return null;
+		}
+		
 		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 	
@@ -66,5 +74,5 @@ public class DateUtil {
 	public static Date getDatePickerValue(DatePicker datePicker) {
 		return datePicker.getValue() != null ? toDate(datePicker.getValue()) : null;
 	}
-	
+
 }
