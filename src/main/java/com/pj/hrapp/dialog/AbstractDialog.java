@@ -101,4 +101,32 @@ public abstract class AbstractDialog extends Stage {
 		this.sceneHeight = sceneHeight;
 	}
 	
+	protected void changeScene(String sceneName) {
+		changeScene(sceneName, sceneWidth, sceneHeight);
+	}
+	
+	protected void changeScene(String sceneName, double sceneWidth, double sceneHeight) {
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		fxmlLoader.setController(this);
+		
+		Parent root = null;
+		try {
+			root = fxmlLoader.load(getClass().getResourceAsStream("/fxml/" + sceneName + ".fxml"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		
+		Scene scene = new Scene(root, sceneWidth, sceneHeight);
+		scene.getStylesheets().add("css/application.css");
+		setScene(scene);
+	
+		updateDisplay();
+		centerDialogWindowOnParent();
+	}
+
+	private void centerDialogWindowOnParent() {
+		hide();
+		show();
+	}
+	
 }
