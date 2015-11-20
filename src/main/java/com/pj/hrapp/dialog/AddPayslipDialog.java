@@ -11,6 +11,7 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.exception.NoMagicCustomerCodeException;
 import com.pj.hrapp.exception.ValeProductsNotMarkedException;
+import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.SelectableTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
@@ -25,7 +26,6 @@ import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.ValeProductService;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
 
 @Component
 public class AddPayslipDialog extends AbstractDialog {
@@ -37,7 +37,7 @@ public class AddPayslipDialog extends AbstractDialog {
 	@Autowired private ValeProductService valeProductService;
 	@Autowired private EmployeeLoanService employeeLoanService;
 	
-	@FXML private TableView<Employee> employeesTable;
+	@FXML private AppTableView<Employee> employeesTable;
 	@FXML private SelectableTableView<ValeProduct> valeProductsTable;
 	@FXML private SelectableTableView<EmployeeLoan> employeeLoansTable;
 	
@@ -48,6 +48,7 @@ public class AddPayslipDialog extends AbstractDialog {
 	@Override
 	public void updateDisplay() {
 		employeesTable.getItems().setAll(employeeService.findAllActiveEmployeesNotInPayroll(payroll));
+		employeesTable.setDoubleClickAction(() -> createPayslip());
 	}
 	
 	private void updateValeProductsTable() {
