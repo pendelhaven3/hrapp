@@ -20,7 +20,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 			+ " (select payslip.employee.id from Payroll payroll, Payslip payslip where payslip.payroll = :payroll)"
 			+ " and e.paySchedule = p.paySchedule"
 			+ " and p = :payroll"
+			+ " and e.resigned = false"
 			+ " order by e.firstName, e.lastName")
-	List<Employee> findAllNotInPayroll(@Param("payroll") Payroll payroll);
+	List<Employee> findAllActiveNotInPayroll(@Param("payroll") Payroll payroll);
 	
 }

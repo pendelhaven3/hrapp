@@ -25,7 +25,7 @@ public interface EmployeeService {
 
 	void deleteEmployeeAttendance(EmployeeAttendance employeeAttendance);
 
-	List<Employee> findAllEmployeesNotInPayroll(Payroll payroll);
+	List<Employee> findAllActiveEmployeesNotInPayroll(Payroll payroll);
 	
 	List<EmployeeAttendance> searchEmployeeAttendances(EmployeeAttendanceSearchCriteria criteria);
 	

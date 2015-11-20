@@ -125,7 +125,7 @@ public class EmployeeRepositoryTest extends IntegrationTest {
 	public void findAllNotInPayroll() {
 		insertTestPayroll();
 		
-		List<Employee> result = employeeDao.findAllNotInPayroll(Payroll.withId(1L));
+		List<Employee> result = employeeDao.findAllActiveNotInPayroll(Payroll.withId(1L));
 		assertEquals(1, result.size());
 		assertTrue(result.contains(Employee.withId(2L)));
 	}

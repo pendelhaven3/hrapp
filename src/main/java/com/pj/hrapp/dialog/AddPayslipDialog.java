@@ -51,7 +51,7 @@ public class AddPayslipDialog extends AbstractDialog {
 	
 	@Override
 	public void updateDisplay() {
-		employeesTable.getItems().setAll(employeeService.findAllEmployeesNotInPayroll(payroll));
+		employeesTable.getItems().setAll(employeeService.findAllActiveEmployeesNotInPayroll(payroll));
 	}
 	
 	private void updateValeProductsTable() {
