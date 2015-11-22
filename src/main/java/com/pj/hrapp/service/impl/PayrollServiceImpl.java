@@ -284,4 +284,11 @@ public class PayrollServiceImpl implements PayrollService {
 		return payslipDao.findAnyPayslipByEmployee(employee);
 	}
 
+	@Transactional
+	@Override
+	public void postPayroll(Payroll payroll) {
+		payroll.setPosted(true);
+		payrollDao.save(payroll);
+	}
+
 }

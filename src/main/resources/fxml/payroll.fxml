@@ -50,15 +50,20 @@
 				</GridPane>
 				
 				<GridPane vgap="10" alignment="center">
-					<Label text="Total Amount" prefWidth="270"
+					<Label text="Posted" prefWidth="150"
 						GridPane.columnIndex="0" GridPane.rowIndex="0" />
-					<Label fx:id="totalAmountLabel" prefWidth="100"
+					<Label fx:id="postedLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="0" />
+					<Label text="Total Amount"
+						GridPane.columnIndex="0" GridPane.rowIndex="1" />
+					<Label fx:id="totalAmountLabel"
+						GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				</GridPane>
 			</HBox>
 		
 			<HBox spacing="10" alignment="center">
 				<Button text="Update Payroll" onAction="#updatePayroll" />
+				<Button text="Post Payroll" onAction="#postPayroll" />
 			</HBox>
 			
 			<TabPane VBox.vgrow="always">

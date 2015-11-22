@@ -40,6 +40,11 @@
 					<AppPropertyValueFactory property="totalAmount" />
 				</cellValueFactory>
 			</TableColumn>
+			<TableColumn text="Posted" styleClass="center">
+				<cellValueFactory>
+					<AppPropertyValueFactory property="posted" />
+				</cellValueFactory>
+			</TableColumn>
 		</columns>
 	</TableView>
 	

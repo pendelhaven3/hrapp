@@ -47,6 +47,7 @@ public class PayrollController extends AbstractController {
 	@FXML private Label payDateLabel;
 	@FXML private Label payScheduleLabel;
 	@FXML private Label includeSSSPagibigPhilhealthLabel;
+	@FXML private Label postedLabel;
 	@FXML private Label totalAmountLabel;
 	@FXML private AppTableView<Payslip> payslipsTable;
 	
@@ -66,6 +67,7 @@ public class PayrollController extends AbstractController {
 		payScheduleLabel.setText(payroll.getPaySchedule().toString());
 		includeSSSPagibigPhilhealthLabel.setText(
 				payroll.isIncludeSSSPagibigPhilhealth() ? "Yes" : "No");
+		postedLabel.setText(payroll.isPosted() ? "Yes" : "No");
 		totalAmountLabel.setText(FormatterUtil.formatAmount(payroll.getTotalAmount()));
 		
 		payslipsTable.getItems().setAll(payroll.getPayslips());
@@ -185,6 +187,24 @@ public class PayrollController extends AbstractController {
 		
 		addPayslipDialog.showAndWait(model);
 		
+		updateDisplay();
+	}
+
+	@FXML 
+	public void postPayroll() {
+		if (!ShowDialog.confirm("Post payroll?")) {
+			return;
+		}
+		
+		try {
+			payrollService.postPayroll(payroll);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		ShowDialog.info("Payroll posted");
 		updateDisplay();
 	}
 	

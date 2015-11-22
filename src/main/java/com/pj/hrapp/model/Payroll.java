@@ -42,6 +42,9 @@ public class Payroll {
 	@Column(columnDefinition = "boolean default false")
 	private boolean includeSSSPagibigPhilhealth;
 
+	@Column(columnDefinition = "boolean default false")
+	private boolean posted;
+	
 	public Long getId() {
 		return id;
 	}
@@ -172,6 +175,14 @@ public class Payroll {
 		return payslips.stream()
 				.map(payslip -> payslip.getNetPay())
 				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+	}
+
+	public boolean isPosted() {
+		return posted;
+	}
+
+	public void setPosted(boolean posted) {
+		this.posted = posted;
 	}
 	
 }
