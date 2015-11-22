@@ -14,11 +14,13 @@ import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
 import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
+import com.pj.hrapp.dao.EmployeeRepository;
 import com.pj.hrapp.dao.PayrollDao;
 import com.pj.hrapp.dao.PayslipAdjustmentDao;
 import com.pj.hrapp.dao.PayslipDao;
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.dao.ValeProductRepository;
+import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
@@ -37,6 +39,7 @@ import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.PhilHealthService;
 import com.pj.hrapp.service.SSSService;
+import com.pj.hrapp.service.ValeProductService;
 import com.pj.hrapp.util.DateUtil;
 
 @Service
@@ -51,6 +54,8 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private PhilHealthService philHealthService;
 	@Autowired private ValeProductRepository valeProductRepository;
 	@Autowired private EmployeeLoanPaymentRepository employeeLoanPaymentRepository;
+	@Autowired private ValeProductService valeProductService;
+	@Autowired private EmployeeRepository employeeRepository;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -287,8 +292,30 @@ public class PayrollServiceImpl implements PayrollService {
 	@Transactional
 	@Override
 	public void postPayroll(Payroll payroll) {
+		if (!canConnectToMagic()) {
+			throw new ConnectToMagicException();
+		}
+		
+		for (Payslip payslip : payroll.getPayslips()) {
+			valeProductService.markValeProductsAsPaid(valeProductRepository.findAllByPayslip(payslip));
+		}
+		
 		payroll.setPosted(true);
 		payrollDao.save(payroll);
+	}
+
+	private boolean canConnectToMagic() {
+		try {
+			valeProductService.findUnpaidValeProductsByEmployee(findAnyEmployee());
+		} catch (ConnectToMagicException e) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	private Employee findAnyEmployee() {
+		return employeeRepository.findAll().get(0);
 	}
 
 }

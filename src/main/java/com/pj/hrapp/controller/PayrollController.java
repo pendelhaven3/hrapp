@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.AddPayslipDialog;
+import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
@@ -209,6 +210,9 @@ public class PayrollController extends AbstractController {
 		
 		try {
 			payrollService.postPayroll(payroll);
+		} catch (ConnectToMagicException e) {
+			ShowDialog.error("Cannot connect to MAGIC");
+			return;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();
