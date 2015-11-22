@@ -19,6 +19,7 @@ public class AppPropertyValueFactory <T>
 		implements Callback<CellDataFeatures<T, String>, ObservableValue<String>> {
 
 	private static final String GET_PREFIX = "get";
+	private static final String IS_PREFIX = "is";
 	
 	private String property;
 
@@ -40,8 +41,7 @@ public class AppPropertyValueFactory <T>
 			}
 			
 			try {
-				Method method = item.getClass()
-						.getMethod(GET_PREFIX + WordUtils.capitalize(propertyName));
+				Method method = findGetterMethod(item, propertyName);
 				item = method.invoke(item);
 			} catch (Exception e) {
 				throw new RuntimeException("Error getting property " + property, e);
@@ -60,6 +60,8 @@ public class AppPropertyValueFactory <T>
 				value = FormatterUtil.formatDate((Date)item);
 			} else if (item instanceof BigDecimal) {
 				value = FormatterUtil.formatAmount((BigDecimal)item);
+			} else if (item instanceof Boolean) {
+				value = (Boolean)item ? "Yes" : "No";
 			} else {
 				value = item.toString();
 			}
@@ -68,6 +70,14 @@ public class AppPropertyValueFactory <T>
 		}
 		
 		return new ReadOnlyStringWrapper(value);
+	}
+
+	private Method findGetterMethod(Object item, String propertyName) throws NoSuchMethodException {
+		try {
+			return item.getClass().getMethod(GET_PREFIX + WordUtils.capitalize(propertyName));
+		} catch (NoSuchMethodException e) {
+			return item.getClass().getMethod(IS_PREFIX + WordUtils.capitalize(propertyName));
+		}
 	}
 
 }
