@@ -26,8 +26,8 @@ public class SalaryDaoTest extends IntegrationTest {
 	@Test
 	public void findByEffectiveDate_dateFromLessThanParameter_dateToIsNull() {
 		insertTestEmployee();
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1000, 1000, 1000, 'WEEKLY', '2015-10-05', null)");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1000, 1000, 1000, '2015-10-05', null)");
 		
 		assertNotNull(salaryDao.findByEmployeeAndEffectiveDate(
 				new Employee(1000L),
@@ -37,8 +37,8 @@ public class SalaryDaoTest extends IntegrationTest {
 	@Test
 	public void findByEffectiveDate_dateFromLessThanParameter_dateToGreaterThanParameter() {
 		insertTestEmployee();
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1000, 1000, 1000, 'WEEKLY', '2015-10-05', '2015-10-10')");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1000, 1000, 1000, '2015-10-05', '2015-10-10')");
 		
 		assertNotNull(salaryDao.findByEmployeeAndEffectiveDate(
 				new Employee(1000L),
@@ -48,8 +48,8 @@ public class SalaryDaoTest extends IntegrationTest {
 	@Test
 	public void findByEffectiveDate_dateFromLessThanParameter_dateToLessThanParameter() {
 		insertTestEmployee();
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1000, 1000, 1000, 'WEEKLY', '2015-10-05', '2015-10-06')");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1000, 1000, 1000, '2015-10-05', '2015-10-06')");
 		
 		assertNull(salaryDao.findByEmployeeAndEffectiveDate(
 				new Employee(1000L),
@@ -59,8 +59,8 @@ public class SalaryDaoTest extends IntegrationTest {
 	@Test
 	public void findByEffectiveDate_dateFromGreaterThanParameter() {
 		insertTestEmployee();
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1000, 1000, 1000, 'WEEKLY', '2015-10-05', null)");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1000, 1000, 1000, '2015-10-05', null)");
 		
 		assertNull(salaryDao.findByEmployeeAndEffectiveDate(
 				new Employee(1000L),
@@ -70,14 +70,14 @@ public class SalaryDaoTest extends IntegrationTest {
 	@Test
 	public void search_effectiveDateToInsideSalaryWithSpecifiedEffectiveDateFromAndTo() {
 		insertTestEmployee();
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1000, 1000, 1000, 'WEEKLY', '2015-10-02', '2015-10-03')");
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1001, 1000, 1200, 'WEEKLY', '2015-10-04', '2015-10-06')");
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1002, 1000, 1400, 'WEEKLY', '2015-10-07', '2015-10-08')");
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1003, 1000, 1600, 'WEEKLY', '2015-10-09', null)");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1000, 1000, 1000, '2015-10-02', '2015-10-03')");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1001, 1000, 1200, '2015-10-04', '2015-10-06')");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1002, 1000, 1400, '2015-10-07', '2015-10-08')");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1003, 1000, 1600, '2015-10-09', null)");
 		
 		SalarySearchCriteria criteria = new SalarySearchCriteria();
 		criteria.setEmployee(new Employee(1000L));
@@ -92,14 +92,14 @@ public class SalaryDaoTest extends IntegrationTest {
 	@Ignore
 	public void search_effectiveDateWithinSalaryWithEffectiveDateFromButDateToIsNull() {
 		insertTestEmployee();
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1000, 1000, 1000, 'WEEKLY', '2015-10-02', '2015-10-03')");
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1001, 1000, 1200, 'WEEKLY', '2015-10-04', '2015-10-06')");
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1002, 1000, 1400, 'WEEKLY', '2015-10-07', '2015-10-08')");
-		jdbcTemplate.update("insert into salary (id, employee_id, rate, paySchedule, effectiveDateFrom, "
-				+ "effectiveDateTo) values (1003, 1000, 1600, 'WEEKLY', '2015-10-09', null)");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1000, 1000, 1000, '2015-10-02', '2015-10-03')");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1001, 1000, 1200, '2015-10-04', '2015-10-06')");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1002, 1000, 1400, '2015-10-07', '2015-10-08')");
+		jdbcTemplate.update("insert into salary (id, employee_id, rate, effectiveDateFrom, "
+				+ "effectiveDateTo) values (1003, 1000, 1600, '2015-10-09', null)");
 		
 		SalarySearchCriteria criteria = new SalarySearchCriteria();
 		criteria.setEmployee(new Employee(1000L));
