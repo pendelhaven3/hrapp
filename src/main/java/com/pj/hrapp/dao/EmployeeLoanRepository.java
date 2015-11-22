@@ -13,8 +13,6 @@ import com.pj.hrapp.model.EmployeeLoan;
 public interface EmployeeLoanRepository extends JpaRepository<EmployeeLoan, Long>, 
 		JpaSpecificationExecutor<EmployeeLoan> {
 
-	List<EmployeeLoan> findAllByEmployee(Employee employee);
-	
 	@Query("select l from EmployeeLoan l where l.paid = :paid order by l.employee.firstName, l.employee.lastName")
 	List<EmployeeLoan> findAllByPaid(@Param("paid") Boolean paid);
 

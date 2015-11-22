@@ -38,7 +38,7 @@ public class SearchEmployeeLoansDialog extends AbstractDialog {
 		return "searchEmployeeLoansDialog";
 	}
 
-	@FXML 
+	@FXML
 	public void saveSearchCriteria() {
 		searchCriteria = new EmployeeLoanSearchCriteria();
 		searchCriteria.setEmployee(employeeComboBox.getValue());

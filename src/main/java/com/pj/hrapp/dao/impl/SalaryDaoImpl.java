@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
-import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 
@@ -63,15 +62,6 @@ public class SalaryDaoImpl implements SalaryDao {
 	@Override
 	public void delete(Salary salary) {
 		entityManager.remove(get(salary.getId()));
-	}
-
-	@Override
-	public List<Salary> findAllCurrentByPaySchedule(PaySchedule paySchedule) {
-		TypedQuery<Salary> query = entityManager.createQuery(
-				"select s from Salary s where s.paySchedule= :paySchedule and s.effectiveDateTo is null", 
-				Salary.class);
-		query.setParameter("paySchedule", paySchedule);
-		return query.getResultList();
 	}
 
 	@Override

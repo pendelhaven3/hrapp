@@ -38,6 +38,8 @@ public class SSSContributionTableEntryController extends AbstractController {
 		setTitle();
 		
 		if (entry != null) {
+			entry = sssService.getSSSContributionTableEntry(entry.getId());
+			
 			compensationFromField.setText(FormatterUtil.formatAmount(entry.getCompensationFrom()));
 			compensationToField.setText(
 					entry.getCompensationTo() != null ? FormatterUtil.formatAmount(entry.getCompensationTo()) : null);

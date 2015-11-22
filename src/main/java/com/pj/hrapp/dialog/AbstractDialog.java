@@ -15,8 +15,8 @@ import javafx.stage.Stage;
 
 public abstract class AbstractDialog extends Stage {
 
-	protected double sceneWidth = 600d;
-	protected double sceneHeight = 400d;
+	private double sceneWidth = 600d;
+	private double sceneHeight = 400d;
 	
 	public AbstractDialog() {
 		setResizable(false);
