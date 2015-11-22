@@ -21,7 +21,7 @@
 	<top>
 		<ToolBar>
 			<Button text="Back" onAction="#doOnBack" />
-			<Button text="Delete" onAction="#deletePayroll" />
+			<Button text="Delete" onAction="#deletePayroll" fx:id="deletePayrollButton" />
 			<Button text="Generate Excel" onAction="#generateExcel" />
 		</ToolBar>
 	</top>
@@ -62,8 +62,8 @@
 			</HBox>
 		
 			<HBox spacing="10" alignment="center">
-				<Button text="Update Payroll" onAction="#updatePayroll" />
-				<Button text="Post Payroll" onAction="#postPayroll" />
+				<Button text="Update Payroll" onAction="#updatePayroll" fx:id="updatePayrollButton" />
+				<Button text="Post Payroll" onAction="#postPayroll" fx:id="postPayrollButton" />
 			</HBox>
 			
 			<TabPane VBox.vgrow="always">
@@ -97,8 +97,8 @@
 							</AppTableView>
 							
 							<HBox spacing="10" alignment="center">
-								<Button text="Add Payslip" onAction="#addPayslip" />
-								<Button text="Delete Payslip" onAction="#deletePayslip" />
+								<Button text="Add Payslip" onAction="#addPayslip" fx:id="addPayslipButton" />
+								<Button text="Delete Payslip" onAction="#deletePayslip" fx:id="deletePayslipButton" />
 							</HBox>
 						</VBox>
 					</Tab>
