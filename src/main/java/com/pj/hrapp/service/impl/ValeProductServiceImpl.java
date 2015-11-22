@@ -70,15 +70,14 @@ public class ValeProductServiceImpl implements ValeProductService {
 	@Transactional
 	@Override
 	public void addValeProductsToPayslip(List<ValeProduct> valeProducts, Payslip payslip) {
-		markValeProductsAsPaid(valeProducts);
-		
 		for (ValeProduct valeProduct : valeProducts) {
 			valeProduct.setPayslip(payslip);
 			valeProductRepository.save(valeProduct);
 		}
 	}
 
-	private void markValeProductsAsPaid(List<ValeProduct> valeProducts) {
+	@Override
+	public void markValeProductsAsPaid(List<ValeProduct> valeProducts) {
 		List<Long> salesInvoiceNumbers = valeProducts.stream()
 				.map(valeProduct -> valeProduct.getSalesInvoiceNumber())
 				.collect(Collectors.toList());

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.AddPayslipDialog;
+import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
@@ -28,6 +29,7 @@ import com.pj.hrapp.service.impl.PayrollToExcelGenerator;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -47,8 +49,14 @@ public class PayrollController extends AbstractController {
 	@FXML private Label payDateLabel;
 	@FXML private Label payScheduleLabel;
 	@FXML private Label includeSSSPagibigPhilhealthLabel;
+	@FXML private Label postedLabel;
 	@FXML private Label totalAmountLabel;
 	@FXML private AppTableView<Payslip> payslipsTable;
+	@FXML private Button deletePayrollButton;
+	@FXML private Button updatePayrollButton;
+	@FXML private Button postPayrollButton;
+	@FXML private Button addPayslipButton;
+	@FXML private Button deletePayslipButton;
 	
 	@Parameter private Payroll payroll;
 	
@@ -66,6 +74,7 @@ public class PayrollController extends AbstractController {
 		payScheduleLabel.setText(payroll.getPaySchedule().toString());
 		includeSSSPagibigPhilhealthLabel.setText(
 				payroll.isIncludeSSSPagibigPhilhealth() ? "Yes" : "No");
+		postedLabel.setText(payroll.isPosted() ? "Yes" : "No");
 		totalAmountLabel.setText(FormatterUtil.formatAmount(payroll.getTotalAmount()));
 		
 		payslipsTable.getItems().setAll(payroll.getPayslips());
@@ -77,6 +86,11 @@ public class PayrollController extends AbstractController {
 			}
 		});
 		payslipsTable.setDeleteKeyAction(() -> deletePayslip());
+		
+		if (payroll.isPosted()) {
+			disableButtons(deletePayrollButton, 
+					updatePayrollButton, postPayrollButton, addPayslipButton, deletePayslipButton);
+		}
 	}
 
 	protected void openSelectedPayslip() {
@@ -185,6 +199,27 @@ public class PayrollController extends AbstractController {
 		
 		addPayslipDialog.showAndWait(model);
 		
+		updateDisplay();
+	}
+
+	@FXML 
+	public void postPayroll() {
+		if (!ShowDialog.confirm("Post payroll?")) {
+			return;
+		}
+		
+		try {
+			payrollService.postPayroll(payroll);
+		} catch (ConnectToMagicException e) {
+			ShowDialog.error("Cannot connect to MAGIC");
+			return;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		ShowDialog.info("Payroll posted");
 		updateDisplay();
 	}
 	

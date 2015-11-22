@@ -12,4 +12,6 @@ public interface ValeProductService {
 
 	void addValeProductsToPayslip(List<ValeProduct> valeProducts, Payslip payslip);
 	
+	void markValeProductsAsPaid(List<ValeProduct> valeProducts);
+	
 }

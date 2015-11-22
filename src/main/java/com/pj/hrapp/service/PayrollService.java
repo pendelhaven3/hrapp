@@ -34,4 +34,6 @@ public interface PayrollService {
 
 	Payslip findAnyPayslipByEmployee(Employee employee);
 
+	void postPayroll(Payroll payroll);
+
 }

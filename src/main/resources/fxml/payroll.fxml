@@ -21,7 +21,7 @@
 	<top>
 		<ToolBar>
 			<Button text="Back" onAction="#doOnBack" />
-			<Button text="Delete" onAction="#deletePayroll" />
+			<Button text="Delete" onAction="#deletePayroll" fx:id="deletePayrollButton" />
 			<Button text="Generate Excel" onAction="#generateExcel" />
 		</ToolBar>
 	</top>
@@ -50,15 +50,20 @@
 				</GridPane>
 				
 				<GridPane vgap="10" alignment="center">
-					<Label text="Total Amount" prefWidth="270"
+					<Label text="Posted" prefWidth="150"
 						GridPane.columnIndex="0" GridPane.rowIndex="0" />
-					<Label fx:id="totalAmountLabel" prefWidth="100"
+					<Label fx:id="postedLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="0" />
+					<Label text="Total Amount"
+						GridPane.columnIndex="0" GridPane.rowIndex="1" />
+					<Label fx:id="totalAmountLabel"
+						GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				</GridPane>
 			</HBox>
 		
 			<HBox spacing="10" alignment="center">
-				<Button text="Update Payroll" onAction="#updatePayroll" />
+				<Button text="Update Payroll" onAction="#updatePayroll" fx:id="updatePayrollButton" />
+				<Button text="Post Payroll" onAction="#postPayroll" fx:id="postPayrollButton" />
 			</HBox>
 			
 			<TabPane VBox.vgrow="always">
@@ -92,8 +97,8 @@
 							</AppTableView>
 							
 							<HBox spacing="10" alignment="center">
-								<Button text="Add Payslip" onAction="#addPayslip" />
-								<Button text="Delete Payslip" onAction="#deletePayslip" />
+								<Button text="Add Payslip" onAction="#addPayslip" fx:id="addPayslipButton" />
+								<Button text="Delete Payslip" onAction="#deletePayslip" fx:id="deletePayslipButton" />
 							</HBox>
 						</VBox>
 					</Tab>
