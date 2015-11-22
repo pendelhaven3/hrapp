@@ -11,7 +11,6 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.AppDatePicker;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
-import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.SalaryService;
@@ -35,7 +34,6 @@ public class SalaryController extends AbstractController {
 	
 	@FXML ComboBox<Employee> employeeComboBox;
 	@FXML TextField rateField;
-	@FXML ComboBox<PaySchedule> payScheduleComboBox;
 	@FXML AppDatePicker effectiveDateFromDatePicker;
 	@FXML AppDatePicker effectiveDateToDatePicker;
 	@FXML private Button deleteButton;
@@ -51,13 +49,11 @@ public class SalaryController extends AbstractController {
 		}
 		
 		employeeComboBox.getItems().setAll(employeeService.getAllEmployees());
-		payScheduleComboBox.getItems().setAll(PaySchedule.values());
 		
 		if (salary != null) {
 			salary = salaryService.getSalary(salary.getId());
 			employeeComboBox.setValue(salary.getEmployee());
 			rateField.setText(FormatterUtil.formatAmount(salary.getRate()));
-			payScheduleComboBox.setValue(salary.getPaySchedule());
 			effectiveDateFromDatePicker.setValue(DateUtil.toLocalDate(salary.getEffectiveDateFrom()));
 			if (salary.getEffectiveDateTo() != null) {
 				effectiveDateToDatePicker.setValue(DateUtil.toLocalDate(salary.getEffectiveDateTo()));
@@ -99,7 +95,6 @@ public class SalaryController extends AbstractController {
 		}
 		salary.setEmployee(employeeComboBox.getValue());
 		salary.setRate(NumberUtil.toBigDecimal(rateField.getText()));
-		salary.setPaySchedule(payScheduleComboBox.getValue());
 		salary.setEffectiveDateFrom(DateUtil.toDate(effectiveDateFromDatePicker.getValue()));
 		if (effectiveDateToDatePicker.getValue() != null) {
 			salary.setEffectiveDateTo(DateUtil.toDate(effectiveDateToDatePicker.getValue()));
@@ -134,12 +129,6 @@ public class SalaryController extends AbstractController {
 		if (isAmountNotValid()) {
 			ShowDialog.error("Amount must be a valid amount");
 			rateField.requestFocus();
-			return false;
-		}
-
-		if (isPayScheduleNotSpecified()) {
-			ShowDialog.error("Pay Schedule must be specified");
-			payScheduleComboBox.requestFocus();
 			return false;
 		}
 
@@ -189,10 +178,6 @@ public class SalaryController extends AbstractController {
 
 	private boolean isEffectiveDateFromNotSpecified() {
 		return effectiveDateFromDatePicker.getValue() == null;
-	}
-
-	private boolean isPayScheduleNotSpecified() {
-		return payScheduleComboBox.getValue() == null;
 	}
 
 	private boolean isAmountNotValid() {

@@ -30,10 +30,6 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
 				<TextField fx:id="rateField"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Label text="Pay Schedule"
-					GridPane.columnIndex="0" GridPane.rowIndex="2" />
-				<ComboBox fx:id="payScheduleComboBox"
-					GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				<Label text="Effective Date From"
 					GridPane.columnIndex="0" GridPane.rowIndex="3" />
 				<AppDatePicker fx:id="effectiveDateFromDatePicker"

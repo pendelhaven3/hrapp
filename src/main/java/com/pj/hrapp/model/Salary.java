@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -29,9 +27,6 @@ public class Salary {
 	private Date effectiveDateTo;
 	private BigDecimal rate;
 	
-	@Enumerated(EnumType.STRING)
-	private PaySchedule paySchedule;
-
 	public Long getId() {
 		return id;
 	}
@@ -91,14 +86,6 @@ public class Salary {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
-	}
-
-	public PaySchedule getPaySchedule() {
-		return paySchedule;
-	}
-
-	public void setPaySchedule(PaySchedule paySchedule) {
-		this.paySchedule = paySchedule;
 	}
 
 	public DateInterval getEffectivePeriod() {

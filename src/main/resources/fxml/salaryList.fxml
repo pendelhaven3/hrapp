@@ -25,14 +25,14 @@
 					<AppPropertyValueFactory property="employee" />
 				</cellValueFactory>
 			</TableColumn>
+			<TableColumn text="Pay Schedule">
+				<cellValueFactory>
+					<AppPropertyValueFactory property="employee.paySchedule" />
+				</cellValueFactory>
+			</TableColumn>
 			<TableColumn text="Rate" styleClass="right">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="rate" />
-				</cellValueFactory>
-			</TableColumn>
-			<TableColumn text="Pay Schedule" styleClass="center">
-				<cellValueFactory>
-					<AppPropertyValueFactory property="paySchedule" />
 				</cellValueFactory>
 			</TableColumn>
 		</columns>
