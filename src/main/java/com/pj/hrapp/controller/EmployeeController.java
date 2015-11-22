@@ -1,6 +1,7 @@
 package com.pj.hrapp.controller;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,6 +147,12 @@ public class EmployeeController extends AbstractController {
 			return false;
 		}
 		
+		if (isEmployeeNumberNotValid()) {
+			ShowDialog.error("Employee Number must be a valid number");
+			employeeNumberField.requestFocus();
+			return false;
+		}
+		
 		if (isEmployeeNumberAlreadyUsed()) {
 			ShowDialog.error("Employee Number is already used by an existing record");
 			employeeNumberField.requestFocus();
@@ -177,6 +184,10 @@ public class EmployeeController extends AbstractController {
 		}
 
 		return true;
+	}
+
+	private boolean isEmployeeNumberNotValid() {
+		return !NumberUtils.isDigits(employeeNumberField.getText());
 	}
 
 	private boolean isPayScheduleNotSpecified() {
