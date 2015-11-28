@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
+import com.pj.hrapp.model.PayslipAdjustmentType;
 
 public interface PayslipAdjustmentDao {
 
@@ -14,5 +15,7 @@ public interface PayslipAdjustmentDao {
 	void delete(PayslipAdjustment payslipAdjustment);
 
 	PayslipAdjustment get(long id);
+
+	void deleteByPayslipAndType(Payslip payslip, PayslipAdjustmentType sss);
 	
 }

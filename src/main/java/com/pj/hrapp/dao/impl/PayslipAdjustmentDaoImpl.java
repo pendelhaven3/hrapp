@@ -5,12 +5,16 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.PayslipAdjustmentDao;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
+import com.pj.hrapp.model.PayslipAdjustmentType;
 
 @Repository
 public class PayslipAdjustmentDaoImpl implements PayslipAdjustmentDao {
@@ -43,6 +47,20 @@ public class PayslipAdjustmentDaoImpl implements PayslipAdjustmentDao {
 	@Override
 	public PayslipAdjustment get(long id) {
 		return entityManager.find(PayslipAdjustment.class, id);
+	}
+
+	@Override
+	public void deleteByPayslipAndType(Payslip payslip, PayslipAdjustmentType type) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaDelete<PayslipAdjustment> criteria = criteriaBuilder.createCriteriaDelete(PayslipAdjustment.class);
+		Root<PayslipAdjustment> root = criteria.from(PayslipAdjustment.class);
+		
+		criteria.where(
+				criteriaBuilder.equal(root.get("payslip"), payslip),
+				criteriaBuilder.equal(root.get("type"), type)
+		);
+		
+		entityManager.createQuery(criteria).executeUpdate();
 	}
 	
 }

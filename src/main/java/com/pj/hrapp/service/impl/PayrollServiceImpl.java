@@ -318,4 +318,17 @@ public class PayrollServiceImpl implements PayrollService {
 		return employeeRepository.findAll().get(0);
 	}
 
+	@Transactional
+	@Override
+	public void regenerateGovernmentContributions(Payslip payslip) {
+		deleteGovernmentContributions(payslip);
+		addSSSPagibigPhilHealthContributionAdjustments(payslip);
+	}
+
+	private void deleteGovernmentContributions(Payslip payslip) {
+		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.SSS);
+		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.PHILHEALTH);
+		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.PAGIBIG);
+	}
+
 }

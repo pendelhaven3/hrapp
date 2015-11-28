@@ -36,4 +36,6 @@ public interface PayrollService {
 
 	void postPayroll(Payroll payroll);
 
+	void regenerateGovernmentContributions(Payslip payslip);
+
 }

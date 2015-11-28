@@ -41,6 +41,8 @@ public class PayslipController extends AbstractController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PayslipController.class);
 	
+	private static final int OTHERS_TAB_INDEX = 4;
+	
 	@Autowired private PayrollService payrollService;
 	@Autowired private EmployeeService employeeService;
 	@Autowired private ValeProductService valeProductService;
@@ -308,6 +310,25 @@ public class PayslipController extends AbstractController {
 		
 		ShowDialog.info("Payslip deleted");
 		stageController.showPayrollScreen(payslip.getPayroll());
+	}
+
+	@FXML 
+	public void generateGovernmentContributions() {
+		try {
+			payrollService.regenerateGovernmentContributions(payslip);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		ShowDialog.info("Government contributions generated");
+		updateDisplay();
+		selectOtherAdjustmentsTab();
+	}
+
+	private void selectOtherAdjustmentsTab() {
+		tabPane.getSelectionModel().select(OTHERS_TAB_INDEX);
 	}
 
 }

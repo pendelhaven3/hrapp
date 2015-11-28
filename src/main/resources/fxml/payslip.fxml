@@ -63,7 +63,11 @@
 					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 			</GridPane>
 			
-			<Button text="Edit" onAction="#editPayslip" />
+			<HBox alignment="center" spacing="10">
+				<Button text="Edit" onAction="#editPayslip" />
+				<Button text="Generate SSS/Philhealth/Pag-ibig" onAction="#generateGovernmentContributions" />
+			</HBox>
+			
 			
 			<TabPane fx:id="tabPane" VBox.vgrow="always">
 				<tabs>
