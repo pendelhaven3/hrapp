@@ -53,7 +53,8 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	public void updateDisplay() {
 		setTitle();
 		employeeComboBox.getItems().setAll(employeeService.getAllEmployees());
-		updatePaymentAmountWhenNumberOfPaymentsChange();
+		updatePaymentAmountWhenLoanAmountChanges();
+		updatePaymentAmountWhenNumberOfPaymentsChanges();
 		
 		if (loan != null) {
 			loan = employeeLoanService.findEmployeeLoan(loan.getId());
@@ -71,13 +72,27 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		employeeComboBox.requestFocus();
 	}
 
-	private void updatePaymentAmountWhenNumberOfPaymentsChange() {
+	private void updatePaymentAmountWhenLoanAmountChanges() {
+		amountField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (NumberUtil.isAmount(newValue) && NumberUtils.isDigits(numberOfPaymentsField.getText())) {
+				updatePaymentAmountField(
+						NumberUtil.toBigDecimal(newValue), Integer.valueOf(numberOfPaymentsField.getText()));
+			} else {
+				paymentAmountField.setText(null);
+			}
+		});
+	}
+
+	private void updatePaymentAmountField(BigDecimal loanAmount, int numberOfPayments) {
+		paymentAmountField.setText(FormatterUtil.formatAmount(
+				loanAmount.divide(new BigDecimal(numberOfPayments), 2, RoundingMode.HALF_UP)));
+	}
+
+	private void updatePaymentAmountWhenNumberOfPaymentsChanges() {
 		numberOfPaymentsField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (NumberUtil.isAmount(amountField.getText()) && NumberUtils.isDigits(newValue)) {
-				BigDecimal amount = NumberUtil.toBigDecimal(amountField.getText());
-				Integer numberOfPayments = Integer.valueOf(newValue);
-				paymentAmountField.setText(FormatterUtil.formatAmount(
-						amount.divide(new BigDecimal(numberOfPayments), 2, RoundingMode.HALF_UP)));
+				updatePaymentAmountField(
+						NumberUtil.toBigDecimal(amountField.getText()), Integer.valueOf(newValue));
 			} else {
 				paymentAmountField.setText(null);
 			}
@@ -199,25 +214,11 @@ public class AddEditEmployeeLoanController extends AbstractController {
 			return false;
 		}
 		
-		if (doesPaymentAmountAndNumberOfPaymentsNotMatchLoanAmount()) {
-			ShowDialog.error("Payment Amount and Number of Payments must match loan amount");
-			numberOfPaymentsField.requestFocus();
-			return false;
-		}
-		
 		return true;
 	}
 
 	private boolean isDescriptionNotSpecified() {
 		return StringUtils.isEmpty(descriptionField.getText());
-	}
-
-	private boolean doesPaymentAmountAndNumberOfPaymentsNotMatchLoanAmount() {
-		BigDecimal loanAmount = NumberUtil.toBigDecimal(amountField.getText());
-		BigDecimal paymentAmount = NumberUtil.toBigDecimal(paymentAmountField.getText());
-		int numberOfPayments = Integer.valueOf(numberOfPaymentsField.getText());
-		
-		return loanAmount.compareTo(paymentAmount.multiply(new BigDecimal(numberOfPayments))) != 0;
 	}
 
 	private boolean isPaymentAmountNotSpecified() {
