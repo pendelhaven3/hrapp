@@ -155,7 +155,7 @@ public class AddPayslipDialog extends AbstractDialog {
 	}
 
 	private void addValeProductsToPayslip(List<ValeProduct> valeProducts) {
-		if (!ShowDialog.confirm("Adding vale products will mark them as paid. Proceed?")) {
+		if (!ShowDialog.confirm("Add vale products?")) {
 			return;
 		}
 		
