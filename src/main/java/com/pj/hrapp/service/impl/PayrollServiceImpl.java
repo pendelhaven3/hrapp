@@ -128,9 +128,10 @@ public class PayrollServiceImpl implements PayrollService {
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(employeeCompensation);
 			break;
 		case SEMIMONTHLY:
-			BigDecimal rate = salaryDao.findByEmployee(payslip.getEmployee()).getRate();
-			sssContribution = sssContributionTable.getEmployeeContribution(rate);
-			philHealthContribution = philHealthContributionTable.getEmployeeShare(rate);
+			BigDecimal referenceCompensation = 
+					salaryDao.findByEmployee(payslip.getEmployee()).getRate().multiply(BigDecimal.valueOf(2L));
+			sssContribution = sssContributionTable.getEmployeeContribution(referenceCompensation);
+			philHealthContribution = philHealthContributionTable.getEmployeeShare(referenceCompensation);
 			break;
 		}
 		
