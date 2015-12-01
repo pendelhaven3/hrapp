@@ -30,7 +30,7 @@ public class AddPayslipLoanPaymentDialog extends AbstractDialog {
 	@Parameter private Payslip payslip;
 	
 	public AddPayslipLoanPaymentDialog() {
-		setSceneWidth(800d);
+		setSceneWidth(1000d);
 	}
 	
 	@Override
