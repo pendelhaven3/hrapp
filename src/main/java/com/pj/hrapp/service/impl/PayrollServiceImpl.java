@@ -298,7 +298,10 @@ public class PayrollServiceImpl implements PayrollService {
 		}
 		
 		for (Payslip payslip : payroll.getPayslips()) {
-			valeProductService.markValeProductsAsPaid(valeProductRepository.findAllByPayslip(payslip));
+			List<ValeProduct> valeProducts = valeProductRepository.findAllByPayslip(payslip);
+			if (!valeProducts.isEmpty()) {
+				valeProductService.markValeProductsAsPaid(valeProducts);
+			}
 		}
 		
 		payroll.setPosted(true);
