@@ -32,7 +32,7 @@
 					</TableColumn>
 					<TableColumn text="Payment Amount" styleClass="center">
 						<cellValueFactory>
-							<AppPropertyValueFactory property="item.amount" />
+							<AppPropertyValueFactory property="item.paymentAmount" />
 						</cellValueFactory>
 					</TableColumn>
 					<TableColumn text="Last Payment No." styleClass="center">
