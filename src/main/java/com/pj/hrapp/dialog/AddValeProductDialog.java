@@ -1,6 +1,7 @@
 package com.pj.hrapp.dialog;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,23 @@ public class AddValeProductDialog extends AbstractDialog {
 		setTitle(getDialogTitle());
 		
 		valeProductsTable.getItems().clear();
-		for (ValeProduct valeProduct : valeProductService.findUnpaidValeProductsByEmployee(payslip.getEmployee())) {
+		for (ValeProduct valeProduct : findUnpaidValeProductsByEmployeeAndNotInPayslip()) {
 			valeProductsTable.getItems().add(new TableItem<ValeProduct>(valeProduct));
 		}
+	}
+	
+	private List<ValeProduct> findUnpaidValeProductsByEmployeeAndNotInPayslip() {
+		return valeProductService.findUnpaidValeProductsByEmployee(payslip.getEmployee())
+				.stream()
+				.filter((valeProduct) -> {
+					for (ValeProduct vp : payslip.getValeProducts()) {
+						if (vp.getSalesInvoiceNumber().equals(valeProduct.getSalesInvoiceNumber())) {
+							return false;
+						}
+					}
+					return true;
+				})
+				.collect(Collectors.toList());
 	}
 	
 	@Override
