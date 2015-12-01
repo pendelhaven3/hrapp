@@ -25,7 +25,6 @@ import com.pj.hrapp.model.PayslipBasicPayItem;
 import com.pj.hrapp.model.PreviewPayslipItem;
 import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.service.EmployeeLoanService;
-import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.ValeProductService;
 import com.pj.hrapp.util.FormatterUtil;
@@ -44,7 +43,6 @@ public class PayslipController extends AbstractController {
 	private static final int OTHERS_TAB_INDEX = 4;
 	
 	@Autowired private PayrollService payrollService;
-	@Autowired private EmployeeService employeeService;
 	@Autowired private ValeProductService valeProductService;
 	@Autowired private EmployeeLoanService employeeLoanService;
 	@Autowired private EmployeeAttendanceDialog employeeAttendanceDialog;
@@ -180,34 +178,6 @@ public class PayslipController extends AbstractController {
 
 	private boolean isAdjustmentSelected() {
 		return adjustmentsTable.getSelectionModel().getSelectedItem() != null;
-	}
-
-	@FXML 
-	public void deleteEmployeeAttendance() {
-		if (!isEmployeeAttendanceSelected()) {
-			return;
-		}
-		
-		if (ShowDialog.confirm("Delete selected employee attendance?")) {
-			try {
-				employeeService.deleteEmployeeAttendance(getSelectedEmployeeAttendance());
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
-				ShowDialog.unexpectedError();
-				return;
-			}
-			
-			ShowDialog.info("Employee attendance deleted");
-			updateDisplay();
-		}
-	}
-
-	private boolean isEmployeeAttendanceSelected() {
-		return getSelectedEmployeeAttendance() != null;
-	}
-	
-	private EmployeeAttendance getSelectedEmployeeAttendance() {
-		return attendancesTable.getSelectionModel().getSelectedItem();
 	}
 
 	@FXML public void addValeProduct() {
