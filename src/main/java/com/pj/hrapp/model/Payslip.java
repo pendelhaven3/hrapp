@@ -261,4 +261,13 @@ public class Payslip {
 		this.loanPayments = loanPayments;
 	}
 	
+	public BigDecimal getAtmPay() {
+		BigDecimal atmPay = getNetPay();
+		if (atmPay.compareTo(BigDecimal.ZERO) < 0) {
+			return BigDecimal.ZERO;
+		} else {
+			return atmPay;
+		}
+	}
+	
 }

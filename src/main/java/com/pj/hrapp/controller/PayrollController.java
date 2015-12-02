@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
+import com.pj.hrapp.util.PayrollToBdoExcelGenerator;
 import com.pj.hrapp.util.PayrollToExcelGenerator;
 
 import javafx.fxml.FXML;
@@ -43,6 +45,7 @@ public class PayrollController extends AbstractController {
 	
 	@Autowired private PayrollService payrollService;
 	@Autowired private PayrollToExcelGenerator excelGenerator;
+	@Autowired private PayrollToBdoExcelGenerator bdoExcelGenerator;
 	@Autowired private AddPayslipDialog addPayslipDialog;
 	
 	@FXML private Label batchNumberLabel;
@@ -221,6 +224,42 @@ public class PayrollController extends AbstractController {
 		
 		ShowDialog.info("Payroll posted");
 		updateDisplay();
+	}
+
+	@FXML 
+	public void generateBdoExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.setInitialDirectory(Paths.get(System.getProperty("user.home"), "Desktop").toFile());
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Macro-Enabled Workbook", "*.xlsm"));
+        fileChooser.setInitialFileName(getBdoExcelFilename());
+        File file = fileChooser.showSaveDialog(stageController.getStage());
+        if (file == null) {
+        	return;
+        }
+		
+		try (
+			Workbook workbook = bdoExcelGenerator.generate(payroll);
+			FileOutputStream out = new FileOutputStream(file);
+		) {
+			workbook.write(out);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		if (ShowDialog.confirm("Excel file generated.\nDo you wish to open the file?")) {
+			openExcelFile(file);
+		}
+	}
+
+	private String getBdoExcelFilename() {
+		return new StringBuilder()
+				.append("BDO EPCI Regular Payroll ")
+				.append(new SimpleDateFormat("MM-dd").format(payroll.getPayDate()))
+				.append(".xlsm")
+				.toString();
 	}
 	
 }
