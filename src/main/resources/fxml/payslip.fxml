@@ -21,7 +21,7 @@
 	<top>
 		<ToolBar>
 			<Button text="Back" onAction="#doOnBack" />
-			<Button text="Delete" onAction="#deletePayslip" />
+			<Button text="Delete" onAction="#deletePayslip" fx:id="deletePayslipButton" />
 		</ToolBar>
 	</top>
 	<center>
@@ -63,7 +63,7 @@
 					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 			</GridPane>
 			
-			<HBox alignment="center" spacing="10">
+			<HBox alignment="center" spacing="10" fx:id="editPayslipButtonsHBox" >
 				<Button text="Edit" onAction="#editPayslip" />
 				<Button text="Generate SSS/Philhealth/Pag-ibig" onAction="#generateGovernmentContributions" />
 			</HBox>
@@ -72,7 +72,7 @@
 			<TabPane fx:id="tabPane" VBox.vgrow="always">
 				<tabs>
 					<Tab text="Attendance" closable="false">
-						<TableView fx:id="attendancesTable">
+						<AppTableView fx:id="attendancesTable">
 							<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 							<columns>
 								<TableColumn text="Date">
@@ -86,7 +86,7 @@
 									</cellValueFactory>
 								</TableColumn>
 							</columns>
-						</TableView>
+						</AppTableView>
 					</Tab>
 					<Tab text="Basic Pay" closable="false">
 						<TableView fx:id="basicPayItemsTable">
@@ -143,7 +143,7 @@
 								</columns>
 							</AppTableView>
 							
-							<HBox alignment="center" spacing="10">
+							<HBox alignment="center" spacing="10" fx:id="editLoanPaymentButtonsHBox">
 								<Button text="Add Loan Payment" onAction="#addLoanPayment" />
 								<Button text="Delete Loan Payment" onAction="#deleteLoanPayment" />
 							</HBox>
@@ -172,7 +172,7 @@
 								</columns>
 							</AppTableView>
 							
-							<HBox alignment="center" spacing="10">
+							<HBox alignment="center" spacing="10" fx:id="editValeProductButtonsHBox">
 								<Button text="Add Vale Product" onAction="#addValeProduct" />
 								<Button text="Delete Vale Product" onAction="#deleteValeProduct" />
 							</HBox>
@@ -201,7 +201,7 @@
 								</columns>
 							</AppTableView>
 							
-							<HBox alignment="center" spacing="10">
+							<HBox alignment="center" spacing="10" fx:id="editPayslipAdjustmentButtonsHBox">
 								<Button text="Add Adjustment" onAction="#addPayslipAdjustment" />
 								<Button text="Delete Adjustment" onAction="#deletePayslipAdjustment" />
 							</HBox>

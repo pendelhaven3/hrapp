@@ -15,7 +15,6 @@ import com.pj.hrapp.dialog.EmployeeAttendanceDialog;
 import com.pj.hrapp.dialog.PayslipAdjustmentDialog;
 import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
-import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.EmployeeLoanPayment;
@@ -30,10 +29,11 @@ import com.pj.hrapp.service.ValeProductService;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 
 @Controller
 public class PayslipController extends AbstractController {
@@ -57,13 +57,18 @@ public class PayslipController extends AbstractController {
 	@FXML private Label basicPayLabel;
 	@FXML private Label adjustmentsLabel;
 	@FXML private Label netPayLabel;
-	@FXML private TableView<EmployeeAttendance> attendancesTable;
+	@FXML private AppTableView<EmployeeAttendance> attendancesTable;
 	@FXML private TableView<PayslipBasicPayItem> basicPayItemsTable;
 	@FXML private AppTableView<EmployeeLoanPayment> loanPaymentsTable;
 	@FXML private AppTableView<ValeProduct> valeProductsTable;
 	@FXML private AppTableView<PayslipAdjustment> adjustmentsTable;
 	@FXML private TableView<PreviewPayslipItem> previewPayslipTable;
 	@FXML private TabPane tabPane;
+	@FXML private Button deletePayslipButton;
+	@FXML private HBox editPayslipButtonsHBox;
+	@FXML private HBox editLoanPaymentButtonsHBox;
+	@FXML private HBox editValeProductButtonsHBox;
+	@FXML private HBox editPayslipAdjustmentButtonsHBox;
 
 	@Parameter private Payslip payslip;
 
@@ -83,13 +88,7 @@ public class PayslipController extends AbstractController {
 		basicPayItemsTable.getItems().setAll(payslip.getBasicPayItems());
 		
 		attendancesTable.getItems().setAll(payslip.getAttendances());
-		attendancesTable.setOnMouseClicked(new DoubleClickEventHandler() {
-			
-			@Override
-			protected void onDoubleClick(MouseEvent event) {
-				editSelectedAttendance();
-			}
-		});
+		attendancesTable.setDoubleClickAction(() -> editSelectedAttendance());
 
 		loanPaymentsTable.setItems(payslip.getLoanPayments());
 		loanPaymentsTable.setDeleteKeyAction(() -> deleteLoanPayment());
@@ -98,16 +97,28 @@ public class PayslipController extends AbstractController {
 		valeProductsTable.setDeleteKeyAction(() -> deleteValeProduct());
 		
 		adjustmentsTable.getItems().setAll(payslip.getAdjustments());
-		adjustmentsTable.setOnMouseClicked(new DoubleClickEventHandler() {
-			
-			@Override
-			protected void onDoubleClick(MouseEvent event) {
-				editSelectedAdjustment();
-			}
-		});
+		adjustmentsTable.setDoubleClickAction(() -> editSelectedAdjustment());
 		adjustmentsTable.setDeleteKeyAction(() -> deletePayslipAdjustment());
 		
 		previewPayslipTable.getItems().setAll(payslip.getPreviewItems());
+		
+		if (payslip.getPayroll().isPosted()) {
+			preventPayslipFromBeingEdited();
+		}
+	}
+
+	private void preventPayslipFromBeingEdited() {
+		deletePayslipButton.setDisable(true);
+		editPayslipButtonsHBox.setDisable(true);
+		editLoanPaymentButtonsHBox.setDisable(true);
+		editValeProductButtonsHBox.setDisable(true);
+		editPayslipAdjustmentButtonsHBox.setDisable(true);
+		
+		attendancesTable.setDoubleClickAction(null);
+		loanPaymentsTable.setDeleteKeyAction(null);
+		valeProductsTable.setDeleteKeyAction(null);
+		adjustmentsTable.setDoubleClickAction(null);
+		adjustmentsTable.setDeleteKeyAction(null);
 	}
 
 	protected void editSelectedAttendance() {

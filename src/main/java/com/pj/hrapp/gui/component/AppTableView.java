@@ -43,21 +43,29 @@ public class AppTableView<T> extends TableView<T> {
 	}
 	
 	public void setDoubleClickAction(CustomAction action) {
-		setOnMouseClicked(new DoubleClickEventHandler() {
-			
-			@Override
-			protected void onDoubleClick(MouseEvent event) {
-				action.doAction();
-			}
-		});
+		if (action != null) {
+			setOnMouseClicked(new DoubleClickEventHandler() {
+				
+				@Override
+				protected void onDoubleClick(MouseEvent event) {
+					action.doAction();
+				}
+			});
+		} else {
+			setOnMouseClicked(null);
+		}
 	}
 
 	public void setDeleteKeyAction(CustomAction action) {
-		setOnKeyPressed(e -> {
-			if (e.getCode().equals(KeyCode.DELETE)) {
-				action.doAction();
-			}
-		});
+		if (action != null) {
+			setOnKeyPressed(e -> {
+				if (e.getCode().equals(KeyCode.DELETE)) {
+					action.doAction();
+				}
+			});
+		} else {
+			setOnKeyPressed(null);
+		}
 	}
 	
 }
