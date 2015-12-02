@@ -25,8 +25,8 @@ import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.service.PayrollService;
-import com.pj.hrapp.service.impl.PayrollToExcelGenerator;
 import com.pj.hrapp.util.FormatterUtil;
+import com.pj.hrapp.util.PayrollToExcelGenerator;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
