@@ -1,6 +1,6 @@
 package com.pj.hrapp.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -10,9 +10,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pj.hrapp.SystemSetup;
 import com.pj.hrapp.IntegrationTest;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.PaySchedule;
@@ -26,8 +28,15 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 	@Autowired
 	private PayrollService payrollService;
 	
+	@Autowired private SystemSetup systemSetup;
+	
 	@PersistenceContext 
 	private EntityManager entityManager;
+	
+	@Before
+	public void setUp() {
+		systemSetup.run();
+	}
 	
 	@Test
 	public void savePayslip() {
