@@ -41,4 +41,9 @@ public class MainMenuController extends AbstractController {
 		stageController.showEmployeeAttendanceScreen();
 	}
 
+	@FXML 
+	public void goToEditPagibigContributionValueScreen() {
+		stageController.showEditPagibigContributionValueScreen();
+	}
+
 }

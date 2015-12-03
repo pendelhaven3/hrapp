@@ -186,4 +186,8 @@ public class StageController {
 		loadSceneFromFXML("employeeAttendance");
 	}
 
+	public void showEditPagibigContributionValueScreen() {
+		loadSceneFromFXML("editPagibigContributionValue");
+	}
+
 }

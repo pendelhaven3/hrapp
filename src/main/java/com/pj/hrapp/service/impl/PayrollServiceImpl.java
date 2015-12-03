@@ -39,6 +39,7 @@ import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.PhilHealthService;
 import com.pj.hrapp.service.SSSService;
+import com.pj.hrapp.service.SystemService;
 import com.pj.hrapp.service.ValeProductService;
 import com.pj.hrapp.util.DateUtil;
 
@@ -56,6 +57,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private EmployeeLoanPaymentRepository employeeLoanPaymentRepository;
 	@Autowired private ValeProductService valeProductService;
 	@Autowired private EmployeeRepository employeeRepository;
+	@Autowired private SystemService systemService;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -135,7 +137,7 @@ public class PayrollServiceImpl implements PayrollService {
 			break;
 		}
 		
-		BigDecimal pagibigContribution = BigDecimal.valueOf(100L);
+		BigDecimal pagibigContribution = systemService.getPagibigContributionValue();
 		
 		PayslipAdjustment adjustment = new PayslipAdjustment();
 		adjustment.setPayslip(payslip);
@@ -154,7 +156,7 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment = new PayslipAdjustment();
 		adjustment.setPayslip(payslip);
 		adjustment.setType(PayslipAdjustmentType.PAGIBIG);
-		adjustment.setDescription("Pag-ibig");
+		adjustment.setDescription("Pag-IBIG");
 		adjustment.setAmount(pagibigContribution.negate());
 		payslipAdjustmentDao.save(adjustment);
 	}

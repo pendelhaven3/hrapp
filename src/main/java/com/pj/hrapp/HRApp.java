@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 
 import com.pj.hrapp.controller.StageController;
@@ -29,18 +28,27 @@ public class HRApp extends Application {
 		launch(args);
 	}
 	
+	private ApplicationContext context;
+	private Stage stage;
+	
 	@Override
 	public void start(Stage stage) throws Exception {
-		ConfigurableApplicationContext context = SpringApplication.run(HRApp.class, HRApp.args);
+		this.stage = stage;
+		context = SpringApplication.run(HRApp.class, HRApp.args);
 		
-		if (isDatabaseNotFound(context)) {
+		if (isDatabaseNotFound()) {
 			ShowDialog.error("Database not found");
 		} else {
-			showMainMenuScreen(context, stage);
+			setupInitialDatabaseValues();
+			showMainMenuScreen();
 		}
 	}
 
-	private boolean isDatabaseNotFound(ApplicationContext context) {
+	private void setupInitialDatabaseValues() {
+		context.getBean(SystemSetup.class).run();
+	}
+
+	private boolean isDatabaseNotFound() {
 		DataSource dataSource = context.getBean(DataSource.class);
 		
 		try {
@@ -52,7 +60,7 @@ public class HRApp extends Application {
 		return false;
 	}
 
-	private void showMainMenuScreen(ApplicationContext context, Stage stage) {
+	private void showMainMenuScreen() {
 		StageController stageController = context.getBean(StageController.class);
 		stageController.setStage(stage);
 		stageController.showMainMenuScreen();
