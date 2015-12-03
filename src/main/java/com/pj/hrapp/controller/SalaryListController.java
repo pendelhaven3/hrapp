@@ -5,13 +5,15 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.pj.hrapp.dialog.SearchSalariesDialog;
+import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.EnterKeyEventHandler;
 import com.pj.hrapp.model.Salary;
+import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.service.SalaryService;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 
 @Controller
@@ -19,8 +21,9 @@ import javafx.scene.input.MouseEvent;
 public class SalaryListController extends AbstractController {
 
 	@Autowired private SalaryService salaryService;
+	@Autowired private SearchSalariesDialog searchSalariesDialog;
 	
-	@FXML private TableView<Salary> salariesTable;
+	@FXML private AppTableView<Salary> salariesTable;
 	
 	@Override
 	public void updateDisplay() {
@@ -61,6 +64,16 @@ public class SalaryListController extends AbstractController {
 
 	@FXML public void addSalary() {
 		stageController.showAddSalaryScreen();
+	}
+
+	@FXML 
+	public void searchSalaries() {
+		searchSalariesDialog.showAndWait();
+		
+		SalarySearchCriteria criteria = searchSalariesDialog.getSearchCriteria();
+		if (criteria != null) {
+			salariesTable.setItemsThenFocus(salaryService.searchSalaries(criteria));
+		}
 	}
 
 }

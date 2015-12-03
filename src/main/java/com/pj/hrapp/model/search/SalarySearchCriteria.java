@@ -3,12 +3,14 @@ package com.pj.hrapp.model.search;
 import java.util.Date;
 
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.PaySchedule;
 
 public class SalarySearchCriteria {
 
 	private Employee employee;
 	private Date effectiveDateFrom;
 	private Date effectiveDateTo;
+	private PaySchedule paySchedule;
 
 	public Employee getEmployee() {
 		return employee;
@@ -32,6 +34,14 @@ public class SalarySearchCriteria {
 
 	public void setEffectiveDateTo(Date effectiveDateTo) {
 		this.effectiveDateTo = effectiveDateTo;
+	}
+
+	public PaySchedule getPaySchedule() {
+		return paySchedule;
+	}
+
+	public void setPaySchedule(PaySchedule paySchedule) {
+		this.paySchedule = paySchedule;
 	}
 
 }

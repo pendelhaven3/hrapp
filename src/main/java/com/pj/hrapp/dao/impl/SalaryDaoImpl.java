@@ -87,6 +87,10 @@ public class SalaryDaoImpl implements SalaryDao {
 				.append(")");
 			paramMap.put("effectiveDateTo", criteria.getEffectiveDateTo());
 		}
+		if (criteria.getPaySchedule() != null) {
+			sql.append(" and s.employee.paySchedule = :paySchedule");
+			paramMap.put("paySchedule", criteria.getPaySchedule());
+		}
 
 		TypedQuery<Salary> query = entityManager.createQuery(sql.toString(), Salary.class);
 		for (String key : paramMap.keySet()) {

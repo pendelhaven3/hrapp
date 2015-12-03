@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Salary;
+import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.service.SalaryService;
 
 @Service
@@ -43,6 +44,11 @@ public class SalaryServiceImpl implements SalaryService {
 	@Override
 	public void delete(Salary salary) {
 		salaryDao.delete(salary);
+	}
+
+	@Override
+	public List<Salary> searchSalaries(SalarySearchCriteria criteria) {
+		return salaryDao.search(criteria);
 	}
 	
 }
