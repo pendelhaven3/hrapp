@@ -38,4 +38,6 @@ public interface PayrollService {
 
 	void regenerateGovernmentContributions(Payslip payslip);
 
+	void regenerateAllGovernmentContributions(Payroll payroll);
+
 }

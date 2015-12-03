@@ -335,4 +335,12 @@ public class PayrollServiceImpl implements PayrollService {
 		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.PAGIBIG);
 	}
 
+	@Transactional
+	@Override
+	public void regenerateAllGovernmentContributions(Payroll payroll) {
+		for (Payslip payslip : payroll.getPayslips()) {
+			regenerateGovernmentContributions(payslip);
+		}
+	}
+
 }

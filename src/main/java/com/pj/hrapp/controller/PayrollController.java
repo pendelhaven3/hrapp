@@ -261,5 +261,23 @@ public class PayrollController extends AbstractController {
 				.append(".xlsm")
 				.toString();
 	}
+
+	@FXML 
+	public void regenerateAllGovernmentContributions() {
+		if (!ShowDialog.confirm("Generate SSS/PhilHealth/Pag-ibig contributions for all payslips?")) {
+			return;
+		}
+		
+		try {
+			payrollService.regenerateAllGovernmentContributions(payroll);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		ShowDialog.info("SSS/PhilHealth/Pag-ibig contributions generated");
+		updateDisplay();
+	}
 	
 }
