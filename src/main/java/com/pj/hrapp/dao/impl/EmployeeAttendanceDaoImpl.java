@@ -40,6 +40,10 @@ public class EmployeeAttendanceDaoImpl implements EmployeeAttendanceDao {
 			sql.append(" and ea.date <= :dateTo");
 			paramMap.put("dateTo", criteria.getDateTo());
 		}
+		if (criteria.getPaySchedule() != null) {
+			sql.append(" and ea.employee.paySchedule = :paySchedule");
+			paramMap.put("paySchedule", criteria.getPaySchedule());
+		}
 
 		sql.append(" order by ea.date");
 		

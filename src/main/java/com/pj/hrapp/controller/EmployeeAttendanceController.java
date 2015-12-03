@@ -14,11 +14,13 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.util.DateUtil;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -31,9 +33,9 @@ public class EmployeeAttendanceController extends AbstractController {
 	@Autowired private EmployeeService employeeService;
 	
 	@FXML private TableView<EmployeeAttendanceSummary> attendancesTable;
-	@FXML private ComboBox<Employee> employeeComboBox;
 	@FXML private DatePicker dateFromDatePicker;
 	@FXML private DatePicker dateToDatePicker;
+	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
 	
 	@Override
 	public void updateDisplay() {
@@ -44,6 +46,8 @@ public class EmployeeAttendanceController extends AbstractController {
 		DateInterval currentMonthInterval = getCurrentYearMonthInterval();
 		dateFromDatePicker.setValue(DateUtil.toLocalDate(currentMonthInterval.getDateFrom()));
 		dateToDatePicker.setValue(DateUtil.toLocalDate(currentMonthInterval.getDateTo()));
+		
+		payScheduleComboBox.setItems(FXCollections.observableArrayList(PaySchedule.values()));
 	}
 
 	private List<EmployeeAttendanceSummary> getAllEmployeeAttendanceSummariesForCurrentMonth() {
@@ -120,6 +124,7 @@ public class EmployeeAttendanceController extends AbstractController {
 		EmployeeAttendanceSearchCriteria criteria = new EmployeeAttendanceSearchCriteria();
 		criteria.setDateFrom(DateUtil.toDate(dateFromDatePicker.getValue()));
 		criteria.setDateTo(DateUtil.toDate(dateToDatePicker.getValue()));
+		criteria.setPaySchedule(payScheduleComboBox.getValue());
 		
 		attendancesTable.getItems()
 				.setAll(toAttendanceSummaries(employeeService.searchEmployeeAttendances(criteria)));
