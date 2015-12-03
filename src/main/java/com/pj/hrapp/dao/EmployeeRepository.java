@@ -23,5 +23,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 			+ " and e.resigned = false"
 			+ " order by e.firstName, e.lastName")
 	List<Employee> findAllActiveNotInPayroll(@Param("payroll") Payroll payroll);
+
+	@Query("select e from Employee e where e.resigned = :resigned order by e.firstName, e.lastName")
+	List<Employee> findAllByResigned(@Param("resigned") boolean resigned);
 	
 }

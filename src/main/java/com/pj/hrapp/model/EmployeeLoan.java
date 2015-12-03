@@ -179,5 +179,9 @@ public class EmployeeLoan {
 		loan.setId(id);
 		return loan;
 	}
+
+	public boolean isNew() {
+		return id == null;
+	}
 	
 }

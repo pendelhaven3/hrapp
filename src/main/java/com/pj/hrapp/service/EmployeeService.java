@@ -28,5 +28,7 @@ public interface EmployeeService {
 	List<Employee> findAllActiveEmployeesNotInPayroll(Payroll payroll);
 	
 	List<EmployeeAttendance> searchEmployeeAttendances(EmployeeAttendanceSearchCriteria criteria);
+
+	List<Employee> getAllActiveEmployees();
 	
 }

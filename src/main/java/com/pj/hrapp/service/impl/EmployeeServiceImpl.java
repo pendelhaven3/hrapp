@@ -75,4 +75,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeAttendanceDao.search(criteria);
 	}
 
+	@Override
+	public List<Employee> getAllActiveEmployees() {
+		return employeeRepository.findAllByResigned(false);
+	}
+
 }

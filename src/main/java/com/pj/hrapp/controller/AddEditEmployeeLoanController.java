@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 
 import com.pj.hrapp.Parameter;
+import com.pj.hrapp.exception.EmployeeAlreadyResignedException;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
@@ -52,7 +53,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	@Override
 	public void updateDisplay() {
 		setTitle();
-		employeeComboBox.getItems().setAll(employeeService.getAllEmployees());
+		employeeComboBox.getItems().setAll(employeeService.getAllActiveEmployees());
 		updatePaymentAmountWhenLoanAmountChanges();
 		updatePaymentAmountWhenNumberOfPaymentsChanges();
 		
@@ -149,6 +150,9 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		
 		try {
 			employeeLoanService.save(loan);
+		} catch (EmployeeAlreadyResignedException e) {
+			ShowDialog.error("Cannot create new loan for resigned employee");
+			return;
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();

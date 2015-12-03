@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
 import com.pj.hrapp.dao.EmployeeLoanRepository;
+import com.pj.hrapp.exception.EmployeeAlreadyResignedException;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.EmployeeLoanPayment;
@@ -52,6 +53,9 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 	@Transactional
 	@Override
 	public void save(EmployeeLoan loan) {
+		if (loan.isNew() && loan.getEmployee().isResigned()) {
+			throw new EmployeeAlreadyResignedException();
+		}
 		employeeLoanRepository.save(loan);
 	}
 
