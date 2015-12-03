@@ -42,6 +42,12 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 			descriptionField.setText(payslipAdjustment.getDescription());
 			amountField.setText(FormatterUtil.formatAmount(payslipAdjustment.getAmount()));
 		}
+
+		typeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue == PayslipAdjustmentType.LATES) {
+				descriptionField.setText("lates/mb");
+			}
+		});
 	}
 	
 	@FXML public void savePayslipAdjustment() {
