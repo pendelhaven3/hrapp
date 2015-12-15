@@ -64,6 +64,7 @@ public class HRApp extends Application {
 		StageController stageController = context.getBean(StageController.class);
 		stageController.setStage(stage);
 		stageController.showMainMenuScreen();
+		stage.setResizable(true);
 		stage.show();
 	}
 

@@ -52,8 +52,12 @@ public class StageController {
 			throw new RuntimeException(e);
 		}
 		
-		stage.setScene(null);
-		stage.setScene(new Scene(root, WIDTH, HEIGHT));
+		if (stage.getScene() != null) {
+			stage.setScene(new Scene(root, stage.getScene().getWidth(), stage.getScene().getHeight()));
+		} else {
+			stage.setScene(new Scene(root, WIDTH, HEIGHT));
+		}
+		
 		stage.getScene().getStylesheets().add("css/application.css");
 		
 		if (fxmlLoader.getController() instanceof AbstractController) {
