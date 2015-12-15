@@ -34,6 +34,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -56,10 +57,8 @@ public class PayrollController extends AbstractController {
 	@FXML private Label totalAmountLabel;
 	@FXML private AppTableView<Payslip> payslipsTable;
 	@FXML private Button deletePayrollButton;
-	@FXML private Button updatePayrollButton;
-	@FXML private Button postPayrollButton;
-	@FXML private Button addPayslipButton;
-	@FXML private Button deletePayslipButton;
+	@FXML private HBox editPayrollButtonsHBox;
+	@FXML private HBox editPayslipButtonsHBox;
 	
 	@Parameter private Payroll payroll;
 	
@@ -91,9 +90,14 @@ public class PayrollController extends AbstractController {
 		payslipsTable.setDeleteKeyAction(() -> deletePayslip());
 		
 		if (payroll.isPosted()) {
-			disableButtons(deletePayrollButton, 
-					updatePayrollButton, postPayrollButton, addPayslipButton, deletePayslipButton);
+			preventPayrollFromBeingEdited();
 		}
+	}
+
+	private void preventPayrollFromBeingEdited() {
+		deletePayrollButton.setDisable(true);
+		editPayrollButtonsHBox.setDisable(true);
+		editPayslipButtonsHBox.setDisable(true);
 	}
 
 	protected void openSelectedPayslip() {

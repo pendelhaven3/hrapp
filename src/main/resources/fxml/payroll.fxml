@@ -62,9 +62,9 @@
 				</GridPane>
 			</HBox>
 		
-			<HBox spacing="10" alignment="center">
-				<Button text="Update Payroll" onAction="#updatePayroll" fx:id="updatePayrollButton" />
-				<Button text="Post Payroll" onAction="#postPayroll" fx:id="postPayrollButton" />
+			<HBox spacing="10" alignment="center" fx:id="editPayrollButtonsHBox">
+				<Button text="Update Payroll" onAction="#updatePayroll" />
+				<Button text="Post Payroll" onAction="#postPayroll" />
 				<Button text="Generate SSS/PH/Pag-ibig for All" onAction="#regenerateAllGovernmentContributions" />
 			</HBox>
 			
@@ -98,9 +98,9 @@
 								</columns>
 							</AppTableView>
 							
-							<HBox spacing="10" alignment="center">
-								<Button text="Add Payslip" onAction="#addPayslip" fx:id="addPayslipButton" />
-								<Button text="Delete Payslip" onAction="#deletePayslip" fx:id="deletePayslipButton" />
+							<HBox spacing="10" alignment="center" fx:id="editPayslipButtonsHBox">
+								<Button text="Add Payslip" onAction="#addPayslip" />
+								<Button text="Delete Payslip" onAction="#deletePayslip" />
 							</HBox>
 						</VBox>
 					</Tab>
