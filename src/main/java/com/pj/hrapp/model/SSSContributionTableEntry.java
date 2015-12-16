@@ -3,15 +3,32 @@ package com.pj.hrapp.model;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.SqlResultSetMapping;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.pj.hrapp.model.report.SSSPhilHealthReportItem;
 import com.pj.hrapp.model.util.AmountInterval;
 import com.pj.hrapp.util.FormatterUtil;
+
+// TODO: Find better place for this!
+@SqlResultSetMapping(name = "sssPhilHealthReportItemMapping",
+	classes = {
+	    @ConstructorResult(targetClass = SSSPhilHealthReportItem.class, columns = {
+	        @ColumnResult(name = "employeeName"),
+	        @ColumnResult(name = "sssEmployeeContribution"),
+	        @ColumnResult(name = "sssEmployerContribution"),
+	        @ColumnResult(name = "monthlyPay"),
+	        @ColumnResult(name = "pagibigContribution")
+	    })
+	}
+)
 
 @Entity
 public class SSSContributionTableEntry {

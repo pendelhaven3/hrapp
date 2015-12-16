@@ -194,4 +194,12 @@ public class StageController {
 		loadSceneFromFXML("editPagibigContributionValue");
 	}
 
+	public void showReportListScreen() {
+		loadSceneFromFXML("reportList");
+	}
+
+	public void showSSSPhilHealthReportScreen() {
+		loadSceneFromFXML("sssPhilHealthReport");
+	}
+
 }

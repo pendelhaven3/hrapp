@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<entry name="sssPhilHealthReport">
+	<![CDATA[
+SELECT 
+	d.firstName || ' ' || d.lastName AS employeeName, 
+	NVL2(sssEmployeeContribution, sssEmployeeContribution, 0) AS sssEmployeeContribution, 
+	NVL2(sssEmployerContribution, sssEmployerContribution, 0) AS sssEmployerContribution,
+	c.monthlyPay,
+	NVL2(pagibigContribution, pagibigContribution, 0) AS pagibigContribution
+FROM (
+	SELECT a.id AS employeeId, MAX(-d.amount) as sssEmployeeContribution, MAX(e.employerContribution) AS sssEmployerContribution
+	FROM employee a
+	JOIN payslip b
+	  ON b.employee_id = a.id
+	JOIN payroll c
+	  ON c.id = b.payroll_id
+	LEFT JOIN payslipAdjustment d
+	  ON d.payslip_id = b.id
+	  AND d.type = 'SSS'
+	LEFT JOIN sssContributionTableEntry e
+	  on e.employeeContribution = -d.amount
+	WHERE a.resigned = false
+	AND MONTH(b.periodCoveredFrom) = :month
+	AND YEAR(b.periodCoveredFrom) = :year
+	GROUP BY a.ID
+) a
+JOIN (
+	SELECT a.id AS employeeId, MAX(-d.amount) AS pagibigContribution
+	FROM employee a
+	JOIN payslip b
+	  ON b.employee_id = a.id
+	JOIN payroll c
+	  ON c.id = b.payroll_id
+	LEFT JOIN payslipAdjustment d
+	  ON d.payslip_id = b.id
+	  AND d.type = 'PAGIBIG'
+	WHERE a.resigned = false
+	AND MONTH(b.periodCoveredFrom) = :month
+	AND YEAR(b.periodCoveredFrom) = :year
+	GROUP BY a.ID
+) b
+	ON b.employeeId = a.employeeId
+JOIN (
+	SELECT 
+		employeeId
+		, DECODE(paySchedule, 'WEEKLY', weeklyRate, 
+			semimonthlyRateFirstHalf * semimonthlyAttendanceFirstHalf / numberOfDaysFirstHalf + 
+				semimonthlyRateSecondHalf * semimonthlyAttendanceSecondHalf / numberOfDaysSecondHalf)
+			AS monthlyPay
+	FROM (
+		SELECT
+			a.id AS employeeId
+			, a.paySchedule
+			, SUM(DECODE(a.paySchedule, 'WEEKLY', DECODE(b.attendance, 'WHOLE_DAY', 1, 'HALF_DAY', 0.5, 0) * c.rate, 0)) AS weeklyRate
+			, SUM(CASE WHEN DAY_OF_MONTH(b.date) BETWEEN 1 AND 15 THEN 1 ELSE 0 END) AS numberOfDaysFirstHalf
+			, SUM(CASE WHEN DAY_OF_MONTH(b.date) BETWEEN 16 AND 31 THEN 1 ELSE 0 END) AS numberOfDaysSecondHalf
+			, SUM(CASE WHEN DAY_OF_MONTH(b.date) BETWEEN 1 AND 15 THEN DECODE(b.attendance, 'WHOLE_DAY', 1, 'HALF_DAY', 0.5, 0) ELSE 0 END) AS semimonthlyAttendanceFirstHalf
+			, SUM(CASE WHEN DAY_OF_MONTH(b.date) BETWEEN 16 AND 31 THEN DECODE(b.attendance, 'WHOLE_DAY', 1, 'HALF_DAY', 0.5, 0) ELSE 0 END) AS semimonthlyAttendanceSecondHalf
+			, MAX(CASE WHEN DAY_OF_MONTH(b.date) BETWEEN 1 AND 15 THEN c.rate ELSE 0 END) AS semimonthlyRateFirstHalf
+			, MAX(CASE WHEN DAY_OF_MONTH(b.date) BETWEEN 16 AND 31 THEN c.rate ELSE 0 END) AS semimonthlyRateSecondHalf
+		FROM employee a
+		JOIN employeeAttendance b
+		  ON b.employee_id = a.id
+		JOIN salary c
+		  ON c.employee_id = a.id
+		WHERE a.resigned = false
+		AND MONTH(b.date) = :month
+		AND YEAR(b.date) = :year
+		AND b.date BETWEEN c.effectiveDateFrom AND NVL2(c.effectiveDateTo, c.effectiveDateTo, SYSDATE)
+		group by a.id
+	) a
+) c
+	ON c.employeeId = b.employeeId
+JOIN employee d
+	ON d.id = a.employeeId
+ORDER BY d.firstName, d.lastName
+	]]>
+	</entry>
+</root>

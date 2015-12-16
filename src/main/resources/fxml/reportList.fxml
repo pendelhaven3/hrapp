@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+		fx:controller="com.pj.hrapp.controller.ReportListController">
+	<top>
+		<ToolBar>
+			<Button text="Back" onAction="#doOnBack" />
+		</ToolBar>
+	</top>
+	
+	<Button text="SSS/PhilHealth Report" onAction="#goToSSSPhilHealthReportScreen" />
+
+</BorderPane>

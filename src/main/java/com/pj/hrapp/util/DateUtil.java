@@ -5,8 +5,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -15,6 +18,8 @@ import com.pj.hrapp.model.util.DateInterval;
 
 public class DateUtil {
 
+	private static ResourceBundle appProperties = ResourceBundle.getBundle("application");
+	
 	public static Date toDate(LocalDate localDate) {
 		if (localDate == null) {
 			return null;
@@ -67,6 +72,16 @@ public class DateUtil {
 
 	public static Date min(Date date1, Date date2) {
 		return date1.compareTo(date2) <= 0 ? date1 : date2;
+	}
+	
+	public static List<Integer> getYearDropdownValues() {
+		List<Integer> entries = new ArrayList<>();
+		int startYear = Integer.parseInt(appProperties.getString("yearDropdown.startEntry"));
+		int numberOfEntries = Integer.parseInt(appProperties.getString("yearDropdown.numberOfEntries"));
+		for (int i = 0; i < numberOfEntries; i++) {
+			entries.add(startYear + i);
+		}
+		return entries;
 	}
 	
 }

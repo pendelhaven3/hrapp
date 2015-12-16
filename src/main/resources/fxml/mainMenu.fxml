@@ -14,5 +14,6 @@
 	<Button text="PhilHealth Contribution Table" onAction="#goToPhilHealthContributionTable" />
 	<Button text="Edit Pag-ibig Contribution" onAction="#goToEditPagibigContributionValueScreen" />
 	<Button text="Employee Attendances" onAction="#goToEmployeeAttendanceList" />
+	<Button text="Reports" onAction="#goToReportsList" />
 
 </VBox>
