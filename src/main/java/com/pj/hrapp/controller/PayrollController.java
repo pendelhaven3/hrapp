@@ -26,6 +26,7 @@ import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.service.PayrollService;
+import com.pj.hrapp.util.ExcelUtil;
 import com.pj.hrapp.util.FormatterUtil;
 import com.pj.hrapp.util.PayrollToBdoExcelGenerator;
 import com.pj.hrapp.util.PayrollToExcelGenerator;
@@ -149,18 +150,8 @@ public class PayrollController extends AbstractController {
 		}
 		
 		if (ShowDialog.confirm("Excel file generated.\nDo you wish to open the file?")) {
-			openExcelFile(file);
+			ExcelUtil.openExcelFile(file);
 		}
-	}
-
-	private void openExcelFile(File file) {
-		String[] cmdarray = new String[]{"cmd.exe", "/c", file.getAbsolutePath()}; 
-		try {
-			Runtime.getRuntime().exec(cmdarray);
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-			ShowDialog.unexpectedError();
-		} 	
 	}
 
 	private String getExcelFilename() {
@@ -254,7 +245,7 @@ public class PayrollController extends AbstractController {
 		}
 		
 		if (ShowDialog.confirm("Excel file generated.\nDo you wish to open the file?")) {
-			openExcelFile(file);
+			ExcelUtil.openExcelFile(file);
 		}
 	}
 
