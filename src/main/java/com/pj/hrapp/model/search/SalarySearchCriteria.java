@@ -1,6 +1,8 @@
 package com.pj.hrapp.model.search;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.PaySchedule;
@@ -42,6 +44,13 @@ public class SalarySearchCriteria {
 
 	public void setPaySchedule(PaySchedule paySchedule) {
 		this.paySchedule = paySchedule;
+	}
+
+	public Map<String, Object> toMap() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("employee", employee);
+		map.put("paySchedule", paySchedule);
+		return map;
 	}
 
 }

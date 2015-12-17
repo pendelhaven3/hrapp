@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.pj.hrapp.ControllerFactory;
+import com.pj.hrapp.NavigationHistory;
+import com.pj.hrapp.NavigationHistoryItem;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
@@ -32,6 +34,7 @@ public class StageController {
 	@Autowired private ControllerFactory controllerFactory;
 	
 	private Stage stage;
+	private NavigationHistory history = new NavigationHistory();
 	
 	public void setStage(Stage stage) {
 		this.stage = stage;
@@ -67,6 +70,8 @@ public class StageController {
 			}
 			controller.updateDisplay();
 		}
+		
+		saveHistory(file, model);
 	}
 
 	private void mapParameters(AbstractController controller, Map<String, Object> model) {
@@ -84,6 +89,15 @@ public class StageController {
 		}
 	}
 
+	private void saveHistory(String sceneName, Map<String, Object> model) {
+		history.add(new NavigationHistoryItem(sceneName, model));
+	}
+	
+	public void back() {
+		NavigationHistoryItem previousScreen = history.getPreviousScreen();
+		loadSceneFromFXML(previousScreen.getSceneName(), previousScreen.getModel());
+	}
+	
 	public void setTitle(String title) {
 		stage.setTitle("HR App - " + title);
 	}
@@ -200,6 +214,10 @@ public class StageController {
 
 	public void showSSSPhilHealthReportScreen() {
 		loadSceneFromFXML("sssPhilHealthReport");
+	}
+
+	public void updateSalaryListScreenHistoryItemModel(Map<String, Object> model) {
+		history.updateHistoryItemModel("salaryList", model);
 	}
 
 }

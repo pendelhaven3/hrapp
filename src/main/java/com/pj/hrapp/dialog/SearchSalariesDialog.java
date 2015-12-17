@@ -3,6 +3,7 @@ package com.pj.hrapp.dialog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
@@ -22,6 +23,9 @@ public class SearchSalariesDialog extends AbstractDialog {
 	
 	private SalarySearchCriteria searchCriteria;
 	
+	@Parameter private Employee employee;
+	@Parameter private PaySchedule paySchedule;
+	
 	@Override
 	protected String getDialogTitle() {
 		return "Search Salaries";
@@ -33,6 +37,8 @@ public class SearchSalariesDialog extends AbstractDialog {
 		employeeComboBox.setItems(FXCollections.observableList(employeeService.getAllEmployees()));
 		payScheduleComboBox.setItems(FXCollections.observableArrayList(PaySchedule.values()));
 		
+		employeeComboBox.setValue(employee);
+		payScheduleComboBox.setValue(paySchedule);
 	}
 
 	@Override

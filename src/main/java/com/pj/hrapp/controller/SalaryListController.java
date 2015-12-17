@@ -1,10 +1,14 @@
 package com.pj.hrapp.controller;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.SearchSalariesDialog;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
@@ -25,14 +29,16 @@ public class SalaryListController extends AbstractController {
 	
 	@FXML private AppTableView<Salary> salariesTable;
 	
+	@Parameter private SalarySearchCriteria searchCriteria;
+	
 	@Override
 	public void updateDisplay() {
 		stageController.setTitle("Salary List");
 		
-		salariesTable.getItems().setAll(salaryService.getAllCurrentSalaries());
-		if (!salariesTable.getItems().isEmpty()) {
-			salariesTable.getSelectionModel().select(0);
-			salariesTable.requestFocus();
+		if (searchCriteria != null) {
+			salariesTable.setItemsThenFocus(salaryService.searchSalaries(searchCriteria));
+		} else {
+			salariesTable.setItemsThenFocus(salaryService.getAllCurrentSalaries());
 		}
 		
 		salariesTable.setOnMouseClicked(new DoubleClickEventHandler() {
@@ -53,13 +59,16 @@ public class SalaryListController extends AbstractController {
 
 	private void updateSelectedSalary() {
 		if (!salariesTable.getSelectionModel().isEmpty()) {
+			stageController.updateSalaryListScreenHistoryItemModel(
+					Collections.singletonMap("searchCriteria", searchCriteria));
 			stageController.showUpdateSalaryScreen(
 					salariesTable.getSelectionModel().getSelectedItem());
 		}
 	}
 
-	@FXML public void doOnBack() {
-		stageController.showMainMenuScreen();
+	@FXML 
+	public void doOnBack() {
+		stageController.back();
 	}
 
 	@FXML public void addSalary() {
@@ -68,12 +77,17 @@ public class SalaryListController extends AbstractController {
 
 	@FXML 
 	public void searchSalaries() {
-		searchSalariesDialog.showAndWait();
+		searchSalariesDialog.showAndWait(getCurrentSearchCriteriaAsMap());
 		
 		SalarySearchCriteria criteria = searchSalariesDialog.getSearchCriteria();
 		if (criteria != null) {
 			salariesTable.setItemsThenFocus(salaryService.searchSalaries(criteria));
+			searchCriteria = criteria;
 		}
+	}
+
+	private Map<String, Object> getCurrentSearchCriteriaAsMap() {
+		return searchCriteria != null ? searchCriteria.toMap() : null;
 	}
 
 }

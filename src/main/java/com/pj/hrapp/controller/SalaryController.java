@@ -67,8 +67,9 @@ public class SalaryController extends AbstractController {
 		employeeComboBox.requestFocus();
 	}
 
-	@FXML public void doOnBack() {
-		stageController.showSalaryListScreen();
+	@FXML 
+	public void doOnBack() {
+		stageController.back();
 	}
 
 	@FXML public void deleteSalary() {
@@ -110,7 +111,7 @@ public class SalaryController extends AbstractController {
 		}
 		
 		ShowDialog.info("Salary saved");
-		stageController.showSalaryListScreen();
+		stageController.back();
 	}
 
 	private boolean validateFields() {
