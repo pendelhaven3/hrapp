@@ -130,15 +130,15 @@ public class Payroll {
 	}
 
 	private DateInterval getSemimonthlyPeriodCovered() {
-		if (isPayDateTheEndOfMonth()) {
+		if (isPayDateGreaterThanFifteenth()) {
 			return new DateInterval(getSixteenthDayOfPayDateMonth(), payDate);
 		} else {
 			return new DateInterval(getFirstDayOfPayDateMonth(), getFifteenthDayOfPayDateMonth());
 		}
 	}
 
-	private boolean isPayDateTheEndOfMonth() {
-		return DateUtils.toCalendar(DateUtils.addDays(payDate, 1)).get(Calendar.DATE) == 1;
+	private boolean isPayDateGreaterThanFifteenth() {
+		return DateUtils.toCalendar(payDate).get(Calendar.DATE) > 15;
 	}
 
 	private Date getFirstDayOfPayDateMonth() {
