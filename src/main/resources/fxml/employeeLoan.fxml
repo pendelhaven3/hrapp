@@ -21,7 +21,7 @@
 	<top>
 		<ToolBar>
 			<Button text="Back" onAction="#doOnBack" />
-			<Button text="Delete" onAction="#deleteLoan" />
+			<Button text="Delete" onAction="#deleteLoan" fx:id="deleteButton" />
 		</ToolBar>
 	</top>
 	<center>
@@ -67,7 +67,7 @@
 				</GridPane>
 			</HBox>
 			
-			<HBox spacing="10" alignment="center">
+			<HBox spacing="10" alignment="center" fx:id="updateLoanButtonsHBox">
 				<Button text="Update Loan" onAction="#updateLoan" />
 				<Button text="Mark As Paid" onAction="#markAsPaid" />
 			</HBox>
@@ -102,7 +102,7 @@
 								</columns>
 							</AppTableView>
 							
-							<HBox spacing="10" alignment="center">
+							<HBox spacing="10" alignment="center" fx:id="maintainPaymentsButtonsHbox">
 								<Button text="Add Payment" onAction="#addPayment" />
 								<Button text="Delete Payment" onAction="#deletePayment" />
 							</HBox>

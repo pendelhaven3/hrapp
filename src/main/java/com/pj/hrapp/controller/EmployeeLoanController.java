@@ -21,7 +21,9 @@ import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -40,6 +42,9 @@ public class EmployeeLoanController extends AbstractController {
 	@FXML private Label paymentAmountLabel;
 	@FXML private Label paidLabel;
 	@FXML private Label remarksLabel;
+	@FXML private HBox updateLoanButtonsHBox;
+	@FXML private HBox maintainPaymentsButtonsHbox;
+	@FXML private Button deleteButton;
 	
 	@FXML private AppTableView<EmployeeLoanPayment> paymentsTable;
 	
@@ -60,7 +65,20 @@ public class EmployeeLoanController extends AbstractController {
 		remarksLabel.setText(StringUtils.defaultIfBlank(loan.getRemarks(), "(none)"));
 		
 		paymentsTable.setItems(loan.getPayments());
-		paymentsTable.setDoubleClickAction(() -> updateSelectedPayment());
+		
+		if (!loan.isPaid()) {
+			paymentsTable.setDoubleClickAction(() -> updateSelectedPayment());
+		}
+		
+		if (loan.isPaid()) {
+			preventLoanFromBeingUpdated();
+		}
+	}
+
+	private void preventLoanFromBeingUpdated() {
+		deleteButton.setDisable(true);
+		updateLoanButtonsHBox.setDisable(true);
+		maintainPaymentsButtonsHbox.setDisable(true);
 	}
 
 	private void updateSelectedPayment() {
