@@ -197,7 +197,10 @@ public class PayrollController extends AbstractController {
 		
 		addPayslipDialog.showAndWait(model);
 		
-		updateDisplay();
+		Payslip payslip = addPayslipDialog.getPayslip();
+		if (payslip != null && payslip.getId() != null) {
+			stageController.showPayslipScreen(payslip);
+		}
 	}
 
 	@FXML 

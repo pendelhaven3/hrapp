@@ -120,7 +120,6 @@ public abstract class AbstractDialog extends Stage {
 		scene.getStylesheets().add("css/application.css");
 		setScene(scene);
 	
-		updateDisplay();
 		centerDialogWindowOnParent();
 	}
 

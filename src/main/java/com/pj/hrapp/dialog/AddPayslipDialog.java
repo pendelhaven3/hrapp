@@ -46,6 +46,7 @@ public class AddPayslipDialog extends AbstractDialog {
 	
 	@Override
 	public void updateDisplay() {
+		payslip = null;
 		employeesTable.getItems().setAll(employeeService.findAllActiveEmployeesNotInPayroll(payroll));
 		employeesTable.setDoubleClickAction(() -> createPayslip());
 	}
@@ -210,4 +211,8 @@ public class AddPayslipDialog extends AbstractDialog {
 		switchToAddValeProductScreen();
 	}
 
+	public Payslip getPayslip() {
+		return payslip;
+	}
+	
 }
