@@ -46,14 +46,15 @@ public class DateUtil {
 
 	public static DateInterval generateMonthYearInterval(YearMonth yearMonth) {
 		Calendar calendar = Calendar.getInstance();
+		
 		calendar.set(Calendar.YEAR, yearMonth.getYear());
 		calendar.set(Calendar.MONTH, yearMonth.getMonthValue() - 1);
 		calendar.set(Calendar.DATE, 1);
-		Date startDate = calendar.getTime();
+		Date startDate = DateUtils.truncate(calendar.getTime(), Calendar.DATE);
 		
 		calendar.add(Calendar.MONTH, 1);
 		calendar.add(Calendar.DATE, -1);
-		Date endDate = calendar.getTime();
+		Date endDate = DateUtils.truncate(calendar.getTime(), Calendar.DATE);
 		
 		return new DateInterval(startDate, endDate);
 	}
