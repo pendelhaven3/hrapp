@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,6 +58,8 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	@Ignore
+	@Deprecated
 	public void saveWeeklyPayslipWithSSSPagibigPhilhealthContributions_withNoAbsences() {
 		insertTestPayrollForWeeklyPaySchedule();
 		insertTestEmployeeWithWeeklyPaySchedule();
@@ -79,6 +82,8 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	@Ignore
+	@Deprecated
 	public void saveWeeklyPayslipWithSSSPagibigPhilhealthContributions_withAbsences() {
 		insertTestPayrollForWeeklyPaySchedule();
 		insertTestEmployeeWithWeeklyPaySchedule();
@@ -101,6 +106,8 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 	}
 
 	@Test
+	@Ignore
+	@Deprecated
 	public void saveSemimonthlyPayslipWithSSSPagibigPhilhealthContributions_withNoAbsences() {
 		insertTestPayrollForSemimonthlyPaySchedule();
 		insertTestEmployeeWithSemimonthlyPaySchedule();
@@ -123,6 +130,8 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 	}
 	
 	@Test
+	@Ignore
+	@Deprecated
 	public void saveSemimonthlyPayslipWithSSSPagibigPhilhealthContributions_withAbsences() {
 		insertTestPayrollForSemimonthlyPaySchedule();
 		insertTestEmployeeWithSemimonthlyPaySchedule();
