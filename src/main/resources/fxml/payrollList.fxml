@@ -35,11 +35,6 @@
 					<PropertyValueFactory property="paySchedule" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Total Amount" styleClass="right">
-				<cellValueFactory>
-					<AppPropertyValueFactory property="totalAmount" />
-				</cellValueFactory>
-			</TableColumn>
 			<TableColumn text="Posted" styleClass="center">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="posted" />

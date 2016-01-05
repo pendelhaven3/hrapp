@@ -3,7 +3,6 @@ package com.pj.hrapp.service.impl;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,15 +60,7 @@ public class PayrollServiceImpl implements PayrollService {
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
-		List<Payroll> payrolls = payrollDao.getAll();
-		for (Payroll payroll : payrolls) {
-			List<Payslip> payslips = new ArrayList<>();
-			for (Payslip payslip : payslipDao.findAllByPayroll(payroll)) {
-				payslips.add(getPayslip(payslip.getId()));
-			}
-			payroll.setPayslips(payslips);
-		}
-		return payrolls;
+		return payrollDao.getAll();
 	}
 
 	@Transactional
