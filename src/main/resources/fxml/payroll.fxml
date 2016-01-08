@@ -65,7 +65,7 @@
 			<HBox spacing="10" alignment="center" fx:id="editPayrollButtonsHBox">
 				<Button text="Update Payroll" onAction="#updatePayroll" />
 				<Button text="Post Payroll" onAction="#postPayroll" />
-				<Button text="Generate SSS/PH/Pag-ibig for All" onAction="#regenerateAllGovernmentContributions" />
+				<Button text="Generate SSS/PH/Pag-IBIG for All" onAction="#regenerateAllGovernmentContributions" />
 			</HBox>
 			
 			<TabPane VBox.vgrow="always">

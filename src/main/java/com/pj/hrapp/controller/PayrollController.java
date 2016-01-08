@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.AddPayslipDialog;
 import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
-import com.pj.hrapp.gui.component.DoubleClickEventHandler;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
@@ -34,7 +32,6 @@ import com.pj.hrapp.util.PayrollToExcelGenerator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -80,13 +77,7 @@ public class PayrollController extends AbstractController {
 		periodCoveredToLabel.setText(FormatterUtil.formatDate(payroll.getPeriodCoveredTo()));
 		
 		payslipsTable.getItems().setAll(payroll.getPayslips());
-		payslipsTable.setOnMouseClicked(new DoubleClickEventHandler() {
-			
-			@Override
-			protected void onDoubleClick(MouseEvent event) {
-				openSelectedPayslip();
-			}
-		});
+		payslipsTable.setDoubleClickAction(() -> openSelectedPayslip());
 		payslipsTable.setDeleteKeyAction(() -> deletePayslip());
 		
 		if (payroll.isPosted()) {
@@ -104,15 +95,18 @@ public class PayrollController extends AbstractController {
 		stageController.showPayslipScreen(payslipsTable.getSelectionModel().getSelectedItem());
 	}
 
-	@FXML public void doOnBack() {
+	@FXML 
+	public void doOnBack() {
 		stageController.showPayrollListScreen();
 	}
 
-	@FXML public void updatePayroll() {
+	@FXML 
+	public void updatePayroll() {
 		stageController.showUpdatePayrollScreen(payroll);
 	}
 
-	@FXML public void deletePayroll() {
+	@FXML 
+	public void deletePayroll() {
 		if (ShowDialog.confirm("Delete payroll?")) {
 			try {
 				payrollService.delete(payroll);
@@ -126,7 +120,8 @@ public class PayrollController extends AbstractController {
 		}
 	}
 
-	@FXML public void generateExcel() {
+	@FXML 
+	public void generateExcel() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         fileChooser.setInitialDirectory(Paths.get(System.getProperty("user.home"), "Desktop").toFile());
@@ -138,7 +133,7 @@ public class PayrollController extends AbstractController {
         }
 		
 		try (
-			XSSFWorkbook workbook = excelGenerator.generate(payroll);
+			Workbook workbook = excelGenerator.generate(payroll);
 			FileOutputStream out = new FileOutputStream(file);
 		) {
 			workbook.write(out);
@@ -161,7 +156,8 @@ public class PayrollController extends AbstractController {
 				.toString();
 	}
 
-	@FXML public void deletePayslip() {
+	@FXML 
+	public void deletePayslip() {
 		if (!isPayslipSelected()) {
 			ShowDialog.error("No payslip selected");
 			return;
@@ -261,7 +257,7 @@ public class PayrollController extends AbstractController {
 
 	@FXML 
 	public void regenerateAllGovernmentContributions() {
-		if (!ShowDialog.confirm("Generate SSS/PhilHealth/Pag-ibig contributions for all payslips?")) {
+		if (!ShowDialog.confirm("Generate SSS/PhilHealth/Pag-IBIG contributions for all payslips?")) {
 			return;
 		}
 		
@@ -273,7 +269,7 @@ public class PayrollController extends AbstractController {
 			return;
 		}
 		
-		ShowDialog.info("SSS/PhilHealth/Pag-ibig contributions generated");
+		ShowDialog.info("SSS/PhilHealth/Pag-IBIG contributions generated");
 		updateDisplay();
 	}
 	
