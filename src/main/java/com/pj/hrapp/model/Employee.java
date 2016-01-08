@@ -31,6 +31,7 @@ public class Employee implements Comparable<Employee> {
 	private String contactNumber;
 	private String sssNumber;
 	private String philHealthNumber;
+	private String pagibigNumber;
 	private String tin;
 	private String atmAccountNumber;
 	private String magicCustomerCode;
@@ -247,6 +248,14 @@ public class Employee implements Comparable<Employee> {
 
 	public void setResigned(boolean resigned) {
 		this.resigned = resigned;
+	}
+
+	public String getPagibigNumber() {
+		return pagibigNumber;
+	}
+
+	public void setPagibigNumber(String pagibigNumber) {
+		this.pagibigNumber = pagibigNumber;
 	}
 	
 }

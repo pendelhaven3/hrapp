@@ -66,34 +66,38 @@
 						GridPane.columnIndex="0" GridPane.rowIndex="1" />
 					<UppercaseTextField fx:id="philHealthNumberField"
 						GridPane.columnIndex="1" GridPane.rowIndex="1" />
-					<Label text="TIN"
+					<Label text="Pag-IBIG Number"
 						GridPane.columnIndex="0" GridPane.rowIndex="2" />
-					<UppercaseTextField fx:id="tinField"
+					<UppercaseTextField fx:id="pagibigNumberField"
 						GridPane.columnIndex="1" GridPane.rowIndex="2" />
-					<Label text="ATM Account Number"
+					<Label text="TIN"
 						GridPane.columnIndex="0" GridPane.rowIndex="3" />
-					<UppercaseTextField fx:id="atmAccountNumberField"
+					<UppercaseTextField fx:id="tinField"
 						GridPane.columnIndex="1" GridPane.rowIndex="3" />
-					<Label text="MAGIC Customer Code"
+					<Label text="ATM Account Number"
 						GridPane.columnIndex="0" GridPane.rowIndex="4" />
-					<UppercaseTextField fx:id="magicCustomerCodeField"
+					<UppercaseTextField fx:id="atmAccountNumberField"
 						GridPane.columnIndex="1" GridPane.rowIndex="4" />
-					<Label text="Date Hired"
+					<Label text="MAGIC Customer Code"
 						GridPane.columnIndex="0" GridPane.rowIndex="5" />
-					<AppDatePicker fx:id="dateHiredDatePicker"
+					<UppercaseTextField fx:id="magicCustomerCodeField"
 						GridPane.columnIndex="1" GridPane.rowIndex="5" />
-					<Label text="Pay Schedule"
+					<Label text="Date Hired"
 						GridPane.columnIndex="0" GridPane.rowIndex="6" />
-					<ComboBox fx:id="payScheduleComboBox"
+					<AppDatePicker fx:id="dateHiredDatePicker"
 						GridPane.columnIndex="1" GridPane.rowIndex="6" />
-					<Label text="Resigned?"
+					<Label text="Pay Schedule"
 						GridPane.columnIndex="0" GridPane.rowIndex="7" />
-					<CheckBox fx:id="resignedCheckBox"
+					<ComboBox fx:id="payScheduleComboBox"
 						GridPane.columnIndex="1" GridPane.rowIndex="7" />
-					<Label text="Date Resigned"
+					<Label text="Resigned?"
 						GridPane.columnIndex="0" GridPane.rowIndex="8" />
-					<AppDatePicker fx:id="dateResignedDatePicker"
+					<CheckBox fx:id="resignedCheckBox"
 						GridPane.columnIndex="1" GridPane.rowIndex="8" />
+					<Label text="Date Resigned"
+						GridPane.columnIndex="0" GridPane.rowIndex="9" />
+					<AppDatePicker fx:id="dateResignedDatePicker"
+						GridPane.columnIndex="1" GridPane.rowIndex="9" />
 				</GridPane>
 			</HBox>
 			<Button text="Save" onAction="#saveEmployee" />

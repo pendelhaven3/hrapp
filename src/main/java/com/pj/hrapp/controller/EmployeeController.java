@@ -43,6 +43,7 @@ public class EmployeeController extends AbstractController {
 	@FXML private TextField contactNumberField;
 	@FXML private TextField sssNumberField;
 	@FXML private TextField philHealthNumberField;
+	@FXML private TextField pagibigNumberField;
 	@FXML private TextField tinField;
 	@FXML private TextField atmAccountNumberField;
 	@FXML private TextField magicCustomerCodeField;
@@ -73,6 +74,7 @@ public class EmployeeController extends AbstractController {
 			contactNumberField.setText(employee.getContactNumber());
 			sssNumberField.setText(employee.getSssNumber());
 			philHealthNumberField.setText(employee.getPhilHealthNumber());
+			pagibigNumberField.setText(employee.getPagibigNumber());
 			tinField.setText(employee.getTin());
 			atmAccountNumberField.setText(employee.getAtmAccountNumber());
 			magicCustomerCodeField.setText(employee.getMagicCustomerCode());
@@ -122,6 +124,7 @@ public class EmployeeController extends AbstractController {
 		employee.setContactNumber(contactNumberField.getText());
 		employee.setSssNumber(sssNumberField.getText());
 		employee.setPhilHealthNumber(philHealthNumberField.getText());
+		employee.setPagibigNumber(pagibigNumberField.getText());
 		employee.setTin(tinField.getText());
 		employee.setAtmAccountNumber(atmAccountNumberField.getText());
 		employee.setMagicCustomerCode(StringUtils.trimToNull(magicCustomerCodeField.getText()));
