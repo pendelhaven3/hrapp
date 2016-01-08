@@ -15,7 +15,6 @@ import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -31,7 +30,6 @@ public class AddEditPayrollController extends AbstractController {
 	@FXML private TextField batchNumberField;
 	@FXML private DatePicker payDateDatePicker;
 	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
-	@FXML private CheckBox includeSSSPagibigPhilhealthCheckbox;
 	
 	@Parameter private Payroll payroll;
 	
@@ -45,7 +43,6 @@ public class AddEditPayrollController extends AbstractController {
 			batchNumberField.setText(payroll.getBatchNumber().toString());
 			payDateDatePicker.setValue(DateUtil.toLocalDate(payroll.getPayDate()));
 			payScheduleComboBox.setValue(payroll.getPaySchedule());
-			includeSSSPagibigPhilhealthCheckbox.setSelected(payroll.isIncludeSSSPagibigPhilhealth());
 		}
 		
 		batchNumberField.requestFocus();
@@ -78,7 +75,6 @@ public class AddEditPayrollController extends AbstractController {
 		payroll.setBatchNumber(Long.parseLong(batchNumberField.getText()));
 		payroll.setPayDate(DateUtil.toDate(payDateDatePicker.getValue()));
 		payroll.setPaySchedule(payScheduleComboBox.getValue());
-		payroll.setIncludeSSSPagibigPhilhealth(includeSSSPagibigPhilhealthCheckbox.isSelected());
 		
 		try {
 			payrollService.save(payroll);

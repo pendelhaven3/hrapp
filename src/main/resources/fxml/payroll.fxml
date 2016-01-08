@@ -44,10 +44,6 @@
 						GridPane.columnIndex="0" GridPane.rowIndex="2" />
 					<Label fx:id="payScheduleLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="2" />
-					<Label text="Include SSS/Pag-ibig/Philhealth"
-						GridPane.columnIndex="0" GridPane.rowIndex="3" />
-					<Label fx:id="includeSSSPagibigPhilhealthLabel"
-						GridPane.columnIndex="1" GridPane.rowIndex="3" />
 				</GridPane>
 				
 				<GridPane vgap="10" alignment="center">

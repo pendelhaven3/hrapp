@@ -12,7 +12,6 @@
 <?import com.pj.hrapp.gui.component.NumberTextField?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" 
@@ -37,10 +36,6 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
 				<ComboBox fx:id="payScheduleComboBox"
 					GridPane.columnIndex="1" GridPane.rowIndex="2" />
-				<Label text="Include SSS/Pag-ibig/Philhealth"
-					GridPane.columnIndex="0" GridPane.rowIndex="3" />
-				<CheckBox fx:id="includeSSSPagibigPhilhealthCheckbox"
-					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 			</GridPane>
 			
 			<Region prefHeight="10" />

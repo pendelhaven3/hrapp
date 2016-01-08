@@ -69,7 +69,6 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 		insertPhilhealthContributionTableEntries();
 		
 		Payslip payslip = new Payslip();
-		payslip.setPayroll(Payroll.withId(1L).withIncludeSSSPagibigPhilhealth(true));
 		payslip.setEmployee(Employee.withId(1L).withPaySchedule(PaySchedule.WEEKLY));
 		payslip.setPeriodCovered(new DateInterval(DateUtil.toDate("11/30/2015"), DateUtil.toDate("12/05/2015")));
 		
@@ -93,7 +92,6 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 		insertPhilhealthContributionTableEntries();
 		
 		Payslip payslip = new Payslip();
-		payslip.setPayroll(Payroll.withId(1L).withIncludeSSSPagibigPhilhealth(true));
 		payslip.setEmployee(Employee.withId(1L).withPaySchedule(PaySchedule.WEEKLY));
 		payslip.setPeriodCovered(new DateInterval(DateUtil.toDate("11/30/2015"), DateUtil.toDate("12/05/2015")));
 		
@@ -117,7 +115,6 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 		insertPhilhealthContributionTableEntries();
 		
 		Payslip payslip = new Payslip();
-		payslip.setPayroll(Payroll.withId(1L).withIncludeSSSPagibigPhilhealth(true));
 		payslip.setEmployee(Employee.withId(1L).withPaySchedule(PaySchedule.SEMIMONTHLY));
 		payslip.setPeriodCovered(new DateInterval(DateUtil.toDate("11/30/2015"), DateUtil.toDate("12/05/2015")));
 		
@@ -141,7 +138,6 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 		insertPhilhealthContributionTableEntries();
 		
 		Payslip payslip = new Payslip();
-		payslip.setPayroll(Payroll.withId(1L).withIncludeSSSPagibigPhilhealth(true));
 		payslip.setEmployee(Employee.withId(1L).withPaySchedule(PaySchedule.SEMIMONTHLY));
 		payslip.setPeriodCovered(new DateInterval(DateUtil.toDate("11/30/2015"), DateUtil.toDate("12/05/2015")));
 		

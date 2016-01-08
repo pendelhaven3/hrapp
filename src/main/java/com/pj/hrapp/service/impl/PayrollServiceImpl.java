@@ -193,9 +193,6 @@ public class PayrollServiceImpl implements PayrollService {
 			if (hasNegativeBalanceInPreviousPayslip(payslip)) {
 				generateAdjustmentForNegativeBalance(payslip);
 			}
-			if (payslip.getPayroll().isIncludeSSSPagibigPhilhealth()) {
-				addSSSPagibigPhilHealthContributionAdjustments(payslip);
-			}
 		}
 	}
 

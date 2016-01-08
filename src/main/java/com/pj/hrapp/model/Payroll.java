@@ -40,9 +40,6 @@ public class Payroll {
 	private List<Payslip> payslips = new ArrayList<>();
 	
 	@Column(columnDefinition = "boolean default false")
-	private boolean includeSSSPagibigPhilhealth;
-
-	@Column(columnDefinition = "boolean default false")
 	private boolean posted;
 	
 	public Long getId() {
@@ -106,14 +103,6 @@ public class Payroll {
 		this.paySchedule = paySchedule;
 	}
 
-	public boolean isIncludeSSSPagibigPhilhealth() {
-		return includeSSSPagibigPhilhealth;
-	}
-
-	public void setIncludeSSSPagibigPhilhealth(boolean includeSSSPagibigPhilhealth) {
-		this.includeSSSPagibigPhilhealth = includeSSSPagibigPhilhealth;
-	}
-
 	public DateInterval getPeriodCovered() {
 		switch (paySchedule) {
 		case WEEKLY:
@@ -164,11 +153,6 @@ public class Payroll {
 		payroll.setId(id);
 		
 		return payroll;
-	}
-	
-	public Payroll withIncludeSSSPagibigPhilhealth(boolean includeSSSPagibigPhilhealth) {
-		this.includeSSSPagibigPhilhealth = includeSSSPagibigPhilhealth;
-		return this;
 	}
 	
 	public BigDecimal getTotalAmount() {
