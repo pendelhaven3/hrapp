@@ -44,6 +44,7 @@ public class SSSPhilHealthReportController extends AbstractController {
 	
 	@Override
 	public void updateDisplay() {
+		stageController.setTitle("SSS/PhilHealth Report");
 		monthComboBox.getItems().setAll(Month.values());
 		yearComboBox.getItems().setAll(DateUtil.getYearDropdownValues());
 	}

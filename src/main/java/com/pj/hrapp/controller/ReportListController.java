@@ -11,6 +11,7 @@ public class ReportListController extends AbstractController {
 
 	@Override
 	public void updateDisplay() {
+		stageController.setTitle("Report List");
 	}
 
 	@FXML 
