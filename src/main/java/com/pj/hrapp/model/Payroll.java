@@ -2,7 +2,6 @@ package com.pj.hrapp.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.time.DateUtils;
 
 import com.pj.hrapp.model.util.DateInterval;
 
@@ -32,6 +30,12 @@ public class Payroll {
 	
 	@Column(columnDefinition = "date")
 	private Date payDate;
+	
+	@Column(columnDefinition = "date null")
+	private Date periodCoveredFrom;
+	
+	@Column(columnDefinition = "date null")
+	private Date periodCoveredTo;
 	
 	@Enumerated(EnumType.STRING)
 	private PaySchedule paySchedule;
@@ -104,50 +108,9 @@ public class Payroll {
 	}
 
 	public DateInterval getPeriodCovered() {
-		switch (paySchedule) {
-		case WEEKLY:
-			return getWeeklyPeriodCovered();
-		case SEMIMONTHLY:
-			return getSemimonthlyPeriodCovered();
-		default:
-			throw new RuntimeException("Payroll should have pay schedule");
-		}
+		return new DateInterval(periodCoveredFrom, periodCoveredTo);
 	}
 
-	private DateInterval getWeeklyPeriodCovered() {
-		return new DateInterval(DateUtils.addDays(payDate, -5), payDate);
-	}
-
-	private DateInterval getSemimonthlyPeriodCovered() {
-		if (isPayDateGreaterThanFifteenth()) {
-			return new DateInterval(getSixteenthDayOfPayDateMonth(), payDate);
-		} else {
-			return new DateInterval(getFirstDayOfPayDateMonth(), getFifteenthDayOfPayDateMonth());
-		}
-	}
-
-	private boolean isPayDateGreaterThanFifteenth() {
-		return DateUtils.toCalendar(payDate).get(Calendar.DATE) > 15;
-	}
-
-	private Date getFirstDayOfPayDateMonth() {
-		return getDayOfPayDateMonth(1);
-	}
-
-	private Date getFifteenthDayOfPayDateMonth() {
-		return getDayOfPayDateMonth(15);
-	}
-
-	private Date getSixteenthDayOfPayDateMonth() {
-		return getDayOfPayDateMonth(16);
-	}
-	
-	private Date getDayOfPayDateMonth(int day) {
-		Calendar calendar = DateUtils.toCalendar(payDate);
-		calendar.set(Calendar.DATE, day);
-		return calendar.getTime();
-	}
-	
 	public static Payroll withId(long id) {
 		Payroll payroll = new Payroll();
 		payroll.setId(id);
@@ -167,6 +130,22 @@ public class Payroll {
 
 	public void setPosted(boolean posted) {
 		this.posted = posted;
+	}
+
+	public Date getPeriodCoveredFrom() {
+		return periodCoveredFrom;
+	}
+
+	public void setPeriodCoveredFrom(Date periodCoveredFrom) {
+		this.periodCoveredFrom = periodCoveredFrom;
+	}
+
+	public Date getPeriodCoveredTo() {
+		return periodCoveredTo;
+	}
+
+	public void setPeriodCoveredTo(Date periodCoveredTo) {
+		this.periodCoveredTo = periodCoveredTo;
 	}
 	
 }

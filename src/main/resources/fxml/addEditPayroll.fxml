@@ -36,6 +36,14 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
 				<ComboBox fx:id="payScheduleComboBox"
 					GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Period Covered From"
+					GridPane.columnIndex="0" GridPane.rowIndex="3" />
+				<AppDatePicker fx:id="periodCoveredFromDatePicker"
+					GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<Label text="Period Covered To"
+					GridPane.columnIndex="0" GridPane.rowIndex="4" />
+				<AppDatePicker fx:id="periodCoveredToDatePicker"
+					GridPane.columnIndex="1" GridPane.rowIndex="4" />
 			</GridPane>
 			
 			<Region prefHeight="10" />

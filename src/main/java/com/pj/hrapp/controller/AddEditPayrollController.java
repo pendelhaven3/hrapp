@@ -30,6 +30,8 @@ public class AddEditPayrollController extends AbstractController {
 	@FXML private TextField batchNumberField;
 	@FXML private DatePicker payDateDatePicker;
 	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
+	@FXML private DatePicker periodCoveredFromDatePicker;
+	@FXML private DatePicker periodCoveredToDatePicker;
 	
 	@Parameter private Payroll payroll;
 	
@@ -43,6 +45,8 @@ public class AddEditPayrollController extends AbstractController {
 			batchNumberField.setText(payroll.getBatchNumber().toString());
 			payDateDatePicker.setValue(DateUtil.toLocalDate(payroll.getPayDate()));
 			payScheduleComboBox.setValue(payroll.getPaySchedule());
+			periodCoveredFromDatePicker.setValue(DateUtil.toLocalDate(payroll.getPeriodCoveredFrom()));
+			periodCoveredToDatePicker.setValue(DateUtil.toLocalDate(payroll.getPeriodCoveredTo()));
 		}
 		
 		batchNumberField.requestFocus();
@@ -75,6 +79,8 @@ public class AddEditPayrollController extends AbstractController {
 		payroll.setBatchNumber(Long.parseLong(batchNumberField.getText()));
 		payroll.setPayDate(DateUtil.toDate(payDateDatePicker.getValue()));
 		payroll.setPaySchedule(payScheduleComboBox.getValue());
+		payroll.setPeriodCoveredFrom(DateUtil.toDate(periodCoveredFromDatePicker.getValue()));
+		payroll.setPeriodCoveredTo(DateUtil.toDate(periodCoveredToDatePicker.getValue()));
 		
 		try {
 			payrollService.save(payroll);
@@ -113,7 +119,27 @@ public class AddEditPayrollController extends AbstractController {
 			return false;
 		}
 		
+		if (isPeriodCoveredFromNotSpecified()) {
+			ShowDialog.error("Period Covered From must be specified");
+			periodCoveredFromDatePicker.requestFocus();
+			return false;
+		}
+
+		if (isPeriodCoveredToNotSpecified()) {
+			ShowDialog.error("Period Covered To must be specified");
+			periodCoveredToDatePicker.requestFocus();
+			return false;
+		}
+
 		return true;
+	}
+
+	private boolean isPeriodCoveredFromNotSpecified() {
+		return periodCoveredFromDatePicker.getValue() == null;
+	}
+
+	private boolean isPeriodCoveredToNotSpecified() {
+		return periodCoveredToDatePicker.getValue() == null;
 	}
 
 	private boolean isPayScheduleNotSpecified() {

@@ -54,7 +54,8 @@ public class PayrollController extends AbstractController {
 	@FXML private Label payDateLabel;
 	@FXML private Label payScheduleLabel;
 	@FXML private Label postedLabel;
-	@FXML private Label totalAmountLabel;
+	@FXML private Label periodCoveredFromLabel;
+	@FXML private Label periodCoveredToLabel;
 	@FXML private AppTableView<Payslip> payslipsTable;
 	@FXML private Button deletePayrollButton;
 	@FXML private HBox editPayrollButtonsHBox;
@@ -75,7 +76,8 @@ public class PayrollController extends AbstractController {
 		payDateLabel.setText(FormatterUtil.formatDate(payroll.getPayDate()));
 		payScheduleLabel.setText(payroll.getPaySchedule().toString());
 		postedLabel.setText(payroll.isPosted() ? "Yes" : "No");
-		totalAmountLabel.setText(FormatterUtil.formatAmount(payroll.getTotalAmount()));
+		periodCoveredFromLabel.setText(FormatterUtil.formatDate(payroll.getPeriodCoveredFrom()));
+		periodCoveredToLabel.setText(FormatterUtil.formatDate(payroll.getPeriodCoveredTo()));
 		
 		payslipsTable.getItems().setAll(payroll.getPayslips());
 		payslipsTable.setOnMouseClicked(new DoubleClickEventHandler() {

@@ -32,29 +32,33 @@
 			
 			<HBox spacing="100" alignment="center">
 				<GridPane vgap="10" alignment="center">
-					<Label text="Batch Number" prefWidth="270"
+					<Label text="Batch Number" prefWidth="150"
 						GridPane.columnIndex="0" GridPane.rowIndex="0" />
 					<Label fx:id="batchNumberLabel" prefWidth="100"
 						GridPane.columnIndex="1" GridPane.rowIndex="0" />
-					<Label text="Pay Date" prefWidth="150"
+					<Label text="Pay Schedule"
 						GridPane.columnIndex="0" GridPane.rowIndex="1" />
-					<Label fx:id="payDateLabel"
-						GridPane.columnIndex="1" GridPane.rowIndex="1" />
-					<Label text="Pay Schedule" prefWidth="120"
-						GridPane.columnIndex="0" GridPane.rowIndex="2" />
 					<Label fx:id="payScheduleLabel"
+						GridPane.columnIndex="1" GridPane.rowIndex="1" />
+					<Label text="Posted"
+						GridPane.columnIndex="0" GridPane.rowIndex="2" />
+					<Label fx:id="postedLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				</GridPane>
 				
 				<GridPane vgap="10" alignment="center">
-					<Label text="Posted" prefWidth="150"
+					<Label text="Pay Date" prefWidth="150"
 						GridPane.columnIndex="0" GridPane.rowIndex="0" />
-					<Label fx:id="postedLabel"
+					<Label fx:id="payDateLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="0" />
-					<Label text="Total Amount"
+					<Label text="Period Covered From" prefWidth="200"
 						GridPane.columnIndex="0" GridPane.rowIndex="1" />
-					<Label fx:id="totalAmountLabel"
+					<Label fx:id="periodCoveredFromLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="1" />
+					<Label text="Period Covered To"
+						GridPane.columnIndex="0" GridPane.rowIndex="2" />
+					<Label fx:id="periodCoveredToLabel"
+						GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				</GridPane>
 			</HBox>
 		
