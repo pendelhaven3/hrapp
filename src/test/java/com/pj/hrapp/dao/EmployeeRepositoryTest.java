@@ -130,4 +130,10 @@ public class EmployeeRepositoryTest extends IntegrationTest {
 		assertTrue(result.contains(Employee.withId(2L)));
 	}
 
+	@Test
+	public void getLatestEmployeeNumber() {
+		insertTestEmployees();
+		assertTrue(employeeDao.findLatestEmployeeNumber() == 3);
+	}
+	
 }

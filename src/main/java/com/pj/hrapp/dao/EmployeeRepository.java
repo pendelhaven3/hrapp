@@ -26,5 +26,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	@Query("select e from Employee e where e.resigned = :resigned order by e.firstName, e.lastName")
 	List<Employee> findAllByResigned(@Param("resigned") boolean resigned);
+
+	@Query("select coalesce(max(e.employeeNumber), 0) from Employee e")
+	Integer findLatestEmployeeNumber();
 	
 }

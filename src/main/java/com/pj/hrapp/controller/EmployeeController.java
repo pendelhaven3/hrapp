@@ -82,6 +82,8 @@ public class EmployeeController extends AbstractController {
 			dateResignedDatePicker.setValue(DateUtil.toLocalDate(employee.getResignDate()));
 			
 			deleteButton.setDisable(false);
+		} else {
+			employeeNumberField.setText(String.valueOf(employeeService.getNextEmployeeNumber()));
 		}
 		
 		employeeNumberField.requestFocus();

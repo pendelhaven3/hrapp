@@ -80,4 +80,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeRepository.findAllByResigned(false);
 	}
 
+	@Override
+	public int getNextEmployeeNumber() {
+		return employeeRepository.findLatestEmployeeNumber() + 1;
+	}
+
 }
