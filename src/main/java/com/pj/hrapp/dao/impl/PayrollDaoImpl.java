@@ -20,7 +20,7 @@ public class PayrollDaoImpl implements PayrollDao {
 	
 	@Override
 	public List<Payroll> getAll() {
-		return entityManager.createQuery("select p from Payroll p order by p.batchNumber desc",
+		return entityManager.createQuery("select p from Payroll p order by p.payDate desc",
 				Payroll.class).getResultList();
 	}
 
