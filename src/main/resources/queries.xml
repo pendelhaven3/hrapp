@@ -3,7 +3,8 @@
 	<entry name="sssPhilHealthReport">
 	<![CDATA[
 SELECT 
-	d.firstName || ' ' || d.lastName AS employeeName, 
+	d.lastName || ', ' || d.firstName AS employeeFullName, 
+	d.nickname AS employeeNickname,
 	NVL2(sssEmployeeContribution, sssEmployeeContribution, 0) AS sssEmployeeContribution, 
 	NVL2(sssEmployerContribution, sssEmployerContribution, 0) AS sssEmployerContribution,
 	c.monthlyPay,

@@ -13,7 +13,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	Employee findByEmployeeNumber(long employeeNumber);
 	
-	@Query("select e from Employee e order by e.firstName, e.lastName")
+	@Query("select e from Employee e order by e.lastName, e.firstName")
 	List<Employee> findAll();
 
 	@Query("select e from Employee e, Payroll p where e.id not in"

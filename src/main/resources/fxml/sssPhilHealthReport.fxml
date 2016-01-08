@@ -48,7 +48,12 @@
 				<columns>
 					<TableColumn text="Employee">
 						<cellValueFactory>
-							<AppPropertyValueFactory property="employeeName" />
+							<AppPropertyValueFactory property="employeeFullName" />
+						</cellValueFactory>
+					</TableColumn>
+					<TableColumn text="Nickname">
+						<cellValueFactory>
+							<AppPropertyValueFactory property="employeeNickname" />
 						</cellValueFactory>
 					</TableColumn>
 					<TableColumn text="SSS EE" styleClass="right">

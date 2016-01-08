@@ -21,7 +21,8 @@ import com.pj.hrapp.util.FormatterUtil;
 @SqlResultSetMapping(name = "sssPhilHealthReportItemMapping",
 	classes = {
 	    @ConstructorResult(targetClass = SSSPhilHealthReportItem.class, columns = {
-	        @ColumnResult(name = "employeeName"),
+	        @ColumnResult(name = "employeeFullName"),
+	        @ColumnResult(name = "employeeNickname"),
 	        @ColumnResult(name = "sssEmployeeContribution"),
 	        @ColumnResult(name = "sssEmployerContribution"),
 	        @ColumnResult(name = "monthlyPay"),

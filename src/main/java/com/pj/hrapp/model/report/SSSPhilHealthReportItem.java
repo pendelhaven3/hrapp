@@ -4,15 +4,22 @@ import java.math.BigDecimal;
 
 public class SSSPhilHealthReportItem {
 
-	private String employeeName;
+	private String employeeFullName;
+	private String employeeNickname;
 	private BigDecimal sssEmployeeContribution;
 	private BigDecimal sssEmployerContribution;
 	private BigDecimal monthlyPay;
 	private BigDecimal pagibigContribution;
 
-	public SSSPhilHealthReportItem(String employeeName, BigDecimal sssEmployeeContribution,
-			BigDecimal sssEmployerContribution, BigDecimal monthlyPay, BigDecimal pagibigContribution) {
-		this.employeeName = employeeName;
+	public SSSPhilHealthReportItem(
+			String employeeFullName, 
+			String employeeNickname, 
+			BigDecimal sssEmployeeContribution,
+			BigDecimal sssEmployerContribution, 
+			BigDecimal monthlyPay, 
+			BigDecimal pagibigContribution) {
+		this.employeeFullName = employeeFullName;
+		this.employeeNickname = employeeNickname;
 		this.sssEmployeeContribution = sssEmployeeContribution;
 		this.sssEmployerContribution = sssEmployerContribution;
 		this.monthlyPay = monthlyPay;
@@ -23,12 +30,12 @@ public class SSSPhilHealthReportItem {
 		return sssEmployeeContribution.add(sssEmployerContribution);
 	}
 	
-	public String getEmployeeName() {
-		return employeeName;
+	public String getEmployeeFullName() {
+		return employeeFullName;
 	}
 
 	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
+		this.employeeFullName = employeeName;
 	}
 
 	public BigDecimal getSssEmployeeContribution() {
@@ -63,4 +70,8 @@ public class SSSPhilHealthReportItem {
 		this.pagibigContribution = pagibigContribution;
 	}
 
+	public String getEmployeeNickname() {
+		return employeeNickname;
+	}
+	
 }

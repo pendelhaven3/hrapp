@@ -51,7 +51,12 @@
 				<columns>
 					<TableColumn text="Employee">
 						<cellValueFactory>
-							<AppPropertyValueFactory property="employee" />
+							<AppPropertyValueFactory property="employee.fullName" />
+						</cellValueFactory>
+					</TableColumn>
+					<TableColumn text="Nickname">
+						<cellValueFactory>
+							<AppPropertyValueFactory property="employee.nickname" />
 						</cellValueFactory>
 					</TableColumn>
 					<TableColumn text="No. of Days Worked" styleClass="center">

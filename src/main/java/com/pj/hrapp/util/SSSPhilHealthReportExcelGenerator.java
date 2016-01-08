@@ -26,7 +26,7 @@ public class SSSPhilHealthReportExcelGenerator {
 			row = sheet.getRow(1 + i);
 			
 			cell = row.getCell(0, Row.CREATE_NULL_AS_BLANK);
-			cell.setCellValue(item.getEmployeeName());
+			cell.setCellValue(item.getEmployeeFullName());
 			
 			cell = row.getCell(1, Row.CREATE_NULL_AS_BLANK);
 			cell.setCellValue(item.getSssEmployeeContribution().doubleValue());

@@ -216,7 +216,7 @@ public class Employee implements Comparable<Employee> {
 	}
 	
 	public String getFullName() {
-		return new StringBuilder().append(firstName).append(" ").append(lastName).toString();
+		return new StringBuilder().append(lastName).append(", ").append(firstName).toString();
 	}
 
 	public static Employee withId(long id) {

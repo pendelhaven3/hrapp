@@ -41,7 +41,7 @@ public class SalaryDaoImpl implements SalaryDao {
 	public List<Salary> getAllCurrent() {
 		return entityManager.createQuery(
 				"select s from Salary s where s.effectiveDateTo is null"
-				+ " order by s.employee.firstName, s.employee.lastName", Salary.class)
+				+ " order by s.employee.lastName, s.employee.firstName", Salary.class)
 				.getResultList();
 	}
 

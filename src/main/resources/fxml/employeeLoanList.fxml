@@ -22,9 +22,14 @@
 	<AppTableView fx:id="employeeLoansTable" VBox.vgrow="always">
 		<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 		<columns>
-			<TableColumn text="Employee" styleClass="center">
+			<TableColumn text="Employee">
 				<cellValueFactory>
-					<AppPropertyValueFactory property="employee"/>
+					<AppPropertyValueFactory property="employee.fullName" />
+				</cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Nickname">
+				<cellValueFactory>
+					<AppPropertyValueFactory property="employee.nickname" />
 				</cellValueFactory>
 			</TableColumn>
 			<TableColumn text="Loan Description" styleClass="center">
