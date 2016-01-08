@@ -34,40 +34,20 @@ public class SSSPhilHealthReportItem {
 		return employeeFullName;
 	}
 
-	public void setEmployeeName(String employeeName) {
-		this.employeeFullName = employeeName;
-	}
-
 	public BigDecimal getSssEmployeeContribution() {
 		return sssEmployeeContribution;
-	}
-
-	public void setSssEmployeeContribution(BigDecimal sssEmployeeContribution) {
-		this.sssEmployeeContribution = sssEmployeeContribution;
 	}
 
 	public BigDecimal getSssEmployerContribution() {
 		return sssEmployerContribution;
 	}
 
-	public void setSssEmployerContribution(BigDecimal sssEmployerContribution) {
-		this.sssEmployerContribution = sssEmployerContribution;
-	}
-
 	public BigDecimal getMonthlyPay() {
 		return monthlyPay;
 	}
 
-	public void setMonthlyPay(BigDecimal monthlyPay) {
-		this.monthlyPay = monthlyPay;
-	}
-
 	public BigDecimal getPagibigContribution() {
 		return pagibigContribution;
-	}
-
-	public void setPagibigContribution(BigDecimal pagibigContribution) {
-		this.pagibigContribution = pagibigContribution;
 	}
 
 	public String getEmployeeNickname() {
