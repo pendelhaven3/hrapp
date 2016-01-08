@@ -137,6 +137,8 @@ public class Payslip {
 			return new WeeklyPayslipBasicPayItem();
 		case SEMIMONTHLY:
 			return new SemimonthlyPayslipBasicPayItem();
+		case MONTHLY:
+			return new SemimonthlyPayslipBasicPayItem();
 		}
 		return null;
 	}

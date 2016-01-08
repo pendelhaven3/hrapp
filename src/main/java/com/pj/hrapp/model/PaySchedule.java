@@ -2,7 +2,7 @@ package com.pj.hrapp.model;
 
 public enum PaySchedule {
 
-	WEEKLY("Weekly"), SEMIMONTHLY("Semimonthly");
+	WEEKLY("Weekly"), SEMIMONTHLY("Semimonthly"), MONTHLY("Monthly");
 
 	private String description;
 	

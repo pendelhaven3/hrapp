@@ -116,6 +116,7 @@ public class PayrollToExcelGenerator {
 								.toString());
 						break;
 					case SEMIMONTHLY:
+					case MONTHLY:
 						cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 						cell.setCellValue("@");
 

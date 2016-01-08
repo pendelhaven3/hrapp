@@ -126,6 +126,8 @@ public class PayrollServiceImpl implements PayrollService {
 			sssContribution = sssContributionTable.getEmployeeContribution(referenceCompensation);
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(referenceCompensation);
 			break;
+		case MONTHLY:
+			return;
 		}
 		
 		BigDecimal pagibigContribution = systemService.getPagibigContributionValue();
