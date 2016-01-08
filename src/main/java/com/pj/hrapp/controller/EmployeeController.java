@@ -67,9 +67,7 @@ public class EmployeeController extends AbstractController {
 			lastNameField.setText(employee.getLastName());
 			firstNameField.setText(employee.getFirstName());
 			middleNameField.setText(employee.getMiddleName());
-			if (employee.getBirthday() != null) {
-				birthdayDatePicker.setValue(DateUtil.toLocalDate(employee.getBirthday()));
-			}
+			birthdayDatePicker.setValue(DateUtil.toLocalDate(employee.getBirthday()));
 			addressField.setText(employee.getAddress());
 			contactNumberField.setText(employee.getContactNumber());
 			sssNumberField.setText(employee.getSssNumber());
@@ -78,9 +76,7 @@ public class EmployeeController extends AbstractController {
 			tinField.setText(employee.getTin());
 			atmAccountNumberField.setText(employee.getAtmAccountNumber());
 			magicCustomerCodeField.setText(employee.getMagicCustomerCode());
-			if (employee.getHireDate() != null) {
-				dateHiredDatePicker.setValue(DateUtil.toLocalDate(employee.getHireDate()));
-			}
+			dateHiredDatePicker.setValue(DateUtil.toLocalDate(employee.getHireDate()));
 			payScheduleComboBox.setValue(employee.getPaySchedule());
 			resignedCheckBox.setSelected(employee.isResigned());
 			dateResignedDatePicker.setValue(DateUtil.toLocalDate(employee.getResignDate()));
@@ -102,11 +98,13 @@ public class EmployeeController extends AbstractController {
 		}
 	}
 
-	@FXML public void doOnBack() {
+	@FXML 
+	public void doOnBack() {
 		stageController.showEmployeeListScreen();
 	}
 
-	@FXML public void saveEmployee() {
+	@FXML 
+	public void saveEmployee() {
 		if (!validateFields()) {
 			return;
 		}
@@ -223,7 +221,8 @@ public class EmployeeController extends AbstractController {
 		return employeeNumberField.getText().isEmpty();
 	}
 
-	@FXML public void deleteEmployee() {
+	@FXML 
+	public void deleteEmployee() {
 		if (employeeHasPayslipRecord()) {
 			ShowDialog.error("Cannot delete employee with payslip record");
 			return;
