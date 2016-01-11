@@ -132,13 +132,11 @@ public class Payslip {
 	}
 	
 	private PayslipBasicPayItem createPayslipBasicPayItem() {
-		switch (employee.getPaySchedule()) {
-		case WEEKLY:
-			return new WeeklyPayslipBasicPayItem();
-		case SEMIMONTHLY:
-			return new SemimonthlyPayslipBasicPayItem();
-		case MONTHLY:
-			return new SemimonthlyPayslipBasicPayItem();
+		switch (employee.getPayType()) {
+		case PER_DAY:
+			return new PerDayPayslipBasicPayItem();
+		case FIXED_RATE:
+			return new FixedRatePayslipBasicPayItem();
 		}
 		return null;
 	}
