@@ -302,8 +302,7 @@ public class EmployeeController extends AbstractController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Picture File");
         fileChooser.setInitialDirectory(Paths.get(System.getProperty("user.home"), "Desktop").toFile());
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("JPG files", "*.jpeg", "*.jpg"));
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("PNG files", "*.png"));
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("Picture files", "*.jpeg", "*.jpg", "*.png", "*.gif"));
 		File file = fileChooser.showOpenDialog(stageController.getStage());
 		if (file != null) {
 			try {
