@@ -101,7 +101,7 @@
 					<Label text="Date Resigned"
 						GridPane.columnIndex="0" GridPane.rowIndex="10" />
 					<AppDatePicker fx:id="dateResignedDatePicker"
-						GridPane.columnIndex="1" GridPane.rowIndex="11" />
+						GridPane.columnIndex="1" GridPane.rowIndex="10" />
 				</GridPane>
 			</HBox>
 			<Button text="Save" onAction="#saveEmployee" />
