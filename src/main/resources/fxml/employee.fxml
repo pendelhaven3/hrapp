@@ -90,14 +90,18 @@
 						GridPane.columnIndex="0" GridPane.rowIndex="7" />
 					<ComboBox fx:id="payScheduleComboBox"
 						GridPane.columnIndex="1" GridPane.rowIndex="7" />
-					<Label text="Resigned?"
+					<Label text="Pay Type"
 						GridPane.columnIndex="0" GridPane.rowIndex="8" />
-					<CheckBox fx:id="resignedCheckBox"
+					<ComboBox fx:id="payTypeComboBox"
 						GridPane.columnIndex="1" GridPane.rowIndex="8" />
-					<Label text="Date Resigned"
+					<Label text="Resigned?"
 						GridPane.columnIndex="0" GridPane.rowIndex="9" />
-					<AppDatePicker fx:id="dateResignedDatePicker"
+					<CheckBox fx:id="resignedCheckBox"
 						GridPane.columnIndex="1" GridPane.rowIndex="9" />
+					<Label text="Date Resigned"
+						GridPane.columnIndex="0" GridPane.rowIndex="10" />
+					<AppDatePicker fx:id="dateResignedDatePicker"
+						GridPane.columnIndex="1" GridPane.rowIndex="11" />
 				</GridPane>
 			</HBox>
 			<Button text="Save" onAction="#saveEmployee" />

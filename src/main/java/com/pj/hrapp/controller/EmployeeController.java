@@ -13,6 +13,7 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.PaySchedule;
+import com.pj.hrapp.model.PayType;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
@@ -49,6 +50,7 @@ public class EmployeeController extends AbstractController {
 	@FXML private TextField magicCustomerCodeField;
 	@FXML private DatePicker dateHiredDatePicker;
 	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
+	@FXML private ComboBox<PayType> payTypeComboBox;
 	@FXML private CheckBox resignedCheckBox;
 	@FXML private DatePicker dateResignedDatePicker;
 	@FXML private Button deleteButton;
@@ -59,6 +61,7 @@ public class EmployeeController extends AbstractController {
 	public void updateDisplay() {
 		stageController.setTitle(getTitle());
 		payScheduleComboBox.getItems().setAll(PaySchedule.values());
+		payTypeComboBox.getItems().setAll(PayType.values());
 		
 		if (employee != null) {
 			employee = employeeService.getEmployee(employee.getId());
@@ -78,6 +81,7 @@ public class EmployeeController extends AbstractController {
 			magicCustomerCodeField.setText(employee.getMagicCustomerCode());
 			dateHiredDatePicker.setValue(DateUtil.toLocalDate(employee.getHireDate()));
 			payScheduleComboBox.setValue(employee.getPaySchedule());
+			payTypeComboBox.setValue(employee.getPayType());
 			resignedCheckBox.setSelected(employee.isResigned());
 			dateResignedDatePicker.setValue(DateUtil.toLocalDate(employee.getResignDate()));
 			
@@ -130,6 +134,7 @@ public class EmployeeController extends AbstractController {
 		employee.setMagicCustomerCode(StringUtils.trimToNull(magicCustomerCodeField.getText()));
 		employee.setHireDate(DateUtil.toDate(dateHiredDatePicker.getValue()));
 		employee.setPaySchedule(payScheduleComboBox.getValue());
+		employee.setPayType(payTypeComboBox.getValue());
 		employee.setResigned(resignedCheckBox.isSelected());
 		employee.setResignDate(DateUtil.toDate(dateResignedDatePicker.getValue()));
 		try {
@@ -185,6 +190,12 @@ public class EmployeeController extends AbstractController {
 			payScheduleComboBox.requestFocus();
 			return false;
 		}
+		
+		if (isPayTypeNotSpecified()) {
+			ShowDialog.error("Pay Type must be specified");
+			payTypeComboBox.requestFocus();
+			return false;
+		}
 
 		return true;
 	}
@@ -195,6 +206,10 @@ public class EmployeeController extends AbstractController {
 
 	private boolean isPayScheduleNotSpecified() {
 		return payScheduleComboBox.getValue() == null;
+	}
+
+	private boolean isPayTypeNotSpecified() {
+		return payTypeComboBox.getValue() == null;
 	}
 
 	private boolean isNicknameNotSpecified() {
