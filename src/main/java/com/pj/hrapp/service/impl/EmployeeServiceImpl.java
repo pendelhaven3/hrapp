@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
+import com.pj.hrapp.dao.EmployeePictureRepository;
 import com.pj.hrapp.dao.EmployeeRepository;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.EmployeePicture;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 import com.pj.hrapp.service.EmployeeService;
@@ -20,6 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired private EmployeeRepository employeeRepository;
 	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
+	@Autowired private EmployeePictureRepository employeePictureRepository;
 	
 	@Override
 	public List<Employee> getAllEmployees() {
@@ -83,6 +86,32 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public int getNextEmployeeNumber() {
 		return employeeRepository.findLatestEmployeeNumber() + 1;
+	}
+
+	@Transactional
+	@Override
+	public void save(EmployeePicture employeePicture) {
+		EmployeePicture fromDb = employeePictureRepository.findByEmployee(employeePicture.getEmployee());
+		if (fromDb == null) {
+			fromDb = employeePicture;
+		} else {
+			fromDb.setPicture(employeePicture.getPicture());
+		}
+		employeePictureRepository.save(fromDb);
+	}
+
+	@Override
+	public EmployeePicture getEmployeePicture(Employee employee) {
+		return employeePictureRepository.findByEmployee(employee);
+	}
+
+	@Transactional
+	@Override
+	public void removeEmployeePicture(Employee employee) {
+		EmployeePicture employeePicture = employeePictureRepository.findByEmployee(employee);
+		if (employeePicture != null) {
+			employeePictureRepository.delete(employeePicture);
+		}
 	}
 
 }

@@ -1,5 +1,12 @@
 package com.pj.hrapp.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Paths;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -12,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeePicture;
 import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.PayType;
 import com.pj.hrapp.service.EmployeeService;
@@ -24,6 +32,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -54,6 +66,9 @@ public class EmployeeController extends AbstractController {
 	@FXML private CheckBox resignedCheckBox;
 	@FXML private DatePicker dateResignedDatePicker;
 	@FXML private Button deleteButton;
+	@FXML private ImageView employeePictureImageView;
+	@FXML private Button changePictureButton;
+	@FXML private Button removePictureButton;
 	
 	@Parameter private Employee employee;
 	
@@ -84,8 +99,9 @@ public class EmployeeController extends AbstractController {
 			payTypeComboBox.setValue(employee.getPayType());
 			resignedCheckBox.setSelected(employee.isResigned());
 			dateResignedDatePicker.setValue(DateUtil.toLocalDate(employee.getResignDate()));
-			
 			deleteButton.setDisable(false);
+			
+			displayEmployeePicture();
 		} else {
 			employeeNumberField.setText(String.valueOf(employeeService.getNextEmployeeNumber()));
 		}
@@ -93,6 +109,24 @@ public class EmployeeController extends AbstractController {
 		employeeNumberField.requestFocus();
 		if (employee != null) {
 			employeeNumberField.positionCaret(employeeNumberField.getText().length());
+		}
+	}
+
+	private void displayEmployeePicture() {
+		EmployeePicture employeePicture = employeeService.getEmployeePicture(employee);
+		if (employeePicture != null) {
+			employeePictureImageView.setImage(new Image(new ByteArrayInputStream(employeePicture.getPicture())));
+		} else {
+			employeePictureImageView.setImage(getDefaultPicture());
+		}
+	}
+
+	private Image getDefaultPicture() {
+		InputStream in = getClass().getClassLoader().getResourceAsStream("images\\no_picture.jpg");
+		try {
+			return new Image(in);
+		} finally {
+			IOUtils.closeQuietly(in);
 		}
 	}
 
@@ -261,6 +295,51 @@ public class EmployeeController extends AbstractController {
 
 	private boolean employeeHasPayslipRecord() {
 		return payrollService.findAnyPayslipByEmployee(employee) != null;
+	}
+
+	@FXML 
+	public void changePicture() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Picture File");
+        fileChooser.setInitialDirectory(Paths.get(System.getProperty("user.home"), "Desktop").toFile());
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("JPG files", "*.jpeg", "*.jpg"));
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("PNG files", "*.png"));
+		File file = fileChooser.showOpenDialog(stageController.getStage());
+		if (file != null) {
+			try {
+				employeeService.save(createEmployeePicture(file));
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+				ShowDialog.unexpectedError();
+				return;
+			}
+			
+			updateDisplay();
+		}
+	}
+
+	private EmployeePicture createEmployeePicture(File file) {
+		EmployeePicture employeePicture = new EmployeePicture();
+		employeePicture.setEmployee(employee);
+		try {
+			employeePicture.setPicture(IOUtils.toByteArray(new FileInputStream(file)));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return employeePicture;
+	}
+
+	@FXML 
+	public void removePicture() {
+		try {
+			employeeService.removeEmployeePicture(employee);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		updateDisplay();
 	}
 
 }
