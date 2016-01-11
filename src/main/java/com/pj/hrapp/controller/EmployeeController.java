@@ -122,7 +122,7 @@ public class EmployeeController extends AbstractController {
 	}
 
 	private Image getDefaultPicture() {
-		InputStream in = getClass().getClassLoader().getResourceAsStream("images\\no_picture.jpg");
+		InputStream in = getClass().getClassLoader().getResourceAsStream("images/no_picture.jpg");
 		try {
 			return new Image(in);
 		} finally {
