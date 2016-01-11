@@ -121,14 +121,14 @@ public class SalaryController extends AbstractController {
 			return false;
 		}
 		
-		if (isAmountNotSpecified()) {
-			ShowDialog.error("Amount must be specified");
+		if (isRateNotSpecified()) {
+			ShowDialog.error("Rate must be specified");
 			rateField.requestFocus();
 			return false;
 		}
 		
-		if (isAmountNotValid()) {
-			ShowDialog.error("Amount must be a valid amount");
+		if (isRateNotValid()) {
+			ShowDialog.error("Rate must be a valid amount");
 			rateField.requestFocus();
 			return false;
 		}
@@ -181,11 +181,11 @@ public class SalaryController extends AbstractController {
 		return effectiveDateFromDatePicker.getValue() == null;
 	}
 
-	private boolean isAmountNotValid() {
+	private boolean isRateNotValid() {
 		return !NumberUtil.isAmount(rateField.getText());
 	}
 
-	private boolean isAmountNotSpecified() {
+	private boolean isRateNotSpecified() {
 		return rateField.getText().isEmpty();
 	}
 
