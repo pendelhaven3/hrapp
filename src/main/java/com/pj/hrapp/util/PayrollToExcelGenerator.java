@@ -96,8 +96,8 @@ public class PayrollToExcelGenerator {
 					PayslipBasicPayItem item = items.get(j);
 					row = sheet.getRow(currentRow);
 					
-					switch (payslip.getEmployee().getPaySchedule()) {
-					case WEEKLY:
+					switch (payslip.getEmployee().getPayType()) {
+					case PER_DAY:
 						cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
 						cell.setCellValue(item.getRate().doubleValue());
@@ -115,8 +115,7 @@ public class PayrollToExcelGenerator {
 								.append(cellNames[row.getRowNum() + 1][payslipColumns[i][1]])
 								.toString());
 						break;
-					case SEMIMONTHLY:
-					case MONTHLY:
+					case FIXED_RATE:
 						cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 						cell.setCellValue("@");
 
@@ -128,7 +127,6 @@ public class PayrollToExcelGenerator {
 						cell.setCellValue(item.getAmount().doubleValue());
 						break;
 					}
-					
 					
 					currentRow++;
 				}

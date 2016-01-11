@@ -37,6 +37,11 @@
 					<AppPropertyValueFactory property="employee.paySchedule" />
 				</cellValueFactory>
 			</TableColumn>
+			<TableColumn text="Pay Type">
+				<cellValueFactory>
+					<AppPropertyValueFactory property="employee.payType" />
+				</cellValueFactory>
+			</TableColumn>
 			<TableColumn text="Rate" styleClass="right">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="rate" />

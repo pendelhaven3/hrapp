@@ -39,6 +39,9 @@ public class Employee implements Comparable<Employee> {
 	
 	@Enumerated(EnumType.STRING)
 	private PaySchedule paySchedule;
+	
+	@Enumerated(EnumType.STRING)
+	private PayType payType;
 
 	@Column(columnDefinition = "date")
 	private Date resignDate;
@@ -256,6 +259,14 @@ public class Employee implements Comparable<Employee> {
 
 	public void setPagibigNumber(String pagibigNumber) {
 		this.pagibigNumber = pagibigNumber;
+	}
+
+	public PayType getPayType() {
+		return payType;
+	}
+
+	public void setPayType(PayType payType) {
+		this.payType = payType;
 	}
 	
 }
