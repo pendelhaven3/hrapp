@@ -47,6 +47,8 @@ public class AddEditPayrollController extends AbstractController {
 			payScheduleComboBox.setValue(payroll.getPaySchedule());
 			periodCoveredFromDatePicker.setValue(DateUtil.toLocalDate(payroll.getPeriodCoveredFrom()));
 			periodCoveredToDatePicker.setValue(DateUtil.toLocalDate(payroll.getPeriodCoveredTo()));
+		} else {
+			batchNumberField.setText(String.valueOf(payrollService.getNextBatchNumber()));
 		}
 		
 		batchNumberField.requestFocus();

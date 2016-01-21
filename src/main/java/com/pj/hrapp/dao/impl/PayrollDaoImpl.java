@@ -56,4 +56,10 @@ public class PayrollDaoImpl implements PayrollDao {
 		entityManager.remove(get(payroll.getId()));
 	}
 
+	@Override
+	public long getLatestBatchNumber() {
+		return entityManager.createQuery("SELECT COALESCE(MAX(p.batchNumber), 0) + 1 FROM Payroll p", Long.class)
+			.getSingleResult();
+	}
+
 }

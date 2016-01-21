@@ -15,5 +15,7 @@ public interface PayrollDao {
 	Payroll findByBatchNumber(long batchNumber);
 
 	void delete(Payroll payroll);
+
+	long getLatestBatchNumber();
 	
 }

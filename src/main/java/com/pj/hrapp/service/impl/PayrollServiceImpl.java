@@ -335,4 +335,9 @@ public class PayrollServiceImpl implements PayrollService {
 		}
 	}
 
+	@Override
+	public long getNextBatchNumber() {
+		return payrollDao.getLatestBatchNumber();
+	}
+
 }

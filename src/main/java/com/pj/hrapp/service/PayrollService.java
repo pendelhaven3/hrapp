@@ -40,4 +40,6 @@ public interface PayrollService {
 
 	void regenerateAllGovernmentContributions(Payroll payroll);
 
+	long getNextBatchNumber();
+
 }
