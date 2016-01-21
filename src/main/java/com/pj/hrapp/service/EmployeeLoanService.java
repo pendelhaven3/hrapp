@@ -1,5 +1,6 @@
 package com.pj.hrapp.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.pj.hrapp.model.Employee;
@@ -31,5 +32,7 @@ public interface EmployeeLoanService {
 	void markAsPaid(EmployeeLoan loan);
 
 	List<EmployeeLoan> searchEmployeeLoans(EmployeeLoanSearchCriteria criteria);
+
+	List<EmployeeLoan> findAllPayableLoansByEmployeeAndPaymentDate(Employee employee, Date paymentDate);
 
 }
