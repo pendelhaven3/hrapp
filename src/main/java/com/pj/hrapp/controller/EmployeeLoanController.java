@@ -24,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -41,7 +42,8 @@ public class EmployeeLoanController extends AbstractController {
 	@FXML private Label numberOfPaymentsLabel;
 	@FXML private Label paymentAmountLabel;
 	@FXML private Label paidLabel;
-	@FXML private Label remarksLabel;
+	@FXML private Label paymentStartDateLabel;
+	@FXML private Text remarksText;
 	@FXML private HBox updateLoanButtonsHBox;
 	@FXML private HBox maintainPaymentsButtonsHbox;
 	@FXML private Button deleteButton;
@@ -62,7 +64,8 @@ public class EmployeeLoanController extends AbstractController {
 		numberOfPaymentsLabel.setText(loan.getNumberOfPayments().toString());
 		paymentAmountLabel.setText(FormatterUtil.formatAmount(loan.getPaymentAmount()));
 		paidLabel.setText(loan.isPaid() ? "Yes" : "No");
-		remarksLabel.setText(StringUtils.defaultIfBlank(loan.getRemarks(), "(none)"));
+		paymentStartDateLabel.setText(FormatterUtil.formatDate(loan.getPaymentStartDate()));
+		remarksText.setText(StringUtils.defaultIfBlank(loan.getRemarks(), "(none)"));
 		
 		paymentsTable.setItems(loan.getPayments());
 		

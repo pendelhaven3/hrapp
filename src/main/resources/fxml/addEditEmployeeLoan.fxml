@@ -47,10 +47,14 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="5" />
 				<TextField fx:id="paymentAmountField" disable="true"
 					GridPane.columnIndex="1" GridPane.rowIndex="5" />
-				<Label text="Remarks" GridPane.valignment="top"
+				<Label text="Payment Start Date"
 					GridPane.columnIndex="0" GridPane.rowIndex="6" />
-				<TextArea fx:id="remarksTextArea" prefWidth="300" prefHeight="100"
+				<AppDatePicker fx:id="paymentStartDatePicker"
 					GridPane.columnIndex="1" GridPane.rowIndex="6" />
+				<Label text="Remarks" GridPane.valignment="top"
+					GridPane.columnIndex="0" GridPane.rowIndex="7" />
+				<TextArea fx:id="remarksTextArea" prefWidth="300" prefHeight="100"
+					GridPane.columnIndex="1" GridPane.rowIndex="7" />
 			</GridPane>
 			
 			<HBox spacing="10" alignment="center">

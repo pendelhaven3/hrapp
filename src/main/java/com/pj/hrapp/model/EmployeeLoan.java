@@ -42,6 +42,9 @@ public class EmployeeLoan {
 	@OneToMany(mappedBy = "loan", cascade = CascadeType.REMOVE)
 	private List<EmployeeLoanPayment> payments;
 	
+	@Column(columnDefinition = "date")
+	private Date paymentStartDate;
+	
 	public Long getId() {
 		return id;
 	}
@@ -182,6 +185,14 @@ public class EmployeeLoan {
 
 	public boolean isNew() {
 		return id == null;
+	}
+
+	public Date getPaymentStartDate() {
+		return paymentStartDate;
+	}
+
+	public void setPaymentStartDate(Date paymentStartDate) {
+		this.paymentStartDate = paymentStartDate;
 	}
 	
 }

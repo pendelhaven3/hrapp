@@ -45,6 +45,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	@FXML private DatePicker loanDateDatePicker;
 	@FXML private TextField numberOfPaymentsField;
 	@FXML private TextField paymentAmountField;
+	@FXML private DatePicker paymentStartDatePicker;
 	@FXML private TextArea remarksTextArea;
 	@FXML private Button deleteButton;
 	
@@ -65,6 +66,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 			loanDateDatePicker.setValue(DateUtil.toLocalDate(loan.getLoanDate()));
 			numberOfPaymentsField.setText(loan.getNumberOfPayments().toString());
 			paymentAmountField.setText(FormatterUtil.formatAmount(loan.getPaymentAmount()));
+			paymentStartDatePicker.setValue(DateUtil.toLocalDate(loan.getPaymentStartDate()));
 			remarksTextArea.setText(loan.getRemarks());
 			
 			deleteButton.setDisable(false);
@@ -146,6 +148,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		loan.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
 		loan.setLoanDate(DateUtil.toDate(loanDateDatePicker.getValue()));
 		loan.setNumberOfPayments(Integer.valueOf(numberOfPaymentsField.getText()));
+		loan.setPaymentStartDate(DateUtil.toDate(paymentStartDatePicker.getValue()));
 		loan.setRemarks(remarksTextArea.getText());
 		
 		try {
