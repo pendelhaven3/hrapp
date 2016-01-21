@@ -35,11 +35,12 @@ public class AddPayslipLoanPaymentDialog extends AbstractDialog {
 	
 	@Override
 	public void updateDisplay() {
-		employeeLoansTable.setItems(findAllUnpaidLoansByEmployeeAndNoPaymentInPayslip());
+		employeeLoansTable.setItems(findAllPayableLoansByEmployeeAndNoPaymentInPayslip());
 	}
 	
-	private List<EmployeeLoan> findAllUnpaidLoansByEmployeeAndNoPaymentInPayslip() {
-		List<EmployeeLoan> loans = employeeLoanService.findAllUnpaidLoansByEmployee(payslip.getEmployee());
+	private List<EmployeeLoan> findAllPayableLoansByEmployeeAndNoPaymentInPayslip() {
+		List<EmployeeLoan> loans = employeeLoanService.findAllPayableLoansByEmployeeAndPaymentDate(
+				payslip.getEmployee(), payslip.getPayroll().getPayDate());
 		
 		return loans.stream().filter(loan -> {
 			for (EmployeeLoanPayment loanPayment : payslip.getLoanPayments()) {

@@ -1,10 +1,10 @@
 package com.pj.hrapp.service.impl;
 
 import static com.pj.hrapp.model.search.BaseSpecifications.build;
-import static com.pj.hrapp.model.search.EmployeeLoanSpecifications.withEmployee;
-import static com.pj.hrapp.model.search.EmployeeLoanSpecifications.withPaid;
+import static com.pj.hrapp.model.search.EmployeeLoanSpecifications.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,11 +122,25 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 			specifications = specifications.and(withPaid(criteria.getPaid()));
 		}
 		
+		if (criteria.getPaymentDate() != null) {
+			specifications = specifications.and(withPaymentDate(criteria.getPaymentDate()));
+		}
+		
 		List<EmployeeLoan> loans = employeeLoanRepository.findAll(specifications);
 		for (EmployeeLoan loan : loans) {
 			loan.setPayments(employeeLoanPaymentRepository.findAllByEmployeeLoan(loan));
 		}
 		return loans;
+	}
+
+	@Override
+	public List<EmployeeLoan> findAllPayableLoansByEmployeeAndPaymentDate(Employee employee, Date paymentDate) {
+		EmployeeLoanSearchCriteria criteria = new EmployeeLoanSearchCriteria();
+		criteria.setEmployee(employee);
+		criteria.setPaid(false);
+		criteria.setPaymentDate(paymentDate);
+		
+		return searchEmployeeLoans(criteria);
 	}
 
 }

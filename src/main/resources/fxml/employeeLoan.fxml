@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
 <?import com.pj.hrapp.gui.component.AppDatePicker?>
 <?import javafx.geometry.Insets?>
 <?import com.pj.hrapp.gui.component.AppPropertyValueFactory?>
@@ -56,14 +57,23 @@
 						GridPane.columnIndex="0" GridPane.rowIndex="1" />
 					<Label fx:id="paymentAmountLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="1" />
-					<Label text="Paid"
+					<Label text="Payment Start Date"
 						GridPane.columnIndex="0" GridPane.rowIndex="2" />
-					<Label fx:id="paidLabel"
+					<Label fx:id="paymentStartDateLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="2" />
-					<Label text="Remarks"
+					<Label text="Paid"
 						GridPane.columnIndex="0" GridPane.rowIndex="3" />
-					<Label fx:id="remarksLabel"
+					<Label fx:id="paidLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				</GridPane>
+			</HBox>
+			
+			<HBox alignment="center" spacing="100">
+				<GridPane vgap="10" alignment="center">
+					<Label text="Remarks" prefWidth="150" GridPane.valignment="top"
+						GridPane.columnIndex="0" GridPane.rowIndex="0" />
+					<Text fx:id="remarksText"
+						GridPane.columnIndex="1" GridPane.rowIndex="0" />
 				</GridPane>
 			</HBox>
 			

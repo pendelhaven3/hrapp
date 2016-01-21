@@ -110,7 +110,9 @@ public class AddPayslipDialog extends AbstractDialog {
 	}
 
 	private void updateEmployeeLoansTable() {
-		employeeLoansTable.setItems(employeeLoanService.findAllUnpaidLoansByEmployee(payslip.getEmployee()));
+		employeeLoansTable.setItems(
+				employeeLoanService.findAllPayableLoansByEmployeeAndPaymentDate(
+						payslip.getEmployee(), payslip.getPayroll().getPayDate()));
 	}
 
 	@FXML
