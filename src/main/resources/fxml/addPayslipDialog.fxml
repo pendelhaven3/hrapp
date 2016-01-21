@@ -20,9 +20,14 @@
 			<AppTableView fx:id="employeesTable" VBox.vgrow="always">
 				<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
 				<columns>
-					<TableColumn text="Employee" styleClass="center">
+					<TableColumn text="Employee">
 						<cellValueFactory>
 							<AppPropertyValueFactory property="fullName" />
+						</cellValueFactory>
+					</TableColumn>
+					<TableColumn text="Nickname">
+						<cellValueFactory>
+							<AppPropertyValueFactory property="nickname" />
 						</cellValueFactory>
 					</TableColumn>
 				</columns>
