@@ -23,6 +23,7 @@ import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
@@ -35,6 +36,7 @@ import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 import com.pj.hrapp.model.search.PayslipSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.model.util.DateInterval;
+import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.PhilHealthService;
 import com.pj.hrapp.service.SSSService;
@@ -57,6 +59,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private ValeProductService valeProductService;
 	@Autowired private EmployeeRepository employeeRepository;
 	@Autowired private SystemService systemService;
+	@Autowired private EmployeeLoanService employeeLoanService;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -73,6 +76,11 @@ public class PayrollServiceImpl implements PayrollService {
 	public Payroll getPayroll(long id) {
 		Payroll payroll = payrollDao.get(id);
 		payroll.setPayslips(payslipDao.findAllByPayroll(payroll));
+		
+		for (int i = 0; i < payroll.getPayslips().size(); i++) {
+			payroll.getPayslips().set(i, getPayslip(payroll.getPayslips().get(i).getId()));
+		}
+		
 		return payroll;
 	}
 
@@ -298,6 +306,18 @@ public class PayrollServiceImpl implements PayrollService {
 		
 		payroll.setPosted(true);
 		payrollDao.save(payroll);
+		
+		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
+	}
+
+	private void markEmployeeLoansWithLastPaymentInPayrollAsPaid(Payroll payroll) {
+		for (Payslip payslip : payroll.getPayslips()) {
+			for (EmployeeLoanPayment payment : payslip.getLoanPayments()) {
+				if (payment.isLast()) {
+					employeeLoanService.markAsPaid(payment.getLoan());
+				}
+			}
+		}
 	}
 
 	private boolean canConnectToMagic() {

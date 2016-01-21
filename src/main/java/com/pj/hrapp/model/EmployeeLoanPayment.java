@@ -112,4 +112,8 @@ public class EmployeeLoanPayment {
 				.toString();
 	}
 	
+	public boolean isLast() {
+		return paymentNumber.equals(loan.getNumberOfPayments());
+	}
+	
 }

@@ -65,9 +65,6 @@ public class PayrollController extends AbstractController {
 		stageController.setTitle("Payroll");
 		
 		payroll = payrollService.getPayroll(payroll.getId());
-		for (int i = 0; i < payroll.getPayslips().size(); i++) {
-			payroll.getPayslips().set(i, payrollService.getPayslip(payroll.getPayslips().get(i).getId()));
-		}
 		
 		batchNumberLabel.setText(payroll.getBatchNumber().toString());
 		payDateLabel.setText(FormatterUtil.formatDate(payroll.getPayDate()));
