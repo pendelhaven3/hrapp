@@ -1,15 +1,21 @@
 package com.pj.hrapp.dao.impl;
 
 import java.time.YearMonth;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.ReportDao;
+import com.pj.hrapp.model.report.LatesReportItem;
 import com.pj.hrapp.model.report.SSSPhilHealthReportItem;
 import com.pj.hrapp.util.Queries;
 
@@ -26,6 +32,21 @@ public class ReportDaoImpl implements ReportDao {
 				Queries.getQuery("sssPhilHealthReport"), "sssPhilHealthReportItemMapping");
 		query.setParameter("month", yearMonth.getMonth().getValue());
 		query.setParameter("year", yearMonth.getYear());
+		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<LatesReportItem> getLatesReportItems(Date dateFrom, Date dateTo) {
+		final Query query = entityManager.createNativeQuery(Queries.getQuery("latesReport"));
+		query.setParameter("dateFrom", dateFrom);
+		query.setParameter("dateTo", dateTo);
+		
+		query.unwrap(SQLQuery.class)
+			.addScalar("employeeNickname", StringType.INSTANCE)
+			.addScalar("lates", IntegerType.INSTANCE)
+			.setResultTransformer(Transformers.aliasToBean(LatesReportItem.class));
+		
 		return query.getResultList();
 	}
 

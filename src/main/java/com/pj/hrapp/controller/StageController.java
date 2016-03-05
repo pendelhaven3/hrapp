@@ -220,4 +220,8 @@ public class StageController {
 		history.updateHistoryItemModel("salaryList", model);
 	}
 
+	public void showLatesReportScreen() {
+		loadSceneFromFXML("latesReport");
+	}
+
 }

@@ -23,5 +23,10 @@ public class ReportListController extends AbstractController {
 	public void doOnBack() {
 		stageController.showMainMenuScreen();
 	}
+
+	@FXML 
+	public void goToLatesReportScreen() {
+		stageController.showLatesReportScreen();
+	}
 	
 }

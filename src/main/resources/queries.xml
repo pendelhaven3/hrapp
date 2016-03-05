@@ -78,4 +78,21 @@ JOIN employee d
 ORDER BY d.firstName, d.lastName
 	]]>
 	</entry>
+	<entry name="latesReport">
+		SELECT emp.nickname AS employeeNickname, subquery.lates
+		FROM employee emp
+		JOIN (
+			SELECT b.employee_id, -SUM(a.amount) AS lates
+			FROM payslipAdjustment a
+			JOIN payslip b
+			  ON b.id = a.payslip_id
+			JOIN payroll c
+			  ON c.id = b.payroll_id
+			WHERE a.type = 'LATES'
+			AND c.payDate BETWEEN :dateFrom AND :dateTo
+			GROUP BY b.employee_id
+		) subquery
+			ON subquery.employee_id = emp.id
+		ORDER BY lates DESC
+	</entry>
 </root>
