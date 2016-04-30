@@ -118,6 +118,10 @@
 							GridPane.columnIndex="0" GridPane.rowIndex="8" />
 						<AppDatePicker fx:id="dateResignedDatePicker"
 							GridPane.columnIndex="1" GridPane.rowIndex="8" />
+						<Label text="Household"
+							GridPane.columnIndex="0" GridPane.rowIndex="9" />
+						<CheckBox fx:id="householdCheckBox"
+							GridPane.columnIndex="1" GridPane.rowIndex="9" />
 					</GridPane>
 				</HBox>
 				<Button text="Save" onAction="#saveEmployee" />

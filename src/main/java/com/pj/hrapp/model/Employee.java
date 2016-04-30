@@ -37,6 +37,9 @@ public class Employee implements Comparable<Employee> {
 	private String magicCustomerCode;
 	private Date hireDate;
 	
+	@Column(columnDefinition = "boolean default false")
+	private boolean household;
+	
 	@Enumerated(EnumType.STRING)
 	private PaySchedule paySchedule;
 	
@@ -267,6 +270,14 @@ public class Employee implements Comparable<Employee> {
 
 	public void setPayType(PayType payType) {
 		this.payType = payType;
+	}
+
+	public boolean isHousehold() {
+		return household;
+	}
+
+	public void setHousehold(boolean household) {
+		this.household = household;
 	}
 	
 }
