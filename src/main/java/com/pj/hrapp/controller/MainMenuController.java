@@ -38,7 +38,7 @@ public class MainMenuController extends AbstractController {
 
 	@FXML 
 	public void goToEmployeeAttendanceList() {
-		stageController.showEmployeeAttendanceScreen();
+		stageController.showEmployeeAttendanceListScreen();
 	}
 
 	@FXML 

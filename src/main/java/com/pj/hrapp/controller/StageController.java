@@ -200,8 +200,8 @@ public class StageController {
 		loadSceneFromFXML("employeeLoan", Collections.singletonMap("loan", loan));
 	}
 
-	public void showEmployeeAttendanceScreen() {
-		loadSceneFromFXML("employeeAttendance");
+	public void showEmployeeAttendanceListScreen() {
+		loadSceneFromFXML("employeeAttendanceList");
 	}
 
 	public void showEditPagibigContributionValueScreen() {
@@ -222,6 +222,10 @@ public class StageController {
 
 	public void showLatesReportScreen() {
 		loadSceneFromFXML("latesReport");
+	}
+
+	public void showAddEmployeeAttendanceScreen() {
+		loadSceneFromFXML("employeeAttendance");
 	}
 
 }

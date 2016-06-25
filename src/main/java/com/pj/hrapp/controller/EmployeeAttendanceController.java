@@ -1,133 +1,124 @@
 package com.pj.hrapp.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.pj.hrapp.Parameter;
+import com.pj.hrapp.gui.component.AppDatePicker;
+import com.pj.hrapp.gui.component.ShowDialog;
+import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
-import com.pj.hrapp.model.PaySchedule;
-import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
-import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.util.DateUtil;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableView;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class EmployeeAttendanceController extends AbstractController {
 
+	private static final Logger logger = LoggerFactory.getLogger(EmployeeAttendanceController.class);
+	
 	@Autowired private EmployeeService employeeService;
 	
-	@FXML private TableView<EmployeeAttendanceSummary> attendancesTable;
-	@FXML private DatePicker dateFromDatePicker;
-	@FXML private DatePicker dateToDatePicker;
-	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
+	@Parameter private EmployeeAttendance employeeAttendance;
+
+	@FXML ComboBox<Employee> employeeComboBox;
+	@FXML AppDatePicker attendanceDateDatePicker;
+	@FXML ComboBox<Attendance> attendanceComboBox;
+	@FXML Button deleteButton;
 	
 	@Override
 	public void updateDisplay() {
-		stageController.setTitle("Employee Attendances");
+		setTitle();
+		employeeComboBox.getItems().setAll(employeeService.getAllActiveEmployees());
+		attendanceComboBox.getItems().setAll(Attendance.values());
 		
-		attendancesTable.getItems().setAll(getAllEmployeeAttendanceSummariesForCurrentMonth());
-		
-		DateInterval currentMonthInterval = getCurrentYearMonthInterval();
-		dateFromDatePicker.setValue(DateUtil.toLocalDate(currentMonthInterval.getDateFrom()));
-		dateToDatePicker.setValue(DateUtil.toLocalDate(currentMonthInterval.getDateTo()));
-		
-		payScheduleComboBox.setItems(FXCollections.observableArrayList(PaySchedule.values()));
+		if (employeeAttendance != null) {
+			employeeAttendance = employeeService.getEmployeeAttendance(employeeAttendance.getId());
+		}
 	}
 
-	private List<EmployeeAttendanceSummary> getAllEmployeeAttendanceSummariesForCurrentMonth() {
-		return toAttendanceSummaries(getAllEmployeeAttendancesForCurrentMonth());
+	private void setTitle() {
+		if (employeeAttendance != null) {
+			stageController.setTitle("Update Employee Attendance");
+		} else {
+			stageController.setTitle("Add Employee Attendance");
+		}
 	}
 
-	private List<EmployeeAttendance> getAllEmployeeAttendancesForCurrentMonth() {
-		DateInterval currentYearMonthInterval = getCurrentYearMonthInterval();
-		EmployeeAttendanceSearchCriteria criteria = new EmployeeAttendanceSearchCriteria();
-		criteria.setDateFrom(currentYearMonthInterval.getDateFrom());
-		criteria.setDateTo(currentYearMonthInterval.getDateTo());
-		
-		return employeeService.searchEmployeeAttendances(criteria);
-	}
-	
-	private List<EmployeeAttendanceSummary> toAttendanceSummaries(List<EmployeeAttendance> attendances) {
-		Map<Employee, Double> attendanceSummaryMap = new HashMap<>();
-		for (EmployeeAttendance attendance : attendances) {
-			Employee employee = attendance.getEmployee();
-			Double value = attendance.getValue();
-			if (!attendanceSummaryMap.containsKey(employee)) {
-				attendanceSummaryMap.put(employee, value);
-			} else {
-				attendanceSummaryMap.put(employee, attendanceSummaryMap.get(employee) + value);
-			}
-		}
-		
-		List<EmployeeAttendanceSummary> attendanceSummaries = new ArrayList<>();
-		for (Employee employee : attendanceSummaryMap.keySet()) {
-			EmployeeAttendanceSummary attendanceSummary = new EmployeeAttendanceSummary();
-			attendanceSummary.setEmployee(employee);
-			attendanceSummary.setNumberOfDaysWorked(attendanceSummaryMap.get(employee));
-			attendanceSummaries.add(attendanceSummary);
-		}
-		
-		Collections.sort(attendanceSummaries, (o1, o2) -> o1.getEmployee().compareTo(o2.getEmployee()));
-		
-		return attendanceSummaries;
-	}
-	
-	private DateInterval getCurrentYearMonthInterval() {
-		return DateUtil.generateMonthYearInterval(DateUtil.getYearMonth(new Date()));
+	@FXML 
+	public void doOnBack() {
+		stageController.back();
 	}
 
-	@FXML public void doOnBack() {
-		stageController.showMainMenuScreen();
-	}
-
-	public class EmployeeAttendanceSummary {
-		
-		private Employee employee;
-		private double numberOfDaysWorked;
-		
-		public Employee getEmployee() {
-			return employee;
-		}
-		
-		public void setEmployee(Employee employee) {
-			this.employee = employee;
-		}
-		
-		public double getNumberOfDaysWorked() {
-			return numberOfDaysWorked;
-		}
-		
-		public void setNumberOfDaysWorked(double numberOfDaysWorked) {
-			this.numberOfDaysWorked = numberOfDaysWorked;
-		}
+	@FXML 
+	public void deleteEmployeeAttendance() {
 		
 	}
 
 	@FXML 
-	public void searchEmployeeAttendances() {
-		EmployeeAttendanceSearchCriteria criteria = new EmployeeAttendanceSearchCriteria();
-		criteria.setDateFrom(DateUtil.toDate(dateFromDatePicker.getValue()));
-		criteria.setDateTo(DateUtil.toDate(dateToDatePicker.getValue()));
-		criteria.setPaySchedule(payScheduleComboBox.getValue());
+	public void saveEmployeeAttendance() {
+		if (!validateFields()) {
+			return;
+		}
 		
-		attendancesTable.getItems()
-				.setAll(toAttendanceSummaries(employeeService.searchEmployeeAttendances(criteria)));
+		if (employeeAttendance == null) {
+			employeeAttendance = new EmployeeAttendance();
+		}
+		employeeAttendance.setEmployee(employeeComboBox.getValue());
+		employeeAttendance.setDate(DateUtil.toDate(attendanceDateDatePicker.getValue()));
+		employeeAttendance.setAttendance(attendanceComboBox.getValue());
+		try {
+			employeeService.save(employeeAttendance);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		ShowDialog.info("Employee Attendance saved");
+		stageController.showEmployeeAttendanceListScreen();
 	}
-	
+
+	private boolean validateFields() {
+		if (isEmployeeNotSpecified()) {
+			ShowDialog.error("Employee must be specified");
+			employeeComboBox.requestFocus();
+			return false;
+		}
+		
+		if (isAttendanceDateNotSpecified()) {
+			ShowDialog.error("Attendance Date must be specified");
+			attendanceDateDatePicker.requestFocus();
+			return false;
+		}
+		
+		if (isAttendanceNotSpecified()) {
+			ShowDialog.error("Attendance must be specified");
+			attendanceComboBox.requestFocus();
+			return false;
+		}
+		
+		return true;
+	}
+
+	private boolean isEmployeeNotSpecified() {
+		return employeeComboBox.getValue() == null;
+	}
+
+	private boolean isAttendanceDateNotSpecified() {
+		return attendanceDateDatePicker.getValue() == null;
+	}
+
+	private boolean isAttendanceNotSpecified() {
+		return attendanceComboBox.getValue() == null;
+	}
+
 }
