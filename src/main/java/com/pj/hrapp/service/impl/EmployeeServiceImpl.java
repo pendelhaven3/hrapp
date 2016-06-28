@@ -1,5 +1,6 @@
 package com.pj.hrapp.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -112,6 +113,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (employeePicture != null) {
 			employeePictureRepository.delete(employeePicture);
 		}
+	}
+
+	@Override
+	public EmployeeAttendance findEmployeeAttendanceByEmployeeAndDate(Employee employee, Date date) {
+		return employeeAttendanceDao.findByEmployeeAndDate(employee, date);
 	}
 
 }

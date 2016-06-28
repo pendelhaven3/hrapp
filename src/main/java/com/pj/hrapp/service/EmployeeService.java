@@ -1,5 +1,6 @@
 package com.pj.hrapp.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.pj.hrapp.model.Employee;
@@ -39,5 +40,7 @@ public interface EmployeeService {
 	EmployeePicture getEmployeePicture(Employee employee);
 
 	void removeEmployeePicture(Employee employee);
+
+	EmployeeAttendance findEmployeeAttendanceByEmployeeAndDate(Employee value, Date date);
 	
 }

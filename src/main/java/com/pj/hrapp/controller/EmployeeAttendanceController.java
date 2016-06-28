@@ -106,7 +106,18 @@ public class EmployeeAttendanceController extends AbstractController {
 			return false;
 		}
 		
+		if (isEmployeeAttendanceAlreadyExisting()) {
+			ShowDialog.error("Employee already has an attendance record for the specified date");
+			attendanceDateDatePicker.requestFocus();
+			return false;
+		}
+		
 		return true;
+	}
+
+	private boolean isEmployeeAttendanceAlreadyExisting() {
+		return employeeService.findEmployeeAttendanceByEmployeeAndDate(
+				employeeComboBox.getValue(), DateUtil.toDate(attendanceDateDatePicker.getValue())) != null;
 	}
 
 	private boolean isEmployeeNotSpecified() {
