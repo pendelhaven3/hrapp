@@ -13,6 +13,7 @@ import com.pj.hrapp.NavigationHistory;
 import com.pj.hrapp.NavigationHistoryItem;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
@@ -226,6 +227,10 @@ public class StageController {
 
 	public void showAddEmployeeAttendanceScreen() {
 		loadSceneFromFXML("employeeAttendance");
+	}
+
+	public void showEditEmployeeAttendanceScreen(EmployeeAttendance employeeAttendance) {
+		loadSceneFromFXML("employeeAttendance", Collections.singletonMap("employeeAttendance", employeeAttendance));
 	}
 
 }

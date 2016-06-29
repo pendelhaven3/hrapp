@@ -12,6 +12,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.PaySchedule;
@@ -24,30 +25,44 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class EmployeeAttendanceListController extends AbstractController {
 
+	private static final int ATTENDANCES_TAB_INDEX = 0;
+	private static final int ATTENDANCE_BY_EMPLOYEE_TAB_INDEX = 1;
+
 	@Autowired private EmployeeService employeeService;
 	
-	@FXML private TableView<EmployeeAttendanceSummary> attendancesTable;
+	@FXML private AppTableView<EmployeeAttendanceSummary> attendancesTable;
+	@FXML private AppTableView<EmployeeAttendance> attendancesByEmployeeTable;
 	@FXML private DatePicker dateFromDatePicker;
 	@FXML private DatePicker dateToDatePicker;
 	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
+	@FXML private TabPane tabPane;
 	
 	@Override
 	public void updateDisplay() {
 		stageController.setTitle("Employee Attendance List");
 		
 		attendancesTable.getItems().setAll(getAllEmployeeAttendanceSummariesForCurrentMonth());
+		attendancesTable.setDoubleClickAction(() -> {
+			Employee selected = attendancesTable.getSelectedItem().getEmployee();
+			showAttendancesByEmployee(selected);
+		});
 		
 		DateInterval currentMonthInterval = getCurrentYearMonthInterval();
 		dateFromDatePicker.setValue(DateUtil.toLocalDate(currentMonthInterval.getDateFrom()));
 		dateToDatePicker.setValue(DateUtil.toLocalDate(currentMonthInterval.getDateTo()));
 		
 		payScheduleComboBox.setItems(FXCollections.observableArrayList(PaySchedule.values()));
+		
+		attendancesByEmployeeTable.setDoubleClickAction(() -> {
+			updateEmployeeAttendance(attendancesByEmployeeTable.getSelectedItem());
+		});
 	}
 
 	private List<EmployeeAttendanceSummary> getAllEmployeeAttendanceSummariesForCurrentMonth() {
@@ -128,11 +143,32 @@ public class EmployeeAttendanceListController extends AbstractController {
 		
 		attendancesTable.getItems()
 				.setAll(toAttendanceSummaries(employeeService.searchEmployeeAttendances(criteria)));
+		tabPane.getSelectionModel().select(ATTENDANCES_TAB_INDEX);
 	}
 	
 	@FXML
 	public void addEmployeeAttendance() {
 		stageController.showAddEmployeeAttendanceScreen();
+	}
+
+	private void updateEmployeeAttendance(EmployeeAttendance employeeAttendance) {
+		stageController.showEditEmployeeAttendanceScreen(employeeAttendance);
+	}
+	
+	private void showAttendancesByEmployee(Employee employee) {
+		attendancesByEmployeeTable.getItems().setAll(getAllEmployeeAttendancesForCurrentMonth(employee));
+		tabPane.getTabs().get(ATTENDANCE_BY_EMPLOYEE_TAB_INDEX).setText(employee.getFullName());
+		tabPane.getSelectionModel().select(ATTENDANCE_BY_EMPLOYEE_TAB_INDEX);
+	}
+	
+	private List<EmployeeAttendance> getAllEmployeeAttendancesForCurrentMonth(Employee employee) {
+		DateInterval currentYearMonthInterval = getCurrentYearMonthInterval();
+		EmployeeAttendanceSearchCriteria criteria = new EmployeeAttendanceSearchCriteria();
+		criteria.setEmployee(employee);
+		criteria.setDateFrom(currentYearMonthInterval.getDateFrom());
+		criteria.setDateTo(currentYearMonthInterval.getDateTo());
+		
+		return employeeService.searchEmployeeAttendances(criteria);
 	}
 	
 }

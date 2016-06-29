@@ -41,9 +41,17 @@ public class EmployeeAttendanceController extends AbstractController {
 		employeeComboBox.getItems().setAll(employeeService.getAllActiveEmployees());
 		attendanceComboBox.getItems().setAll(Attendance.values());
 		
-		if (employeeAttendance != null) {
+		boolean isUpdate = (employeeAttendance != null);
+		if (isUpdate) {
 			employeeAttendance = employeeService.getEmployeeAttendance(employeeAttendance.getId());
+			employeeComboBox.setValue(employeeAttendance.getEmployee());
+			attendanceDateDatePicker.setValue(DateUtil.toLocalDate(employeeAttendance.getDate()));
+			attendanceComboBox.setValue(employeeAttendance.getAttendance());
+			deleteButton.setDisable(false);
 		}
+		
+		employeeComboBox.setDisable(isUpdate);
+		attendanceDateDatePicker.setDisable(isUpdate);
 	}
 
 	private void setTitle() {
@@ -60,11 +68,6 @@ public class EmployeeAttendanceController extends AbstractController {
 	}
 
 	@FXML 
-	public void deleteEmployeeAttendance() {
-		
-	}
-
-	@FXML 
 	public void saveEmployeeAttendance() {
 		if (!validateFields()) {
 			return;
@@ -72,9 +75,9 @@ public class EmployeeAttendanceController extends AbstractController {
 		
 		if (employeeAttendance == null) {
 			employeeAttendance = new EmployeeAttendance();
+			employeeAttendance.setEmployee(employeeComboBox.getValue());
+			employeeAttendance.setDate(DateUtil.toDate(attendanceDateDatePicker.getValue()));
 		}
-		employeeAttendance.setEmployee(employeeComboBox.getValue());
-		employeeAttendance.setDate(DateUtil.toDate(attendanceDateDatePicker.getValue()));
 		employeeAttendance.setAttendance(attendanceComboBox.getValue());
 		try {
 			employeeService.save(employeeAttendance);
@@ -116,8 +119,9 @@ public class EmployeeAttendanceController extends AbstractController {
 	}
 
 	private boolean isEmployeeAttendanceAlreadyExisting() {
-		return employeeService.findEmployeeAttendanceByEmployeeAndDate(
-				employeeComboBox.getValue(), DateUtil.toDate(attendanceDateDatePicker.getValue())) != null;
+		return employeeAttendance == null &&
+				employeeService.findEmployeeAttendanceByEmployeeAndDate(
+						employeeComboBox.getValue(), DateUtil.toDate(attendanceDateDatePicker.getValue())) != null;
 	}
 
 	private boolean isEmployeeNotSpecified() {
@@ -132,4 +136,20 @@ public class EmployeeAttendanceController extends AbstractController {
 		return attendanceComboBox.getValue() == null;
 	}
 
+	@FXML 
+	public void deleteEmployeeAttendance() {
+		if (!ShowDialog.confirm("Delete employee attendance?")) {
+			return;
+		}
+		
+		try {
+			employeeService.deleteEmployeeAttendance(employeeAttendance);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+		}
+		ShowDialog.info("Employee Attendance deleted");
+		stageController.showEmployeeAttendanceListScreen();
+	}
+	
 }

@@ -47,26 +47,49 @@
 				<Button text="Search" onAction="#searchEmployeeAttendances" />
 			</HBox>
 		
-			<AppTableView fx:id="attendancesTable" VBox.vgrow="always">
-				<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
-				<columns>
-					<TableColumn text="Employee">
-						<cellValueFactory>
-							<AppPropertyValueFactory property="employee.fullName" />
-						</cellValueFactory>
-					</TableColumn>
-					<TableColumn text="Nickname">
-						<cellValueFactory>
-							<AppPropertyValueFactory property="employee.nickname" />
-						</cellValueFactory>
-					</TableColumn>
-					<TableColumn text="No. of Days Worked" styleClass="center">
-						<cellValueFactory>
-							<AppPropertyValueFactory property="numberOfDaysWorked" />
-						</cellValueFactory>
-					</TableColumn>
-				</columns>
-			</AppTableView>
+			<TabPane fx:id="tabPane" VBox.vgrow="always">
+				<tabs>
+					<Tab text="Attendances" closable="false">
+						<AppTableView fx:id="attendancesTable" VBox.vgrow="always">
+							<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+							<columns>
+								<TableColumn text="Employee">
+									<cellValueFactory>
+										<AppPropertyValueFactory property="employee.fullName" />
+									</cellValueFactory>
+								</TableColumn>
+								<TableColumn text="Nickname">
+									<cellValueFactory>
+										<AppPropertyValueFactory property="employee.nickname" />
+									</cellValueFactory>
+								</TableColumn>
+								<TableColumn text="No. of Days Worked" styleClass="center">
+									<cellValueFactory>
+										<AppPropertyValueFactory property="numberOfDaysWorked" />
+									</cellValueFactory>
+								</TableColumn>
+							</columns>
+						</AppTableView>
+					</Tab>
+					<Tab text="--Employee--" closable="false">
+						<AppTableView fx:id="attendancesByEmployeeTable" VBox.vgrow="always">
+							<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+							<columns>
+								<TableColumn text="Date" styleClass="center">
+									<cellValueFactory>
+										<AppPropertyValueFactory property="date" />
+									</cellValueFactory>
+								</TableColumn>
+								<TableColumn text="Attendance" styleClass="center">
+									<cellValueFactory>
+										<AppPropertyValueFactory property="attendance" />
+									</cellValueFactory>
+								</TableColumn>
+							</columns>
+						</AppTableView>
+					</Tab>
+				</tabs>
+			</TabPane>
 			
 		</VBox>
 	</center>
