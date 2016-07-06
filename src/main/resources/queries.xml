@@ -104,7 +104,7 @@ JOIN (
 		WHERE a.resigned = false
 		AND a.payType = 'FIXED_RATE'
 		AND a.paySchedule = 'WEEKLY'
-		AND b.date >= DATEADD('DAY', 15, :firstDayOfMonth)
+		AND b.date >= :firstDayOfMonth
 		AND b.date < DATEADD('MONTH', 1, :firstDayOfMonth)
 	)
 	GROUP BY id
