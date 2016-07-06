@@ -26,7 +26,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableView;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
