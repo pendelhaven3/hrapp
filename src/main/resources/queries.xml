@@ -47,7 +47,7 @@ JOIN (
 	FROM (
 		SELECT
 			a.id,
-			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) AS rate
+			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
 		FROM employee a
 		JOIN employeeAttendance b
 			ON b.employee_id = a.id
