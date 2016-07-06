@@ -52,6 +52,9 @@ public class Employee implements Comparable<Employee> {
 	@Column(columnDefinition = "boolean default false")
 	private boolean resigned;
 	
+	@Column(length = 4000)
+	private String remarks;
+	
 	public Employee() {
 		// default constructor
 	}
@@ -278,6 +281,14 @@ public class Employee implements Comparable<Employee> {
 
 	public void setHousehold(boolean household) {
 		this.household = household;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 	
 }

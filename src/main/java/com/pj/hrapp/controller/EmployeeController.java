@@ -31,6 +31,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -70,6 +71,7 @@ public class EmployeeController extends AbstractController {
 	@FXML private ImageView employeePictureImageView;
 	@FXML private Button changePictureButton;
 	@FXML private Button removePictureButton;
+	@FXML private TextArea remarksTextArea;
 	
 	@Parameter private Employee employee;
 	
@@ -101,6 +103,7 @@ public class EmployeeController extends AbstractController {
 			resignedCheckBox.setSelected(employee.isResigned());
 			householdCheckBox.setSelected(employee.isHousehold());
 			dateResignedDatePicker.setValue(DateUtil.toLocalDate(employee.getResignDate()));
+			remarksTextArea.setText(employee.getRemarks());
 			deleteButton.setDisable(false);
 			
 			displayEmployeePicture();
@@ -174,6 +177,7 @@ public class EmployeeController extends AbstractController {
 		employee.setResigned(resignedCheckBox.isSelected());
 		employee.setResignDate(DateUtil.toDate(dateResignedDatePicker.getValue()));
 		employee.setHousehold(householdCheckBox.isSelected());
+		employee.setRemarks(remarksTextArea.getText());
 		try {
 			employeeService.save(employee);
 		} catch (Exception e) {
