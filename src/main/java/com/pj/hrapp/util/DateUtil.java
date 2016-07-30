@@ -2,6 +2,7 @@ package com.pj.hrapp.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
@@ -83,6 +84,26 @@ public class DateUtil {
 			entries.add(startYear + i);
 		}
 		return entries;
+	}
+	
+	public static int getNumberOfWorkingDaysInFirstHalf(YearMonth yearMonth) {
+		int numberOfWorkingDays = 0;
+		for (int i = 1; i <= 15; i++) {
+			if (yearMonth.atDay(i).getDayOfWeek() != DayOfWeek.SUNDAY) {
+				numberOfWorkingDays++;
+			}
+		}
+		return numberOfWorkingDays;
+	}
+
+	public static int getNumberOfWorkingDaysInSecondHalf(YearMonth yearMonth) {
+		int numberOfWorkingDays = 0;
+		for (int i = 16; i <= yearMonth.lengthOfMonth(); i++) {
+			if (yearMonth.atDay(i).getDayOfWeek() != DayOfWeek.SUNDAY) {
+				numberOfWorkingDays++;
+			}
+		}
+		return numberOfWorkingDays;
 	}
 	
 }

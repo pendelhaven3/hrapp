@@ -1,7 +1,6 @@
 package com.pj.hrapp.service.impl;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +34,6 @@ import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
 import com.pj.hrapp.model.search.PayslipSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
-import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.PhilHealthService;
@@ -250,27 +248,7 @@ public class PayrollServiceImpl implements PayrollService {
 	}
 
 	private BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
-		Salary salary = salaryDao.findByEmployee(employee);
-		return salary.getRate().multiply(new BigDecimal(
-				getDaysWorkedByEmployeeForMonthYear(employee, yearMonth))).setScale(2, RoundingMode.HALF_UP);
-	}
-
-	private double getDaysWorkedByEmployeeForMonthYear(Employee employee, YearMonth yearMonth) {
-		List<EmployeeAttendance> attendances = findAllEmployeeAttendancesInMonthYear(employee, yearMonth);
-		return attendances.stream()
-				.map(attendance -> attendance.getValue())
-				.reduce(0d, (x,y) -> x + y);
-	}
-
-	private List<EmployeeAttendance> findAllEmployeeAttendancesInMonthYear(Employee employee, YearMonth yearMonth) {
-		DateInterval monthInterval = DateUtil.generateMonthYearInterval(yearMonth);
-		
-		EmployeeAttendanceSearchCriteria criteria = new EmployeeAttendanceSearchCriteria();
-		criteria.setEmployee(employee);
-		criteria.setDateFrom(monthInterval.getDateFrom());
-		criteria.setDateTo(monthInterval.getDateTo());
-		
-		return employeeAttendanceDao.search(criteria);
+		return salaryDao.getEmployeeCompensationForMonthYear(employee, yearMonth);
 	}
 
 	@Transactional

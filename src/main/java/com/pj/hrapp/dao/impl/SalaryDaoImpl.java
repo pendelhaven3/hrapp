@@ -1,5 +1,7 @@
 package com.pj.hrapp.dao.impl;
 
+import java.math.BigDecimal;
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -16,6 +19,8 @@ import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
+import com.pj.hrapp.util.DateUtil;
+import com.pj.hrapp.util.Queries;
 
 @Repository
 public class SalaryDaoImpl implements SalaryDao {
@@ -110,6 +115,18 @@ public class SalaryDaoImpl implements SalaryDao {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
+		Query query = entityManager.createNativeQuery(Queries.getQuery("monthlyPay"));
+		query.setParameter("employeeId", employee.getId());
+		query.setParameter("month", yearMonth.getMonth().getValue());
+		query.setParameter("year", yearMonth.getYear());
+		query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
+		query.setParameter("numberOfWorkingDaysInFirstHalf", DateUtil.getNumberOfWorkingDaysInFirstHalf(yearMonth));
+		query.setParameter("numberOfWorkingDaysInSecondHalf", DateUtil.getNumberOfWorkingDaysInSecondHalf(yearMonth));
+		return (BigDecimal)query.getSingleResult();
 	}
 	
 }

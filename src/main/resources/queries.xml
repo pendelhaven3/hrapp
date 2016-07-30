@@ -142,4 +142,78 @@ ORDER BY d.firstName, d.lastName
 			ON subquery.employee_id = emp.id
 		ORDER BY lates DESC
 	</entry>
+	<entry name="monthlyPay">
+<![CDATA[
+SELECT monthlyPay
+FROM (
+	SELECT SUM(rate) AS monthlyPay
+	FROM (
+		SELECT
+			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
+		FROM employee a
+		JOIN employeeAttendance b
+			ON b.employee_id = a.id
+		WHERE a.id = :employeeId
+		AND MONTH(b.date) = :month
+		AND YEAR(b.date) = :year
+		AND a.payType = 'PER_DAY'
+	)
+	UNION ALL
+	SELECT SUM(semimonthlyPay) AS monthlyPay
+	FROM (
+		SELECT SUM(rate) AS semimonthlyPay
+		FROM (
+			SELECT
+				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInFirstHalf AS rate
+			FROM employee a
+			JOIN employeeAttendance b
+				ON b.employee_id = a.id
+			WHERE a.id = :employeeId
+			AND a.payType = 'FIXED_RATE'
+			AND a.paySchedule = 'SEMIMONTHLY'
+			AND b.date BETWEEN :firstDayOfMonth and DATEADD('DAY', 14, :firstDayOfMonth)
+		)
+		UNION ALL
+		SELECT SUM(rate) AS semimonthlyPay
+		FROM (
+			SELECT
+				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInSecondHalf AS rate
+			FROM employee a
+			JOIN employeeAttendance b
+				ON b.employee_id = a.id
+			WHERE a.id = :employeeId
+			AND a.payType = 'FIXED_RATE'
+			AND a.paySchedule = 'SEMIMONTHLY'
+			AND b.date >= DATEADD('DAY', 15, :firstDayOfMonth)
+			AND b.date < DATEADD('MONTH', 1, :firstDayOfMonth)
+		)
+	)
+	UNION ALL
+	SELECT SUM(rate) as monthlyPay
+	FROM (
+		SELECT
+			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / 6 AS rate
+		FROM employee a
+		JOIN employeeAttendance b
+			ON b.employee_id = a.id
+		WHERE a.id = :employeeId
+		AND a.payType = 'FIXED_RATE'
+		AND a.paySchedule = 'WEEKLY'
+		AND b.date >= :firstDayOfMonth
+		AND b.date < DATEADD('MONTH', 1, :firstDayOfMonth)
+	)
+	UNION ALL
+	SELECT c.rate
+	FROM employee a
+	JOIN salary c
+		ON c.employee_id = a.id
+	WHERE a.id = :employeeId
+	AND a.payType = 'FIXED_RATE'
+	AND a.paySchedule = 'MONTHLY'
+	AND c.effectiveDateFrom <= :firstDayOfMonth
+	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATEADD('DAY', -1, DATEADD('MONTH', 1, :firstDayOfMonth)))
+)
+WHERE monthlyPay IS NOT NULL
+	]]>
+	</entry>
 </root>

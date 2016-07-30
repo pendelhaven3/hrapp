@@ -1,6 +1,5 @@
 package com.pj.hrapp.dao.impl;
 
-import java.time.DayOfWeek;
 import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
@@ -35,29 +34,9 @@ public class ReportDaoImpl implements ReportDao {
 		query.setParameter("month", yearMonth.getMonth().getValue());
 		query.setParameter("year", yearMonth.getYear());
 		query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
-		query.setParameter("numberOfWorkingDaysInFirstHalf", getNumberOfWorkingDaysInFirstHalf(yearMonth));
-		query.setParameter("numberOfWorkingDaysInSecondHalf", getNumberOfWorkingDaysInSecondHalf(yearMonth));
+		query.setParameter("numberOfWorkingDaysInFirstHalf", DateUtil.getNumberOfWorkingDaysInFirstHalf(yearMonth));
+		query.setParameter("numberOfWorkingDaysInSecondHalf", DateUtil.getNumberOfWorkingDaysInSecondHalf(yearMonth));
 		return query.getResultList();
-	}
-
-	private static int getNumberOfWorkingDaysInFirstHalf(YearMonth yearMonth) {
-		int numberOfWorkingDays = 0;
-		for (int i = 1; i <= 15; i++) {
-			if (yearMonth.atDay(i).getDayOfWeek() != DayOfWeek.SUNDAY) {
-				numberOfWorkingDays++;
-			}
-		}
-		return numberOfWorkingDays;
-	}
-
-	private static int getNumberOfWorkingDaysInSecondHalf(YearMonth yearMonth) {
-		int numberOfWorkingDays = 0;
-		for (int i = 16; i <= yearMonth.lengthOfMonth(); i++) {
-			if (yearMonth.atDay(i).getDayOfWeek() != DayOfWeek.SUNDAY) {
-				numberOfWorkingDays++;
-			}
-		}
-		return numberOfWorkingDays;
 	}
 
 	@SuppressWarnings("unchecked")

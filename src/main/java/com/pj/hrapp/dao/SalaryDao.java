@@ -1,5 +1,7 @@
 package com.pj.hrapp.dao;
 
+import java.math.BigDecimal;
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
 
@@ -22,5 +24,7 @@ public interface SalaryDao {
 	List<Salary> search(SalarySearchCriteria criteria);
 
 	Salary findByEmployee(Employee employee);
+
+	BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth);
 	
 }
