@@ -16,6 +16,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 <?import com.pj.hrapp.gui.component.AppTableView?>
+<?import javafx.scene.layout.Region?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" 
 		fx:controller="com.pj.hrapp.controller.EmployeeLoanController">
@@ -61,10 +62,19 @@
 						GridPane.columnIndex="0" GridPane.rowIndex="2" />
 					<Label fx:id="paymentStartDateLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="2" />
-					<Label text="Paid"
+					<Label text="Balance"
 						GridPane.columnIndex="0" GridPane.rowIndex="3" />
-					<Label fx:id="paidLabel"
+					<Text fx:id="balanceText"
 						GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				</GridPane>
+				
+				<GridPane vgap="10" alignment="center">
+					<Label text="Paid" prefWidth="100"
+						GridPane.columnIndex="0" GridPane.rowIndex="0" />
+					<Label fx:id="paidLabel"
+						GridPane.columnIndex="1" GridPane.rowIndex="0" />
+					<Region
+						GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="always" />
 				</GridPane>
 			</HBox>
 			

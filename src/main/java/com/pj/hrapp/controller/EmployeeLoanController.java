@@ -43,6 +43,7 @@ public class EmployeeLoanController extends AbstractController {
 	@FXML private Label paymentAmountLabel;
 	@FXML private Label paidLabel;
 	@FXML private Label paymentStartDateLabel;
+	@FXML private Text balanceText;
 	@FXML private Text remarksText;
 	@FXML private HBox updateLoanButtonsHBox;
 	@FXML private HBox maintainPaymentsButtonsHbox;
@@ -66,6 +67,7 @@ public class EmployeeLoanController extends AbstractController {
 		paidLabel.setText(loan.isPaid() ? "Yes" : "No");
 		paymentStartDateLabel.setText(FormatterUtil.formatDate(loan.getPaymentStartDate()));
 		remarksText.setText(StringUtils.defaultIfBlank(loan.getRemarks(), "(none)"));
+		balanceText.setText(FormatterUtil.formatAmount(loan.getBalance()));
 		
 		paymentsTable.setItems(loan.getPayments());
 		

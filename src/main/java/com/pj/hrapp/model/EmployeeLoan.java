@@ -194,5 +194,11 @@ public class EmployeeLoan {
 	public void setPaymentStartDate(Date paymentStartDate) {
 		this.paymentStartDate = paymentStartDate;
 	}
+
+	public BigDecimal getBalance() {
+		return amount.subtract(payments.stream()
+				.map(payment -> payment.getAmount())
+				.reduce(BigDecimal.ZERO, (x,y) -> x.add(y)));
+	}
 	
 }
