@@ -24,4 +24,8 @@ public class NavigationHistory {
 			.setModel(model);
 	}
 	
+	public void clearLastItem() {
+		items.pop();
+	}
+	
 }

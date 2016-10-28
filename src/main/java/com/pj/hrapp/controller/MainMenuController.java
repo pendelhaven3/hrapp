@@ -51,4 +51,9 @@ public class MainMenuController extends AbstractController {
 		stageController.showReportListScreen();
 	}
 
+	@FXML 
+	public void goToCompanyProfileScreen() {
+		stageController.showCompanyProfileScreen();
+	}
+
 }

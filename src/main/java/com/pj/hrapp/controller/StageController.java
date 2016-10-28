@@ -94,6 +94,10 @@ public class StageController {
 		history.add(new NavigationHistoryItem(sceneName, model));
 	}
 	
+	public void clearLastHistory() {
+		history.clearLastItem();
+	}
+	
 	public void back() {
 		NavigationHistoryItem previousScreen = history.getPreviousScreen();
 		loadSceneFromFXML(previousScreen.getSceneName(), previousScreen.getModel());
@@ -231,6 +235,10 @@ public class StageController {
 
 	public void showEditEmployeeAttendanceScreen(EmployeeAttendance employeeAttendance) {
 		loadSceneFromFXML("employeeAttendance", Collections.singletonMap("employeeAttendance", employeeAttendance));
+	}
+
+	public void showCompanyProfileScreen() {
+		loadSceneFromFXML("companyProfile");
 	}
 
 }
