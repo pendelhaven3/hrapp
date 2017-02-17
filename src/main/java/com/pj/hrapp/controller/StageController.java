@@ -241,4 +241,8 @@ public class StageController {
 		loadSceneFromFXML("companyProfile");
 	}
 
+	public void showBasicSalaryReportScreen() {
+		loadSceneFromFXML("basicSalaryReport");
+	}
+
 }

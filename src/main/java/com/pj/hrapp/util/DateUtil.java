@@ -106,4 +106,12 @@ public class DateUtil {
 		return numberOfWorkingDays;
 	}
 	
+	public static Date toDate(YearMonth yearMonth) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DATE, 1);
+		cal.set(Calendar.MONTH, yearMonth.getMonthValue() - 1);
+		cal.set(Calendar.YEAR, yearMonth.getYear());
+		return cal.getTime();
+	}
+	
 }

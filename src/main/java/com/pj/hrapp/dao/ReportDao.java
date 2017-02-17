@@ -12,5 +12,5 @@ public interface ReportDao {
 	List<SSSPhilHealthReportItem> getSSSPhilHealthReportItems(YearMonth yearMonth);
 
 	List<LatesReportItem> getLatesReportItems(Date from, Date dateTo);
-	
+
 }

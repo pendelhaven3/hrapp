@@ -126,7 +126,12 @@ public class SalaryDaoImpl implements SalaryDao {
 		query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
 		query.setParameter("numberOfWorkingDaysInFirstHalf", DateUtil.getNumberOfWorkingDaysInFirstHalf(yearMonth));
 		query.setParameter("numberOfWorkingDaysInSecondHalf", DateUtil.getNumberOfWorkingDaysInSecondHalf(yearMonth));
-		return (BigDecimal)query.getSingleResult();
+		
+		try {
+			return (BigDecimal)query.getSingleResult();
+		} catch (NoResultException e) {
+			return BigDecimal.ZERO;
+		}
 	}
 	
 }
