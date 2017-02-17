@@ -2,7 +2,10 @@ package com.pj.hrapp.model;
 
 public enum Attendance {
 
-	WHOLE_DAY(1, "Whole Day"), HALF_DAY(0.5, "Half Day"), ABSENT(0, "Absent");
+	WHOLE_DAY(1, "Whole Day"), 
+	HALF_DAY(0.5, "Half Day"), 
+	ABSENT(0, "Absent"),
+	HOLIDAY(0, "Holiday");
 	
 	private String description;
 	private double value;
