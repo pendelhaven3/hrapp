@@ -31,7 +31,7 @@
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <!-- 
                 <prop key="hibernate.show_sql">true</prop>
@@ -59,8 +59,8 @@
     
     <beans profile="default">
 		<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-			<property name="driverClassName" value="org.h2.Driver" />
-			<property name="url" value="jdbc:h2:~/hrapp;AUTO_SERVER=TRUE;IFEXISTS=TRUE" />
+			<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+			<property name="url" value="jdbc:mysql://magic-db:3306/hrapp" />
 			<property name="username" value="root" />
 			<property name="password" value="root" />
 		</bean>
