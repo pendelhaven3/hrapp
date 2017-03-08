@@ -11,6 +11,10 @@ public class SSSPhilHealthReportItem {
 	private BigDecimal monthlyPay;
 	private BigDecimal pagibigContribution;
 
+	public SSSPhilHealthReportItem() {
+		
+	}
+	
 	public SSSPhilHealthReportItem(
 			String employeeFullName, 
 			String employeeNickname, 

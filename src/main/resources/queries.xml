@@ -3,12 +3,12 @@
 	<entry name="sssPhilHealthReport">
 	<![CDATA[
 SELECT 
-	d.lastName || ', ' || d.firstName AS employeeFullName, 
+	CONCAT(d.lastName, ', ', d.firstName) AS employeeFullName, 
 	d.nickname AS employeeNickname,
-	NVL2(sssEmployeeContribution, sssEmployeeContribution, 0) AS sssEmployeeContribution, 
-	NVL2(sssEmployerContribution, sssEmployerContribution, 0) AS sssEmployerContribution,
+	IFNULL(sssEmployeeContribution, 0) AS sssEmployeeContribution, 
+	IFNULL(sssEmployerContribution, 0) AS sssEmployerContribution,
 	c.monthlyPay,
-	NVL2(pagibigContribution, pagibigContribution, 0) AS pagibigContribution
+	IFNULL(pagibigContribution, 0) AS pagibigContribution
 FROM (
 	SELECT a.id AS employeeId, MAX(-d.amount) as sssEmployeeContribution, MAX(e.employerContribution) AS sssEmployerContribution
 	FROM employee a
@@ -55,7 +55,7 @@ JOIN (
 		AND MONTH(b.date) = :month
 		AND YEAR(b.date) = :year
 		AND a.payType = 'PER_DAY'
-	)
+	) perDayMonthlyPay
 	GROUP BY id
 	UNION ALL
 	SELECT id, SUM(semimonthlyPay) AS monthlyPay
@@ -71,8 +71,8 @@ JOIN (
 			WHERE a.resigned = false
 			AND a.payType = 'FIXED_RATE'
 			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date BETWEEN :firstDayOfMonth and DATEADD('DAY', 14, :firstDayOfMonth)
-		)
+			AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
+		) semiMonthlyMonthlyPay1
 		GROUP BY id
 		UNION ALL
 		SELECT id, SUM(rate) AS semimonthlyPay
@@ -86,11 +86,11 @@ JOIN (
 			WHERE a.resigned = false
 			AND a.payType = 'FIXED_RATE'
 			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date >= DATEADD('DAY', 15, :firstDayOfMonth)
-			AND b.date < DATEADD('MONTH', 1, :firstDayOfMonth)
-		)
+			AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
+			AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+		) semiMonthlyMonthlyPay2
 		GROUP BY id
-	)
+	) semiMonthlyMonthlyPay
 	GROUP BY id
 	UNION ALL
 	SELECT id, SUM(rate) as monthlyPay
@@ -105,8 +105,8 @@ JOIN (
 		AND a.payType = 'FIXED_RATE'
 		AND a.paySchedule = 'WEEKLY'
 		AND b.date >= :firstDayOfMonth
-		AND b.date < DATEADD('MONTH', 1, :firstDayOfMonth)
-	)
+		AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+	) weeklyMonthlyPay
 	GROUP BY id
 	UNION ALL
 	SELECT a.id, c.rate
@@ -117,7 +117,7 @@ JOIN (
 	AND a.payType = 'FIXED_RATE'
 	AND a.paySchedule = 'MONTHLY'
 	AND c.effectiveDateFrom <= :firstDayOfMonth
-	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATEADD('DAY', -1, DATEADD('MONTH', 1, :firstDayOfMonth)))
+	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATE_ADD(DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH), INTERVAL -1 DAY))
 ) c
 	ON c.employeeId = a.employeeId
 JOIN employee d
@@ -157,7 +157,7 @@ FROM (
 		AND MONTH(b.date) = :month
 		AND YEAR(b.date) = :year
 		AND a.payType = 'PER_DAY'
-	)
+	) perDayMonthlyPay
 	UNION ALL
 	SELECT SUM(semimonthlyPay) AS monthlyPay
 	FROM (
@@ -171,8 +171,8 @@ FROM (
 			WHERE a.id = :employeeId
 			AND a.payType = 'FIXED_RATE'
 			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date BETWEEN :firstDayOfMonth and DATEADD('DAY', 14, :firstDayOfMonth)
-		)
+			AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
+		) semiMonthlyMonthlyPay1
 		UNION ALL
 		SELECT SUM(rate) AS semimonthlyPay
 		FROM (
@@ -184,10 +184,10 @@ FROM (
 			WHERE a.id = :employeeId
 			AND a.payType = 'FIXED_RATE'
 			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date >= DATEADD('DAY', 15, :firstDayOfMonth)
-			AND b.date < DATEADD('MONTH', 1, :firstDayOfMonth)
-		)
-	)
+			AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
+			AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+		) semiMonthlyMonthlyPay2
+	) semiMonthlyMonthlyPay
 	UNION ALL
 	SELECT SUM(rate) as monthlyPay
 	FROM (
@@ -200,8 +200,8 @@ FROM (
 		AND a.payType = 'FIXED_RATE'
 		AND a.paySchedule = 'WEEKLY'
 		AND b.date >= :firstDayOfMonth
-		AND b.date < DATEADD('MONTH', 1, :firstDayOfMonth)
-	)
+		AND b.date < DATE_ADD(:firstDayOfMonth INTERVAL 1 MONTH)
+	) weeklyMonthlyPay
 	UNION ALL
 	SELECT c.rate
 	FROM employee a
@@ -211,8 +211,8 @@ FROM (
 	AND a.payType = 'FIXED_RATE'
 	AND a.paySchedule = 'MONTHLY'
 	AND c.effectiveDateFrom <= :firstDayOfMonth
-	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATEADD('DAY', -1, DATEADD('MONTH', 1, :firstDayOfMonth)))
-)
+	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATE_ADD(DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH), INTERVAL -1 DAY))
+) monthlyPay
 WHERE monthlyPay IS NOT NULL
 	]]>
 	</entry>
