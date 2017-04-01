@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.pj</groupId>
 	<artifactId>hrapp</artifactId>
-	<version>1.23.1</version>
+	<version>1.23.2</version>
 	<properties>
 		<spring.version>4.1.7.RELEASE</spring.version>
 		<poi.version>3.13</poi.version>
