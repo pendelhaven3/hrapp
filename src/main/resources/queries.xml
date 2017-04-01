@@ -200,7 +200,7 @@ FROM (
 		AND a.payType = 'FIXED_RATE'
 		AND a.paySchedule = 'WEEKLY'
 		AND b.date >= :firstDayOfMonth
-		AND b.date < DATE_ADD(:firstDayOfMonth INTERVAL 1 MONTH)
+		AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 	) weeklyMonthlyPay
 	UNION ALL
 	SELECT c.rate
