@@ -8,6 +8,7 @@ import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.EmployeePicture;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
+import com.pj.hrapp.model.search.EmployeeSearchCriteria;
 
 public interface EmployeeService {
 
@@ -42,5 +43,7 @@ public interface EmployeeService {
 	void removeEmployeePicture(Employee employee);
 
 	EmployeeAttendance findEmployeeAttendanceByEmployeeAndDate(Employee value, Date date);
+
+	List<Employee> searchEmployees(EmployeeSearchCriteria criteria);
 	
 }

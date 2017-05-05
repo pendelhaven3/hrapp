@@ -1,11 +1,15 @@
 package com.pj.hrapp.service.impl;
 
+import static com.pj.hrapp.model.search.BaseSpecifications.build;
+import static com.pj.hrapp.model.search.EmployeeSpecifications.withResigned;
+
 import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
@@ -16,6 +20,7 @@ import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.EmployeePicture;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
+import com.pj.hrapp.model.search.EmployeeSearchCriteria;
 import com.pj.hrapp.service.EmployeeService;
 
 @Service
@@ -120,4 +125,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeAttendanceDao.findByEmployeeAndDate(employee, date);
 	}
 
+	@Override
+	public List<Employee> searchEmployees(EmployeeSearchCriteria criteria) {
+		Specifications<Employee> specifications = build();
+		
+		if (criteria.getResigned() != null) {
+			specifications = specifications.and(withResigned(criteria.getResigned()));
+		}
+		
+		return employeeRepository.findAll(specifications);
+	}
+	
 }
