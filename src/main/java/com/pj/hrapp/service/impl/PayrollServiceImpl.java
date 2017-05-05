@@ -2,11 +2,13 @@ package com.pj.hrapp.service.impl;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -122,7 +124,7 @@ public class PayrollServiceImpl implements PayrollService {
 		switch (payslip.getEmployee().getPaySchedule()) {
 		case WEEKLY:
 			BigDecimal employeeCompensation = getEmployeeCompensationForMonthYear(
-					payslip.getEmployee(), DateUtil.getYearMonth(payslip.getPeriodCoveredFrom()));
+					payslip.getEmployee(), getMonthYearForWeeklyPayslip(payslip));
 			sssContribution = sssContributionTable.getEmployeeContribution(employeeCompensation);
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(employeeCompensation);
 			break;
@@ -158,6 +160,17 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment.setDescription("Pag-IBIG");
 		adjustment.setAmount(pagibigContribution.negate());
 		payslipAdjustmentDao.save(adjustment);
+	}
+
+	private YearMonth getMonthYearForWeeklyPayslip(Payslip payslip) {
+		Calendar referenceDate = DateUtils.toCalendar(payslip.getPeriodCoveredFrom());
+		Calendar previousSaturday = DateUtils.toCalendar(DateUtils.addDays(payslip.getPeriodCoveredFrom(), -2));
+		
+		if (referenceDate.get(Calendar.MONTH) != previousSaturday.get(Calendar.MONTH)) {
+			return DateUtil.getYearMonth(previousSaturday.getTime());
+		} else {
+			return DateUtil.getYearMonth(payslip.getPeriodCoveredFrom());
+		}
 	}
 
 	@Override
