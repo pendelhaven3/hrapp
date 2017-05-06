@@ -145,7 +145,7 @@ public class EmployeeController extends AbstractController {
 
 	@FXML 
 	public void doOnBack() {
-		stageController.showEmployeeListScreen();
+		stageController.back();
 	}
 
 	@FXML 

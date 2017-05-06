@@ -20,6 +20,7 @@ import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PhilHealthContributionTableEntry;
 import com.pj.hrapp.model.SSSContributionTableEntry;
 import com.pj.hrapp.model.Salary;
+import com.pj.hrapp.model.search.EmployeeSearchCriteria;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -119,7 +120,8 @@ public class StageController {
 		loadSceneFromFXML("employee");
 	}
 
-	public void showUpdateEmployeeScreen(Employee employee) {
+	public void showUpdateEmployeeScreen(Employee employee, EmployeeSearchCriteria searchCriteria) {
+		history.addToLastItemModel("searchCriteria", searchCriteria);
 		loadSceneFromFXML("employee", Collections.singletonMap("employee", employee));
 	}
 

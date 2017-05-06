@@ -2,6 +2,7 @@ package com.pj.hrapp.dialog;
 
 import org.springframework.stereotype.Component;
 
+import com.pj.hrapp.Parameter;
 import com.pj.hrapp.model.search.EmployeeSearchCriteria;
 
 import javafx.collections.FXCollections;
@@ -17,7 +18,7 @@ public class SearchEmployeesDialog extends AbstractDialog {
 	@FXML private ComboBox<String> statusComboBox;
 	@FXML private ComboBox<String> householdComboBox;
 	
-	private EmployeeSearchCriteria searchCriteria;
+	@Parameter private EmployeeSearchCriteria searchCriteria;
 	
 	@Override
 	protected String getDialogTitle() {
@@ -26,13 +27,30 @@ public class SearchEmployeesDialog extends AbstractDialog {
 
 	@Override
 	protected void updateDisplay() {
-		searchCriteria = null;
-		
 		statusComboBox.setItems(FXCollections.observableArrayList("All", "Active", "Resigned"));
-		statusComboBox.getSelectionModel().select(1);
-		
 		householdComboBox.setItems(FXCollections.observableArrayList("", "Yes", "No"));
-		householdComboBox.getSelectionModel().select(0);
+		
+		if (searchCriteria != null) {
+			lastNameField.setText(searchCriteria.getLastName());
+			firstNameField.setText(searchCriteria.getFirstName());
+			
+			if (searchCriteria.getResigned() != null) {
+				statusComboBox.setValue(searchCriteria.getResigned() ? "Resigned" : "Active");
+			} else {
+				statusComboBox.setValue("All");
+			}
+			
+			if (searchCriteria.getHousehold() != null) {
+				householdComboBox.setValue(searchCriteria.getHousehold() ? "Yes" : "No");
+			} else {
+				householdComboBox.setValue(null);
+			}
+		} else {
+			statusComboBox.getSelectionModel().select(1);
+			householdComboBox.getSelectionModel().select(0);
+		}
+		
+		searchCriteria = null;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.pj.hrapp;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
@@ -26,6 +27,14 @@ public class NavigationHistory {
 	
 	public void clearLastItem() {
 		items.pop();
+	}
+	
+	public void addToLastItemModel(String name, Object value) {
+		NavigationHistoryItem item = items.peek();
+		if (item.getModel() == null) {
+			item.setModel(new HashMap<>());
+		}
+		item.getModel().put(name, value);
 	}
 	
 }

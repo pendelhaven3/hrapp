@@ -1,5 +1,6 @@
 package com.pj.hrapp.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.SearchEmployeesDialog;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.DoubleClickEventHandler;
@@ -27,15 +29,17 @@ public class EmployeeListController extends AbstractController {
 	
 	@FXML private AppTableView<Employee> employeesTable;
 	
+	@Parameter private EmployeeSearchCriteria searchCriteria;
+	
 	@Override
 	public void updateDisplay() {
 		stageController.setTitle("Employee List");
 		
-		employeesTable.getItems().setAll(employeeService.getAllActiveEmployees());
-		if (!employeesTable.getItems().isEmpty()) {
-			employeesTable.getSelectionModel().select(0);
+		if (searchCriteria != null) {
+			employeesTable.setItemsThenFocus(employeeService.searchEmployees(searchCriteria));
+		} else {
+			employeesTable.setItemsThenFocus(employeeService.getAllActiveEmployees());
 		}
-		employeesTable.requestFocus();
 		
 		employeesTable.setOnMouseClicked(new DoubleClickEventHandler() {
 			
@@ -55,7 +59,7 @@ public class EmployeeListController extends AbstractController {
 	private void updateSelectedEmployee() {
 		if (!employeesTable.getSelectionModel().isEmpty()) {
 			stageController.showUpdateEmployeeScreen(
-					employeesTable.getSelectionModel().getSelectedItem());
+					employeesTable.getSelectionModel().getSelectedItem(), searchCriteria);
 		}
 	}
 
@@ -70,11 +74,11 @@ public class EmployeeListController extends AbstractController {
 	
 	@FXML
 	public void searchEmployees() {
-		searchEmployeesDialog.showAndWait();
+		searchEmployeesDialog.showAndWait(Collections.singletonMap("searchCriteria", searchCriteria));
 		
-		EmployeeSearchCriteria criteria = searchEmployeesDialog.getSearchCriteria();
-		if (criteria != null) {
-			List<Employee> employees = employeeService.searchEmployees(criteria);
+		searchCriteria = searchEmployeesDialog.getSearchCriteria();
+		if (searchCriteria != null) {
+			List<Employee> employees = employeeService.searchEmployees(searchCriteria);
 			employeesTable.setItemsThenFocus(employees);
 		}
 	}
