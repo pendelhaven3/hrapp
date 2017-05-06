@@ -25,6 +25,7 @@ import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.EmployeeLoanPayment;
+import com.pj.hrapp.model.PayType;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
@@ -128,12 +129,19 @@ public class PayrollServiceImpl implements PayrollService {
 			sssContribution = sssContributionTable.getEmployeeContribution(employeeCompensation);
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(employeeCompensation);
 			break;
-		case SEMIMONTHLY:
-			BigDecimal referenceCompensation = 
-					salaryDao.findByEmployee(payslip.getEmployee()).getRate().multiply(BigDecimal.valueOf(2L));
+		case SEMIMONTHLY: {
+			BigDecimal referenceCompensation = null;
+			if (payslip.getEmployee().getPayType() == PayType.PER_DAY) {
+				referenceCompensation = getEmployeeCompensationForMonthYear(
+						payslip.getEmployee(), DateUtil.getYearMonth(payslip.getPeriodCoveredFrom()));
+			} else {
+				referenceCompensation = salaryDao.findByEmployee(payslip.getEmployee()).getRate().multiply(BigDecimal.valueOf(2L));
+			}
+			
 			sssContribution = sssContributionTable.getEmployeeContribution(referenceCompensation);
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(referenceCompensation);
 			break;
+		}
 		case MONTHLY:
 			return;
 		}
