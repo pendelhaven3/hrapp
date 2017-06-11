@@ -17,10 +17,14 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
 				<ComboBox fx:id="employeeComboBox"
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
-				<Label text="Paid" 
+				<Label text="Loan Type" 
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
-				<ComboBox fx:id="paidComboBox"
+				<ComboBox fx:id="loanTypeComboBox"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
+				<Label text="Paid" 
+					GridPane.columnIndex="0" GridPane.rowIndex="2" />
+				<ComboBox fx:id="paidComboBox"
+					GridPane.columnIndex="1" GridPane.rowIndex="2" />
 			</GridPane>
 		
 			<HBox spacing="10" alignment="center">

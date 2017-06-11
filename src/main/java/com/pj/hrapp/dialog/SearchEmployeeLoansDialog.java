@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.search.EmployeeLoanSearchCriteria;
 import com.pj.hrapp.service.EmployeeService;
 
@@ -17,6 +18,7 @@ public class SearchEmployeeLoansDialog extends AbstractDialog {
 	@Autowired private EmployeeService employeeService;
 	
 	@FXML private ComboBox<Employee> employeeComboBox;
+	@FXML private ComboBox<EmployeeLoanType> loanTypeComboBox;
 	@FXML private ComboBox<String> paidComboBox;
 	
 	private EmployeeLoanSearchCriteria searchCriteria;
@@ -30,6 +32,7 @@ public class SearchEmployeeLoansDialog extends AbstractDialog {
 	protected void updateDisplay() {
 		searchCriteria = null;
 		employeeComboBox.setItems(FXCollections.observableList(employeeService.getAllEmployees()));
+		loanTypeComboBox.setItems(FXCollections.observableArrayList(EmployeeLoanType.values()));
 		paidComboBox.setItems(FXCollections.observableArrayList("Paid", "Not Paid"));
 	}
 
@@ -43,6 +46,7 @@ public class SearchEmployeeLoansDialog extends AbstractDialog {
 		searchCriteria = new EmployeeLoanSearchCriteria();
 		searchCriteria.setEmployee(employeeComboBox.getValue());
 		searchCriteria.setPaid(getPaidComboBoxValue());
+		searchCriteria.setEmployeeLoanType(loanTypeComboBox.getValue());
 		hide();
 	}
 

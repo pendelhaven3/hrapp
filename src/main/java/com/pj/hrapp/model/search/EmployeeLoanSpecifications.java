@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
+import com.pj.hrapp.model.EmployeeLoanType;
 
 public class EmployeeLoanSpecifications extends BaseSpecifications {
 
@@ -13,6 +14,19 @@ public class EmployeeLoanSpecifications extends BaseSpecifications {
 		return (root, query, builder) -> builder.equal(root.get("employee"), employee);
 	}
 	
+	public static Specification<EmployeeLoan> withLoanType(EmployeeLoanType loanType) {
+		switch (loanType) {
+		case COMPANY:
+			return (root, query, builder) -> builder.equal(builder.upper(root.get("description")), "CO LOAN");
+		case SSS:
+			return (root, query, builder) -> builder.equal(builder.upper(root.get("description")), "SSS LOAN");
+		case PAGIBIG:
+			return (root, query, builder) -> builder.equal(builder.upper(root.get("description")), "PAGIBIG LOAN");
+		default:
+			return null;
+		}
+	}
+
 	public static Specification<EmployeeLoan> withPaid(Boolean paid) {
 		return (root, query, builder) -> builder.equal(root.get("paid"), paid);
 	}

@@ -118,6 +118,10 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 			specifications = specifications.and(withEmployee(criteria.getEmployee()));
 		}
 		
+		if (criteria.getEmployeeLoanType() != null) {
+			specifications = specifications.and(withLoanType(criteria.getEmployeeLoanType()));
+		}
+		
 		if (criteria.getPaid() != null) {
 			specifications = specifications.and(withPaid(criteria.getPaid()));
 		}
