@@ -247,4 +247,8 @@ public class StageController {
 		loadSceneFromFXML("basicSalaryReport");
 	}
 
+	public void addCurrentScreenParameter(String name, Object value) {
+		history.addToLastItemModel(name, value);
+	}
+
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.SearchEmployeeLoansDialog;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.model.EmployeeLoan;
@@ -24,12 +25,18 @@ public class EmployeeLoanListController extends AbstractController {
 	
 	@FXML private AppTableView<EmployeeLoan> employeeLoansTable;
 	
+	@Parameter private EmployeeLoanSearchCriteria searchCriteria;
+	
 	@Override
 	public void updateDisplay() {
 		stageController.setTitle("Employee Loan List");
 		
 		employeeLoansTable.setItemsThenFocus(employeeLoanService.findAllUnpaidEmployeeLoans());
 		employeeLoansTable.setDoubleClickAndEnterKeyAction(() -> updateSelectedEmployeeLoan());
+		
+		if (searchCriteria != null) {
+			searchEmployeeLoans(searchCriteria);
+		}
 	}
 
 	private void updateSelectedEmployeeLoan() {
@@ -54,9 +61,15 @@ public class EmployeeLoanListController extends AbstractController {
 		
 		EmployeeLoanSearchCriteria criteria = searchEmployeeLoansDialog.getSearchCriteria();
 		if (criteria != null) {
-			List<EmployeeLoan> loans = employeeLoanService.searchEmployeeLoans(criteria);
-			employeeLoansTable.setItemsThenFocus(loans);
+			searchEmployeeLoans(criteria);
+			this.searchCriteria = criteria;
 		}
+	}
+
+	private void searchEmployeeLoans(EmployeeLoanSearchCriteria criteria) {
+		List<EmployeeLoan> loans = employeeLoanService.searchEmployeeLoans(criteria);
+		employeeLoansTable.setItemsThenFocus(loans);
+		stageController.addCurrentScreenParameter("searchCriteria", criteria);
 	}
 	
 }
