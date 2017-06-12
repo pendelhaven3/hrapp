@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.CheckBox?>
+<?import com.pj.hrapp.gui.component.AppDatePicker?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" >
 	<center>
@@ -21,10 +22,18 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
 				<ComboBox fx:id="loanTypeComboBox"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Label text="Paid" 
+				<Label text="From Date" 
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
+				<AppDatePicker fx:id="fromDateDatePicker"
+					GridPane.columnIndex="1" GridPane.rowIndex="2" disable="true" />
+				<Label text="To Date" 
+					GridPane.columnIndex="0" GridPane.rowIndex="3" />
+				<AppDatePicker fx:id="toDateDatePicker"
+					GridPane.columnIndex="1" GridPane.rowIndex="3" disable="true" />
+				<Label text="Paid" 
+					GridPane.columnIndex="0" GridPane.rowIndex="4" />
 				<ComboBox fx:id="paidComboBox"
-					GridPane.columnIndex="1" GridPane.rowIndex="2" />
+					GridPane.columnIndex="1" GridPane.rowIndex="4" />
 			</GridPane>
 		
 			<HBox spacing="10" alignment="center">
