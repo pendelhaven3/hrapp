@@ -33,5 +33,10 @@ public class ReportListController extends AbstractController {
 	public void goToBasicSalaryReportScreen() {
 		stageController.showBasicSalaryReportScreen();
 	}
+
+	@FXML 
+	public void goToEmployeeLoanPaymentsReportScreen() {
+		stageController.showEmployeeLoanPaymentsReportScreen();
+	}
 	
 }

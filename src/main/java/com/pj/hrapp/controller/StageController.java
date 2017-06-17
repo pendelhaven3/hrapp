@@ -251,4 +251,8 @@ public class StageController {
 		history.addToLastItemModel(name, value);
 	}
 
+	public void showEmployeeLoanPaymentsReportScreen() {
+		loadSceneFromFXML("employeeLoanPaymentsReport");
+	}
+
 }

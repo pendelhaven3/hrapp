@@ -3,12 +3,10 @@ package com.pj.hrapp.dialog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.pj.hrapp.gui.component.AppDatePicker;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.search.EmployeeLoanSearchCriteria;
 import com.pj.hrapp.service.EmployeeService;
-import com.pj.hrapp.util.DateUtil;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -22,8 +20,6 @@ public class SearchEmployeeLoansDialog extends AbstractDialog {
 	@FXML private ComboBox<Employee> employeeComboBox;
 	@FXML private ComboBox<EmployeeLoanType> loanTypeComboBox;
 	@FXML private ComboBox<String> paidComboBox;
-	@FXML private AppDatePicker fromDateDatePicker;
-	@FXML private AppDatePicker toDateDatePicker;
 	
 	private EmployeeLoanSearchCriteria searchCriteria;
 	
@@ -51,8 +47,6 @@ public class SearchEmployeeLoansDialog extends AbstractDialog {
 		searchCriteria.setEmployee(employeeComboBox.getValue());
 		searchCriteria.setPaid(getPaidComboBoxValue());
 		searchCriteria.setEmployeeLoanType(loanTypeComboBox.getValue());
-		searchCriteria.setFromDate(DateUtil.toDate(fromDateDatePicker.getValue()));
-		searchCriteria.setToDate(DateUtil.toDate(toDateDatePicker.getValue()));
 		hide();
 	}
 

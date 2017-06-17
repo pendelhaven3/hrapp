@@ -1,5 +1,6 @@
 package com.pj.hrapp.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,9 @@ public interface EmployeeLoanPaymentRepository extends JpaRepository<EmployeeLoa
 	List<EmployeeLoanPayment> findAllByEmployeeLoan(@Param("loan") EmployeeLoan loan);
 
 	List<EmployeeLoanPayment> findAllByPayslip(Payslip payslip);
+	
+	@Query("select p from EmployeeLoanPayment p where p.paymentDate between :from and :to"
+			+ " order by p.paymentDate, p.loan.employee.lastName, p.loan.employee.firstName, p.loan.description")
+	List<EmployeeLoanPayment> findAllByPaymentDateBetween(@Param("from") Date from, @Param("to") Date to);
 	
 }

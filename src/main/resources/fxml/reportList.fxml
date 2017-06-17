@@ -17,6 +17,7 @@
 			<Button text="SSS/PhilHealth Report" onAction="#goToSSSPhilHealthReportScreen" />
 			<Button text="Lates Report" onAction="#goToLatesReportScreen" />
 			<Button text="Basic Salary Report" onAction="#goToBasicSalaryReportScreen" />
+			<Button text="Employee Loan Payments Report" onAction="#goToEmployeeLoanPaymentsReportScreen" />
 		</VBox>
 	</center>
 </BorderPane>

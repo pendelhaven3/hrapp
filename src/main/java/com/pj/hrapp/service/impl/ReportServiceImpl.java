@@ -4,15 +4,18 @@ import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
 import com.pj.hrapp.dao.EmployeeRepository;
 import com.pj.hrapp.dao.ReportDao;
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.BasicSalaryReportItem;
 import com.pj.hrapp.model.report.LatesReport;
@@ -25,6 +28,7 @@ public class ReportServiceImpl implements ReportService {
 	@Autowired private ReportDao reportDao;
 	@Autowired private EmployeeRepository employeeRepository;
 	@Autowired private SalaryDao salaryDao;
+	@Autowired private EmployeeLoanPaymentRepository employeeLoanPaymentRepository;
 	
 	@Override
 	public SSSPhilHealthReport generateSSSPhilHealthReport(YearMonth yearMonth) {
@@ -72,6 +76,11 @@ public class ReportServiceImpl implements ReportService {
 		}
 		
 		return totalCompensation;
+	}
+
+	@Override
+	public List<EmployeeLoanPayment> generateEmployeeLoanPaymentsReport(Date from, Date to) {
+		return employeeLoanPaymentRepository.findAllByPaymentDateBetween(from, to);
 	}
 	
 }
