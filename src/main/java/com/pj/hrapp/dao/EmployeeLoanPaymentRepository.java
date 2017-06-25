@@ -22,4 +22,11 @@ public interface EmployeeLoanPaymentRepository extends JpaRepository<EmployeeLoa
 			+ " order by p.paymentDate, p.loan.employee.lastName, p.loan.employee.firstName, p.loan.description")
 	List<EmployeeLoanPayment> findAllByPaymentDateBetween(@Param("from") Date from, @Param("to") Date to);
 	
+	@Query("select p from EmployeeLoanPayment p where p.paymentDate between :from and :to"
+			+ " and p.loan.description = :loanDescription"
+			+ " order by p.paymentDate, p.loan.employee.lastName, p.loan.employee.firstName, p.loan.description")
+	List<EmployeeLoanPayment> findAllByPaymentDateBetweenAndLoanDescription(
+			@Param("from") Date from, @Param("to") Date to, @Param("loanDescription") String loanDescription);
+	
+
 }

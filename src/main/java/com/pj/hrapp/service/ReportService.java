@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.pj.hrapp.model.EmployeeLoanPayment;
+import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.LatesReport;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
@@ -17,6 +18,6 @@ public interface ReportService {
 
 	BasicSalaryReport generateBasicSalaryReport(Date from, Date to);
 	
-	List<EmployeeLoanPayment> generateEmployeeLoanPaymentsReport(Date from, Date to);
+	List<EmployeeLoanPayment> generateEmployeeLoanPaymentsReport(Date from, Date to, EmployeeLoanType loanType);
 	
 }

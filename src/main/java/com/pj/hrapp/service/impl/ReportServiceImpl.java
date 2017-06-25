@@ -16,6 +16,7 @@ import com.pj.hrapp.dao.ReportDao;
 import com.pj.hrapp.dao.SalaryDao;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoanPayment;
+import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.BasicSalaryReportItem;
 import com.pj.hrapp.model.report.LatesReport;
@@ -79,8 +80,25 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public List<EmployeeLoanPayment> generateEmployeeLoanPaymentsReport(Date from, Date to) {
-		return employeeLoanPaymentRepository.findAllByPaymentDateBetween(from, to);
+	public List<EmployeeLoanPayment> generateEmployeeLoanPaymentsReport(Date from, Date to, EmployeeLoanType loanType) {
+		if (loanType != null) {
+			String loanDescription = null;
+			switch (loanType) {
+			case COMPANY:
+				loanDescription = "CO LOAN";
+				break;
+			case SSS:
+				loanDescription = "SSS LOAN";
+				break;
+			case PAGIBIG:
+				loanDescription = "PAGIBIG LOAN";
+				break;
+			}
+			
+			return employeeLoanPaymentRepository.findAllByPaymentDateBetweenAndLoanDescription(from, to, loanDescription);
+		} else {
+			return employeeLoanPaymentRepository.findAllByPaymentDateBetween(from, to);
+		}
 	}
 	
 }
