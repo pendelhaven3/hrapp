@@ -112,11 +112,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 
 	@FXML 
 	public void doOnBack() {
-		if (loan != null) {
-			stageController.showEmployeeLoanScreen(loan);
-		} else {
-			stageController.showEmployeeLoanListScreen();
-		}
+		stageController.back();
 	}
 
 	@FXML 
@@ -163,7 +159,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		}
 		
 		ShowDialog.info("Employee loan saved");
-		stageController.showEmployeeLoanScreen(loan);
+		stageController.back();
 	}
 
 	private boolean validateFields() {
