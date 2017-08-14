@@ -1,5 +1,8 @@
 package com.pj.hrapp.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum PayslipAdjustmentType {
 
 	BONUS,
@@ -14,6 +17,12 @@ public enum PayslipAdjustmentType {
 	SSS,
 	SSS_LOAN,
 	VALE_CASH,
-	VALE_PRODUCT
+	VALE_PRODUCT;
+	
+	private static List<PayslipAdjustmentType> CONTRIBUTION_TYPES = Arrays.asList(SSS, PHILHEALTH, PAGIBIG);
+	
+	public boolean isContributionType() {
+		return CONTRIBUTION_TYPES.contains(this);
+	}
 	
 }

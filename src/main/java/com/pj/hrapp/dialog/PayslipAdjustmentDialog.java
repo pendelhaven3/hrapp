@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
@@ -22,12 +23,14 @@ import javafx.scene.control.TextField;
 public class PayslipAdjustmentDialog extends AbstractDialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(PayslipAdjustmentDialog.class);
+	private static final String MONTH_YEAR_REGEX = "^(0[1-9]|1[0-2])2[0-9]{3}$";
 	
 	@Autowired private PayrollService payrollService;
 	
 	@FXML private ComboBox<PayslipAdjustmentType> typeComboBox;
 	@FXML private TextField descriptionField;
 	@FXML private TextField amountField;
+	@FXML private TextField contributionMonthField;
 	
 	@Parameter private Payslip payslip;
 	@Parameter private PayslipAdjustment payslipAdjustment;
@@ -41,6 +44,7 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 			typeComboBox.setValue(payslipAdjustment.getType());
 			descriptionField.setText(payslipAdjustment.getDescription());
 			amountField.setText(FormatterUtil.formatAmount(payslipAdjustment.getAmount()));
+			contributionMonthField.setText(payslipAdjustment.getContributionMonth());
 		}
 
 		typeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -62,6 +66,9 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 		payslipAdjustment.setType(typeComboBox.getValue());
 		payslipAdjustment.setDescription(descriptionField.getText());
 		payslipAdjustment.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
+		if (payslipAdjustment.getType().isContributionType()) {
+			payslipAdjustment.setContributionMonth(contributionMonthField.getText());
+		}
 		
 		try {
 			payrollService.save(payslipAdjustment);
@@ -100,9 +107,27 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 			return false;
 		}
 		
+		if (typeComboBox.getValue().isContributionType()) {
+			String contributionMonth = contributionMonthField.getText();
+			if (StringUtils.isEmpty(contributionMonth)) {
+				ShowDialog.error("Contribution Month must be specified (MMYYYY)");
+				contributionMonthField.requestFocus();
+				return false;
+			}
+			if (!isValidContributionMonth(contributionMonth)) {
+				ShowDialog.error("Contribution Month must be a valid month (MMYYYY)");
+				contributionMonthField.requestFocus();
+				return false;
+			}
+		}
+		
 		return true;
 	}
 
+	private boolean isValidContributionMonth(String month) {
+		return month.matches(MONTH_YEAR_REGEX);
+	}
+	
 	@FXML public void cancel() {
 		hide();
 	}
