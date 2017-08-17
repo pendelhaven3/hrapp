@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.pj.hrapp.Constants;
@@ -113,5 +114,10 @@ public class DateUtil {
 		cal.set(Calendar.YEAR, yearMonth.getYear());
 		return cal.getTime();
 	}
+	
+    public static String getNextContributionMonthString() {
+        YearMonth now = YearMonth.now();
+        return StringUtils.leftPad(String.valueOf(now.getMonthValue()), 2, "0") + String.valueOf(now.getYear());
+    }
 	
 }

@@ -8,27 +8,27 @@ import org.springframework.stereotype.Component;
 import com.pj.hrapp.Constants;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
-import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.service.PayrollService;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 @Component
-public class AutoGenerateContributionsDialog extends AbstractDialog {
+public class AutoGeneratePayrollContributionsDialog extends AbstractDialog {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AutoGenerateContributionsDialog.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AutoGeneratePayrollContributionsDialog.class);
 	
 	@Autowired private PayrollService payrollService;
 	
 	@FXML private TextField contributionMonthField;
 	
-	@Parameter private Payslip payslip;
+	@Parameter private Payroll payroll;
     @Parameter private String contributionMonth;
 	
 	private boolean success;
 	
-	public AutoGenerateContributionsDialog() {
+	public AutoGeneratePayrollContributionsDialog() {
 	    setSceneHeight(200d);
     }
 	
@@ -58,7 +58,7 @@ public class AutoGenerateContributionsDialog extends AbstractDialog {
         }
         
         try {
-            payrollService.regenerateGovernmentContributions(payslip, month);
+            payrollService.regenerateGovernmentContributions(payroll, month);
         } catch (Exception e) {
             LOGGER.error("Unable to generate contributions", e);
             ShowDialog.unexpectedError();

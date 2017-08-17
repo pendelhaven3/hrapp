@@ -117,10 +117,6 @@ public class PayrollServiceImpl implements PayrollService {
 		return employeeAttendanceDao.findByEmployeeAndDate(employee, date) == null;
 	}
 	
-    private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip) {
-        addSSSPagibigPhilHealthContributionAdjustments(payslip, null);
-    }
-	
 	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip, String contributionMonth) {
 		BigDecimal sssContribution = null;
 		BigDecimal philHealthContribution = null;
@@ -341,13 +337,6 @@ public class PayrollServiceImpl implements PayrollService {
 		return employeeRepository.findAll().get(0);
 	}
 
-	@Transactional
-	@Override
-	public void regenerateGovernmentContributions(Payslip payslip) {
-		deleteGovernmentContributions(payslip);
-		addSSSPagibigPhilHealthContributionAdjustments(payslip);
-	}
-
     @Transactional
     @Override
     public void regenerateGovernmentContributions(Payslip payslip, String contributionMonth) {
@@ -363,9 +352,9 @@ public class PayrollServiceImpl implements PayrollService {
 
 	@Transactional
 	@Override
-	public void regenerateAllGovernmentContributions(Payroll payroll) {
+	public void regenerateGovernmentContributions(Payroll payroll, String contributionMonth) {
 		for (Payslip payslip : payroll.getPayslips()) {
-			regenerateGovernmentContributions(payslip);
+			regenerateGovernmentContributions(payslip, contributionMonth);
 		}
 	}
 
