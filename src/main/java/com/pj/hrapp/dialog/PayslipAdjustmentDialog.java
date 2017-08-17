@@ -1,5 +1,7 @@
 package com.pj.hrapp.dialog;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipAdjustmentType;
+import com.pj.hrapp.model.search.PayslipAdjustmentSearchCriteria;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
 import com.pj.hrapp.util.NumberUtil;
@@ -61,7 +64,7 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 		
 		if (payslipAdjustment == null) {
 			payslipAdjustment = new PayslipAdjustment();
-			payslipAdjustment.setPayslip(payslip);
+	        payslipAdjustment.setPayslip(payslip);
 		}
 		payslipAdjustment.setType(typeComboBox.getValue());
 		payslipAdjustment.setDescription(descriptionField.getText());
@@ -119,6 +122,11 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 				contributionMonthField.requestFocus();
 				return false;
 			}
+			if (hasExistingContributionForMonth()) {
+				ShowDialog.error("Employee already has contribution for the specified month");
+				contributionMonthField.requestFocus();
+				return false;
+			}
 		}
 		
 		return true;
@@ -128,6 +136,24 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 		return month.matches(MONTH_YEAR_REGEX);
 	}
 	
+	private boolean hasExistingContributionForMonth() {
+		PayslipAdjustmentSearchCriteria criteria = new PayslipAdjustmentSearchCriteria();
+		if (payslipAdjustment == null) {
+	        criteria.setEmployee(payslip.getEmployee());
+		} else {
+            criteria.setEmployee(payslipAdjustment.getPayslip().getEmployee());
+		}
+		criteria.setType(typeComboBox.getValue());
+		criteria.setContributionMonth(contributionMonthField.getText());
+		
+		List<PayslipAdjustment> matches = payrollService.searchPayslipAdjustment(criteria);
+		if (matches.isEmpty() || payslipAdjustment == null || payslipAdjustment.getId() == null) {
+		    return false;
+		} else {
+	        return matches.stream().anyMatch(match -> !match.getId().equals(payslipAdjustment.getId()));
+		}
+	}
+
 	@FXML public void cancel() {
 		hide();
 	}

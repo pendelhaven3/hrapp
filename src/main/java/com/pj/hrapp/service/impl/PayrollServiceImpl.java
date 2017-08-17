@@ -35,6 +35,7 @@ import com.pj.hrapp.model.SSSContributionTable;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
+import com.pj.hrapp.model.search.PayslipAdjustmentSearchCriteria;
 import com.pj.hrapp.model.search.PayslipSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.service.EmployeeLoanService;
@@ -358,5 +359,10 @@ public class PayrollServiceImpl implements PayrollService {
 	public long getNextBatchNumber() {
 		return payrollDao.getLatestBatchNumber();
 	}
+
+    @Override
+    public List<PayslipAdjustment> searchPayslipAdjustment(PayslipAdjustmentSearchCriteria criteria) {
+        return payslipAdjustmentDao.search(criteria);
+    }
 
 }

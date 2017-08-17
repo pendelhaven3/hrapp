@@ -7,6 +7,7 @@ import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.ValeProduct;
+import com.pj.hrapp.model.search.PayslipAdjustmentSearchCriteria;
 
 public interface PayrollService {
 
@@ -41,5 +42,7 @@ public interface PayrollService {
 	void regenerateAllGovernmentContributions(Payroll payroll);
 
 	long getNextBatchNumber();
+
+    List<PayslipAdjustment> searchPayslipAdjustment(PayslipAdjustmentSearchCriteria criteria);
 
 }
