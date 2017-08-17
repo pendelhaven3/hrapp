@@ -116,8 +116,12 @@ public class PayrollServiceImpl implements PayrollService {
 	private boolean isEmployeeAttendanceNotYetGenerated(Employee employee, Date date) {
 		return employeeAttendanceDao.findByEmployeeAndDate(employee, date) == null;
 	}
-
-	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip) {
+	
+    private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip) {
+        addSSSPagibigPhilHealthContributionAdjustments(payslip, null);
+    }
+	
+	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip, String contributionMonth) {
 		BigDecimal sssContribution = null;
 		BigDecimal philHealthContribution = null;
 		SSSContributionTable sssContributionTable = sssService.getSSSContributionTable();
@@ -154,6 +158,7 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment.setType(PayslipAdjustmentType.SSS);
 		adjustment.setDescription("SSS");
 		adjustment.setAmount(sssContribution.negate());
+		adjustment.setContributionMonth(contributionMonth);
 		payslipAdjustmentDao.save(adjustment);
 
 		adjustment = new PayslipAdjustment();
@@ -161,6 +166,7 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment.setType(PayslipAdjustmentType.PHILHEALTH);
 		adjustment.setDescription("PhilHealth");
 		adjustment.setAmount(philHealthContribution.negate());
+        adjustment.setContributionMonth(contributionMonth);
 		payslipAdjustmentDao.save(adjustment);
 		
 		adjustment = new PayslipAdjustment();
@@ -168,6 +174,7 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment.setType(PayslipAdjustmentType.PAGIBIG);
 		adjustment.setDescription("Pag-IBIG");
 		adjustment.setAmount(pagibigContribution.negate());
+        adjustment.setContributionMonth(contributionMonth);
 		payslipAdjustmentDao.save(adjustment);
 	}
 
@@ -340,6 +347,13 @@ public class PayrollServiceImpl implements PayrollService {
 		deleteGovernmentContributions(payslip);
 		addSSSPagibigPhilHealthContributionAdjustments(payslip);
 	}
+
+    @Transactional
+    @Override
+    public void regenerateGovernmentContributions(Payslip payslip, String contributionMonth) {
+        deleteGovernmentContributions(payslip);
+        addSSSPagibigPhilHealthContributionAdjustments(payslip, contributionMonth);
+    }
 
 	private void deleteGovernmentContributions(Payslip payslip) {
 		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.SSS);

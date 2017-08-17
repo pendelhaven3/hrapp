@@ -1,8 +1,10 @@
 package com.pj.hrapp.controller;
 
+import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import com.pj.hrapp.dialog.AddPayslipLoanPaymentDialog;
 import com.pj.hrapp.dialog.AddValeProductDialog;
 import com.pj.hrapp.dialog.EmployeeAttendanceDialog;
 import com.pj.hrapp.dialog.PayslipAdjustmentDialog;
+import com.pj.hrapp.dialog.AutoGenerateContributionsDialog;
 import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
@@ -51,6 +54,7 @@ public class PayslipController extends AbstractController {
 	@Autowired private AddValeProductDialog addValeProductDialog;
 	@Autowired private PayslipAdjustmentDialog payslipAdjustmentDialog;
 	@Autowired private AddPayslipLoanPaymentDialog addPayslipLoanPaymentDialog;
+    @Autowired private AutoGenerateContributionsDialog autoGenerateContributionsDialog;
 	
 	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;
@@ -297,20 +301,25 @@ public class PayslipController extends AbstractController {
 
 	@FXML 
 	public void generateGovernmentContributions() {
-		try {
-			payrollService.regenerateGovernmentContributions(payslip);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			ShowDialog.unexpectedError();
-			return;
-		}
-		
-		ShowDialog.info("Government contributions generated");
-		updateDisplay();
-		selectOtherAdjustmentsTab();
+	    Map<String, Object> model = new HashMap<>();
+	    model.put("payslip", payslip);
+	    model.put("contributionMonth", getNextContributionMonth());
+	    
+	    autoGenerateContributionsDialog.setSuccess(false);
+	    autoGenerateContributionsDialog.showAndWait(model);
+
+	    if (autoGenerateContributionsDialog.isSuccess()) {
+	        updateDisplay();
+	        selectOtherAdjustmentsTab();
+	    }
 	}
 
-	private void selectOtherAdjustmentsTab() {
+    private String getNextContributionMonth() {
+        YearMonth now = YearMonth.now();
+        return StringUtils.leftPad(String.valueOf(now.getMonthValue()), 2, "0") + String.valueOf(now.getYear());
+    }
+
+    private void selectOtherAdjustmentsTab() {
 		tabPane.getSelectionModel().select(OTHERS_TAB_INDEX);
 	}
 

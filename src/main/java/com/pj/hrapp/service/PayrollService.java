@@ -39,6 +39,8 @@ public interface PayrollService {
 
 	void regenerateGovernmentContributions(Payslip payslip);
 
+    void regenerateGovernmentContributions(Payslip payslip, String contributionMonth);
+
 	void regenerateAllGovernmentContributions(Payroll payroll);
 
 	long getNextBatchNumber();

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.pj.hrapp.Constants;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payslip;
@@ -26,7 +27,6 @@ import javafx.scene.control.TextField;
 public class PayslipAdjustmentDialog extends AbstractDialog {
 
 	private static final Logger logger = LoggerFactory.getLogger(PayslipAdjustmentDialog.class);
-	private static final String MONTH_YEAR_REGEX = "^(0[1-9]|1[0-2])2[0-9]{3}$";
 	
 	@Autowired private PayrollService payrollService;
 	
@@ -133,7 +133,7 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 	}
 
 	private boolean isValidContributionMonth(String month) {
-		return month.matches(MONTH_YEAR_REGEX);
+		return month.matches(Constants.MONTH_YEAR_REGEX);
 	}
 	
 	private boolean hasExistingContributionForMonth() {
