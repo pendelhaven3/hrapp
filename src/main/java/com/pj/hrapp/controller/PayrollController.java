@@ -18,12 +18,14 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.AddPayslipDialog;
+import com.pj.hrapp.dialog.AutoGeneratePayrollContributionsDialog;
 import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.service.PayrollService;
+import com.pj.hrapp.util.DateUtil;
 import com.pj.hrapp.util.ExcelUtil;
 import com.pj.hrapp.util.FormatterUtil;
 import com.pj.hrapp.util.PayrollToBdoExcelGenerator;
@@ -46,6 +48,7 @@ public class PayrollController extends AbstractController {
 	@Autowired private PayrollToExcelGenerator excelGenerator;
 	@Autowired private PayrollToBdoExcelGenerator bdoExcelGenerator;
 	@Autowired private AddPayslipDialog addPayslipDialog;
+	@Autowired private AutoGeneratePayrollContributionsDialog autoGeneratePayrollContributionsDialog;
 	
 	@FXML private Label batchNumberLabel;
 	@FXML private Label payDateLabel;
@@ -254,6 +257,17 @@ public class PayrollController extends AbstractController {
 
 	@FXML 
 	public void regenerateAllGovernmentContributions() {
+        Map<String, Object> model = new HashMap<>();
+        model.put("payroll", payroll);
+        model.put("contributionMonth", DateUtil.getNextContributionMonthString());
+        
+        autoGeneratePayrollContributionsDialog.setSuccess(false);
+        autoGeneratePayrollContributionsDialog.showAndWait(model);
+
+        if (autoGeneratePayrollContributionsDialog.isSuccess()) {
+            updateDisplay();
+        }
+	    /*
 		if (!ShowDialog.confirm("Generate SSS/PhilHealth/Pag-IBIG contributions for all payslips?")) {
 			return;
 		}
@@ -268,6 +282,7 @@ public class PayrollController extends AbstractController {
 		
 		ShowDialog.info("SSS/PhilHealth/Pag-IBIG contributions generated");
 		updateDisplay();
+		*/
 	}
 	
 }

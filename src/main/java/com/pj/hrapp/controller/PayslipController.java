@@ -13,6 +13,7 @@ import com.pj.hrapp.dialog.AddPayslipLoanPaymentDialog;
 import com.pj.hrapp.dialog.AddValeProductDialog;
 import com.pj.hrapp.dialog.EmployeeAttendanceDialog;
 import com.pj.hrapp.dialog.PayslipAdjustmentDialog;
+import com.pj.hrapp.dialog.AutoGeneratePayslipContributionsDialog;
 import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
@@ -27,6 +28,7 @@ import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.ValeProductService;
+import com.pj.hrapp.util.DateUtil;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
@@ -51,6 +53,7 @@ public class PayslipController extends AbstractController {
 	@Autowired private AddValeProductDialog addValeProductDialog;
 	@Autowired private PayslipAdjustmentDialog payslipAdjustmentDialog;
 	@Autowired private AddPayslipLoanPaymentDialog addPayslipLoanPaymentDialog;
+    @Autowired private AutoGeneratePayslipContributionsDialog autoGenerateContributionsDialog;
 	
 	@FXML private Label payrollBatchNumberLabel;
 	@FXML private Label employeeLabel;
@@ -297,20 +300,20 @@ public class PayslipController extends AbstractController {
 
 	@FXML 
 	public void generateGovernmentContributions() {
-		try {
-			payrollService.regenerateGovernmentContributions(payslip);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			ShowDialog.unexpectedError();
-			return;
-		}
-		
-		ShowDialog.info("Government contributions generated");
-		updateDisplay();
-		selectOtherAdjustmentsTab();
+	    Map<String, Object> model = new HashMap<>();
+	    model.put("payslip", payslip);
+	    model.put("contributionMonth", DateUtil.getNextContributionMonthString());
+	    
+	    autoGenerateContributionsDialog.setSuccess(false);
+	    autoGenerateContributionsDialog.showAndWait(model);
+
+	    if (autoGenerateContributionsDialog.isSuccess()) {
+	        updateDisplay();
+	        selectOtherAdjustmentsTab();
+	    }
 	}
 
-	private void selectOtherAdjustmentsTab() {
+    private void selectOtherAdjustmentsTab() {
 		tabPane.getSelectionModel().select(OTHERS_TAB_INDEX);
 	}
 

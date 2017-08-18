@@ -24,7 +24,8 @@ public class PayslipAdjustment {
 	
 	private String description;
 	private BigDecimal amount;
-
+	private String contributionMonth;
+	
 	public Long getId() {
 		return id;
 	}
@@ -64,5 +65,13 @@ public class PayslipAdjustment {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	
+
+	public String getContributionMonth() {
+		return contributionMonth;
+	}
+
+	public void setContributionMonth(String contributionMonth) {
+		this.contributionMonth = contributionMonth;
+	}
+
 }
