@@ -36,6 +36,7 @@ public class ReportDaoImpl implements ReportDao {
 		query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
 		query.setParameter("numberOfWorkingDaysInFirstHalf", DateUtil.getNumberOfWorkingDaysInFirstHalf(yearMonth));
 		query.setParameter("numberOfWorkingDaysInSecondHalf", DateUtil.getNumberOfWorkingDaysInSecondHalf(yearMonth));
+		query.setParameter("contributionMonth", DateUtil.toString(yearMonth));
 		return query.getResultList();
 	}
 

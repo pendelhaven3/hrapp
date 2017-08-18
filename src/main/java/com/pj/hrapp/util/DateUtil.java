@@ -116,12 +116,15 @@ public class DateUtil {
 	}
 	
     public static String getNextContributionMonthString() {
-        YearMonth now = YearMonth.now();
-        return StringUtils.leftPad(String.valueOf(now.getMonthValue()), 2, "0") + String.valueOf(now.getYear());
+        return toString(YearMonth.now());
     }
 	
     public static YearMonth toYearMonth(String value) {
         return YearMonth.of(Integer.parseInt(value.substring(2)), Integer.parseInt(value.substring(0, 2)));
+    }
+
+    public static String toString(YearMonth yearMonth) {
+        return StringUtils.leftPad(String.valueOf(yearMonth.getMonthValue()), 2, "0") + String.valueOf(yearMonth);
     }
     
 }
