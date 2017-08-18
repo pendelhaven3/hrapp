@@ -53,10 +53,6 @@
     	<constructor-arg ref="dataSource" />
     </bean>
     
-    <beans profile="test">
-		<jdbc:embedded-database id="dataSource" type="H2" />
-    </beans>
-    
     <beans profile="default">
 		<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 			<property name="driverClassName" value="com.mysql.jdbc.Driver" />

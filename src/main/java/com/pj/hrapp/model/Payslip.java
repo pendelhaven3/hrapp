@@ -30,7 +30,7 @@ public class Payslip {
 	@ManyToOne
 	private Payroll payroll;
 	
-	@OneToOne
+	@OneToOne(optional = false)
 	private Employee employee;
 
 	@Column(columnDefinition = "date")

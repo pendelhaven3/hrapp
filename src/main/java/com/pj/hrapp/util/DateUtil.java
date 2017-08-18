@@ -120,4 +120,8 @@ public class DateUtil {
         return StringUtils.leftPad(String.valueOf(now.getMonthValue()), 2, "0") + String.valueOf(now.getYear());
     }
 	
+    public static YearMonth toYearMonth(String value) {
+        return YearMonth.of(Integer.parseInt(value.substring(2)), Integer.parseInt(value.substring(0, 2)));
+    }
+    
 }
