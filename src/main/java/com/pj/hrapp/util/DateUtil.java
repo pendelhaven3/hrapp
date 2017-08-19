@@ -124,7 +124,7 @@ public class DateUtil {
     }
 
     public static String toString(YearMonth yearMonth) {
-        return StringUtils.leftPad(String.valueOf(yearMonth.getMonthValue()), 2, "0") + String.valueOf(yearMonth);
+        return StringUtils.leftPad(String.valueOf(yearMonth.getMonthValue()), 2, "0") + String.valueOf(yearMonth.getYear());
     }
     
 }
