@@ -14,7 +14,7 @@
 	<center>
 		<VBox alignment="center" spacing="10">
 			<GridPane vgap="10" alignment="center">
-				<Label text="Type:" prefWidth="150" 
+				<Label text="Type" prefWidth="200" 
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
 				<ComboBox fx:id="typeComboBox" prefWidth="200"
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -22,13 +22,17 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
 				<TextField fx:id="descriptionField"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Label text="Amount:"
+				<Label text="Amount"
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
 				<TextField fx:id="amountField"
 					GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Contribution Month"
+					GridPane.columnIndex="0" GridPane.rowIndex="3" />
+				<TextField fx:id="contributionMonthField"
+					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 			</GridPane>
 		
-			<HBox spacing="10" alignment="center">
+			<HBox spacing="10" alignment="center" >
 				<Button text="Save" onAction="#savePayslipAdjustment" />
 				<Button text="Cancel" onAction="#cancel" />
 			</HBox>

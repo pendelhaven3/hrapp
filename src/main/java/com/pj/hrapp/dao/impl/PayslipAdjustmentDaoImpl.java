@@ -1,6 +1,8 @@
 package com.pj.hrapp.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,12 +11,14 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.PayslipAdjustmentDao;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipAdjustmentType;
+import com.pj.hrapp.model.search.PayslipAdjustmentSearchCriteria;
 
 @Repository
 public class PayslipAdjustmentDaoImpl implements PayslipAdjustmentDao {
@@ -62,5 +66,30 @@ public class PayslipAdjustmentDaoImpl implements PayslipAdjustmentDao {
 		
 		entityManager.createQuery(criteria).executeUpdate();
 	}
+
+    @Override
+    public List<PayslipAdjustment> search(PayslipAdjustmentSearchCriteria criteria) {
+        Map<String, Object> paramMap = new HashMap<>();
+        
+        StringBuilder sql = new StringBuilder("select pa from PayslipAdjustment pa where 1 = 1");
+        if (criteria.getEmployee() != null) {
+            sql.append(" and pa.payslip.employee = :employee");
+            paramMap.put("employee", criteria.getEmployee());
+        }
+        if (criteria.getType() != null) {
+            sql.append(" and pa.type = :type");
+            paramMap.put("type", criteria.getType());
+        }
+        if (!StringUtils.isEmpty(criteria.getContributionMonth())) {
+            sql.append(" and pa.contributionMonth = :contributionMonth");
+            paramMap.put("contributionMonth", criteria.getContributionMonth());
+        }
+
+        TypedQuery<PayslipAdjustment> query = entityManager.createQuery(sql.toString(), PayslipAdjustment.class);
+        for (String key : paramMap.keySet()) {
+            query.setParameter(key, paramMap.get(key));
+        }
+        return query.getResultList();
+    }
 	
 }

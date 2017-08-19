@@ -22,8 +22,7 @@ FROM (
 	LEFT JOIN sssContributionTableEntry e
 	  on e.employeeContribution = -d.amount
 	WHERE a.resigned = false
-	AND MONTH(b.periodCoveredFrom) = :month
-	AND YEAR(b.periodCoveredFrom) = :year
+	AND d.contributionMonth = :contributionMonth
 	GROUP BY a.ID
 ) a
 JOIN (
@@ -37,8 +36,7 @@ JOIN (
 	  ON d.payslip_id = b.id
 	  AND d.type = 'PAGIBIG'
 	WHERE a.resigned = false
-	AND MONTH(b.periodCoveredFrom) = :month
-	AND YEAR(b.periodCoveredFrom) = :year
+	AND d.contributionMonth = :contributionMonth
 	GROUP BY a.ID
 ) b
 	ON b.employeeId = a.employeeId

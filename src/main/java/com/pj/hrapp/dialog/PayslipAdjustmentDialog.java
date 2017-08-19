@@ -1,15 +1,20 @@
 package com.pj.hrapp.dialog;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import com.pj.hrapp.Constants;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
 import com.pj.hrapp.model.PayslipAdjustmentType;
+import com.pj.hrapp.model.search.PayslipAdjustmentSearchCriteria;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
 import com.pj.hrapp.util.NumberUtil;
@@ -28,6 +33,7 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 	@FXML private ComboBox<PayslipAdjustmentType> typeComboBox;
 	@FXML private TextField descriptionField;
 	@FXML private TextField amountField;
+	@FXML private TextField contributionMonthField;
 	
 	@Parameter private Payslip payslip;
 	@Parameter private PayslipAdjustment payslipAdjustment;
@@ -41,6 +47,7 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 			typeComboBox.setValue(payslipAdjustment.getType());
 			descriptionField.setText(payslipAdjustment.getDescription());
 			amountField.setText(FormatterUtil.formatAmount(payslipAdjustment.getAmount()));
+			contributionMonthField.setText(payslipAdjustment.getContributionMonth());
 		}
 
 		typeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -57,11 +64,14 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 		
 		if (payslipAdjustment == null) {
 			payslipAdjustment = new PayslipAdjustment();
-			payslipAdjustment.setPayslip(payslip);
+	        payslipAdjustment.setPayslip(payslip);
 		}
 		payslipAdjustment.setType(typeComboBox.getValue());
 		payslipAdjustment.setDescription(descriptionField.getText());
 		payslipAdjustment.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
+		if (payslipAdjustment.getType().isContributionType()) {
+			payslipAdjustment.setContributionMonth(contributionMonthField.getText());
+		}
 		
 		try {
 			payrollService.save(payslipAdjustment);
@@ -100,7 +110,48 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 			return false;
 		}
 		
+		if (typeComboBox.getValue().isContributionType()) {
+			String contributionMonth = contributionMonthField.getText();
+			if (StringUtils.isEmpty(contributionMonth)) {
+				ShowDialog.error("Contribution Month must be specified (MMYYYY)");
+				contributionMonthField.requestFocus();
+				return false;
+			}
+			if (!isValidContributionMonth(contributionMonth)) {
+				ShowDialog.error("Contribution Month must be a valid month (MMYYYY)");
+				contributionMonthField.requestFocus();
+				return false;
+			}
+			if (hasExistingContributionForMonth()) {
+				ShowDialog.error("Employee already has contribution for the specified month");
+				contributionMonthField.requestFocus();
+				return false;
+			}
+		}
+		
 		return true;
+	}
+
+	private boolean isValidContributionMonth(String month) {
+		return month.matches(Constants.MONTH_YEAR_REGEX);
+	}
+	
+	private boolean hasExistingContributionForMonth() {
+		PayslipAdjustmentSearchCriteria criteria = new PayslipAdjustmentSearchCriteria();
+		if (payslipAdjustment == null) {
+	        criteria.setEmployee(payslip.getEmployee());
+		} else {
+            criteria.setEmployee(payslipAdjustment.getPayslip().getEmployee());
+		}
+		criteria.setType(typeComboBox.getValue());
+		criteria.setContributionMonth(contributionMonthField.getText());
+		
+		List<PayslipAdjustment> matches = payrollService.searchPayslipAdjustment(criteria);
+		if (matches.isEmpty() || payslipAdjustment == null || payslipAdjustment.getId() == null) {
+		    return false;
+		} else {
+	        return matches.stream().anyMatch(match -> !match.getId().equals(payslipAdjustment.getId()));
+		}
 	}
 
 	@FXML public void cancel() {

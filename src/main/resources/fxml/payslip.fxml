@@ -204,6 +204,11 @@
 											<AppPropertyValueFactory property="amount" />
 										</cellValueFactory>
 									</TableColumn>
+									<TableColumn text="Contribution Month" styleClass="center">
+										<cellValueFactory>
+											<AppPropertyValueFactory property="contributionMonth" />
+										</cellValueFactory>
+									</TableColumn>
 								</columns>
 							</AppTableView>
 							
