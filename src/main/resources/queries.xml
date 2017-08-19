@@ -25,7 +25,7 @@ FROM (
 	AND d.contributionMonth = :contributionMonth
 	GROUP BY a.ID
 ) a
-JOIN (
+LEFT JOIN (
 	SELECT a.id AS employeeId, MAX(-d.amount) AS pagibigContribution
 	FROM employee a
 	JOIN payslip b
