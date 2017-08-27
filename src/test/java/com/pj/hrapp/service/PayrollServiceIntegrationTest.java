@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.pj.hrapp.SystemSetup;
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
 import com.pj.hrapp.dao.EmployeeRepository;
+import com.pj.hrapp.dao.PayrollDao;
 import com.pj.hrapp.dao.PayslipDao;
 import com.pj.hrapp.dao.PhilHealthContributionTableEntryDao;
 import com.pj.hrapp.dao.SSSContributionTableEntryDao;
@@ -49,6 +50,7 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
 	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	@Autowired private SSSContributionTableEntryDao sssContributionTableEntryDao;
 	@Autowired private PhilHealthContributionTableEntryDao philHealthContributionTableEntryDao;
+    @Autowired private PayrollDao payrollDao;
 	
 	@PersistenceContext 
 	private EntityManager entityManager;
@@ -363,5 +365,110 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
         assertEquals(1, jdbcTemplate.queryForObject("select count(*) from payslipadjustment where type = 'PAGIBIG' and amount = ?", 
                 Integer.class, new BigDecimal("-100")).intValue());
     }
-	
+
+    @Test
+    public void regenerateGovernmentContributions_semimonthly() {
+        BigDecimal employeeSssContribution = new BigDecimal("72.70");
+        BigDecimal philHealthSssContribution = new BigDecimal("100");
+        
+        Employee employee = new Employee();
+        employee.setPaySchedule(PaySchedule.SEMIMONTHLY);
+        employee.setPayType(PayType.FIXED_RATE);
+        employeeRepository.save(employee);
+        
+        Salary salary = new Salary();
+        salary.setEmployee(employee);
+        salary.setEffectiveDateFrom(DateUtil.toDate("07/01/2017"));
+        salary.setRate(new BigDecimal("1000"));
+        salaryDao.save(salary);
+        
+        SSSContributionTableEntry sssEntry = new SSSContributionTableEntry();
+        sssEntry.setCompensationFrom(new BigDecimal("1750"));
+        sssEntry.setCompensationTo(new BigDecimal("2249.99"));
+        sssEntry.setEmployeeContribution(employeeSssContribution);
+        sssEntry.setEmployerContribution(new BigDecimal("147.30"));
+        sssContributionTableEntryDao.save(sssEntry);
+
+        PhilHealthContributionTableEntry philHealthEntry = new PhilHealthContributionTableEntry();
+        philHealthEntry.setSalaryFrom(BigDecimal.ZERO);
+        philHealthEntry.setSalaryTo(new BigDecimal("8999.99"));
+        philHealthEntry.setEmployeeShare(philHealthSssContribution);
+        philHealthContributionTableEntryDao.save(philHealthEntry);
+        
+        Payslip payslip = new Payslip();
+        payslip.setEmployee(employee);
+        payslip.setPeriodCoveredFrom(DateUtil.toDate("07/16/2017"));
+        payslip.setPeriodCoveredTo(DateUtil.toDate("07/31/2017"));
+        payslipDao.save(payslip);
+        
+        payrollService.regenerateGovernmentContributions(payslip, "072017");
+        
+        entityManager.flush();
+        
+        assertEquals(1, jdbcTemplate.queryForObject("select count(*) from payslipadjustment where type = 'SSS' and amount = ?", 
+                Integer.class, employeeSssContribution.negate()).intValue());
+        assertEquals(1, jdbcTemplate.queryForObject("select count(*) from payslipadjustment where type = 'PHILHEALTH' and amount = ?", 
+                Integer.class, philHealthSssContribution.negate()).intValue());
+        assertEquals(1, jdbcTemplate.queryForObject("select count(*) from payslipadjustment where type = 'PAGIBIG' and amount = ?", 
+                Integer.class, new BigDecimal("-100")).intValue());
+    }
+    
+    @Test
+    public void regenerateGovernmentContributions_semimonthly_withSalaryChangeBefore() {
+        BigDecimal employeeSssContribution = new BigDecimal("72.70");
+        BigDecimal philHealthSssContribution = new BigDecimal("100");
+        
+        Employee employee = new Employee();
+        employee.setPaySchedule(PaySchedule.SEMIMONTHLY);
+        employee.setPayType(PayType.FIXED_RATE);
+        employeeRepository.save(employee);
+        
+        Salary salary1 = new Salary();
+        salary1.setEmployee(employee);
+        salary1.setEffectiveDateFrom(DateUtil.toDate("06/01/2017"));
+        salary1.setEffectiveDateTo(DateUtil.toDate("06/30/2017"));
+        salary1.setRate(new BigDecimal("500"));
+        salaryDao.save(salary1);
+        
+        Salary salary2 = new Salary();
+        salary2.setEmployee(employee);
+        salary2.setEffectiveDateFrom(DateUtil.toDate("07/01/2017"));
+        salary2.setRate(new BigDecimal("1000"));
+        salaryDao.save(salary2);
+        
+        SSSContributionTableEntry sssEntry = new SSSContributionTableEntry();
+        sssEntry.setCompensationFrom(new BigDecimal("1750"));
+        sssEntry.setCompensationTo(new BigDecimal("2249.99"));
+        sssEntry.setEmployeeContribution(employeeSssContribution);
+        sssEntry.setEmployerContribution(new BigDecimal("147.30"));
+        sssContributionTableEntryDao.save(sssEntry);
+
+        PhilHealthContributionTableEntry philHealthEntry = new PhilHealthContributionTableEntry();
+        philHealthEntry.setSalaryFrom(BigDecimal.ZERO);
+        philHealthEntry.setSalaryTo(new BigDecimal("8999.99"));
+        philHealthEntry.setEmployeeShare(philHealthSssContribution);
+        philHealthContributionTableEntryDao.save(philHealthEntry);
+        
+        Payroll payroll = new Payroll();
+        payrollDao.save(payroll);
+        
+        Payslip payslip = new Payslip();
+        payslip.setEmployee(employee);
+        payslip.setPeriodCoveredFrom(DateUtil.toDate("07/16/2017"));
+        payslip.setPeriodCoveredTo(DateUtil.toDate("07/31/2017"));
+        payslip.setPayroll(payroll);
+        payslipDao.save(payslip);
+        
+        payrollService.regenerateGovernmentContributions(payslip, "072017");
+        
+        entityManager.flush();
+        
+        assertEquals(1, jdbcTemplate.queryForObject("select count(*) from payslipadjustment where type = 'SSS' and amount = ?", 
+                Integer.class, employeeSssContribution.negate()).intValue());
+        assertEquals(1, jdbcTemplate.queryForObject("select count(*) from payslipadjustment where type = 'PHILHEALTH' and amount = ?", 
+                Integer.class, philHealthSssContribution.negate()).intValue());
+        assertEquals(1, jdbcTemplate.queryForObject("select count(*) from payslipadjustment where type = 'PAGIBIG' and amount = ?", 
+                Integer.class, new BigDecimal("-100")).intValue());
+    }
+    
 }

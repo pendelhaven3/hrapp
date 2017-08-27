@@ -134,7 +134,9 @@ public class PayrollServiceImpl implements PayrollService {
 				referenceCompensation = getEmployeeCompensationForMonthYear(
 						payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
 			} else {
-				referenceCompensation = salaryDao.findByEmployee(payslip.getEmployee()).getRate().multiply(BigDecimal.valueOf(2L));
+				referenceCompensation = salaryDao.findByEmployeeAndEffectiveDate(
+				        payslip.getEmployee(), DateUtil.toDate(DateUtil.toYearMonth(contributionMonth)))
+				                .getRate().multiply(BigDecimal.valueOf(2L));
 			}
 			
 			sssContribution = sssContributionTable.getEmployeeContribution(referenceCompensation);

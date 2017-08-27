@@ -1,6 +1,8 @@
 package com.pj.hrapp.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ import com.pj.hrapp.util.DateUtil;
 
 public class SalaryDaoTest extends IntegrationTest {
 
+    @Autowired private EmployeeRepository employeeRepository;
+    
 	@Autowired private SalaryDao salaryDao;
 	
 	private void insertTestEmployee() {
@@ -110,4 +114,48 @@ public class SalaryDaoTest extends IntegrationTest {
 		assertEquals(3, results.size());
 	}
 	
+	@Test
+	public void findByEmployeeAndEffectiveDate_employeeWithPreviousSalaryRate() {
+	    Employee employee = new Employee();
+	    employeeRepository.save(employee);
+	    
+	    Salary salary1 = new Salary();
+	    salary1.setEmployee(employee);
+	    salary1.setEffectiveDateFrom(DateUtil.toDate("08/01/2017"));
+	    salaryDao.save(salary1);
+	    
+        Salary salary2 = new Salary();
+        salary2.setEmployee(employee);
+        salary2.setEffectiveDateFrom(DateUtil.toDate("07/01/2017"));
+        salary2.setEffectiveDateTo(DateUtil.toDate("07/31/2017"));
+        salaryDao.save(salary2);
+        
+	    assertEquals(salary1, salaryDao.findByEmployeeAndEffectiveDate(employee, DateUtil.toDate("08/01/2017")));
+	}
+	
+    @Test
+    public void findByEmployeeAndEffectiveDate_getPreviousSalaryRate() {
+        Employee employee = new Employee();
+        employeeRepository.save(employee);
+        
+        Salary salary1 = new Salary();
+        salary1.setEmployee(employee);
+        salary1.setEffectiveDateFrom(DateUtil.toDate("08/01/2017"));
+        salaryDao.save(salary1);
+        
+        Salary salary2 = new Salary();
+        salary2.setEmployee(employee);
+        salary2.setEffectiveDateFrom(DateUtil.toDate("07/01/2017"));
+        salary2.setEffectiveDateTo(DateUtil.toDate("07/31/2017"));
+        salaryDao.save(salary2);
+        
+        Salary salary3 = new Salary();
+        salary3.setEmployee(employee);
+        salary3.setEffectiveDateFrom(DateUtil.toDate("06/01/2017"));
+        salary3.setEffectiveDateTo(DateUtil.toDate("06/30/2017"));
+        salaryDao.save(salary3);
+        
+        assertEquals(salary2, salaryDao.findByEmployeeAndEffectiveDate(employee, DateUtil.toDate("07/01/2017")));
+    }
+    
 }
