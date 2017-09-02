@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -53,6 +55,9 @@ public class Payslip {
 	
 	@OneToMany(mappedBy = "payslip", cascade = CascadeType.REMOVE)
 	private List<PayslipAdjustment> adjustments;
+	
+	@Enumerated(EnumType.STRING)
+	private PayType payType;
 	
 	public Employee getEmployee() {
 		return employee;
@@ -132,7 +137,12 @@ public class Payslip {
 	}
 	
 	private PayslipBasicPayItem createPayslipBasicPayItem() {
-		switch (employee.getPayType()) {
+		PayType payType = employee.getPayType();
+		if (payroll.isPosted() && this.payType != null) {
+			payType = this.payType;
+		}
+		
+		switch (payType) {
 		case PER_DAY:
 			return new PerDayPayslipBasicPayItem();
 		case FIXED_RATE:
@@ -268,6 +278,14 @@ public class Payslip {
 		} else {
 			return atmPay;
 		}
+	}
+
+	public PayType getPayType() {
+		return payType;
+	}
+
+	public void setPayType(PayType payType) {
+		this.payType = payType;
 	}
 	
 }
