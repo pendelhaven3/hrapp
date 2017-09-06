@@ -294,6 +294,9 @@ public class PayrollServiceImpl implements PayrollService {
 			if (!valeProducts.isEmpty()) {
 				valeProductService.markValeProductsAsPaid(valeProducts);
 			}
+			
+			payslip.setPayType(payslip.getEmployee().getPayType());
+			payslipDao.save(payslip);
 		}
 		
 		payroll.setPosted(true);
