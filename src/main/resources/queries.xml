@@ -53,6 +53,7 @@ JOIN (
 		AND MONTH(b.date) = :month
 		AND YEAR(b.date) = :year
 		AND a.payType = 'PER_DAY'
+		AND (a.paySchedule = 'WEEKLY' OR (a.paySchedule = 'SEMIMONTHLY' and :firstDayOfMonth > '2017-07-31'))
 	) perDayMonthlyPay
 	GROUP BY id
 	UNION ALL
@@ -67,7 +68,7 @@ JOIN (
 			JOIN employeeAttendance b
 				ON b.employee_id = a.id
 			WHERE a.resigned = false
-			AND a.payType = 'FIXED_RATE'
+			AND (a.payType = 'FIXED_RATE' OR (a.payType = 'PER_DAY' AND :firstDayOfMonth < '2017-07-31'))
 			AND a.paySchedule = 'SEMIMONTHLY'
 			AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
 		) semiMonthlyMonthlyPay1
@@ -82,7 +83,7 @@ JOIN (
 			JOIN employeeAttendance b
 				ON b.employee_id = a.id
 			WHERE a.resigned = false
-			AND a.payType = 'FIXED_RATE'
+			AND (a.payType = 'FIXED_RATE' OR (a.payType = 'PER_DAY' AND :firstDayOfMonth < '2017-07-31'))
 			AND a.paySchedule = 'SEMIMONTHLY'
 			AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
 			AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
