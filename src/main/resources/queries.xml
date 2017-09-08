@@ -8,7 +8,9 @@ SELECT
 	IFNULL(sssEmployeeContribution, 0) AS sssEmployeeContribution, 
 	IFNULL(sssEmployerContribution, 0) AS sssEmployerContribution,
 	c.monthlyPay,
-	IFNULL(pagibigContribution, 0) AS pagibigContribution
+	IFNULL(pagibigContribution, 0) AS pagibigContribution,
+	d.sssNumber,
+	d.philHealthNumber
 FROM (
 	SELECT a.id AS employeeId, MAX(-d.amount) as sssEmployeeContribution, MAX(e.employerContribution) AS sssEmployerContribution
 	FROM employee a

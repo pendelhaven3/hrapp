@@ -10,6 +10,8 @@ public class SSSPhilHealthReportItem {
 	private BigDecimal sssEmployerContribution;
 	private BigDecimal monthlyPay;
 	private BigDecimal pagibigContribution;
+	private String sssNumber;
+	private String philHealthNumber;
 
 	public SSSPhilHealthReportItem() {
 		
@@ -21,13 +23,17 @@ public class SSSPhilHealthReportItem {
 			BigDecimal sssEmployeeContribution,
 			BigDecimal sssEmployerContribution, 
 			BigDecimal monthlyPay, 
-			BigDecimal pagibigContribution) {
+			BigDecimal pagibigContribution,
+			String sssNumber,
+			String philHealthNumber) {
 		this.employeeFullName = employeeFullName;
 		this.employeeNickname = employeeNickname;
 		this.sssEmployeeContribution = sssEmployeeContribution;
 		this.sssEmployerContribution = sssEmployerContribution;
 		this.monthlyPay = monthlyPay;
 		this.pagibigContribution = pagibigContribution;
+		this.sssNumber = sssNumber;
+		this.philHealthNumber = philHealthNumber;
 	}
 
 	public BigDecimal getSssTotalContribution() {
@@ -57,5 +63,13 @@ public class SSSPhilHealthReportItem {
 	public String getEmployeeNickname() {
 		return employeeNickname;
 	}
+	
+	public String getSssNumber() {
+        return sssNumber;
+    }
+	
+	public String getPhilHealthNumber() {
+        return philHealthNumber;
+    }
 	
 }

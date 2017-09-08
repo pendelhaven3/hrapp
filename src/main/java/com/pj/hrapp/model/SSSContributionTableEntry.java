@@ -26,7 +26,9 @@ import com.pj.hrapp.util.FormatterUtil;
 	        @ColumnResult(name = "sssEmployeeContribution"),
 	        @ColumnResult(name = "sssEmployerContribution"),
 	        @ColumnResult(name = "monthlyPay"),
-	        @ColumnResult(name = "pagibigContribution")
+	        @ColumnResult(name = "pagibigContribution"),
+            @ColumnResult(name = "sssNumber"),
+            @ColumnResult(name = "philHealthNumber")
 	    })
 	}
 )
