@@ -125,7 +125,7 @@ public class SSSPhilHealthReportController extends AbstractController {
 	private String getExcelFilename() {
 		YearMonth yearMonth = getYearMonthCriteria();
 		return MessageFormat.format("sss_philhealth_{0}{1}.xlsx", 
-				yearMonth.getYear(), yearMonth.getMonth().getValue());
+				String.valueOf(yearMonth.getYear()), yearMonth.getMonth().getValue());
 	}
 
 }
