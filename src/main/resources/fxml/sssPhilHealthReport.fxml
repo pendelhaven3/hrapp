@@ -56,6 +56,16 @@
 							<AppPropertyValueFactory property="employeeNickname" />
 						</cellValueFactory>
 					</TableColumn>
+					<TableColumn text="SSS No.">
+						<cellValueFactory>
+							<AppPropertyValueFactory property="sssNumber" />
+						</cellValueFactory>
+					</TableColumn>
+					<TableColumn text="PhilHealth No.">
+						<cellValueFactory>
+							<AppPropertyValueFactory property="philHealthNumber" />
+						</cellValueFactory>
+					</TableColumn>
 					<TableColumn text="SSS EE" styleClass="right">
 						<cellValueFactory>
 							<AppPropertyValueFactory property="sssEmployeeContribution" />
