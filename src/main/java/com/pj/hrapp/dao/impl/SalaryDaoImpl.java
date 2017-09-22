@@ -45,7 +45,7 @@ public class SalaryDaoImpl implements SalaryDao {
 	@Override
 	public List<Salary> getAllCurrent() {
 		return entityManager.createQuery(
-				"select s from Salary s where s.effectiveDateTo is null"
+				"select s from Salary s where s.effectiveDateTo is null and s.employee.resigned = false"
 				+ " order by s.employee.lastName, s.employee.firstName", Salary.class)
 				.getResultList();
 	}
