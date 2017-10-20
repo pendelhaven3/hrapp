@@ -158,6 +158,7 @@ FROM (
 		AND MONTH(b.date) = :month
 		AND YEAR(b.date) = :year
 		AND a.payType = 'PER_DAY'
+		AND a.paySchedule = 'WEEKLY'
 	) perDayMonthlyPay
 	UNION ALL
 	SELECT SUM(semimonthlyPay) AS monthlyPay
@@ -213,6 +214,56 @@ FROM (
 	AND a.paySchedule = 'MONTHLY'
 	AND c.effectiveDateFrom <= :firstDayOfMonth
 	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATE_ADD(DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH), INTERVAL -1 DAY))
+	UNION ALL
+	SELECT SUM(partPay) AS monthlyPay
+	FROM (
+		SELECT SUM(rate) AS partPay
+		FROM (
+			SELECT
+				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
+			FROM employee a
+			JOIN employeeAttendance b
+				ON b.employee_id = a.id
+			WHERE a.id = :employeeId
+			AND MONTH(b.date) = :month
+			AND YEAR(b.date) = :year
+			AND a.payType = 'PER_DAY'
+			AND a.paySchedule = 'SEMIMONTHLY'
+			AND b.date >= '2017-08-01'
+		) perDayPay
+		UNION ALL
+		SELECT SUM(semimonthlyPay) AS partPay
+		FROM (
+			SELECT SUM(rate) AS semimonthlyPay
+			FROM (
+				SELECT
+					(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInFirstHalf AS rate
+				FROM employee a
+				JOIN employeeAttendance b
+					ON b.employee_id = a.id
+				WHERE a.id = :employeeId
+				AND a.payType = 'PER_DAY'
+				AND a.paySchedule = 'SEMIMONTHLY'
+				AND b.date < '2017-08-01'
+				AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
+			) semiMonthlyMonthlyPay1
+			UNION ALL
+			SELECT SUM(rate) AS semimonthlyPay
+			FROM (
+				SELECT
+					(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInSecondHalf AS rate
+				FROM employee a
+				JOIN employeeAttendance b
+					ON b.employee_id = a.id
+				WHERE a.id = :employeeId
+				AND a.payType = 'PER_DAY'
+				AND a.paySchedule = 'SEMIMONTHLY'
+				AND b.date < '2017-08-01'
+				AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
+				AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+			) semiMonthlyMonthlyPay2
+		) semiMonthlyPay
+	) semiMonthlyPerDayPay
 ) monthlyPay
 WHERE monthlyPay IS NOT NULL
 	]]>
