@@ -1,5 +1,6 @@
 package com.pj.hrapp.dialog;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -68,7 +69,7 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 		}
 		payslipAdjustment.setType(typeComboBox.getValue());
 		payslipAdjustment.setDescription(descriptionField.getText());
-		payslipAdjustment.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
+		payslipAdjustment.setAmount(getAmountFromAmountField());
 		if (payslipAdjustment.getType().isContributionType()) {
 			payslipAdjustment.setContributionMonth(contributionMonthField.getText());
 		}
@@ -172,4 +173,14 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 		return "payslipAdjustment";
 	}
 
+	private BigDecimal getAmountFromAmountField() {
+        BigDecimal amount = NumberUtil.toBigDecimal(amountField.getText());
+        
+	    if (typeComboBox.getValue() == PayslipAdjustmentType.VALE_CASH) {
+	        amount = amount.abs().negate();
+	    }
+	    
+	    return amount.abs().negate();
+	}
+	
 }
