@@ -123,7 +123,7 @@ public class PayrollServiceImpl implements PayrollService {
 		
 		switch (payslip.getEmployee().getPaySchedule()) {
 		case WEEKLY:
-			BigDecimal employeeCompensation = getEmployeeCompensationForMonthYear(
+			BigDecimal employeeCompensation = getEmployeeContributionReferenceCompensationForMonthYear(
 					payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
 			sssContribution = sssContributionTable.getEmployeeContribution(employeeCompensation);
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(employeeCompensation);
@@ -131,7 +131,7 @@ public class PayrollServiceImpl implements PayrollService {
 		case SEMIMONTHLY: {
 			BigDecimal referenceCompensation = null;
 			if (payslip.getEmployee().getPayType() == PayType.PER_DAY) {
-				referenceCompensation = getEmployeeCompensationForMonthYear(
+				referenceCompensation = getEmployeeContributionReferenceCompensationForMonthYear(
 						payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
 			} else {
 				referenceCompensation = salaryDao.findByEmployeeAndEffectiveDate(
@@ -261,8 +261,8 @@ public class PayrollServiceImpl implements PayrollService {
 		payslipAdjustmentDao.delete(payslipAdjustment);
 	}
 
-	private BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
-		return salaryDao.getEmployeeCompensationForMonthYear(employee, yearMonth);
+	private BigDecimal getEmployeeContributionReferenceCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
+		return salaryDao.getEmployeeContributionReferenceCompensationForMonthYear(employee, yearMonth);
 	}
 
 	@Transactional

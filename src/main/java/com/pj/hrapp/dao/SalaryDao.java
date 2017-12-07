@@ -25,6 +25,8 @@ public interface SalaryDao {
 
 	Salary findByEmployee(Employee employee);
 
-	BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth);
+	BigDecimal getEmployeeContributionReferenceCompensationForMonthYear(Employee employee, YearMonth yearMonth);
+	
+    BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth);
 	
 }
