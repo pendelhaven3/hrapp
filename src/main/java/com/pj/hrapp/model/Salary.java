@@ -100,5 +100,21 @@ public class Salary {
 	public DateInterval getEffectivePeriod() {
 		return new DateInterval(effectiveDateFrom, effectiveDateTo);
 	}
+
+    public PaySchedule getPaySchedule() {
+        return paySchedule;
+    }
+
+    public void setPaySchedule(PaySchedule paySchedule) {
+        this.paySchedule = paySchedule;
+    }
+
+    public PayType getPayType() {
+        return payType;
+    }
+
+    public void setPayType(PayType payType) {
+        this.payType = payType;
+    }
 	
 }

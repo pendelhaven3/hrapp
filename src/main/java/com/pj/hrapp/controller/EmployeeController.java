@@ -20,8 +20,6 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeePicture;
-import com.pj.hrapp.model.PaySchedule;
-import com.pj.hrapp.model.PayType;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
@@ -29,7 +27,6 @@ import com.pj.hrapp.util.DateUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -62,8 +59,6 @@ public class EmployeeController extends AbstractController {
 	@FXML private TextField atmAccountNumberField;
 	@FXML private TextField magicCustomerCodeField;
 	@FXML private DatePicker dateHiredDatePicker;
-	@FXML private ComboBox<PaySchedule> payScheduleComboBox;
-	@FXML private ComboBox<PayType> payTypeComboBox;
 	@FXML private CheckBox resignedCheckBox;
 	@FXML private DatePicker dateResignedDatePicker;
 	@FXML private CheckBox householdCheckBox;
@@ -78,8 +73,6 @@ public class EmployeeController extends AbstractController {
 	@Override
 	public void updateDisplay() {
 		stageController.setTitle(getTitle());
-		payScheduleComboBox.getItems().setAll(PaySchedule.values());
-		payTypeComboBox.getItems().setAll(PayType.values());
 		
 		if (employee != null) {
 			employee = employeeService.getEmployee(employee.getId());
@@ -222,31 +215,11 @@ public class EmployeeController extends AbstractController {
 			return false;
 		}
 
-		if (isPayScheduleNotSpecified()) {
-			ShowDialog.error("Pay Schedule must be specified");
-			payScheduleComboBox.requestFocus();
-			return false;
-		}
-		
-		if (isPayTypeNotSpecified()) {
-			ShowDialog.error("Pay Type must be specified");
-			payTypeComboBox.requestFocus();
-			return false;
-		}
-
 		return true;
 	}
 
 	private boolean isEmployeeNumberNotValid() {
 		return !NumberUtils.isDigits(employeeNumberField.getText());
-	}
-
-	private boolean isPayScheduleNotSpecified() {
-		return payScheduleComboBox.getValue() == null;
-	}
-
-	private boolean isPayTypeNotSpecified() {
-		return payTypeComboBox.getValue() == null;
 	}
 
 	private boolean isNicknameNotSpecified() {

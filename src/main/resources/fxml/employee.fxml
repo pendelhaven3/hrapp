@@ -82,14 +82,6 @@
 												GridPane.columnIndex="0" GridPane.rowIndex="7" />
 											<UppercaseTextField fx:id="contactNumberField"
 												GridPane.columnIndex="1" GridPane.rowIndex="7" />
-											<Label text="Pay Schedule"
-												GridPane.columnIndex="0" GridPane.rowIndex="8" />
-											<ComboBox fx:id="payScheduleComboBox"
-												GridPane.columnIndex="1" GridPane.rowIndex="8" />
-											<Label text="Pay Type"
-												GridPane.columnIndex="0" GridPane.rowIndex="9" />
-											<ComboBox fx:id="payTypeComboBox"
-												GridPane.columnIndex="1" GridPane.rowIndex="9" />
 										</GridPane>
 										<GridPane vgap="10" alignment="center">
 											<Label text="SSS Number" prefWidth="200"
