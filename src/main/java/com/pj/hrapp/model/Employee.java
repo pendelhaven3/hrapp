@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -40,12 +38,6 @@ public class Employee implements Comparable<Employee> {
 	@Column(columnDefinition = "boolean default false")
 	private boolean household;
 	
-	@Enumerated(EnumType.STRING)
-	private PaySchedule paySchedule;
-	
-	@Enumerated(EnumType.STRING)
-	private PayType payType;
-
 	@Column(columnDefinition = "date")
 	private Date resignDate;
 	
@@ -217,25 +209,12 @@ public class Employee implements Comparable<Employee> {
 		this.tin = tin;
 	}
 
-	public PaySchedule getPaySchedule() {
-		return paySchedule;
-	}
-
-	public void setPaySchedule(PaySchedule paySchedule) {
-		this.paySchedule = paySchedule;
-	}
-	
 	public String getFullName() {
 		return new StringBuilder().append(lastName).append(", ").append(firstName).toString();
 	}
 
 	public static Employee withId(long id) {
 		return new Employee(id);
-	}
-
-	public Employee withPaySchedule(PaySchedule paySchedule) {
-		this.paySchedule = paySchedule;
-		return this;
 	}
 
 	@Override
@@ -265,14 +244,6 @@ public class Employee implements Comparable<Employee> {
 
 	public void setPagibigNumber(String pagibigNumber) {
 		this.pagibigNumber = pagibigNumber;
-	}
-
-	public PayType getPayType() {
-		return payType;
-	}
-
-	public void setPayType(PayType payType) {
-		this.payType = payType;
 	}
 
 	public boolean isHousehold() {

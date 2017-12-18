@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -25,7 +27,14 @@ public class Salary {
 	
 	private Date effectiveDateFrom;
 	private Date effectiveDateTo;
+	
 	private BigDecimal rate;
+	
+    @Enumerated(EnumType.STRING)
+    private PaySchedule paySchedule;
+    
+    @Enumerated(EnumType.STRING)
+    private PayType payType;
 	
 	public Long getId() {
 		return id;

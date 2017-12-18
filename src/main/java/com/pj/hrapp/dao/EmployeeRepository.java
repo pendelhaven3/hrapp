@@ -19,7 +19,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
 
 	@Query("select e from Employee e, Payroll p where e.id not in"
 			+ " (select payslip.employee.id from Payroll payroll, Payslip payslip where payslip.payroll = :payroll)"
-			+ " and e.paySchedule = p.paySchedule"
 			+ " and p = :payroll"
 			+ " and e.resigned = false"
 			+ " order by e.firstName, e.lastName")

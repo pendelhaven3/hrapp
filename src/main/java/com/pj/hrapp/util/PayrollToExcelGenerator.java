@@ -64,6 +64,7 @@ public class PayrollToExcelGenerator {
 	}
 	
 	public XSSFWorkbook generate(Payroll payroll) throws IOException {
+	    /*
 		XSSFWorkbook workbook = new XSSFWorkbook(getClass().getResourceAsStream("/excel/payslip.xlsx"));
 		CellStyle leftBorderCellStyle = createCellStyleWithLeftBorder(workbook);
 		CellStyle rightBorderedAmountCellStyle = createAmountCellStyleWithRightBorder(workbook);
@@ -186,6 +187,8 @@ public class PayrollToExcelGenerator {
 		
 		XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
 		return workbook;
+		*/
+	    return null; // TODO: Return here
 	}
 
 	private CellStyle createCellStyleWithLeftBorder(XSSFWorkbook workbook) {

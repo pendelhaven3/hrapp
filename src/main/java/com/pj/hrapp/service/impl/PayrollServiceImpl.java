@@ -116,6 +116,7 @@ public class PayrollServiceImpl implements PayrollService {
 	}
 	
 	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip, String contributionMonth) {
+	    /*
 		BigDecimal sssContribution = null;
 		BigDecimal philHealthContribution = null;
 		SSSContributionTable sssContributionTable = sssService.getSSSContributionTable();
@@ -172,6 +173,8 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment.setAmount(pagibigContribution.negate());
         adjustment.setContributionMonth(contributionMonth);
 		payslipAdjustmentDao.save(adjustment);
+		*/
+	    // TODO: Return here
 	}
 
 	@Override
@@ -285,6 +288,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Transactional
 	@Override
 	public void postPayroll(Payroll payroll) {
+	    /*
 		if (!canConnectToMagic()) {
 			throw new ConnectToMagicException();
 		}
@@ -303,6 +307,8 @@ public class PayrollServiceImpl implements PayrollService {
 		payrollDao.save(payroll);
 		
 		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
+		*/
+	    // TODO: Return here
 	}
 
 	private void markEmployeeLoansWithLastPaymentInPayrollAsPaid(Payroll payroll) {

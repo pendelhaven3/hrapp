@@ -98,8 +98,6 @@ public class EmployeeController extends AbstractController {
 			atmAccountNumberField.setText(employee.getAtmAccountNumber());
 			magicCustomerCodeField.setText(employee.getMagicCustomerCode());
 			dateHiredDatePicker.setValue(DateUtil.toLocalDate(employee.getHireDate()));
-			payScheduleComboBox.setValue(employee.getPaySchedule());
-			payTypeComboBox.setValue(employee.getPayType());
 			resignedCheckBox.setSelected(employee.isResigned());
 			householdCheckBox.setSelected(employee.isHousehold());
 			dateResignedDatePicker.setValue(DateUtil.toLocalDate(employee.getResignDate()));
@@ -172,8 +170,6 @@ public class EmployeeController extends AbstractController {
 		employee.setAtmAccountNumber(atmAccountNumberField.getText());
 		employee.setMagicCustomerCode(StringUtils.trimToNull(magicCustomerCodeField.getText()));
 		employee.setHireDate(DateUtil.toDate(dateHiredDatePicker.getValue()));
-		employee.setPaySchedule(payScheduleComboBox.getValue());
-		employee.setPayType(payTypeComboBox.getValue());
 		employee.setResigned(resignedCheckBox.isSelected());
 		employee.setResignDate(DateUtil.toDate(dateResignedDatePicker.getValue()));
 		employee.setHousehold(householdCheckBox.isSelected());

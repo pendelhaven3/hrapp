@@ -137,6 +137,7 @@ public class Payslip {
 	}
 	
 	private PayslipBasicPayItem createPayslipBasicPayItem() {
+	    /*
 		PayType payType = employee.getPayType();
 		if (payroll.isPosted() && this.payType != null) {
 			payType = this.payType;
@@ -149,6 +150,8 @@ public class Payslip {
 			return new FixedRatePayslipBasicPayItem();
 		}
 		return null;
+		*/
+	    return null; // TODO: Return here
 	}
 
 	private double getNumberOfDaysWorked(DateInterval period) {
