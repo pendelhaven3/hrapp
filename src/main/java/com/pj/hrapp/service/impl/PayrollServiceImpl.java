@@ -116,13 +116,12 @@ public class PayrollServiceImpl implements PayrollService {
 	}
 	
 	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip, String contributionMonth) {
-	    /*
 		BigDecimal sssContribution = null;
 		BigDecimal philHealthContribution = null;
 		SSSContributionTable sssContributionTable = sssService.getSSSContributionTable();
 		PhilHealthContributionTable philHealthContributionTable = philHealthService.getContributionTable();
 		
-		switch (payslip.getEmployee().getPaySchedule()) {
+		switch (payslip.getPaySchedule()) {
 		case WEEKLY:
 			BigDecimal employeeCompensation = getEmployeeContributionReferenceCompensationForMonthYear(
 					payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
@@ -131,7 +130,7 @@ public class PayrollServiceImpl implements PayrollService {
 			break;
 		case SEMIMONTHLY: {
 			BigDecimal referenceCompensation = null;
-			if (payslip.getEmployee().getPayType() == PayType.PER_DAY) {
+			if (payslip.getPayType() == PayType.PER_DAY) {
 				referenceCompensation = getEmployeeContributionReferenceCompensationForMonthYear(
 						payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
 			} else {
@@ -173,8 +172,6 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment.setAmount(pagibigContribution.negate());
         adjustment.setContributionMonth(contributionMonth);
 		payslipAdjustmentDao.save(adjustment);
-		*/
-	    // TODO: Return here
 	}
 
 	@Override
@@ -215,9 +212,10 @@ public class PayrollServiceImpl implements PayrollService {
 		payslipDao.save(payslip);
 		if (isNew) {
 			generateEmployeeAttendance(payslip);
-			if (hasNegativeBalanceInPreviousPayslip(payslip)) {
-				generateAdjustmentForNegativeBalance(payslip);
-			}
+			// TODO: Re-enable including negative balance from previous payslip
+//			if (hasNegativeBalanceInPreviousPayslip(payslip)) {
+//				generateAdjustmentForNegativeBalance(payslip);
+//			}
 		}
 	}
 
@@ -288,27 +286,29 @@ public class PayrollServiceImpl implements PayrollService {
 	@Transactional
 	@Override
 	public void postPayroll(Payroll payroll) {
-	    /*
-		if (!canConnectToMagic()) {
-			throw new ConnectToMagicException();
-		}
-		
-		for (Payslip payslip : payroll.getPayslips()) {
-			List<ValeProduct> valeProducts = valeProductRepository.findAllByPayslip(payslip);
-			if (!valeProducts.isEmpty()) {
-				valeProductService.markValeProductsAsPaid(valeProducts);
-			}
-			
-			payslip.setPayType(payslip.getEmployee().getPayType());
-			payslipDao.save(payslip);
-		}
+//		if (!canConnectToMagic()) {
+//			throw new ConnectToMagicException();
+//		}
+//		
+//		for (Payslip payslip : payroll.getPayslips()) {
+//			List<ValeProduct> valeProducts = valeProductRepository.findAllByPayslip(payslip);
+//			if (!valeProducts.isEmpty()) {
+//				valeProductService.markValeProductsAsPaid(valeProducts);
+//			}
+//			
+//			payslipDao.save(payslip);
+//		}
 		
 		payroll.setPosted(true);
 		payrollDao.save(payroll);
 		
-		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
-		*/
-	    // TODO: Return here
+		for (Payslip payslip : payroll.getPayslips()) {
+		    payslip = getPayslip(payslip.getId());
+		    payslip.setFInalBasicAndNetPays();
+		    payslipDao.save(payslip);
+		}
+		
+//		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
 	}
 
 	private void markEmployeeLoansWithLastPaymentInPayrollAsPaid(Payroll payroll) {

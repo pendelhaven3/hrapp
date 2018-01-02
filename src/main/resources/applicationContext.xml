@@ -56,7 +56,7 @@
     <beans profile="default">
 		<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 			<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-			<property name="url" value="jdbc:mysql://magic-db:3306/hrapp" />
+			<property name="url" value="jdbc:mysql://magic-db:3306/hrapp?useSSL=false" />
 			<property name="username" value="root" />
 			<property name="password" value="root" />
 		</bean>

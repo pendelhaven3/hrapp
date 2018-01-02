@@ -22,7 +22,7 @@ public class Salary {
 	@GeneratedValue
 	private Long id;
 
-	@OneToOne
+	@OneToOne(optional = false)
 	private Employee employee;
 	
 	private Date effectiveDateFrom;
