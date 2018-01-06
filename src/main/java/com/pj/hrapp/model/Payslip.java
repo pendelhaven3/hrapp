@@ -59,6 +59,13 @@ public class Payslip {
 	@Enumerated(EnumType.STRING)
 	private PayType payType;
 	
+    @Enumerated(EnumType.STRING)
+    private PaySchedule paySchedule;
+    
+    private BigDecimal finalBasicPay;
+    
+    private BigDecimal finalNetPay;
+    
 	public Employee getEmployee() {
 		return employee;
 	}
@@ -137,18 +144,14 @@ public class Payslip {
 	}
 	
 	private PayslipBasicPayItem createPayslipBasicPayItem() {
-		PayType payType = employee.getPayType();
-		if (payroll.isPosted() && this.payType != null) {
-			payType = this.payType;
-		}
-		
 		switch (payType) {
 		case PER_DAY:
 			return new PerDayPayslipBasicPayItem();
 		case FIXED_RATE:
 			return new FixedRatePayslipBasicPayItem();
+		default:
+		    throw new IllegalStateException("Pay Type is invalid: " + payType);
 		}
-		return null;
 	}
 
 	private double getNumberOfDaysWorked(DateInterval period) {
@@ -280,6 +283,11 @@ public class Payslip {
 		}
 	}
 
+    public void setFInalBasicAndNetPays() {
+        finalBasicPay = getBasicPay();
+        finalNetPay = getNetPay();
+    }
+	
 	public PayType getPayType() {
 		return payType;
 	}
@@ -287,5 +295,29 @@ public class Payslip {
 	public void setPayType(PayType payType) {
 		this.payType = payType;
 	}
-	
+
+    public PaySchedule getPaySchedule() {
+        return paySchedule;
+    }
+
+    public void setPaySchedule(PaySchedule paySchedule) {
+        this.paySchedule = paySchedule;
+    }
+
+    public BigDecimal getFinalBasicPay() {
+        return finalBasicPay;
+    }
+
+    public void setFinalBasicPay(BigDecimal finalBasicPay) {
+        this.finalBasicPay = finalBasicPay;
+    }
+
+    public BigDecimal getFinalNetPay() {
+        return finalNetPay;
+    }
+
+    public void setFinalNetPay(BigDecimal finalNetPay) {
+        this.finalNetPay = finalNetPay;
+    }
+
 }

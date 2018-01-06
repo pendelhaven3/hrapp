@@ -96,7 +96,7 @@ public class PayrollToExcelGenerator {
 					PayslipBasicPayItem item = items.get(j);
 					row = sheet.getRow(currentRow);
 					
-					switch (payslip.getEmployee().getPayType()) {
+					switch (payslip.getPayType()) {
 					case PER_DAY:
 						cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
 						cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);

@@ -180,7 +180,7 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 	        amount = amount.abs().negate();
 	    }
 	    
-	    return amount.abs().negate();
+	    return amount.abs();
 	}
 	
 }

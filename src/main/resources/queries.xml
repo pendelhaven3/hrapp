@@ -43,82 +43,30 @@ LEFT JOIN (
 ) b
 	ON b.employeeId = a.employeeId
 JOIN (
-	SELECT id AS employeeId, SUM(rate) AS monthlyPay
+	SELECT id AS employeeId, IFNULL(SUM(
+		(CASE payType 
+			WHEN 'PER_DAY' THEN rate
+			WHEN 'FIXED_RATE' THEN
+				(CASE paySchedule
+					WHEN 'WEEKLY' THEN rate / 6
+					WHEN 'SEMIMONTHLY' THEN rate / (CASE WHEN date < DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY) THEN :numberOfWorkingDaysInFirstHalf ELSE :numberOfWorkingDaysInSecondHalf END)
+				END)
+		END)
+	), 0) AS monthlyPay
 	FROM (
-		SELECT
-			a.id,
-			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
+		SELECT a.id, b.date, c.payType, c.paySchedule, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
 		FROM employee a
-		JOIN employeeAttendance b
-			ON b.employee_id = a.id
-		WHERE a.resigned = false
-		AND MONTH(b.date) = :month
-		AND YEAR(b.date) = :year
-		AND a.payType = 'PER_DAY'
-		AND (a.paySchedule = 'WEEKLY' OR (a.paySchedule = 'SEMIMONTHLY' and :firstDayOfMonth > '2017-07-31'))
-	) perDayMonthlyPay
-	GROUP BY id
-	UNION ALL
-	SELECT id, SUM(semimonthlyPay) AS monthlyPay
-	FROM (
-		SELECT id, SUM(rate) AS semimonthlyPay
-		FROM (
-			SELECT
-				a.id,
-				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInFirstHalf AS rate
-			FROM employee a
-			JOIN employeeAttendance b
-				ON b.employee_id = a.id
-			WHERE a.resigned = false
-			AND (a.payType = 'FIXED_RATE' OR (a.payType = 'PER_DAY' AND :firstDayOfMonth < '2017-07-31'))
-			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
-		) semiMonthlyMonthlyPay1
-		GROUP BY id
-		UNION ALL
-		SELECT id, SUM(rate) AS semimonthlyPay
-		FROM (
-			SELECT
-				a.id,
-				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInSecondHalf AS rate
-			FROM employee a
-			JOIN employeeAttendance b
-				ON b.employee_id = a.id
-			WHERE a.resigned = false
-			AND (a.payType = 'FIXED_RATE' OR (a.payType = 'PER_DAY' AND :firstDayOfMonth < '2017-07-31'))
-			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
-			AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
-		) semiMonthlyMonthlyPay2
-		GROUP BY id
-	) semiMonthlyMonthlyPay
-	GROUP BY id
-	UNION ALL
-	SELECT id, SUM(rate) as monthlyPay
-	FROM (
-		SELECT
-			a.id,
-			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / 6 AS rate
-		FROM employee a
-		JOIN employeeAttendance b
-			ON b.employee_id = a.id
-		WHERE a.resigned = false
-		AND a.payType = 'FIXED_RATE'
-		AND a.paySchedule = 'WEEKLY'
-		AND b.date >= :firstDayOfMonth
-		AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
-	) weeklyMonthlyPay
-	GROUP BY id
-	UNION ALL
-	SELECT a.id, c.rate
-	FROM employee a
-	JOIN salary c
-		ON c.employee_id = a.id
-	WHERE a.resigned = false
-	AND a.payType = 'FIXED_RATE'
-	AND a.paySchedule = 'MONTHLY'
-	AND c.effectiveDateFrom <= :firstDayOfMonth
-	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATE_ADD(DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH), INTERVAL -1 DAY))
+		JOIN calendar b
+			ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+		JOIN salary c
+			ON b.date >= c.effectiveDateFrom
+			AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
+			AND c.employee_id = a.id
+		JOIN employeeAttendance d
+			ON d.employee_id = a.id
+			AND d.date = b.date
+		WHERE a.id = :employeeId
+	) z
 ) c
 	ON c.employeeId = a.employeeId
 JOIN employee d
@@ -145,252 +93,59 @@ ORDER BY d.firstName, d.lastName
 	</entry>
 	<entry name="monthlyPay">
 <![CDATA[
-SELECT monthlyPay
+SELECT IFNULL(SUM(
+	(CASE payType 
+		WHEN 'PER_DAY' THEN rate
+		WHEN 'FIXED_RATE' THEN
+			(CASE paySchedule
+				WHEN 'WEEKLY' THEN rate / 6
+				WHEN 'SEMIMONTHLY' THEN originalRate / (CASE WHEN date < DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY) THEN :numberOfWorkingDaysInFirstHalf ELSE :numberOfWorkingDaysInSecondHalf END)
+			END)
+	END)
+), 0) AS monthlyPay
 FROM (
-	SELECT SUM(rate) AS monthlyPay
-	FROM (
-		SELECT
-			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
-		FROM employee a
-		JOIN employeeAttendance b
-			ON b.employee_id = a.id
-		WHERE a.id = :employeeId
-		AND MONTH(b.date) = :month
-		AND YEAR(b.date) = :year
-		AND a.payType = 'PER_DAY'
-		AND a.paySchedule = 'WEEKLY'
-	) perDayMonthlyPay
-	UNION ALL
-	SELECT SUM(semimonthlyPay) AS monthlyPay
-	FROM (
-		SELECT SUM(rate) AS semimonthlyPay
-		FROM (
-			SELECT
-				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInFirstHalf AS rate
-			FROM employee a
-			JOIN employeeAttendance b
-				ON b.employee_id = a.id
-			WHERE a.id = :employeeId
-			AND a.payType = 'FIXED_RATE'
-			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
-		) semiMonthlyMonthlyPay1
-		UNION ALL
-		SELECT SUM(rate) AS semimonthlyPay
-		FROM (
-			SELECT
-				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInSecondHalf AS rate
-			FROM employee a
-			JOIN employeeAttendance b
-				ON b.employee_id = a.id
-			WHERE a.id = :employeeId
-			AND a.payType = 'FIXED_RATE'
-			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
-			AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
-		) semiMonthlyMonthlyPay2
-	) semiMonthlyMonthlyPay
-	UNION ALL
-	SELECT SUM(rate) as monthlyPay
-	FROM (
-		SELECT
-			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / 6 AS rate
-		FROM employee a
-		JOIN employeeAttendance b
-			ON b.employee_id = a.id
-		WHERE a.id = :employeeId
-		AND a.payType = 'FIXED_RATE'
-		AND a.paySchedule = 'WEEKLY'
-		AND b.date >= :firstDayOfMonth
-		AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
-	) weeklyMonthlyPay
-	UNION ALL
-	SELECT c.rate
+	SELECT b.date, c.payType, c.paySchedule, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate,
+		c.rate AS originalRate
 	FROM employee a
+	JOIN calendar b
+		ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 	JOIN salary c
-		ON c.employee_id = a.id
+		ON b.date >= c.effectiveDateFrom
+		AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
+		AND c.employee_id = a.id
+	JOIN employeeAttendance d
+		ON d.employee_id = a.id
+		AND d.date = b.date
 	WHERE a.id = :employeeId
-	AND a.payType = 'FIXED_RATE'
-	AND a.paySchedule = 'MONTHLY'
-	AND c.effectiveDateFrom <= :firstDayOfMonth
-	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATE_ADD(DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH), INTERVAL -1 DAY))
-	UNION ALL
-	SELECT SUM(partPay) AS monthlyPay
-	FROM (
-		SELECT SUM(rate) AS partPay
-		FROM (
-			SELECT
-				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
-			FROM employee a
-			JOIN employeeAttendance b
-				ON b.employee_id = a.id
-			WHERE a.id = :employeeId
-			AND MONTH(b.date) = :month
-			AND YEAR(b.date) = :year
-			AND a.payType = 'PER_DAY'
-			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date >= '2017-08-01'
-		) perDayPay
-		UNION ALL
-		SELECT SUM(semimonthlyPay) AS partPay
-		FROM (
-			SELECT SUM(rate) AS semimonthlyPay
-			FROM (
-				SELECT
-					(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInFirstHalf AS rate
-				FROM employee a
-				JOIN employeeAttendance b
-					ON b.employee_id = a.id
-				WHERE a.id = :employeeId
-				AND a.payType = 'PER_DAY'
-				AND a.paySchedule = 'SEMIMONTHLY'
-				AND b.date < '2017-08-01'
-				AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
-			) semiMonthlyMonthlyPay1
-			UNION ALL
-			SELECT SUM(rate) AS semimonthlyPay
-			FROM (
-				SELECT
-					(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) / :numberOfWorkingDaysInSecondHalf AS rate
-				FROM employee a
-				JOIN employeeAttendance b
-					ON b.employee_id = a.id
-				WHERE a.id = :employeeId
-				AND a.payType = 'PER_DAY'
-				AND a.paySchedule = 'SEMIMONTHLY'
-				AND b.date < '2017-08-01'
-				AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
-				AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
-			) semiMonthlyMonthlyPay2
-		) semiMonthlyPay
-	) semiMonthlyPerDayPay
-) monthlyPay
-WHERE monthlyPay IS NOT NULL
+) z
 	]]>
 	</entry>
 	<entry name="monthlyPay2">
 <![CDATA[
-SELECT monthlyPay
+SELECT IFNULL(SUM(
+	(CASE payType 
+		WHEN 'PER_DAY' THEN rate
+		WHEN 'FIXED_RATE' THEN
+			(CASE paySchedule
+				WHEN 'WEEKLY' THEN rate / 6
+				WHEN 'SEMIMONTHLY' THEN rate / (CASE WHEN date < DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY) THEN :numberOfWorkingDaysInFirstHalf ELSE :numberOfWorkingDaysInSecondHalf END)
+			END)
+	END)
+), 0) AS monthlyPay
 FROM (
-	SELECT SUM(rate) AS monthlyPay
-	FROM (
-		SELECT
-			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
-		FROM employee a
-		JOIN employeeAttendance b
-			ON b.employee_id = a.id
-		WHERE a.id = :employeeId
-		AND MONTH(b.date) = :month
-		AND YEAR(b.date) = :year
-		AND a.payType = 'PER_DAY'
-		AND a.paySchedule = 'WEEKLY'
-	) perDayMonthlyPay
-	UNION ALL
-	SELECT SUM(semimonthlyPay) AS monthlyPay
-	FROM (
-		SELECT SUM(rate) AS semimonthlyPay
-		FROM (
-			SELECT
-				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) / :numberOfWorkingDaysInFirstHalf AS rate
-			FROM employee a
-			JOIN employeeAttendance b
-				ON b.employee_id = a.id
-			WHERE a.id = :employeeId
-			AND a.payType = 'FIXED_RATE'
-			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
-		) semiMonthlyMonthlyPay1
-		UNION ALL
-		SELECT SUM(rate) AS semimonthlyPay
-		FROM (
-			SELECT
-				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) / :numberOfWorkingDaysInSecondHalf AS rate
-			FROM employee a
-			JOIN employeeAttendance b
-				ON b.employee_id = a.id
-			WHERE a.id = :employeeId
-			AND a.payType = 'FIXED_RATE'
-			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
-			AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
-		) semiMonthlyMonthlyPay2
-	) semiMonthlyMonthlyPay
-	UNION ALL
-	SELECT SUM(rate) as monthlyPay
-	FROM (
-		SELECT
-			(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) / 6 AS rate
-		FROM employee a
-		JOIN employeeAttendance b
-			ON b.employee_id = a.id
-		WHERE a.id = :employeeId
-		AND a.payType = 'FIXED_RATE'
-		AND a.paySchedule = 'WEEKLY'
-		AND b.date >= :firstDayOfMonth
-		AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
-	) weeklyMonthlyPay
-	UNION ALL
-	SELECT c.rate
+	SELECT b.date, c.payType, c.paySchedule, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
 	FROM employee a
+	JOIN calendar b
+		ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 	JOIN salary c
-		ON c.employee_id = a.id
+		ON b.date >= c.effectiveDateFrom
+		AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
+		AND c.employee_id = a.id
+	JOIN employeeAttendance d
+		ON d.employee_id = a.id
+		AND d.date = b.date
 	WHERE a.id = :employeeId
-	AND a.payType = 'FIXED_RATE'
-	AND a.paySchedule = 'MONTHLY'
-	AND c.effectiveDateFrom <= :firstDayOfMonth
-	AND (c.effectiveDateTo IS NULL OR c.effectiveDateTo >= DATE_ADD(DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH), INTERVAL -1 DAY))
-	UNION ALL
-	SELECT SUM(partPay) AS monthlyPay
-	FROM (
-		SELECT SUM(rate) AS partPay
-		FROM (
-			SELECT
-				(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
-			FROM employee a
-			JOIN employeeAttendance b
-				ON b.employee_id = a.id
-			WHERE a.id = :employeeId
-			AND MONTH(b.date) = :month
-			AND YEAR(b.date) = :year
-			AND a.payType = 'PER_DAY'
-			AND a.paySchedule = 'SEMIMONTHLY'
-			AND b.date >= '2017-08-01'
-		) perDayPay
-		UNION ALL
-		SELECT SUM(semimonthlyPay) AS partPay
-		FROM (
-			SELECT SUM(rate) AS semimonthlyPay
-			FROM (
-				SELECT
-					(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) / :numberOfWorkingDaysInFirstHalf AS rate
-				FROM employee a
-				JOIN employeeAttendance b
-					ON b.employee_id = a.id
-				WHERE a.id = :employeeId
-				AND a.payType = 'PER_DAY'
-				AND a.paySchedule = 'SEMIMONTHLY'
-				AND b.date < '2017-08-01'
-				AND b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 14 DAY)
-			) semiMonthlyMonthlyPay1
-			UNION ALL
-			SELECT SUM(rate) AS semimonthlyPay
-			FROM (
-				SELECT
-					(SELECT rate FROM salary WHERE employee_id = a.id AND effectiveDateFrom <= b.date AND (effectiveDateTo IS NULL OR effectiveDateTo >= b.date)) * (CASE b.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) / :numberOfWorkingDaysInSecondHalf AS rate
-				FROM employee a
-				JOIN employeeAttendance b
-					ON b.employee_id = a.id
-				WHERE a.id = :employeeId
-				AND a.payType = 'PER_DAY'
-				AND a.paySchedule = 'SEMIMONTHLY'
-				AND b.date < '2017-08-01'
-				AND b.date >= DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY)
-				AND b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
-			) semiMonthlyMonthlyPay2
-		) semiMonthlyPay
-	) semiMonthlyPerDayPay
-) monthlyPay
-WHERE monthlyPay IS NOT NULL
+) z
 	]]>
 	</entry>
 </root>

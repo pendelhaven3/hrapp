@@ -17,11 +17,14 @@ import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.ValeProduct;
+import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.model.util.TableItem;
 import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
+import com.pj.hrapp.service.SalaryService;
 import com.pj.hrapp.service.ValeProductService;
 
 import javafx.fxml.FXML;
@@ -35,6 +38,7 @@ public class AddPayslipDialog extends AbstractDialog {
 	@Autowired private PayrollService payrollService;
 	@Autowired private ValeProductService valeProductService;
 	@Autowired private EmployeeLoanService employeeLoanService;
+	@Autowired private SalaryService salaryService;
 	
 	@FXML private AppTableView<Employee> employeesTable;
 	@FXML private SelectableTableView<ValeProduct> valeProductsTable;
@@ -87,9 +91,15 @@ public class AddPayslipDialog extends AbstractDialog {
 			return;
 		}
 		
+		Employee employee = employeesTable.getSelectionModel().getSelectedItem();
+		DateInterval periodCovered = payroll.getPeriodCovered();
+		Salary salary = salaryService.getCurrentSalary(employee, periodCovered.getDateTo());
+		
 		payslip = new Payslip();
 		payslip.setPayroll(payroll);
-		payslip.setEmployee(employeesTable.getSelectionModel().getSelectedItem());
+		payslip.setEmployee(employee);
+		payslip.setPayType(salary.getPayType());
+        payslip.setPaySchedule(salary.getPaySchedule());
 		payslip.setPeriodCovered(payroll.getPeriodCovered());
 		
 		try {

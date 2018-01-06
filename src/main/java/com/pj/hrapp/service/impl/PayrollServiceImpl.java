@@ -121,7 +121,7 @@ public class PayrollServiceImpl implements PayrollService {
 		SSSContributionTable sssContributionTable = sssService.getSSSContributionTable();
 		PhilHealthContributionTable philHealthContributionTable = philHealthService.getContributionTable();
 		
-		switch (payslip.getEmployee().getPaySchedule()) {
+		switch (payslip.getPaySchedule()) {
 		case WEEKLY:
 			BigDecimal employeeCompensation = getEmployeeContributionReferenceCompensationForMonthYear(
 					payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
@@ -130,7 +130,7 @@ public class PayrollServiceImpl implements PayrollService {
 			break;
 		case SEMIMONTHLY: {
 			BigDecimal referenceCompensation = null;
-			if (payslip.getEmployee().getPayType() == PayType.PER_DAY) {
+			if (payslip.getPayType() == PayType.PER_DAY) {
 				referenceCompensation = getEmployeeContributionReferenceCompensationForMonthYear(
 						payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
 			} else {
@@ -295,12 +295,17 @@ public class PayrollServiceImpl implements PayrollService {
 				valeProductService.markValeProductsAsPaid(valeProducts);
 			}
 			
-			payslip.setPayType(payslip.getEmployee().getPayType());
 			payslipDao.save(payslip);
 		}
 		
 		payroll.setPosted(true);
 		payrollDao.save(payroll);
+		
+		for (Payslip payslip : payroll.getPayslips()) {
+		    payslip = getPayslip(payslip.getId());
+		    payslip.setFInalBasicAndNetPays();
+		    payslipDao.save(payslip);
+		}
 		
 		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
 	}

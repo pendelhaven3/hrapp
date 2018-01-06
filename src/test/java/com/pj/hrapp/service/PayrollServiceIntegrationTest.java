@@ -40,6 +40,7 @@ import com.pj.hrapp.util.DateUtil;
 
 public class PayrollServiceIntegrationTest extends IntegrationTest {
 
+    /*
 	@Autowired
 	private PayrollService payrollService;
 	
@@ -470,5 +471,6 @@ public class PayrollServiceIntegrationTest extends IntegrationTest {
         assertEquals(1, jdbcTemplate.queryForObject("select count(*) from payslipadjustment where type = 'PAGIBIG' and amount = ?", 
                 Integer.class, new BigDecimal("-100")).intValue());
     }
+    */
     
 }
