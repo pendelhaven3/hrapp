@@ -10,13 +10,13 @@ JOIN employee b
 	ON b.id = a.employee_id
 SET a.payType = b.payType, a.paySchedule = b.paySchedule
 WHERE a.effectiveDateTo IS NULL
-AND b.resigned = false;
+AND b.resigned = false;y
 
 UPDATE payslip a
 JOIN salary b
 	ON b.employee_id = a.employee_id
 JOIN payroll c
 	ON c.id = a.payroll_id
-SET a.payType = b.payType, a.paySchedule = b.paySchedule
+SET a.payType = b.payType
 WHERE b.effectiveDateTo IS NULL
-AND c.batchNumber = 178;
+AND c.batchNumber in (178, 179, 180);
