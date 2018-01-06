@@ -121,8 +121,6 @@ public class SalaryDaoImpl implements SalaryDao {
 	public BigDecimal getEmployeeContributionReferenceCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
 		Query query = entityManager.createNativeQuery(Queries.getQuery("monthlyPay"));
 		query.setParameter("employeeId", employee.getId());
-		query.setParameter("month", yearMonth.getMonth().getValue());
-		query.setParameter("year", yearMonth.getYear());
 		query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
 		query.setParameter("numberOfWorkingDaysInFirstHalf", DateUtil.getNumberOfWorkingDaysInFirstHalf(yearMonth));
 		query.setParameter("numberOfWorkingDaysInSecondHalf", DateUtil.getNumberOfWorkingDaysInSecondHalf(yearMonth));
@@ -138,8 +136,6 @@ public class SalaryDaoImpl implements SalaryDao {
     public BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
         Query query = entityManager.createNativeQuery(Queries.getQuery("monthlyPay2"));
         query.setParameter("employeeId", employee.getId());
-        query.setParameter("month", yearMonth.getMonth().getValue());
-        query.setParameter("year", yearMonth.getYear());
         query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
         query.setParameter("numberOfWorkingDaysInFirstHalf", DateUtil.getNumberOfWorkingDaysInFirstHalf(yearMonth));
         query.setParameter("numberOfWorkingDaysInSecondHalf", DateUtil.getNumberOfWorkingDaysInSecondHalf(yearMonth));

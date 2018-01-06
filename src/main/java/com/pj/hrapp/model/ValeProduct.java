@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 //import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pj.hrapp.Constants;
 import com.pj.hrapp.util.FormatterUtil;
@@ -24,7 +25,7 @@ public class ValeProduct {
 	
 	private Long salesInvoiceNumber;
 	
-//	@JsonFormat(pattern = Constants.DATE_FORMAT)
+	@JsonFormat(pattern = Constants.DATE_FORMAT)
 	private Date transactionDate;
 	
 	private BigDecimal amount;

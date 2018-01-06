@@ -212,10 +212,9 @@ public class PayrollServiceImpl implements PayrollService {
 		payslipDao.save(payslip);
 		if (isNew) {
 			generateEmployeeAttendance(payslip);
-			// TODO: Re-enable including negative balance from previous payslip
-//			if (hasNegativeBalanceInPreviousPayslip(payslip)) {
-//				generateAdjustmentForNegativeBalance(payslip);
-//			}
+			if (hasNegativeBalanceInPreviousPayslip(payslip)) {
+				generateAdjustmentForNegativeBalance(payslip);
+			}
 		}
 	}
 
@@ -286,18 +285,18 @@ public class PayrollServiceImpl implements PayrollService {
 	@Transactional
 	@Override
 	public void postPayroll(Payroll payroll) {
-//		if (!canConnectToMagic()) {
-//			throw new ConnectToMagicException();
-//		}
-//		
-//		for (Payslip payslip : payroll.getPayslips()) {
-//			List<ValeProduct> valeProducts = valeProductRepository.findAllByPayslip(payslip);
-//			if (!valeProducts.isEmpty()) {
-//				valeProductService.markValeProductsAsPaid(valeProducts);
-//			}
-//			
-//			payslipDao.save(payslip);
-//		}
+		if (!canConnectToMagic()) {
+			throw new ConnectToMagicException();
+		}
+		
+		for (Payslip payslip : payroll.getPayslips()) {
+			List<ValeProduct> valeProducts = valeProductRepository.findAllByPayslip(payslip);
+			if (!valeProducts.isEmpty()) {
+				valeProductService.markValeProductsAsPaid(valeProducts);
+			}
+			
+			payslipDao.save(payslip);
+		}
 		
 		payroll.setPosted(true);
 		payrollDao.save(payroll);
@@ -308,7 +307,7 @@ public class PayrollServiceImpl implements PayrollService {
 		    payslipDao.save(payslip);
 		}
 		
-//		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
+		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
 	}
 
 	private void markEmployeeLoansWithLastPaymentInPayrollAsPaid(Payroll payroll) {
