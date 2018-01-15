@@ -31,4 +31,8 @@ public class NumberUtil {
 		return pos.getIndex() == value.length();
 	}
 	
+	public static boolean equals(BigDecimal value1, BigDecimal value2) {
+	    return value1.compareTo(value2) == 0;
+	}
+	
 }
