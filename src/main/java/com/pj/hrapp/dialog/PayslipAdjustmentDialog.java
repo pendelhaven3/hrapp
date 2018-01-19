@@ -176,11 +176,16 @@ public class PayslipAdjustmentDialog extends AbstractDialog {
 	private BigDecimal getAmountFromAmountField() {
         BigDecimal amount = NumberUtil.toBigDecimal(amountField.getText());
         
-	    if (typeComboBox.getValue() == PayslipAdjustmentType.VALE_CASH) {
-	        amount = amount.abs().negate();
-	    }
+        switch (typeComboBox.getValue()) {
+        case LATES:
+        case VALE_CASH:
+            amount = amount.abs().negate();
+            break;
+        default:
+            break;
+        }
 	    
-	    return amount.abs();
+	    return amount;
 	}
 	
 }
