@@ -17,11 +17,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
 	@Query("select e from Employee e order by e.lastName, e.firstName")
 	List<Employee> findAll();
 
-	@Query("select e from Employee e, Payroll p where e.id not in"
-			+ " (select payslip.employee.id from Payroll payroll, Payslip payslip where payslip.payroll = :payroll)"
-			+ " and p = :payroll"
-			+ " and e.resigned = false"
-			+ " order by e.firstName, e.lastName")
+	@Query("select e from Employee e, Salary s, Payroll pr"
+	        + " where s.employee.id = e.id"
+	        + " and pr = :payroll"
+	        + " and e.resigned = false"
+	        + " and e not in (select p.employee from Payslip p where p.payroll = :payroll)"
+            + " and s.effectiveDateFrom <= pr.payDate"
+	        + " and (s.effectiveDateTo is null or s.effectiveDateTo >= pr.payDate)"
+	        + " and s.paySchedule = pr.paySchedule"
+	        + " order by e.firstName, e.lastName")
 	List<Employee> findAllActiveNotInPayroll(@Param("payroll") Payroll payroll);
 
 	@Query("select e from Employee e where e.resigned = :resigned order by e.firstName, e.lastName")

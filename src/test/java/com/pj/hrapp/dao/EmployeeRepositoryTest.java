@@ -2,138 +2,150 @@ package com.pj.hrapp.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-import com.pj.hrapp.IntegrationTest;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.Payroll;
+import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.Salary;
+import com.pj.hrapp.util.DateUtil;
 
-public class EmployeeRepositoryTest extends IntegrationTest {
+@SpringBootTest(classes = SalaryRepositoryTest.class)
+@SpringBootApplication(scanBasePackages = {"com.pj.hrapp.dao"})
+@EntityScan("com.pj.hrapp.model")
+@ActiveProfiles("test")
+public class EmployeeRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
 	
-	@Autowired private EmployeeRepository employeeDao;
+	@Autowired
+	private EmployeeRepository employeeRepository;
 	
-	@PersistenceContext private EntityManager entityManager;
-	
-	private void insertTestEmployee() {
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
-				+ " values (1, 1, 'Homer', 'Simpson')");
-	}
-	
-	private void insertTestEmployees() {
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
-				+ " values (1, 1, 'Homer', 'Simpson')");
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
-				+ " values (2, 2, 'Montgomery', 'Burns')");
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName)"
-				+ " values (3, 3, 'Nick', 'Riviera')");
-	}
-	
-	private void insertTestPayroll() {
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName, paySchedule)"
-				+ " values (1, 1, 'Homer', 'Simpson', 'WEEKLY')");
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName, paySchedule)"
-				+ " values (2, 2, 'Montgomery', 'Burns', 'WEEKLY')");
-		jdbcTemplate.update("insert into Employee (id, employeeNumber, firstName, lastName, paySchedule)"
-				+ " values (3, 3, 'Nick', 'Riviera', 'SEMIMONTHLY')");
-		
-		jdbcTemplate.update("insert into Payroll (id, paySchedule) values (1, 'WEEKLY')");
-		
-		jdbcTemplate.update("insert into Payslip (id, payroll_id, employee_id) values (1, 1, 1)");
-	}
-	
+    @Autowired
+    private PayrollDao payrollRepository;
+    
+    @Autowired
+    private SalaryDao salaryRepository;
+    
+    @Autowired
+    private PayslipDao payslipRepository;
+    
 	@Test
-	public void save_insert() {
-		Employee employee = new Employee();
-		employee.setEmployeeNumber(1L);
-		employee.setFirstName("Homer");
-		employee.setLastName("Simpson");
-		employeeDao.save(employee);
-		
-		assertEquals(1, countRowsInTableWhere("Employee", 
-				"employeeNumber = 1 and firstName = 'Homer' and lastName = 'Simpson'"));
-	}
-	
-	@Test
-	public void save_update() {
-		insertTestEmployee();
-		
-		Employee employee = new Employee();
-		employee.setId(1L);
-		employee.setEmployeeNumber(2L);
-		employee.setFirstName("Marge");
-		employee.setLastName("Bouvier");
-		employeeDao.save(employee);
-		entityManager.flush();
-		
-		assertEquals(1, countRowsInTableWhere("Employee", 
-				"id = 1 and employeeNumber = 2 and firstName = 'Marge' and lastName = 'Bouvier'"));
-	}
-	
-	@Test
-	public void get() {
-		insertTestEmployee();
-		
-		Employee employee = employeeDao.findOne(1L);
-		
-		assertNotNull(employee);
-		assertEquals(1L, employee.getEmployeeNumber().longValue());
-		assertEquals("Homer", employee.getFirstName());
-		assertEquals("Simpson", employee.getLastName());
+	public void findAllActiveNotInPayroll_doesNotIncludeEmployeesWithDifferentPaySchedule() {
+	    Payroll payroll = new Payroll();
+	    payroll.setPaySchedule(PaySchedule.WEEKLY);
+	    payroll.setPayDate(DateUtil.toDate("02/05/2018"));
+	    payrollRepository.save(payroll);
+	    
+        Employee weeklyEmployee = createEmployeeWithPaySchedule(PaySchedule.WEEKLY);
+        createEmployeeWithPaySchedule(PaySchedule.SEMIMONTHLY);
+	    
+	    List<Employee> result = employeeRepository.findAllActiveNotInPayroll(payroll);
+	    assertEquals(1, result.size());
+	    assertEquals(weeklyEmployee, result.get(0));
 	}
 
-	@Test
-	public void getAll() {
-		insertTestEmployees();
-		
-		assertEquals(3, employeeDao.findAll().size());
-	}
-	
-	@Test
-	public void findByEmployeeNumber() {
-		insertTestEmployee();
-		
-		Employee employee = employeeDao.findByEmployeeNumber(1L);
-		
-		assertNotNull(employee);
-		assertEquals(1L, employee.getEmployeeNumber().longValue());
-		assertEquals("Homer", employee.getFirstName());
-		assertEquals("Simpson", employee.getLastName());
-	}
-	
-	@Test
-	public void findByEmployeeNumber_noSuchEmployee() {
-		assertNull(employeeDao.findByEmployeeNumber(1L));
-	}
-	
-	@Test
-	public void delete() {
-		insertTestEmployee();
-		
-		employeeDao.delete(new Employee(1L));
-		entityManager.flush();
-		
-		assertEquals(0, countRowsInTableWhere("Employee", "id = 1"));
-	}
-	
-	@Test
-	public void findAllNotInPayroll() {
-		insertTestPayroll();
-		
-		List<Employee> result = employeeDao.findAllActiveNotInPayroll(Payroll.withId(1L));
-		assertEquals(1, result.size());
-		assertTrue(result.contains(Employee.withId(2L)));
-	}
+    private Employee createEmployeeWithPaySchedule(PaySchedule paySchedule) {
+        Employee employee = new Employee();
+        employeeRepository.save(employee);
+        
+        Salary salary = new Salary();
+        salary.setEmployee(employee);
+        salary.setPaySchedule(paySchedule);
+        salary.setEffectiveDateFrom(DateUtil.toDate("01/01/2018"));
+        salaryRepository.save(salary);
+        
+        return employee;
+    }
+    
+    @Test
+    public void findAllActiveNotInPayroll_doesNotIncludeResignedEmployee() {
+        Payroll payroll = new Payroll();
+        payroll.setPaySchedule(PaySchedule.WEEKLY);
+        payroll.setPayDate(DateUtil.toDate("02/05/2018"));
+        payrollRepository.save(payroll);
+        
+        Employee activeEmployee = createEmployeeWithResignedFlag(false);
+        createEmployeeWithResignedFlag(true);
+        
+        List<Employee> result = employeeRepository.findAllActiveNotInPayroll(payroll);
+        assertEquals(1, result.size());
+        assertEquals(activeEmployee, result.get(0));
+    }
+    
+    private Employee createEmployeeWithResignedFlag(boolean resigned) {
+        Employee employee = new Employee();
+        employee.setResigned(resigned);
+        employeeRepository.save(employee);
+        
+        Salary salary = new Salary();
+        salary.setEmployee(employee);
+        salary.setPaySchedule(PaySchedule.WEEKLY);
+        salary.setEffectiveDateFrom(DateUtil.toDate("01/01/2018"));
+        salaryRepository.save(salary);
+        
+        return employee;
+    }
+ 
+    @Test
+    public void findAllActiveNotInPayroll_doesNotIncludeEmployeeAlreadyInPayroll() {
+        Payroll payroll = new Payroll();
+        payroll.setPaySchedule(PaySchedule.WEEKLY);
+        payroll.setPayDate(DateUtil.toDate("02/05/2018"));
+        payrollRepository.save(payroll);
+        
+        Employee employeeInPayroll = createEmployeeWithPaySchedule(PaySchedule.WEEKLY);
+        Employee employeeNotInPayroll = createEmployeeWithPaySchedule(PaySchedule.WEEKLY);
+        
+        Payslip payslip = new Payslip();
+        payslip.setPayroll(payroll);
+        payslip.setEmployee(employeeInPayroll);
+        payslipRepository.save(payslip);
+        
+        List<Employee> result = employeeRepository.findAllActiveNotInPayroll(payroll);
+        assertEquals(1, result.size());
+        assertEquals(employeeNotInPayroll, result.get(0));
+    }
+    
+    @Test
+    public void findAllActiveNotInPayroll_isBasedOnCurrentSalaryRecord() {
+        Payroll payroll = new Payroll();
+        payroll.setPaySchedule(PaySchedule.WEEKLY);
+        payroll.setPayDate(DateUtil.toDate("02/05/2018"));
+        payrollRepository.save(payroll);
+        
+        Employee weeklyEmployee = new Employee();
+        employeeRepository.save(weeklyEmployee);
+        
+        createSalary(weeklyEmployee, PaySchedule.WEEKLY, DateUtil.toDate("01/01/2018"), DateUtil.toDate("02/05/2018"));
+        createSalary(weeklyEmployee, PaySchedule.SEMIMONTHLY, DateUtil.toDate("02/06/2018"), null);
+        
+        Employee semimonthlyEmployee = new Employee();
+        employeeRepository.save(semimonthlyEmployee);
+        
+        createSalary(semimonthlyEmployee, PaySchedule.SEMIMONTHLY, DateUtil.toDate("01/01/2018"), DateUtil.toDate("02/05/2018"));
+        createSalary(semimonthlyEmployee, PaySchedule.WEEKLY, DateUtil.toDate("02/06/2018"), null);
+        
+        List<Employee> result = employeeRepository.findAllActiveNotInPayroll(payroll);
+        assertEquals(1, result.size());
+        assertEquals(weeklyEmployee, result.get(0));
+    }
 
-	@Test
-	public void getLatestEmployeeNumber() {
-		insertTestEmployees();
-		assertTrue(employeeDao.findLatestEmployeeNumber() == 3);
-	}
-	
+    private void createSalary(Employee employee, PaySchedule paySchedule, Date effectiveDateFrom, Date effectiveDateTo) {
+        Salary salary = new Salary();
+        salary.setEmployee(employee);
+        salary.setPaySchedule(paySchedule);
+        salary.setEffectiveDateFrom(effectiveDateFrom);
+        salary.setEffectiveDateTo(effectiveDateTo);
+        salaryRepository.save(salary);
+    }
+    
 }

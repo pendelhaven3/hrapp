@@ -8,7 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -22,7 +22,7 @@ public class Salary {
 	@GeneratedValue
 	private Long id;
 
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	private Employee employee;
 	
 	private Date effectiveDateFrom;
