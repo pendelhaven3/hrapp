@@ -65,7 +65,7 @@ JOIN (
 		JOIN employeeAttendance d
 			ON d.employee_id = a.id
 			AND d.date = b.date
-		WHERE a.id = :employeeId
+		WHERE a.resigned = false
 	) z
 ) c
 	ON c.employeeId = a.employeeId
