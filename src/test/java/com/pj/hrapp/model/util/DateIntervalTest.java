@@ -143,5 +143,11 @@ public class DateIntervalTest {
 		assertNull(reference.overlap(argument));
 		assertNull(argument.overlap(reference));
 	}
+
+	@Test
+	public void getNumberOfDays() {
+        DateInterval interval = new DateInterval(DateUtil.toDate("03/01/2018"), DateUtil.toDate("03/31/2018"));
+        assertEquals(31, interval.getNumberOfDays());
+	}
 	
 }

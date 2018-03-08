@@ -28,5 +28,7 @@ public interface SalaryDao {
 	BigDecimal getEmployeeContributionReferenceCompensationForMonthYear(Employee employee, YearMonth yearMonth);
 	
     BigDecimal getEmployeeCompensationForMonthYear(Employee employee, YearMonth yearMonth);
+
+    BigDecimal getHouseholdNetBasicPay(Employee employee, YearMonth yearMonth);
 	
 }

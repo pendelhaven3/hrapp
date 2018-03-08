@@ -3,15 +3,24 @@ package com.pj.hrapp.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
+import java.time.Month;
+import java.time.YearMonth;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 
 import com.pj.hrapp.IntegrationTest;
+import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.util.DateUtil;
@@ -19,7 +28,7 @@ import com.pj.hrapp.util.DateUtil;
 public class SalaryDaoTest extends IntegrationTest {
 
     @Autowired private EmployeeRepository employeeRepository;
-    
+    @Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	@Autowired private SalaryDao salaryDao;
 	
 	private void insertTestEmployee() {
@@ -156,6 +165,91 @@ public class SalaryDaoTest extends IntegrationTest {
         salaryDao.save(salary3);
         
         assertEquals(salary2, salaryDao.findByEmployeeAndEffectiveDate(employee, DateUtil.toDate("07/01/2017")));
+    }
+    
+    @Test
+    public void getHouseholdNetBasicPay() {
+        recreateCalendarTable();
+        
+        Employee employee = new Employee();
+        employeeRepository.save(employee);
+        
+        Salary salary = new Salary();
+        salary.setEmployee(employee);
+        salary.setRate(new BigDecimal("3100"));
+        salary.setEffectiveDateFrom(DateUtil.toDate("03/01/2018"));
+        salaryDao.save(salary);
+        
+        saveCalendarDate(DateUtil.toDate("03/01/2018"), DateUtil.toDate("03/31/2018"));
+        saveEmployeeAttendance(employee, Attendance.WHOLE_DAY, DateUtil.toDate("03/01/2018"), DateUtil.toDate("03/31/2018"));
+        
+        BigDecimal result = salaryDao.getHouseholdNetBasicPay(employee, YearMonth.of(2018, Month.MARCH));
+        assertTrue(salary.getRate().compareTo(result) == 0);
+    }
+    
+    @Test
+    public void getHouseholdNetBasicPay_withAbsences() {
+        recreateCalendarTable();
+        
+        Employee employee = new Employee();
+        employeeRepository.save(employee);
+        
+        Salary salary = new Salary();
+        salary.setEmployee(employee);
+        salary.setRate(new BigDecimal("3100"));
+        salary.setEffectiveDateFrom(DateUtil.toDate("03/01/2018"));
+        salaryDao.save(salary);
+        
+        saveCalendarDate(DateUtil.toDate("03/01/2018"), DateUtil.toDate("03/31/2018"));
+        saveEmployeeAttendance(employee, Attendance.WHOLE_DAY, DateUtil.toDate("03/01/2018"), DateUtil.toDate("03/15/2018"));
+        saveEmployeeAttendance(employee, Attendance.HALF_DAY, DateUtil.toDate("03/16/2018"));
+        saveEmployeeAttendance(employee, Attendance.ABSENT, DateUtil.toDate("03/17/2018"));
+        saveEmployeeAttendance(employee, Attendance.WHOLE_DAY, DateUtil.toDate("03/18/2018"), DateUtil.toDate("03/31/2018"));
+        
+        BigDecimal result = salaryDao.getHouseholdNetBasicPay(employee, YearMonth.of(2018, Month.MARCH));
+        assertTrue(new BigDecimal("2950").compareTo(result) == 0);
+    }
+    
+    private void recreateCalendarTable() {
+        try {
+            jdbcTemplate.update("drop table calendar");
+        } catch (DataAccessException e) {
+            // table not existing anyway...
+        }
+        
+        jdbcTemplate.update("create table calendar (date date)");
+    }
+
+    private void saveCalendarDate(Date dateFrom, Date dateTo) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateFrom);
+        Date date = cal.getTime();
+        while (date.compareTo(dateTo) <= 0) {
+            jdbcTemplate.update("insert into calendar values (?)", date);
+            
+            cal.add(Calendar.DATE, 1);
+            date = cal.getTime();
+        }
+    }
+    
+    private void saveEmployeeAttendance(Employee employee, Attendance attendance, Date dateFrom) {
+        saveEmployeeAttendance(employee, attendance, dateFrom, dateFrom);
+    }
+    
+    private void saveEmployeeAttendance(Employee employee, Attendance attendance, Date dateFrom, Date dateTo) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateFrom);
+        Date date = cal.getTime();
+        while (date.compareTo(dateTo) <= 0) {
+            EmployeeAttendance employeeAttendance = new EmployeeAttendance();
+            employeeAttendance.setEmployee(employee);
+            employeeAttendance.setDate(date);
+            employeeAttendance.setAttendance(attendance);
+            employeeAttendanceDao.save(employeeAttendance);
+            
+            cal.add(Calendar.DATE, 1);
+            date = cal.getTime();
+        }
     }
     
 }

@@ -21,11 +21,20 @@ public class FixedRatePayslipBasicPayItemTest {
 	
 	@Test
 	public void getAmount() {
-		item.setRate(new BigDecimal("100"));
-		item.setNumberOfDays(10d);
-		item.setPeriod(new DateInterval(DateUtil.toDate("11/01/2015"), DateUtil.toDate("11/15/2015")));
+		item.setRate(new BigDecimal("3100"));
+		item.setNumberOfDays(31d);
+		item.setPeriod(new DateInterval(DateUtil.toDate("03/01/2018"), DateUtil.toDate("03/31/2018")));
 		
-		assertEquals(0, new BigDecimal("83.33").compareTo(item.getAmount()));
+		assertEquals(0, item.getRate().compareTo(item.getAmount()));
 	}
 	
+    @Test
+    public void getAmount_withAbsences() {
+        item.setRate(new BigDecimal("3100"));
+        item.setNumberOfDays(29.5);
+        item.setPeriod(new DateInterval(DateUtil.toDate("03/01/2018"), DateUtil.toDate("03/31/2018")));
+        
+        assertEquals(0, new BigDecimal("2950").compareTo(item.getAmount()));
+    }
+    
 }

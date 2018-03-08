@@ -262,7 +262,11 @@ public class PayrollServiceImpl implements PayrollService {
 	}
 
 	private BigDecimal getEmployeeContributionReferenceCompensationForMonthYear(Employee employee, YearMonth yearMonth) {
-		return salaryDao.getEmployeeContributionReferenceCompensationForMonthYear(employee, yearMonth);
+	    if (employee.isHousehold()) {
+            return salaryDao.getHouseholdNetBasicPay(employee, yearMonth);
+	    } else {
+	        return salaryDao.getEmployeeContributionReferenceCompensationForMonthYear(employee, yearMonth);
+	    }
 	}
 
 	@Transactional

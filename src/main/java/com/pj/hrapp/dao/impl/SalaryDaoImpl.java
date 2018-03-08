@@ -146,5 +146,19 @@ public class SalaryDaoImpl implements SalaryDao {
             return BigDecimal.ZERO;
         }
     }
+
+    @Override
+    public BigDecimal getHouseholdNetBasicPay(Employee employee, YearMonth yearMonth) {
+        Query query = entityManager.createNativeQuery(Queries.getQuery("householdMonthlyPay"));
+        query.setParameter("employeeId", employee.getId());
+        query.setParameter("numberOfWorkingDays", yearMonth.lengthOfMonth());
+        query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
+        
+        try {
+            return (BigDecimal)query.getSingleResult();
+        } catch (NoResultException e) {
+            return BigDecimal.ZERO;
+        }
+    }
 	
 }
