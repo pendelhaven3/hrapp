@@ -46,6 +46,7 @@ public class SSSContributionTableEntry {
 	private BigDecimal compensationTo;
 	private BigDecimal employerContribution;
 	private BigDecimal employeeContribution;
+    private BigDecimal employeeCompensation;
 	
 	public Long getId() {
 		return id;
@@ -136,5 +137,13 @@ public class SSSContributionTableEntry {
 		return compensationFrom.compareTo(compensation) <= 0 &&
 				(compensationTo == null || compensation.compareTo(compensationTo) <= 0);
 	}
+
+    public BigDecimal getEmployeeCompensation() {
+        return employeeCompensation;
+    }
+
+    public void setEmployeeCompensation(BigDecimal employeeCompensation) {
+        this.employeeCompensation = employeeCompensation;
+    }
 	
 }

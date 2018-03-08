@@ -43,6 +43,11 @@
 					<AppPropertyValueFactory property="employerContribution" />
 				</cellValueFactory>
 			</TableColumn>
+			<TableColumn text="EC" styleClass="center">
+				<cellValueFactory>
+					<AppPropertyValueFactory property="employeeCompensation" />
+				</cellValueFactory>
+			</TableColumn>
 		</columns>
 	</AppTableView>
 	

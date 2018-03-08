@@ -30,6 +30,7 @@ public class SSSContributionTableEntryController extends AbstractController {
 	@FXML private TextField compensationToField;
 	@FXML private TextField employeeContributionField;
 	@FXML private TextField employerContributionField;
+    @FXML private TextField employeeCompensationField;
 	
 	@Parameter private SSSContributionTableEntry entry;
 	
@@ -47,6 +48,9 @@ public class SSSContributionTableEntryController extends AbstractController {
 			employerContributionField.setText(
 					entry.getEmployerContribution() != null ? 
 							FormatterUtil.formatAmount(entry.getEmployerContribution()) : null);
+            employeeCompensationField.setText(
+                    entry.getEmployeeCompensation() != null ? 
+                            FormatterUtil.formatAmount(entry.getEmployeeCompensation()) : null);
 		}
 		
 		compensationFromField.requestFocus();
@@ -73,7 +77,8 @@ public class SSSContributionTableEntryController extends AbstractController {
 		entry.setCompensationTo(
 				isCompensationToSpecified() ? NumberUtil.toBigDecimal(compensationToField.getText()) : null);
 		entry.setEmployeeContribution(NumberUtil.toBigDecimal(employeeContributionField.getText()));
-		entry.setEmployerContribution(NumberUtil.toBigDecimal(employerContributionField.getText()));
+        entry.setEmployerContribution(NumberUtil.toBigDecimal(employerContributionField.getText()));
+		entry.setEmployeeCompensation(NumberUtil.toBigDecimal(employeeCompensationField.getText()));
 		
 		try {
 			sssService.save(entry);
@@ -129,7 +134,19 @@ public class SSSContributionTableEntryController extends AbstractController {
 			compensationFromField.requestFocus();
 			return false;
 		}
+
+        if (isEmployeeCompensationNotSpecified()) {
+            ShowDialog.error("Employee Compensation must be specified");
+            employeeCompensationField.requestFocus();
+            return false;
+        }
 		
+        if (isEmployeeCompensationNotAValidAmount()) {
+            ShowDialog.error("Employee Compensation must be a valid amount");
+            employeeCompensationField.requestFocus();
+            return false;
+        }
+        
 		return true;
 	}
 
@@ -171,6 +188,14 @@ public class SSSContributionTableEntryController extends AbstractController {
 		return StringUtils.isEmpty(compensationFromField.getText());
 	}
 
+    private boolean isEmployeeCompensationNotSpecified() {
+        return StringUtils.isEmpty(employeeCompensationField.getText());
+    }
+
+    private boolean isEmployeeCompensationNotAValidAmount() {
+        return !NumberUtil.isAmount(employeeCompensationField.getText());
+    }
+    
 	@FXML public void cancel() {
 		stageController.showSSSContributionTableScreen();
 	}

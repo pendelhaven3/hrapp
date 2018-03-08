@@ -22,7 +22,7 @@
 	<center>
 		<VBox alignment="center" spacing="10">
 			<GridPane vgap="10" alignment="center">
-				<Label text="Componsation From:" prefWidth="200" 
+				<Label text="Componsation From:" prefWidth="220" 
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
 				<TextField fx:id="compensationFromField"
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -38,6 +38,10 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="3" />
 				<TextField fx:id="employerContributionField"
 					GridPane.columnIndex="1" GridPane.rowIndex="3" />
+				<Label text="Employee Compensation:" 
+					GridPane.columnIndex="0" GridPane.rowIndex="4" />
+				<TextField fx:id="employeeCompensationField"
+					GridPane.columnIndex="1" GridPane.rowIndex="4" />
 			</GridPane>
 		
 			<HBox spacing="10" alignment="center">
