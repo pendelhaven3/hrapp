@@ -36,6 +36,7 @@ import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.util.DateUtil;
 
+@Ignore
 public class PayrollServiceIntegrationTest extends IntegrationTest {
 
     /*
