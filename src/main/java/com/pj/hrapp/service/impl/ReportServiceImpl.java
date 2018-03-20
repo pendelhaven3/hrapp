@@ -21,6 +21,7 @@ import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.BasicSalaryReportItem;
 import com.pj.hrapp.model.report.LatesReport;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
+import com.pj.hrapp.model.report.SSSReport;
 import com.pj.hrapp.service.ReportService;
 
 @Service
@@ -100,5 +101,13 @@ public class ReportServiceImpl implements ReportService {
 			return employeeLoanPaymentRepository.findAllByPaymentDateBetween(from, to);
 		}
 	}
+
+    @Override
+    public SSSReport generateSSSReport(YearMonth yearMonth) {
+        SSSReport report = new SSSReport();
+        report.setNonHouseholdItems(reportDao.getSSSNonHouseholdReportItems(yearMonth));
+        report.setHouseholdItems(reportDao.getSSSHouseholdReportItems(yearMonth));
+        return report;
+    }
 	
 }

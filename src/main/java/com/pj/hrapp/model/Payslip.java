@@ -14,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -32,7 +31,7 @@ public class Payslip {
 	@ManyToOne
 	private Payroll payroll;
 	
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	private Employee employee;
 
 	@Column(columnDefinition = "date")

@@ -108,7 +108,7 @@ public class PayrollServiceImpl implements PayrollService {
 	}
 
 	private boolean shouldGenerateEmployeeAttendance(Employee employee, Date date) {
-		return !DateUtil.isSunday(date) && isEmployeeAttendanceNotYetGenerated(employee, date);
+        return (!DateUtil.isSunday(date) || employee.isHousehold()) && isEmployeeAttendanceNotYetGenerated(employee, date);
 	}
 
 	private boolean isEmployeeAttendanceNotYetGenerated(Employee employee, Date date) {

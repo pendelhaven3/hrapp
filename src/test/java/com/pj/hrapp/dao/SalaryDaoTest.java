@@ -8,19 +8,15 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 
 import com.pj.hrapp.IntegrationTest;
 import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.Employee;
-import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.util.DateUtil;
@@ -28,7 +24,6 @@ import com.pj.hrapp.util.DateUtil;
 public class SalaryDaoTest extends IntegrationTest {
 
     @Autowired private EmployeeRepository employeeRepository;
-    @Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	@Autowired private SalaryDao salaryDao;
 	
 	private void insertTestEmployee() {
@@ -208,48 +203,6 @@ public class SalaryDaoTest extends IntegrationTest {
         
         BigDecimal result = salaryDao.getHouseholdNetBasicPay(employee, YearMonth.of(2018, Month.MARCH));
         assertTrue(new BigDecimal("2950").compareTo(result) == 0);
-    }
-    
-    private void recreateCalendarTable() {
-        try {
-            jdbcTemplate.update("drop table calendar");
-        } catch (DataAccessException e) {
-            // table not existing anyway...
-        }
-        
-        jdbcTemplate.update("create table calendar (date date)");
-    }
-
-    private void saveCalendarDate(Date dateFrom, Date dateTo) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateFrom);
-        Date date = cal.getTime();
-        while (date.compareTo(dateTo) <= 0) {
-            jdbcTemplate.update("insert into calendar values (?)", date);
-            
-            cal.add(Calendar.DATE, 1);
-            date = cal.getTime();
-        }
-    }
-    
-    private void saveEmployeeAttendance(Employee employee, Attendance attendance, Date dateFrom) {
-        saveEmployeeAttendance(employee, attendance, dateFrom, dateFrom);
-    }
-    
-    private void saveEmployeeAttendance(Employee employee, Attendance attendance, Date dateFrom, Date dateTo) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(dateFrom);
-        Date date = cal.getTime();
-        while (date.compareTo(dateTo) <= 0) {
-            EmployeeAttendance employeeAttendance = new EmployeeAttendance();
-            employeeAttendance.setEmployee(employee);
-            employeeAttendance.setDate(date);
-            employeeAttendance.setAttendance(attendance);
-            employeeAttendanceDao.save(employeeAttendance);
-            
-            cal.add(Calendar.DATE, 1);
-            date = cal.getTime();
-        }
     }
     
 }

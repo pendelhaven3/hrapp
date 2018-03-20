@@ -9,6 +9,7 @@ import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.LatesReport;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
+import com.pj.hrapp.model.report.SSSReport;
 
 public interface ReportService {
 
@@ -19,5 +20,7 @@ public interface ReportService {
 	BasicSalaryReport generateBasicSalaryReport(Date from, Date to);
 	
 	List<EmployeeLoanPayment> generateEmployeeLoanPaymentsReport(Date from, Date to, EmployeeLoanType loanType);
+
+    SSSReport generateSSSReport(YearMonth yearMonthCriteria);
 	
 }

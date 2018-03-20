@@ -3,6 +3,7 @@ package com.pj.hrapp.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,14 +26,19 @@ public class Salary {
 	@ManyToOne(optional = false)
 	private Employee employee;
 	
+	@Column(nullable = false)
 	private Date effectiveDateFrom;
+	
 	private Date effectiveDateTo;
 	
+	@Column(nullable = false)
 	private BigDecimal rate;
 	
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PaySchedule paySchedule;
     
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PayType payType;
 	

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.pj.hrapp.gui.component.ShowDialog;
@@ -58,7 +57,7 @@ public class PhilHealthContributionTableController extends AbstractController {
         
         philHealthContributionTable.setFloor(NumberUtil.toBigDecimal(floorField.getText()));
         philHealthContributionTable.setCeiling(NumberUtil.toBigDecimal(ceilingField.getText()));
-        philHealthContributionTable.setMultiplier(NumberUtil.toBigDecimal(floorField.getText()));
+        philHealthContributionTable.setMultiplier(NumberUtil.toBigDecimal(multiplierField.getText()));
         
         try {
             philHealthService.save(philHealthContributionTable);

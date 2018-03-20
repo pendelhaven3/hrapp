@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.pj.hrapp.dao.ReportDao;
 import com.pj.hrapp.model.report.LatesReportItem;
 import com.pj.hrapp.model.report.SSSPhilHealthReportItem;
+import com.pj.hrapp.model.report.SSSReportItem;
 import com.pj.hrapp.util.DateUtil;
 import com.pj.hrapp.util.Queries;
 
@@ -52,5 +53,27 @@ public class ReportDaoImpl implements ReportDao {
 		
 		return query.getResultList();
 	}
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<SSSReportItem> getSSSNonHouseholdReportItems(YearMonth yearMonth) {
+        Query query = entityManager.createNativeQuery(
+                Queries.getQuery("sssNonHouseholdReport"), "sssReportItemMapping");
+        query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
+        query.setParameter("numberOfWorkingDaysInFirstHalf", DateUtil.getNumberOfWorkingDaysInFirstHalf(yearMonth));
+        query.setParameter("numberOfWorkingDaysInSecondHalf", DateUtil.getNumberOfWorkingDaysInSecondHalf(yearMonth));
+        query.setParameter("contributionMonth", DateUtil.toString(yearMonth));
+        return query.getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<SSSReportItem> getSSSHouseholdReportItems(YearMonth yearMonth) {
+        Query query = entityManager.createNativeQuery(
+                Queries.getQuery("sssHouseholdReport"), "sssReportItemMapping");
+        query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
+        query.setParameter("contributionMonth", DateUtil.toString(yearMonth));
+        return query.getResultList();
+    }
 
 }

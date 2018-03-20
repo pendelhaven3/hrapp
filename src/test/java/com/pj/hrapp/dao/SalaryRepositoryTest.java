@@ -6,21 +6,13 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
+import com.pj.hrapp.IntegrationTest;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.util.DateUtil;
 
-@SpringBootTest(classes = SalaryRepositoryTest.class)
-@SpringBootApplication(scanBasePackages = {"com.pj.hrapp.dao"})
-@EntityScan("com.pj.hrapp.model")
-@ActiveProfiles("test")
-public class SalaryRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class SalaryRepositoryTest extends IntegrationTest {
 
     @Autowired
     private SalaryRepository salaryRepository;
