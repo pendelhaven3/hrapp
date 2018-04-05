@@ -44,4 +44,9 @@ public class ReportListController extends AbstractController {
         stageController.showSSSReportScreen();
     }
 	
+    @FXML
+    public void goToPhilHealthReportScreen() {
+        stageController.showPhilHealthReportScreen();
+    }
+    
 }

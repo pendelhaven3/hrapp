@@ -8,6 +8,7 @@ import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.LatesReport;
+import com.pj.hrapp.model.report.PhilHealthReport;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
 import com.pj.hrapp.model.report.SSSReport;
 
@@ -23,4 +24,6 @@ public interface ReportService {
 
     SSSReport generateSSSReport(YearMonth yearMonthCriteria);
 	
+    PhilHealthReport generatePhilHealthReport(YearMonth yearMonthCriteria);
+    
 }

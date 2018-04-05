@@ -20,6 +20,7 @@ import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.BasicSalaryReportItem;
 import com.pj.hrapp.model.report.LatesReport;
+import com.pj.hrapp.model.report.PhilHealthReport;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
 import com.pj.hrapp.model.report.SSSReport;
 import com.pj.hrapp.service.ReportService;
@@ -107,6 +108,14 @@ public class ReportServiceImpl implements ReportService {
         SSSReport report = new SSSReport();
         report.setNonHouseholdItems(reportDao.getSSSNonHouseholdReportItems(yearMonth));
         report.setHouseholdItems(reportDao.getSSSHouseholdReportItems(yearMonth));
+        return report;
+    }
+
+    @Override
+    public PhilHealthReport generatePhilHealthReport(YearMonth yearMonth) {
+        PhilHealthReport report = new PhilHealthReport();
+        report.setNonHouseholdItems(reportDao.getPhilHealthNonHouseholdReportItems(yearMonth));
+        report.setHouseholdItems(reportDao.getPhilHealthHouseholdReportItems(yearMonth));
         return report;
     }
 	
