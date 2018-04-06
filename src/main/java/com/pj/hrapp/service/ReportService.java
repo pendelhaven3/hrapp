@@ -28,5 +28,5 @@ public interface ReportService {
     PhilHealthReport generatePhilHealthReport(YearMonth yearMonthCriteria);
 
     PagIbigReport generatePagIbigReport(YearMonth yearMonthCriteria);
-    
+
 }

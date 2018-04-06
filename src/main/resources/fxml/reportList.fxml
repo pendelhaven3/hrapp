@@ -21,6 +21,7 @@
 			<Button text="Lates Report" onAction="#goToLatesReportScreen" />
 			<Button text="Basic Salary Report" onAction="#goToBasicSalaryReportScreen" />
 			<Button text="Employee Loan Payments Report" onAction="#goToEmployeeLoanPaymentsReportScreen" />
+			<Button text="SSS Loan Payments Report" onAction="#goToSssLoanPaymentsReportScreen" />
 		</VBox>
 	</center>
 </BorderPane>
