@@ -257,4 +257,8 @@ public class StageController {
         loadSceneFromFXML("philHealthReport");
     }
 
+    public void showPagIbigReportScreen() {
+        loadSceneFromFXML("pagIbigReport");
+    }
+
 }

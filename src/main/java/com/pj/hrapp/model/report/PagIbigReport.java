@@ -1,0 +1,35 @@
+package com.pj.hrapp.model.report;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PagIbigReport {
+
+    private List<PagIbigReportItem> items = new ArrayList<>();
+
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+    
+    public BigDecimal getTotalEmployeeContribution() {
+        return items.stream()
+                .map(item -> item.getEmployeeContribution())
+                .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+    }
+    
+    public BigDecimal getTotalEmployerContribution() {
+        return items.stream()
+                .map(item -> item.getEmployerContribution())
+                .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+    }
+    
+    public List<PagIbigReportItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<PagIbigReportItem> items) {
+        this.items = items;
+    }
+
+}

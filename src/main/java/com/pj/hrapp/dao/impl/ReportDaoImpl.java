@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.pj.hrapp.dao.ReportDao;
 import com.pj.hrapp.model.report.LatesReportItem;
+import com.pj.hrapp.model.report.PagIbigReportItem;
 import com.pj.hrapp.model.report.PhilHealthReportItem;
 import com.pj.hrapp.model.report.SSSPhilHealthReportItem;
 import com.pj.hrapp.model.report.SSSReportItem;
@@ -89,6 +90,15 @@ public class ReportDaoImpl implements ReportDao {
     public List<PhilHealthReportItem> getPhilHealthHouseholdReportItems(YearMonth yearMonth) {
         Query query = entityManager.createNativeQuery(
                 Queries.getQuery("philHealthHouseholdReport"), "philHealthReportItemMapping");
+        query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
+        query.setParameter("contributionMonth", DateUtil.toString(yearMonth));
+        return query.getResultList();
+    }
+
+    @Override
+    public List<PagIbigReportItem> getPagIbigReportItems(YearMonth yearMonth) {
+        Query query = entityManager.createNativeQuery(
+                Queries.getQuery("pagIbigReport"), "pagIbigReportItemMapping");
         query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
         query.setParameter("contributionMonth", DateUtil.toString(yearMonth));
         return query.getResultList();
