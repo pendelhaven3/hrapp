@@ -13,7 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.pj.hrapp.model.EmployeeLoanPayment;
 
-public class SSSLoanPaymentsReportExcelGenerator {
+public class PagIbigLoanPaymentsReportExcelGenerator {
 
     private Row row;
     private Cell cell;
@@ -27,11 +27,11 @@ public class SSSLoanPaymentsReportExcelGenerator {
         Workbook workbook = new XSSFWorkbook();
         
         Sheet sheet = workbook.createSheet();
-        sheet.setColumnWidth(0, 256 * 30);
-        sheet.setColumnWidth(1, 256 * 15);
+        sheet.setColumnWidth(0, 256 * 18);
+        sheet.setColumnWidth(1, 256 * 30);
         sheet.setColumnWidth(2, 256 * 15);
         sheet.setColumnWidth(3, 256 * 15);
-        sheet.setColumnWidth(4, 256 * 19);
+        sheet.setColumnWidth(4, 256 * 15);
         
         createStyles(workbook);
         
@@ -70,44 +70,43 @@ public class SSSLoanPaymentsReportExcelGenerator {
     private void addHeaders() {
         cell = row.createCell(0);
         cell.setCellStyle(headerStyle);
-        cell.setCellValue("Employee");
+        cell.setCellValue("Pag-IBIG No.");
         
         cell = row.createCell(1);
         cell.setCellStyle(headerStyle);
-        cell.setCellValue("SSS No.");
+        cell.setCellValue("Employee");
         
         cell = row.createCell(2);
         cell.setCellStyle(headerStyle);
-        cell.setCellValue("Loan Date");
+        cell.setCellValue("Amortization");
         
         cell = row.createCell(3);
         cell.setCellStyle(headerStyle);
-        cell.setCellValue("Amount of Loan");
+        cell.setCellValue("TIN");
         
         cell = row.createCell(4);
         cell.setCellStyle(headerStyle);
-        cell.setCellValue("Monthly Amortization");
+        cell.setCellValue("Date of Birth");
     }
 
     private void addDataRows(List<EmployeeLoanPayment> items) {
         for (EmployeeLoanPayment item : items) {
             cell = row.createCell(0);
-            cell.setCellValue(item.getLoan().getEmployee().getFullName());
+            cell.setCellValue(item.getLoan().getEmployee().getPagibigNumber());
             
             cell = row.createCell(1);
-            cell.setCellValue(item.getLoan().getEmployee().getSssNumber());
+            cell.setCellValue(item.getLoan().getEmployee().getFullName());
             
             cell = row.createCell(2);
-            cell.setCellStyle(dateStyle);
-            cell.setCellValue(item.getLoan().getLoanDate());
-            
-            cell = row.createCell(3);
-            cell.setCellStyle(numberStyle);
-            cell.setCellValue(item.getLoan().getAmount().doubleValue());
-            
-            cell = row.createCell(4);
             cell.setCellStyle(numberStyle);
             cell.setCellValue(item.getLoan().getPaymentAmount().doubleValue());
+            
+            cell = row.createCell(3);
+            cell.setCellValue(item.getLoan().getEmployee().getTin());
+            
+            cell = row.createCell(4);
+            cell.setCellStyle(dateStyle);
+            cell.setCellValue(item.getLoan().getEmployee().getBirthday());
             
             nextRow();
         }
