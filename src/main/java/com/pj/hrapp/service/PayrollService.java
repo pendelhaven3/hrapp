@@ -3,6 +3,7 @@ package com.pj.hrapp.service;
 import java.util.List;
 
 import com.pj.hrapp.model.Employee;
+import com.pj.hrapp.model.EmployeeAttendance;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.PayslipAdjustment;
@@ -44,5 +45,7 @@ public interface PayrollService {
 	long getNextBatchNumber();
 
     List<PayslipAdjustment> searchPayslipAdjustment(PayslipAdjustmentSearchCriteria criteria);
+
+    void saveEmployeeAttendance(EmployeeAttendance employeeAttendance, Payslip payslip);
 
 }

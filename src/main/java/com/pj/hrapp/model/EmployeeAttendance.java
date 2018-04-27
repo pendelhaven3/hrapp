@@ -33,6 +33,10 @@ public class EmployeeAttendance {
 		return attendance.getValue();
 	}
 	
+	public boolean isHoliday() {
+	    return attendance == Attendance.HOLIDAY;
+	}
+	
 	public Long getId() {
 		return id;
 	}

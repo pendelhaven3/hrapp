@@ -9,7 +9,9 @@ import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Attendance;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.service.EmployeeService;
+import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
@@ -22,11 +24,13 @@ public class EmployeeAttendanceDialog extends AbstractDialog {
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeAttendanceDialog.class);
 	
 	@Autowired private EmployeeService employeeService;
+	@Autowired private PayrollService payrollService;
 	
 	@FXML private Label dateLabel;
 	@FXML private ComboBox<Attendance> attendanceComboBox;
 	
 	@Parameter private EmployeeAttendance employeeAttendance;
+	@Parameter private Payslip payslip;
 	
 	@Override
 	protected String getDialogTitle() {
@@ -52,7 +56,7 @@ public class EmployeeAttendanceDialog extends AbstractDialog {
 		employeeAttendance.setAttendance(attendanceComboBox.getValue());
 		
 		try {
-			employeeService.save(employeeAttendance);
+		    payrollService.saveEmployeeAttendance(employeeAttendance, payslip);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			ShowDialog.unexpectedError();

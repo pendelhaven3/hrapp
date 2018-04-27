@@ -129,6 +129,7 @@ public class PayslipController extends AbstractController {
 	protected void editSelectedAttendance() {
 		Map<String, Object> model = new HashMap<>();
 		model.put("employeeAttendance", attendancesTable.getSelectionModel().getSelectedItem());
+        model.put("payslip", payslip);
 		
 		employeeAttendanceDialog.showAndWait(model);
 		

@@ -84,6 +84,10 @@ public class PayslipAdjustmentDaoImpl implements PayslipAdjustmentDao {
             sql.append(" and pa.contributionMonth = :contributionMonth");
             paramMap.put("contributionMonth", criteria.getContributionMonth());
         }
+        if (!StringUtils.isEmpty(criteria.getDescription())) {
+            sql.append(" and pa.description = :description");
+            paramMap.put("description", criteria.getDescription());
+        }
 
         TypedQuery<PayslipAdjustment> query = entityManager.createQuery(sql.toString(), PayslipAdjustment.class);
         for (String key : paramMap.keySet()) {

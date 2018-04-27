@@ -1,6 +1,7 @@
 package com.pj.hrapp.service.impl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
@@ -369,4 +370,65 @@ public class PayrollServiceImpl implements PayrollService {
         return payslipAdjustmentDao.search(criteria);
     }
 
+    @Transactional
+    @Override
+    public void saveEmployeeAttendance(EmployeeAttendance employeeAttendance, Payslip payslip) {
+        employeeAttendanceDao.save(employeeAttendance);
+        if (shouldGenerateHolidayPayAdjustment(payslip, employeeAttendance)) {
+            payslipAdjustmentDao.save(createHolidayPayAdjustment(payslip, employeeAttendance.getDate()));
+        }
+        
+        if (!employeeAttendance.isHoliday()) {
+            deleteHolidayPayAdjustment(payslip, employeeAttendance.getDate());
+        }
+    }
+
+    private boolean shouldGenerateHolidayPayAdjustment(Payslip payslip, EmployeeAttendance employeeAttendance) {
+        return employeeAttendance.isHoliday() && !hasHolidayPayAdjustment(payslip, employeeAttendance.getDate());
+    }
+
+    private PayslipAdjustment createHolidayPayAdjustment(Payslip payslip, Date date) {
+        PayslipAdjustment payslipAdjustment = new PayslipAdjustment();
+        payslipAdjustment.setPayslip(payslip);
+        payslipAdjustment.setType(PayslipAdjustmentType.HOLIDAY_PAY);
+        payslipAdjustment.setDescription("holiday " + DateUtil.toMonthDateString(date));
+        payslipAdjustment.setAmount(getSingleDayPay(payslip.getEmployee(), payslip));
+        return payslipAdjustment;
+    }
+
+    private boolean hasHolidayPayAdjustment(Payslip payslip, Date date) {
+        return getHolidayPayAdjustment(payslip, date) != null;
+    }
+    
+    private PayslipAdjustment getHolidayPayAdjustment(Payslip payslip, Date date) {
+        PayslipAdjustmentSearchCriteria criteria = new PayslipAdjustmentSearchCriteria();
+        criteria.setType(PayslipAdjustmentType.HOLIDAY_PAY);
+        criteria.setDescription("holiday " + DateUtil.toMonthDateString(date));
+        
+        List<PayslipAdjustment> adjustments = payslipAdjustmentDao.search(criteria);
+        if (adjustments.size() > 1) {
+            throw new IllegalStateException("There can only be one holiday pay adjustment record per date");
+        }
+        return !adjustments.isEmpty() ? adjustments.get(0) : null;
+    }
+    
+    private BigDecimal getSingleDayPay(Employee employee, Payslip payslip) {
+        Salary salary = salaryDao.findByEmployeeAndEffectiveDate(employee, payslip.getPeriodCoveredFrom());
+        switch (salary.getPayType()) {
+        case PER_DAY:
+            return salary.getRate();
+        case FIXED_RATE:
+            return salary.getRate().divide(new BigDecimal(payslip.getPeriodCovered().getNumberOfDays()), 2, RoundingMode.HALF_UP);
+        default:
+            throw new IllegalStateException("Should not reach here");
+        }
+    }
+    
+    private void deleteHolidayPayAdjustment(Payslip payslip, Date date) {
+        PayslipAdjustment payslipAdjustment = getHolidayPayAdjustment(payslip, date);
+        if (payslipAdjustment != null) {
+            payslipAdjustmentDao.delete(payslipAdjustment);
+        }
+    }
+    
 }

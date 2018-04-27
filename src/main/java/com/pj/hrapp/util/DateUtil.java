@@ -127,4 +127,8 @@ public class DateUtil {
         return StringUtils.leftPad(String.valueOf(yearMonth.getMonthValue()), 2, "0") + String.valueOf(yearMonth.getYear());
     }
     
+    public static String toMonthDateString(Date date) {
+        return new SimpleDateFormat("M/d").format(date);
+    }
+    
 }

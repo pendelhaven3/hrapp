@@ -7,6 +7,7 @@ public enum PayslipAdjustmentType {
 
 	BONUS,
 	COMPANY_LOAN,
+	HOLIDAY_PAY,
 	INCENTIVE,
 	LATES,
 	OTHERS,

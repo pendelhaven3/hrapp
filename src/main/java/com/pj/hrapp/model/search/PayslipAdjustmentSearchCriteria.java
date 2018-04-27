@@ -8,6 +8,7 @@ public class PayslipAdjustmentSearchCriteria {
     private Employee employee;
     private PayslipAdjustmentType type;
     private String contributionMonth;
+    private String description;
 
     public Employee getEmployee() {
         return employee;
@@ -33,4 +34,12 @@ public class PayslipAdjustmentSearchCriteria {
         this.contributionMonth = contributionMonth;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
 }
