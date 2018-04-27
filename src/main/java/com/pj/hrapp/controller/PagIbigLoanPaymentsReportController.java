@@ -3,6 +3,7 @@ package com.pj.hrapp.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.Month;
 import java.time.YearMonth;
@@ -23,10 +24,12 @@ import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.service.ReportService;
 import com.pj.hrapp.util.DateUtil;
 import com.pj.hrapp.util.ExcelUtil;
+import com.pj.hrapp.util.FormatterUtil;
 import com.pj.hrapp.util.PagIbigLoanPaymentsReportExcelGenerator;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 
 @Controller
@@ -39,6 +42,7 @@ public class PagIbigLoanPaymentsReportController extends AbstractController {
     @FXML private ComboBox<Month> monthComboBox;
     @FXML private ComboBox<Integer> yearComboBox;
     @FXML private AppTableView<EmployeeLoanPayment> loanPaymentsTable;
+    @FXML private Label totalAmortizationsLabel;
     
     private PagIbigLoanPaymentsReportExcelGenerator excelGenerator = new PagIbigLoanPaymentsReportExcelGenerator();
     
@@ -70,6 +74,8 @@ public class PagIbigLoanPaymentsReportController extends AbstractController {
         if (items.isEmpty()) {
             ShowDialog.error("No records found");
         }
+        totalAmortizationsLabel.setText(FormatterUtil.formatAmount(
+                items.stream().map(item -> item.getAmount()).reduce(BigDecimal.ZERO, (x,y) -> x.add(y))));
     }
 
     private boolean isCriteriaNotSpecified() {

@@ -73,6 +73,13 @@
 					</TableColumn>
 				</columns>
 			</AppTableView>
+			
+			<GridPane vgap="10" alignment="center">
+				<Label text="Total Amortizations:" prefWidth="175"
+					GridPane.columnIndex="0" GridPane.rowIndex="0" />
+				<Label fx:id="totalAmortizationsLabel" prefWidth="100"
+					GridPane.columnIndex="1" GridPane.rowIndex="0" />
+			</GridPane>
 		</VBox>
 	</center>
 </BorderPane>

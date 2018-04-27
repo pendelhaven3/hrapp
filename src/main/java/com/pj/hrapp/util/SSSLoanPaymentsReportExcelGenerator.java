@@ -1,6 +1,7 @@
 package com.pj.hrapp.util;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -42,6 +43,10 @@ public class SSSLoanPaymentsReportExcelGenerator {
         nextRow();
         
         addDataRows(items);
+        
+        nextRow();
+        
+        addTotalRow(items);
         
         return workbook;
     }
@@ -115,6 +120,16 @@ public class SSSLoanPaymentsReportExcelGenerator {
     
     private void nextRow() {
         row = row.getSheet().createRow(row.getRowNum() + 1);
+    }
+    
+    private void addTotalRow(List<EmployeeLoanPayment> items) {
+        cell = row.createCell(0);
+        cell.setCellStyle(boldStyle);
+        cell.setCellValue("Total");
+        
+        cell = row.createCell(4);
+        cell.setCellStyle(numberBoldStyle);
+        cell.setCellValue(items.stream().map(item -> item.getAmount()).reduce(BigDecimal.ZERO, (x,y) -> x.add(y)).doubleValue());
     }
     
 }
