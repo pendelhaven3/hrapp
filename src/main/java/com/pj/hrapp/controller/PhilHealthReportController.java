@@ -3,6 +3,7 @@ package com.pj.hrapp.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.Month;
 import java.time.YearMonth;
@@ -42,16 +43,21 @@ public class PhilHealthReportController extends AbstractController {
     @FXML private ComboBox<Integer> yearComboBox;
     @FXML private AppTableView<PhilHealthReportItem> nonHouseholdTable;
     @FXML private AppTableView<PhilHealthReportItem> householdTable;
-    @FXML private Label totalNonHouseholdMonthlyPayField;
-    @FXML private Label totalNonHouseholdDueField;
-    @FXML private Label totalNonHouseholdMonthlyPayField2;
-    @FXML private Label totalNonHouseholdDueField2;
-    @FXML private Label totalHouseholdMonthlyPayField;
-    @FXML private Label totalHouseholdDueField;
-    @FXML private Label totalHouseholdMonthlyPayField2;
-    @FXML private Label totalHouseholdDueField2;
-    @FXML private Label totalMonthlyPayField;
-    @FXML private Label totalDueField;
+    @FXML private Label totalCompanyEmployeeContributionField;
+    @FXML private Label totalCompanyEmployerContributionField;
+    @FXML private Label totalCompanyContributionField;
+    @FXML private Label totalHouseholdEmployeeContributionField;
+    @FXML private Label totalHouseholdEmployerContributionField;
+    @FXML private Label totalHouseholdContributionField;
+    @FXML private Label totalCompanyEmployeeContributionField2;
+    @FXML private Label totalCompanyEmployerContributionField2;
+    @FXML private Label totalCompanyContributionField2;
+    @FXML private Label totalHouseholdEmployeeContributionField2;
+    @FXML private Label totalHouseholdEmployerContributionField2;
+    @FXML private Label totalHouseholdContributionField2;
+    @FXML private Label totalEmployeeContributionField;
+    @FXML private Label totalEmployerContributionField;
+    @FXML private Label totalContributionField;
     
     private PhilHealthReportExcelGenerator excelGenerator = new PhilHealthReportExcelGenerator();
     
@@ -82,16 +88,21 @@ public class PhilHealthReportController extends AbstractController {
             ShowDialog.error("No records found");
         }
         
-        totalNonHouseholdMonthlyPayField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdMonthlyPay()));
-        totalNonHouseholdDueField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdDue()));
-        totalNonHouseholdMonthlyPayField2.setText(totalNonHouseholdMonthlyPayField.getText());
-        totalNonHouseholdDueField2.setText(totalNonHouseholdDueField.getText());
-        totalHouseholdMonthlyPayField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdMonthlyPay()));
-        totalHouseholdDueField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdDue()));
-        totalHouseholdMonthlyPayField2.setText(totalHouseholdMonthlyPayField.getText());
-        totalHouseholdDueField2.setText(totalHouseholdDueField.getText());
-        totalMonthlyPayField.setText(FormatterUtil.formatAmount(report.getTotalMonthlyPay()));
-        totalDueField.setText(FormatterUtil.formatAmount(report.getTotalDue()));
+        totalCompanyEmployeeContributionField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdDue()));
+        totalCompanyEmployerContributionField.setText(totalCompanyEmployeeContributionField.getText());
+        totalCompanyContributionField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdDue().multiply(BigDecimal.valueOf(2L))));
+        totalHouseholdEmployeeContributionField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdDue()));
+        totalHouseholdEmployerContributionField.setText(totalHouseholdEmployeeContributionField.getText());
+        totalHouseholdContributionField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdDue().multiply(BigDecimal.valueOf(2L))));
+        totalCompanyEmployeeContributionField2.setText(totalCompanyEmployeeContributionField.getText());
+        totalCompanyEmployerContributionField2.setText(totalCompanyEmployerContributionField.getText());
+        totalCompanyContributionField2.setText(totalCompanyContributionField.getText());
+        totalHouseholdEmployeeContributionField2.setText(totalHouseholdEmployeeContributionField.getText());
+        totalHouseholdEmployerContributionField2.setText(totalHouseholdEmployerContributionField.getText());
+        totalHouseholdContributionField2.setText(totalHouseholdContributionField.getText());
+        totalEmployeeContributionField.setText(FormatterUtil.formatAmount(report.getTotalDue()));
+        totalEmployerContributionField.setText(totalEmployeeContributionField.getText());
+        totalContributionField.setText(FormatterUtil.formatAmount(report.getTotalDue().multiply(BigDecimal.valueOf(2L))));
     }
 
     private boolean isCriteriaNotSpecified() {

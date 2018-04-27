@@ -67,7 +67,12 @@
 											<AppPropertyValueFactory property="monthlyPay" />
 										</cellValueFactory>
 									</TableColumn>
-									<TableColumn text="Due" styleClass="right">
+									<TableColumn text="EE" styleClass="right">
+										<cellValueFactory>
+											<AppPropertyValueFactory property="due" />
+										</cellValueFactory>
+									</TableColumn>
+									<TableColumn text="ER" styleClass="right">
 										<cellValueFactory>
 											<AppPropertyValueFactory property="due" />
 										</cellValueFactory>
@@ -76,16 +81,22 @@
 							</AppTableView>
 							
 							<GridPane vgap="10" alignment="center">
-								<Label text="Total Monthly Pay:" prefWidth="175"
+								<Label text="Total EE:" prefWidth="175"
 									GridPane.columnIndex="0" GridPane.rowIndex="0" />
-								<Label fx:id="totalNonHouseholdMonthlyPayField" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalCompanyEmployeeContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="1" GridPane.rowIndex="0" />
 								<Region prefWidth="50"
 									GridPane.columnIndex="2" GridPane.rowIndex="0" />
-								<Label text="Total Due:" prefWidth="175"
+								<Label text="Total ER:" prefWidth="175"
 									GridPane.columnIndex="3" GridPane.rowIndex="0" />
-								<Label fx:id="totalNonHouseholdDueField" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalCompanyEmployerContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="0" />
+								<Region prefWidth="50"
+									GridPane.columnIndex="5" GridPane.rowIndex="0" />
+								<Label text="Total:" prefWidth="175"
+									GridPane.columnIndex="6" GridPane.rowIndex="0" />
+								<Label fx:id="totalCompanyContributionField" prefWidth="100" alignment="center_right"
+									GridPane.columnIndex="7" GridPane.rowIndex="0" />
 							</GridPane>
 						</VBox>
 					</Tab>
@@ -118,16 +129,22 @@
 							</AppTableView>
 							
 							<GridPane vgap="10" alignment="center">
-								<Label text="Total Monthly Pay:" prefWidth="175"
+								<Label text="Total EE:" prefWidth="175"
 									GridPane.columnIndex="0" GridPane.rowIndex="0" />
-								<Label fx:id="totalHouseholdMonthlyPayField" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalHouseholdEmployeeContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="1" GridPane.rowIndex="0" />
 								<Region prefWidth="50"
 									GridPane.columnIndex="2" GridPane.rowIndex="0" />
-								<Label text="Total Due:" prefWidth="175"
+								<Label text="Total ER:" prefWidth="175"
 									GridPane.columnIndex="3" GridPane.rowIndex="0" />
-								<Label fx:id="totalHouseholdDueField" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalHouseholdEmployerContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="0" />
+								<Region prefWidth="50"
+									GridPane.columnIndex="5" GridPane.rowIndex="0" />
+								<Label text="Total:" prefWidth="175"
+									GridPane.columnIndex="6" GridPane.rowIndex="0" />
+								<Label fx:id="totalHouseholdContributionField" prefWidth="100" alignment="center_right"
+									GridPane.columnIndex="7" GridPane.rowIndex="0" />
 							</GridPane>
 						</VBox>
 					</Tab>
@@ -138,16 +155,22 @@
 								<Label text="COMPANY" /> 
 							</HBox>
 							<GridPane vgap="10" alignment="center">
-								<Label text="Total Monthly Pay:" prefWidth="175"
+								<Label text="Total EE:" prefWidth="175"
 									GridPane.columnIndex="0" GridPane.rowIndex="0" />
-								<Label fx:id="totalNonHouseholdMonthlyPayField2" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalCompanyEmployeeContributionField2" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="1" GridPane.rowIndex="0" />
 								<Region prefWidth="50"
 									GridPane.columnIndex="2" GridPane.rowIndex="0" />
-								<Label text="Total Due:" prefWidth="175"
+								<Label text="Total ER:" prefWidth="175"
 									GridPane.columnIndex="3" GridPane.rowIndex="0" />
-								<Label fx:id="totalNonHouseholdDueField2" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalCompanyEmployerContributionField2" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="0" />
+								<Region prefWidth="50"
+									GridPane.columnIndex="5" GridPane.rowIndex="0" />
+								<Label text="Total:" prefWidth="175"
+									GridPane.columnIndex="6" GridPane.rowIndex="0" />
+								<Label fx:id="totalCompanyContributionField2" prefWidth="100" alignment="center_right"
+									GridPane.columnIndex="7" GridPane.rowIndex="0" />
 							</GridPane>
 							
 							<HBox alignment="center">
@@ -155,16 +178,22 @@
 								<Label text="HOUSEHOLD" /> 
 							</HBox>
 							<GridPane vgap="10" alignment="center">
-								<Label text="Total Monthly Pay:" prefWidth="175"
+								<Label text="Total EE:" prefWidth="175"
 									GridPane.columnIndex="0" GridPane.rowIndex="0" />
-								<Label fx:id="totalHouseholdMonthlyPayField2" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalHouseholdEmployeeContributionField2" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="1" GridPane.rowIndex="0" />
 								<Region prefWidth="50"
 									GridPane.columnIndex="2" GridPane.rowIndex="0" />
-								<Label text="Total Due:" prefWidth="175"
+								<Label text="Total ER:" prefWidth="175"
 									GridPane.columnIndex="3" GridPane.rowIndex="0" />
-								<Label fx:id="totalHouseholdDueField2" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalHouseholdEmployerContributionField2" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="0" />
+								<Region prefWidth="50"
+									GridPane.columnIndex="5" GridPane.rowIndex="0" />
+								<Label text="Total:" prefWidth="175"
+									GridPane.columnIndex="6" GridPane.rowIndex="0" />
+								<Label fx:id="totalHouseholdContributionField2" prefWidth="100" alignment="center_right"
+									GridPane.columnIndex="7" GridPane.rowIndex="0" />
 							</GridPane>
 							
 							<HBox alignment="center">
@@ -172,16 +201,22 @@
 								<Label text="TOTAL" /> 
 							</HBox>
 							<GridPane vgap="10" alignment="center">
-								<Label text="Total Monthly Pay:" prefWidth="175"
+								<Label text="Total EE:" prefWidth="175"
 									GridPane.columnIndex="0" GridPane.rowIndex="0" />
-								<Label fx:id="totalMonthlyPayField" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalEmployeeContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="1" GridPane.rowIndex="0" />
 								<Region prefWidth="50"
 									GridPane.columnIndex="2" GridPane.rowIndex="0" />
-								<Label text="Total Due:" prefWidth="175"
+								<Label text="Total ER:" prefWidth="175"
 									GridPane.columnIndex="3" GridPane.rowIndex="0" />
-								<Label fx:id="totalDueField" prefWidth="100" alignment="center_right"
+								<Label fx:id="totalEmployerContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="0" />
+								<Region prefWidth="50"
+									GridPane.columnIndex="5" GridPane.rowIndex="0" />
+								<Label text="Total:" prefWidth="175"
+									GridPane.columnIndex="6" GridPane.rowIndex="0" />
+								<Label fx:id="totalContributionField" prefWidth="100" alignment="center_right"
+									GridPane.columnIndex="7" GridPane.rowIndex="0" />
 							</GridPane>
 						</VBox>
 					</Tab>

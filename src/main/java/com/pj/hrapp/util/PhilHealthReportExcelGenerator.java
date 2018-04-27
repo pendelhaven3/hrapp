@@ -1,6 +1,7 @@
 package com.pj.hrapp.util;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -114,7 +115,15 @@ public class PhilHealthReportExcelGenerator {
         
         cell = row.createCell(3);
         cell.setCellStyle(headerStyle);
-        cell.setCellValue("Due");
+        cell.setCellValue("EE");
+        
+        cell = row.createCell(4);
+        cell.setCellStyle(headerStyle);
+        cell.setCellValue("ER");
+        
+        cell = row.createCell(5);
+        cell.setCellStyle(headerStyle);
+        cell.setCellValue("Total");
     }
 
     private void addDataRows(List<PhilHealthReportItem> items) {
@@ -136,6 +145,14 @@ public class PhilHealthReportExcelGenerator {
             cell.setCellStyle(numberStyle);
             cell.setCellValue(item.getDue().doubleValue());
             
+            cell = row.createCell(4);
+            cell.setCellStyle(numberStyle);
+            cell.setCellValue(item.getDue().doubleValue());
+            
+            cell = row.createCell(5);
+            cell.setCellStyle(numberStyle);
+            cell.setCellValue(item.getDue().multiply(BigDecimal.valueOf(2L)).doubleValue());
+            
             nextRow();
         }
     }
@@ -144,26 +161,34 @@ public class PhilHealthReportExcelGenerator {
         cell = row.createCell(0);
         cell.setCellValue("Subtotal");
         
-        cell = row.createCell(2);
-        cell.setCellStyle(numberStyle);
-        cell.setCellValue(report.getTotalNonHouseholdMonthlyPay().doubleValue());
-        
         cell = row.createCell(3);
         cell.setCellStyle(numberStyle);
         cell.setCellValue(report.getTotalNonHouseholdDue().doubleValue());
+        
+        cell = row.createCell(4);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalNonHouseholdDue().doubleValue());
+        
+        cell = row.createCell(5);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalNonHouseholdDue().multiply(BigDecimal.valueOf(2L)).doubleValue());
     }
 
     private void addHouseholdSubTotalRow(PhilHealthReport report) {
         cell = row.createCell(0);
         cell.setCellValue("Subtotal");
         
-        cell = row.createCell(2);
-        cell.setCellStyle(numberStyle);
-        cell.setCellValue(report.getTotalHouseholdMonthlyPay().doubleValue());
-        
         cell = row.createCell(3);
         cell.setCellStyle(numberStyle);
         cell.setCellValue(report.getTotalHouseholdDue().doubleValue());
+        
+        cell = row.createCell(4);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalHouseholdDue().doubleValue());
+        
+        cell = row.createCell(5);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalHouseholdDue().multiply(BigDecimal.valueOf(2L)).doubleValue());
     }
     
     private void addGrandTotalRow(PhilHealthReport report) {
@@ -171,13 +196,17 @@ public class PhilHealthReportExcelGenerator {
         cell.setCellStyle(boldStyle);
         cell.setCellValue("Grand Total");
         
-        cell = row.createCell(2);
-        cell.setCellStyle(numberBoldStyle);
-        cell.setCellValue(report.getTotalMonthlyPay().doubleValue());
-        
         cell = row.createCell(3);
         cell.setCellStyle(numberBoldStyle);
         cell.setCellValue(report.getTotalDue().doubleValue());
+        
+        cell = row.createCell(4);
+        cell.setCellStyle(numberBoldStyle);
+        cell.setCellValue(report.getTotalDue().doubleValue());
+        
+        cell = row.createCell(5);
+        cell.setCellStyle(numberBoldStyle);
+        cell.setCellValue(report.getTotalDue().multiply(BigDecimal.valueOf(2L)).doubleValue());
     }
 
     private void nextRow() {
