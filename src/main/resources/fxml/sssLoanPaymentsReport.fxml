@@ -63,7 +63,7 @@
 					</TableColumn>
 					<TableColumn text="Amount of Loan">
 						<cellValueFactory>
-							<AppPropertyValueFactory property="loan.amount" />
+							<AppPropertyValueFactory property="loan.loanAmount" />
 						</cellValueFactory>
 					</TableColumn>
 					<TableColumn text="Monthly Amortization">

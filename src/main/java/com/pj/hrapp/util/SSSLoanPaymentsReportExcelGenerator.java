@@ -108,7 +108,7 @@ public class SSSLoanPaymentsReportExcelGenerator {
             
             cell = row.createCell(3);
             cell.setCellStyle(numberStyle);
-            cell.setCellValue(item.getLoan().getAmount().doubleValue());
+            cell.setCellValue(item.getLoan().getLoanAmount().doubleValue());
             
             cell = row.createCell(4);
             cell.setCellStyle(numberStyle);
