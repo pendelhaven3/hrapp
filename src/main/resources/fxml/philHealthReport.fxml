@@ -47,7 +47,7 @@
 		
 			<TabPane fx:id="tabPane" VBox.vgrow="always">
 				<tabs>
-					<Tab text="Non-Household" closable="false">
+					<Tab text="Company" closable="false">
 						<VBox spacing="10">
 							<AppTableView fx:id="nonHouseholdTable" VBox.vgrow="always">
 								<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
@@ -135,7 +135,7 @@
 						<VBox spacing="10">
 							<HBox alignment="center">
 								<padding><Insets top="30" /></padding>
-								<Label text="NON-HOUSEHOLD" /> 
+								<Label text="COMPANY" /> 
 							</HBox>
 							<GridPane vgap="10" alignment="center">
 								<Label text="Total Monthly Pay:" prefWidth="175"
