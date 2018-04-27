@@ -69,12 +69,16 @@
 				</GridPane>
 				
 				<GridPane vgap="10" alignment="center">
-					<Label text="Paid" prefWidth="100"
+					<Label text="Paid" prefWidth="150"
 						GridPane.columnIndex="0" GridPane.rowIndex="0" />
 					<Label fx:id="paidLabel"
 						GridPane.columnIndex="1" GridPane.rowIndex="0" />
+					<Label text="Loan Amount"
+						GridPane.columnIndex="0" GridPane.rowIndex="1" />
+					<Label fx:id="loanAmountLabel"
+						GridPane.columnIndex="1" GridPane.rowIndex="1" />
 					<Region
-						GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="always" />
+						GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.vgrow="always" />
 				</GridPane>
 			</HBox>
 			

@@ -25,6 +25,9 @@ public class FormatterUtil {
 	}
 
 	public static String formatAmount(BigDecimal amount) {
+	    if (amount == null) {
+	        return null;
+	    }
 		return new DecimalFormat(Constants.AMOUNT_FORMAT).format(amount);
 	}
 

@@ -42,6 +42,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	@FXML private ComboBox<Employee> employeeComboBox;
 	@FXML private TextField descriptionField;
 	@FXML private TextField amountField;
+    @FXML private TextField loanAmountField; // TODO: Add description here
 	@FXML private DatePicker loanDateDatePicker;
 	@FXML private TextField numberOfPaymentsField;
 	@FXML private TextField paymentAmountField;
@@ -63,6 +64,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 			employeeComboBox.setValue(loan.getEmployee());
 			descriptionField.setText(loan.getDescription());
 			amountField.setText(FormatterUtil.formatAmount(loan.getAmount()));
+            loanAmountField.setText(FormatterUtil.formatAmount(loan.getLoanAmount()));
 			loanDateDatePicker.setValue(DateUtil.toLocalDate(loan.getLoanDate()));
 			numberOfPaymentsField.setText(loan.getNumberOfPayments().toString());
 			paymentAmountField.setText(FormatterUtil.formatAmount(loan.getPaymentAmount()));
@@ -142,6 +144,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		loan.setEmployee(employeeComboBox.getValue());
 		loan.setDescription(descriptionField.getText());
 		loan.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
+        loan.setLoanAmount(NumberUtil.toBigDecimal(loanAmountField.getText()));
 		loan.setLoanDate(DateUtil.toDate(loanDateDatePicker.getValue()));
 		loan.setNumberOfPayments(Integer.valueOf(numberOfPaymentsField.getText()));
 		loan.setPaymentStartDate(DateUtil.toDate(paymentStartDatePicker.getValue()));
@@ -186,6 +189,12 @@ public class AddEditEmployeeLoanController extends AbstractController {
 			amountField.requestFocus();
 			return false;
 		}
+
+        if (!StringUtils.isEmpty(loanAmountField.getText()) && isLoanAmountNotValid()) {
+            ShowDialog.error("Loan Amount must be a valid amount");
+            loanAmountField.requestFocus();
+            return false;
+        }
 
 		if (isLoanDateNotSpecified()) {
 			ShowDialog.error("Loan Date must be specified");
@@ -247,6 +256,10 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	private boolean isAmountNotValid() {
 		return !NumberUtil.isAmount(amountField.getText());
 	}
+
+    private boolean isLoanAmountNotValid() {
+        return !NumberUtil.isAmount(loanAmountField.getText());
+    }
 
 	private boolean isAmountNotSpecified() {
 		return StringUtils.isEmpty(amountField.getText());

@@ -39,6 +39,7 @@ public class EmployeeLoanController extends AbstractController {
 	@FXML private Label descriptionLabel;
 	@FXML private Label loanDateLabel;
 	@FXML private Label amountLabel;
+    @FXML private Label loanAmountLabel;
 	@FXML private Label numberOfPaymentsLabel;
 	@FXML private Label paymentAmountLabel;
 	@FXML private Label paidLabel;
@@ -62,6 +63,7 @@ public class EmployeeLoanController extends AbstractController {
 		descriptionLabel.setText(loan.getDescription());
 		loanDateLabel.setText(FormatterUtil.formatDate(loan.getLoanDate()));
 		amountLabel.setText(FormatterUtil.formatAmount(loan.getAmount()));
+        loanAmountLabel.setText(FormatterUtil.formatAmount(loan.getLoanAmount()));
 		numberOfPaymentsLabel.setText(loan.getNumberOfPayments().toString());
 		paymentAmountLabel.setText(FormatterUtil.formatAmount(loan.getPaymentAmount()));
 		paidLabel.setText(loan.isPaid() ? "Yes" : "No");

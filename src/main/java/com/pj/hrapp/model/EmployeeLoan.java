@@ -33,6 +33,7 @@ public class EmployeeLoan {
 	
 	private String description;
 	private BigDecimal amount;
+	private BigDecimal loanAmount;
 	private Integer numberOfPayments;
 	private String remarks;
 
@@ -81,7 +82,15 @@ public class EmployeeLoan {
 		return numberOfPayments;
 	}
 
-	public void setNumberOfPayments(Integer numberOfPayments) {
+	public BigDecimal getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(BigDecimal loanAmount) {
+        this.loanAmount = loanAmount;
+    }
+
+    public void setNumberOfPayments(Integer numberOfPayments) {
 		this.numberOfPayments = numberOfPayments;
 	}
 
