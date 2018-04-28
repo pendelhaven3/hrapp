@@ -1,7 +1,6 @@
 package com.pj.hrapp.util;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.BuiltinFormats;
@@ -75,12 +74,6 @@ public class PayrollToExcelGenerator {
 		
 		int sheetNumber = 0;
 		sheet = workbook.getSheetAt(sheetNumber);
-		
-		// ===============
-		Payslip ps = payroll.getPayslips().get(0);
-		payroll.setPayslips(Arrays.asList(ps, ps, ps, ps, ps));
-		
-		// ===============		
 		
 		int i = 0; // section number (0-8 only)
 		for (Payslip payslip : payroll.getPayslips()) {
