@@ -60,4 +60,18 @@ public class SSSContributionTable {
 			.get().getEmployeeContribution();
 	}
 	
+    public BigDecimal getEmployerContribution(BigDecimal compensation) {
+        return entries.stream()
+            .filter(entry -> entry.contains(compensation))
+            .findFirst()
+            .get().getEmployerContribution();
+    }
+
+    public BigDecimal getEmployeeCompensation(BigDecimal compensation) {
+        return entries.stream()
+                .filter(entry -> entry.contains(compensation))
+                .findFirst()
+                .get().getEmployeeCompensation();
+    }
+    
 }
