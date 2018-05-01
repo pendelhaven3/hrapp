@@ -278,6 +278,7 @@ LEFT JOIN (
 		WHERE a.household = true
 		AND (a.resignDate is null OR a.resignDate >= DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH))
 	) z
+	GROUP BY id
 ) c
 	ON c.employeeId = d.id
 WHERE d.household = true
@@ -385,6 +386,7 @@ LEFT JOIN (
 		WHERE a.household = true
 		AND (a.resignDate is null OR a.resignDate >= DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH))
 	) z
+	group by id
 ) c
 	ON c.employeeId = d.id
 WHERE d.household = true
