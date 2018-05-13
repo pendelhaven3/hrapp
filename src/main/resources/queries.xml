@@ -57,7 +57,7 @@ JOIN (
 		SELECT a.id, b.date, c.payType, c.paySchedule, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
 		FROM employee a
 		JOIN calendar b
-			ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+			ON b.date >= :firstDayOfMonth and b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 		JOIN salary c
 			ON b.date >= c.effectiveDateFrom
 			AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
@@ -108,7 +108,7 @@ FROM (
 		c.rate AS originalRate
 	FROM employee a
 	JOIN calendar b
-		ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+		ON b.date >= :firstDayOfMonth and b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 	JOIN salary c
 		ON b.date >= c.effectiveDateFrom
 		AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
@@ -136,7 +136,7 @@ FROM (
 	SELECT b.date, c.payType, c.paySchedule, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
 	FROM employee a
 	JOIN calendar b
-		ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+		ON b.date >= :firstDayOfMonth and b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 	JOIN salary c
 		ON b.date >= c.effectiveDateFrom
 		AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
@@ -150,13 +150,21 @@ FROM (
 	</entry>
 	<entry name="householdMonthlyPay">
 <![CDATA[
-SELECT IFNULL(SUM(rate / :numberOfWorkingDays), 0) AS monthlyPay
+SELECT IFNULL(SUM(
+	(CASE payType 
+		WHEN 'PER_DAY' THEN rate
+		WHEN 'FIXED_RATE' THEN
+			(CASE paySchedule
+				WHEN 'SEMIMONTHLY' THEN (rate * 2) / :numberOfWorkingDays
+			END)
+	END)
+), 0) AS monthlyPay
 FROM (
 	SELECT b.date, c.payType, c.paySchedule, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate,
 		c.rate AS originalRate
 	FROM employee a
 	JOIN calendar b
-		ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+		ON b.date >= :firstDayOfMonth and b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 	JOIN salary c
 		ON b.date >= c.effectiveDateFrom
 		AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
@@ -262,12 +270,21 @@ LEFT JOIN (
 ) a
 	ON a.employeeId = d.id	
 LEFT JOIN (
-	SELECT id AS employeeId, IFNULL(SUM(rate / (CASE WHEN date < DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY) THEN 15 ELSE DAY(LAST_DAY(:firstDayOfMonth) - 15) END)), 0) AS monthlyPay
+	SELECT id AS employeeId, IFNULL(SUM(
+		(CASE payType 
+			WHEN 'PER_DAY' THEN rate
+			WHEN 'FIXED_RATE' THEN
+				(CASE paySchedule
+					WHEN 'WEEKLY' THEN rate / 6
+					WHEN 'SEMIMONTHLY' THEN rate / (CASE WHEN date < DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY) THEN 15 ELSE DAY(LAST_DAY(:firstDayOfMonth) - 15) END)
+				END)
+		END)
+	), 0) AS monthlyPay
 	FROM (
-		SELECT a.id, b.date, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
+		SELECT a.id, b.date, c.payType, c.paySchedule, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
 		FROM employee a
 		JOIN calendar b
-			ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+			ON b.date >= :firstDayOfMonth and b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 		JOIN salary c
 			ON b.date >= c.effectiveDateFrom
 			AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
@@ -370,12 +387,21 @@ LEFT JOIN (
 ) a
 	ON a.employeeId = d.id	
 LEFT JOIN (
-	SELECT id AS employeeId, IFNULL(SUM(rate / (CASE WHEN date < DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY) THEN 15 ELSE DAY(LAST_DAY(:firstDayOfMonth) - 15) END)), 0) AS monthlyPay
+	SELECT id AS employeeId, IFNULL(SUM(
+		(CASE payType 
+			WHEN 'PER_DAY' THEN rate
+			WHEN 'FIXED_RATE' THEN
+				(CASE paySchedule
+					WHEN 'WEEKLY' THEN rate / 6
+					WHEN 'SEMIMONTHLY' THEN rate / (CASE WHEN date < DATE_ADD(:firstDayOfMonth, INTERVAL 15 DAY) THEN 15 ELSE DAY(LAST_DAY(:firstDayOfMonth) - 15) END)
+				END)
+		END)
+	), 0) AS monthlyPay
 	FROM (
-		SELECT a.id, b.date, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
+		SELECT a.id, b.date, c.payType, c.paySchedule, c.rate * (CASE d.attendance WHEN 'WHOLE_DAY' THEN 1 WHEN 'HALF_DAY' THEN 0.5 ELSE 0 END) AS rate
 		FROM employee a
 		JOIN calendar b
-			ON b.date BETWEEN :firstDayOfMonth and DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
+			ON b.date >= :firstDayOfMonth and b.date < DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH)
 		JOIN salary c
 			ON b.date >= c.effectiveDateFrom
 			AND (b.date <= c.effectiveDateTo OR c.effectiveDateTo IS NULL)
