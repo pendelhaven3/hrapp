@@ -267,22 +267,6 @@ public class PayrollController extends AbstractController {
         if (autoGeneratePayrollContributionsDialog.isSuccess()) {
             updateDisplay();
         }
-	    /*
-		if (!ShowDialog.confirm("Generate SSS/PhilHealth/Pag-IBIG contributions for all payslips?")) {
-			return;
-		}
-		
-		try {
-			payrollService.regenerateAllGovernmentContributions(payroll);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			ShowDialog.unexpectedError();
-			return;
-		}
-		
-		ShowDialog.info("SSS/PhilHealth/Pag-IBIG contributions generated");
-		updateDisplay();
-		*/
 	}
 	
 }
