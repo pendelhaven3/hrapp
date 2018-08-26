@@ -1,5 +1,7 @@
 package com.pj.hrapp.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,10 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
+import com.pj.hrapp.model.EmployeeEvaluationAlert;
 import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.Payroll;
+import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
 
@@ -26,6 +30,7 @@ public class AddEditPayrollController extends AbstractController {
 	private static final Logger logger = LoggerFactory.getLogger(AddEditPayrollController.class);
 	
 	@Autowired private PayrollService payrollService;
+	@Autowired private EmployeeService employeeService;
 	
 	@FXML private TextField batchNumberField;
 	@FXML private DatePicker payDateDatePicker;
@@ -94,9 +99,14 @@ public class AddEditPayrollController extends AbstractController {
 		
 		ShowDialog.info("Payroll saved");
 		stageController.showPayrollScreen(payroll);
+		
+		List<EmployeeEvaluationAlert> employeeEvaluations = employeeService.findAllDueEmployeeEvaluations(payroll.getPeriodCoveredTo());
+		if (!employeeEvaluations.isEmpty()) {
+		    ShowDialog.info(constructPromptMessage(employeeEvaluations));
+		}
 	}
 
-	private boolean validateFields() {
+    private boolean validateFields() {
 		if (isBatchNumberNotSpecified()) {
 			ShowDialog.error("Batch Number must be specified");
 			batchNumberField.requestFocus();
@@ -168,5 +178,14 @@ public class AddEditPayrollController extends AbstractController {
 	private boolean isBatchNumberNotSpecified() {
 		return batchNumberField.getText().isEmpty();
 	}
-
+	
+    private String constructPromptMessage(List<EmployeeEvaluationAlert> employeeEvaluations) {
+        StringBuilder sb = new StringBuilder("Upcoming Evaluations\n\n");
+        for (EmployeeEvaluationAlert employeeEvaluation : employeeEvaluations) {
+            sb.append(employeeEvaluation.getEmployee().getFullName()).append(" - ")
+                    .append(employeeEvaluation.getAlertMessage()).append('\n');
+        }
+        return sb.toString();
+    }
+	
 }

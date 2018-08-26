@@ -8,16 +8,19 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
+import com.pj.hrapp.dao.EmployeeEvaluationAlertRepository;
 import com.pj.hrapp.dao.EmployeePictureRepository;
 import com.pj.hrapp.dao.EmployeeRepository;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.EmployeeEvaluationAlert;
 import com.pj.hrapp.model.EmployeePicture;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
@@ -30,7 +33,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired private EmployeeRepository employeeRepository;
 	@Autowired private EmployeeAttendanceDao employeeAttendanceDao;
 	@Autowired private EmployeePictureRepository employeePictureRepository;
-	
+    @Autowired private EmployeeEvaluationAlertRepository employeeEvaluationAlertRepository;
+    
 	@Override
 	public List<Employee> getAllEmployees() {
 		return employeeRepository.findAll();
@@ -39,7 +43,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Transactional
 	@Override
 	public void save(Employee employee) {
+	    Employee previous = null;
+	    if (employee.getId() != null) {
+	        previous = employeeRepository.findOne(employee.getId());
+	    }
+	    
 		employeeRepository.save(employee);
+		
+		if (employee.getHireDate() != null && 
+		        (previous == null || previous.getHireDate() == null || !previous.getHireDate().equals(employee.getHireDate()))) {
+		    employeeEvaluationAlertRepository.deleteAllByEmployee(employee);
+            employeeEvaluationAlertRepository.save(
+                    new EmployeeEvaluationAlert(employee, DateUtils.addMonths(employee.getHireDate(), 3), "3 months"));
+            employeeEvaluationAlertRepository.save(
+                    new EmployeeEvaluationAlert(employee, DateUtils.addYears(employee.getHireDate(), 1), "1 year"));
+		}
 	}
 
 	@Override
@@ -148,5 +166,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		return employeeRepository.findAll(specifications);
 	}
+
+	@Transactional
+    @Override
+    public List<EmployeeEvaluationAlert> findAllDueEmployeeEvaluations(Date referenceDate) {
+        return employeeEvaluationAlertRepository.findAllByAlertDateLessThanEqual(referenceDate);
+    }
 	
 }

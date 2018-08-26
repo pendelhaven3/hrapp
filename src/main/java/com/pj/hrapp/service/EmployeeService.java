@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeAttendance;
+import com.pj.hrapp.model.EmployeeEvaluationAlert;
 import com.pj.hrapp.model.EmployeePicture;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.search.EmployeeAttendanceSearchCriteria;
@@ -45,5 +46,7 @@ public interface EmployeeService {
 	EmployeeAttendance findEmployeeAttendanceByEmployeeAndDate(Employee value, Date date);
 
 	List<Employee> searchEmployees(EmployeeSearchCriteria criteria);
+
+    List<EmployeeEvaluationAlert> findAllDueEmployeeEvaluations(Date referenceDate);
 	
 }

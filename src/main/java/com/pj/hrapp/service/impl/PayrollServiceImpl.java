@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
+import com.pj.hrapp.dao.EmployeeEvaluationAlertRepository;
 import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
 import com.pj.hrapp.dao.EmployeeRepository;
 import com.pj.hrapp.dao.PayrollDao;
@@ -61,6 +62,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private EmployeeRepository employeeRepository;
 	@Autowired private SystemService systemService;
 	@Autowired private EmployeeLoanService employeeLoanService;
+	@Autowired private EmployeeEvaluationAlertRepository employeeEvaluationAlertRepository;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -313,6 +315,8 @@ public class PayrollServiceImpl implements PayrollService {
 		}
 		
 		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
+		
+		employeeEvaluationAlertRepository.deleteAllByAlertDateLessThanEqual(payroll.getPeriodCoveredTo());
 	}
 
 	private void markEmployeeLoansWithLastPaymentInPayrollAsPaid(Payroll payroll) {
