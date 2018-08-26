@@ -215,6 +215,12 @@ public class EmployeeController extends AbstractController {
 			return false;
 		}
 
+        if (isHireDateNotSpecified()) {
+            ShowDialog.error("Date Hired must be specified");
+            dateHiredDatePicker.requestFocus();
+            return false;
+        }
+		
 		return true;
 	}
 
@@ -247,6 +253,10 @@ public class EmployeeController extends AbstractController {
 	private boolean isEmployeeNumberNotSpecified() {
 		return employeeNumberField.getText().isEmpty();
 	}
+
+    private boolean isHireDateNotSpecified() {
+        return dateHiredDatePicker.getValue() == null;
+    }
 
 	@FXML 
 	public void deleteEmployee() {
