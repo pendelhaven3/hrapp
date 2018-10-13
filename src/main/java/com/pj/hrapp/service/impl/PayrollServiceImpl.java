@@ -434,5 +434,10 @@ public class PayrollServiceImpl implements PayrollService {
             payslipAdjustmentDao.delete(payslipAdjustment);
         }
     }
+
+    @Override
+    public Payroll getPreviousPayroll(Payroll referencePayroll) {
+        return payrollDao.findPreviousPayroll(referencePayroll);
+    }
     
 }

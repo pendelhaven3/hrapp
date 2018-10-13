@@ -34,4 +34,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
 	@Query("select coalesce(max(e.employeeNumber), 0) from Employee e")
 	Integer findLatestEmployeeNumber();
 	
+	@Query(value = "select e.* from Employee e where date_format(e.birthday, '%m%d') between :from and :to and resigned = false order by date_format(e.birthday, '%m%d')", nativeQuery = true)
+	List<Employee> findAllByBirthdayBetween(@Param("from") String monthDayFrom, @Param("to") String monthDayTo);
+	
 }

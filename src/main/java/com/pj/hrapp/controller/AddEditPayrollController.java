@@ -2,6 +2,7 @@ package com.pj.hrapp.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,14 @@ import org.springframework.stereotype.Controller;
 
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.gui.component.ShowDialog;
+import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeEvaluationAlert;
 import com.pj.hrapp.model.PaySchedule;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.util.DateUtil;
+import com.pj.hrapp.util.FormatterUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -104,7 +107,22 @@ public class AddEditPayrollController extends AbstractController {
 		if (!employeeEvaluations.isEmpty()) {
 		    ShowDialog.info(constructPromptMessage(employeeEvaluations));
 		}
+		
+		List<Employee> birthdayEmployees = findAllEmployeesWithBirthdaySinceLastPayrollUpToThisPayroll();
+        if (!birthdayEmployees.isEmpty()) {
+            ShowDialog.info(constructBirthdayPromptMessage(birthdayEmployees));
+        }
 	}
+
+    private List<Employee> findAllEmployeesWithBirthdaySinceLastPayrollUpToThisPayroll() {
+        Payroll previousPayroll = payrollService.getPreviousPayroll(payroll);
+        
+        System.out.println("Previous payroll: " + previousPayroll.getBatchNumber());
+        
+        return employeeService.findAllEmployeesWithBirthdayWithin(
+                DateUtils.addDays(previousPayroll.getPeriodCoveredTo(),  1),
+                payroll.getPeriodCoveredTo());
+    }
 
     private boolean validateFields() {
 		if (isBatchNumberNotSpecified()) {
@@ -188,4 +206,12 @@ public class AddEditPayrollController extends AbstractController {
         return sb.toString();
     }
 	
+    private String constructBirthdayPromptMessage(List<Employee> employees) {
+        StringBuilder sb = new StringBuilder("Employee Birthday Alerts\n");
+        for (Employee employee : employees) {
+            sb.append(employee.getFullName()).append(" - ").append(FormatterUtil.formatDate(employee.getBirthday())).append("\n");
+        }
+        return sb.toString();
+    }
+    
 }

@@ -48,4 +48,6 @@ public interface PayrollService {
 
     void saveEmployeeAttendance(EmployeeAttendance employeeAttendance, Payslip payslip);
 
+    Payroll getPreviousPayroll(Payroll referencePayroll);
+
 }

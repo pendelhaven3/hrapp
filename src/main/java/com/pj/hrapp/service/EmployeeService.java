@@ -48,5 +48,7 @@ public interface EmployeeService {
 	List<Employee> searchEmployees(EmployeeSearchCriteria criteria);
 
     List<EmployeeEvaluationAlert> findAllDueEmployeeEvaluations(Date referenceDate);
+
+    List<Employee> findAllEmployeesWithBirthdayWithin(Date from, Date to);
 	
 }

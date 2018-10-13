@@ -62,4 +62,14 @@ public class PayrollDaoImpl implements PayrollDao {
 			.getSingleResult();
 	}
 
+    @Override
+    public Payroll findPreviousPayroll(Payroll referencePayroll) {
+        TypedQuery<Payroll> query = entityManager.createQuery("select p from Payroll p where p.periodCoveredTo < :periodCoveredTo and p.paySchedule = :paySchedule order by p.periodCoveredTo desc", Payroll.class);
+        query.setParameter("periodCoveredTo", referencePayroll.getPeriodCoveredTo());
+        query.setParameter("paySchedule", referencePayroll.getPaySchedule());
+        query.setFirstResult(0);
+        query.setMaxResults(1);
+        return query.getSingleResult();
+    }
+
 }

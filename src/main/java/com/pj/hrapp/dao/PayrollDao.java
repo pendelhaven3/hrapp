@@ -18,4 +18,6 @@ public interface PayrollDao {
 
 	long getLatestBatchNumber();
 	
+	Payroll findPreviousPayroll(Payroll referencePayroll);
+	
 }
