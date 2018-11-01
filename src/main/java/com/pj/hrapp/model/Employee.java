@@ -24,7 +24,10 @@ public class Employee implements Comparable<Employee> {
 	private String firstName;
 	private String middleName;
 	private String nickname;
+	
+    @Column(columnDefinition = "date")
 	private Date birthday;
+	
 	private String address;
 	private String contactNumber;
 	private String sssNumber;
@@ -33,6 +36,8 @@ public class Employee implements Comparable<Employee> {
 	private String tin;
 	private String atmAccountNumber;
 	private String magicCustomerCode;
+	
+    @Column(columnDefinition = "date")
 	private Date hireDate;
 	
     @Column(columnDefinition = "date")
