@@ -59,6 +59,7 @@ public class EmployeeController extends AbstractController {
 	@FXML private TextField atmAccountNumberField;
 	@FXML private TextField magicCustomerCodeField;
 	@FXML private DatePicker dateHiredDatePicker;
+    @FXML private DatePicker dateRegularizedDatePicker;
 	@FXML private CheckBox resignedCheckBox;
 	@FXML private DatePicker dateResignedDatePicker;
 	@FXML private CheckBox householdCheckBox;
@@ -91,6 +92,7 @@ public class EmployeeController extends AbstractController {
 			atmAccountNumberField.setText(employee.getAtmAccountNumber());
 			magicCustomerCodeField.setText(employee.getMagicCustomerCode());
 			dateHiredDatePicker.setValue(DateUtil.toLocalDate(employee.getHireDate()));
+            dateRegularizedDatePicker.setValue(DateUtil.toLocalDate(employee.getRegularizeDate()));
 			resignedCheckBox.setSelected(employee.isResigned());
 			householdCheckBox.setSelected(employee.isHousehold());
 			dateResignedDatePicker.setValue(DateUtil.toLocalDate(employee.getResignDate()));
@@ -163,6 +165,7 @@ public class EmployeeController extends AbstractController {
 		employee.setAtmAccountNumber(atmAccountNumberField.getText());
 		employee.setMagicCustomerCode(StringUtils.trimToNull(magicCustomerCodeField.getText()));
 		employee.setHireDate(DateUtil.toDate(dateHiredDatePicker.getValue()));
+        employee.setRegularizeDate(DateUtil.toDate(dateRegularizedDatePicker.getValue()));
 		employee.setResigned(resignedCheckBox.isSelected());
 		employee.setResignDate(DateUtil.toDate(dateResignedDatePicker.getValue()));
 		employee.setHousehold(householdCheckBox.isSelected());

@@ -35,6 +35,9 @@ public class Employee implements Comparable<Employee> {
 	private String magicCustomerCode;
 	private Date hireDate;
 	
+    @Column(columnDefinition = "date")
+    private Date regularizeDate;
+    
 	@Column(columnDefinition = "boolean default false")
 	private boolean household;
 	
@@ -201,7 +204,15 @@ public class Employee implements Comparable<Employee> {
 		this.hireDate = hireDate;
 	}
 
-	public String getTin() {
+	public Date getRegularizeDate() {
+        return regularizeDate;
+    }
+
+    public void setRegularizeDate(Date regularizeDate) {
+        this.regularizeDate = regularizeDate;
+    }
+
+    public String getTin() {
 		return tin;
 	}
 
