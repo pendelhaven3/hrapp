@@ -54,7 +54,7 @@ public class SalaryDaoImpl implements SalaryDao {
 	public Salary findByEmployeeAndEffectiveDate(Employee employee, Date effectiveDate) {
 		TypedQuery<Salary> query = entityManager.createQuery(
 				"select s from Salary s where s.employee = :employee and s.effectiveDateFrom <= :effectiveDate"
-				+ " and (s.effectiveDateTo is null or s.effectiveDateTo > :effectiveDate)", Salary.class);
+				+ " and (s.effectiveDateTo is null or s.effectiveDateTo >= :effectiveDate)", Salary.class);
 		query.setParameter("employee", employee);
 		query.setParameter("effectiveDate", effectiveDate);
 		try {
