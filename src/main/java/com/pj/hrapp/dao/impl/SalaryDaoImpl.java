@@ -137,8 +137,8 @@ public class SalaryDaoImpl implements SalaryDao {
         Query query = entityManager.createNativeQuery(Queries.getQuery("monthlyPay2"));
         query.setParameter("employeeId", employee.getId());
         query.setParameter("firstDayOfMonth", DateUtil.toDate(yearMonth.atDay(1)));
-        query.setParameter("numberOfWorkingDaysInFirstHalf", DateUtil.getNumberOfWorkingDaysInFirstHalf(yearMonth));
-        query.setParameter("numberOfWorkingDaysInSecondHalf", DateUtil.getNumberOfWorkingDaysInSecondHalf(yearMonth));
+        query.setParameter("numberOfWorkingDaysInFirstHalf", 15);
+        query.setParameter("numberOfWorkingDaysInSecondHalf", yearMonth.lengthOfMonth() - 15);
         
         try {
             return (BigDecimal)query.getSingleResult();
