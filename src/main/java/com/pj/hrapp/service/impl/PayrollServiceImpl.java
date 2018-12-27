@@ -408,6 +408,7 @@ public class PayrollServiceImpl implements PayrollService {
         PayslipAdjustmentSearchCriteria criteria = new PayslipAdjustmentSearchCriteria();
         criteria.setType(PayslipAdjustmentType.HOLIDAY_PAY);
         criteria.setDescription("holiday " + DateUtil.toMonthDateString(date));
+        criteria.setEmployee(payslip.getEmployee());
         
         List<PayslipAdjustment> adjustments = payslipAdjustmentDao.search(criteria);
         if (adjustments.size() > 1) {
