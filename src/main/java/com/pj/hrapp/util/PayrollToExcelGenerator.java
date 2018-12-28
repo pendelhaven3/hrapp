@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -26,7 +27,7 @@ import com.pj.hrapp.service.PayrollService;
 public class PayrollToExcelGenerator {
 
 	private static final int PAYSLIPS_PER_SHEET = 9;
-    private static final int ADJUSTMENT_LINES_PER_PAYSLIP = 12;
+    private static final int ADJUSTMENT_LINES_PER_PAYSLIP = 11;
 
 	@Autowired private PayrollService payrollService;
 	
@@ -67,6 +68,7 @@ public class PayrollToExcelGenerator {
 		XSSFWorkbook workbook = new XSSFWorkbook(getClass().getResourceAsStream("/excel/payslip.xlsx"));
 		CellStyle leftBorderCellStyle = createCellStyleWithLeftBorder(workbook);
 		CellStyle rightBorderedAmountCellStyle = createAmountCellStyleWithRightBorder(workbook);
+        CellStyle totalCellStyle = createTotalCellStyle(workbook);
 		
 		Sheet sheet = null;
 		Cell cell = null;
@@ -218,8 +220,13 @@ public class PayrollToExcelGenerator {
             
             // TOTAL
             row = sheet.getRow(payslipRows[i] + 15);
+            
+            cell = row.getCell(payslipColumns[i][0], Row.CREATE_NULL_AS_BLANK);
+            cell.setCellValue("TOTAL");
+            
             cell = row.getCell(payslipColumns[i][2], Row.CREATE_NULL_AS_BLANK);
             cell.setCellValue(payslip.getNetPay().doubleValue());
+            cell.setCellStyle(totalCellStyle);
             
             i++;
 		}
@@ -241,4 +248,19 @@ public class PayrollToExcelGenerator {
 		return cellStyle;
 	}
 	
+    private CellStyle createTotalCellStyle(XSSFWorkbook workbook) {
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setDataFormat((short)BuiltinFormats.getBuiltinFormat("#,##0.00_);(#,##0.00)"));
+        cellStyle.setBorderTop(CellStyle.BORDER_THIN);
+        cellStyle.setBorderRight(CellStyle.BORDER_THIN);
+        
+        Font boldFont = workbook.createFont();
+        boldFont.setBold(true);
+        boldFont.setFontName("Arial");
+        boldFont.setFontHeightInPoints((short)10);
+        cellStyle.setFont(boldFont);
+        
+        return cellStyle;
+    }
+    
 }
