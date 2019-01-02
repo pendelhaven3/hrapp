@@ -396,7 +396,7 @@ public class PayrollServiceImpl implements PayrollService {
         payslipAdjustment.setPayslip(payslip);
         payslipAdjustment.setType(PayslipAdjustmentType.HOLIDAY_PAY);
         payslipAdjustment.setDescription("holiday " + DateUtil.toMonthDateString(date));
-        payslipAdjustment.setAmount(getSingleDayPay(payslip.getEmployee(), payslip));
+        payslipAdjustment.setAmount(getSingleDayPay(payslip.getEmployee(), payslip, date));
         return payslipAdjustment;
     }
 
@@ -417,12 +417,13 @@ public class PayrollServiceImpl implements PayrollService {
         return !adjustments.isEmpty() ? adjustments.get(0) : null;
     }
     
-    private BigDecimal getSingleDayPay(Employee employee, Payslip payslip) {
-        Salary salary = salaryDao.findByEmployeeAndEffectiveDate(employee, payslip.getPeriodCoveredFrom());
+    private BigDecimal getSingleDayPay(Employee employee, Payslip payslip, Date date) {
+        Salary salary = salaryDao.findByEmployeeAndEffectiveDate(employee, date);
         switch (salary.getPayType()) {
         case PER_DAY:
             return salary.getRate();
         case FIXED_RATE:
+            salary = salaryDao.findByEmployeeAndEffectiveDate(employee, payslip.getPeriodCoveredFrom());
             return salary.getRate().divide(new BigDecimal(payslip.getPeriodCovered().getNumberOfDays()), 2, RoundingMode.HALF_UP);
         default:
             throw new IllegalStateException("Should not reach here");
