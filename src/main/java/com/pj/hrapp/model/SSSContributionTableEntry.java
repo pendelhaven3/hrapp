@@ -17,6 +17,9 @@ import com.pj.hrapp.model.report.SSSPhilHealthReportItem;
 import com.pj.hrapp.model.util.AmountInterval;
 import com.pj.hrapp.util.FormatterUtil;
 
+import lombok.Getter;
+import lombok.Setter;
+
 // TODO: Find better place for this!
 @SqlResultSetMapping(name = "sssPhilHealthReportItemMapping",
 	classes = {
@@ -34,6 +37,8 @@ import com.pj.hrapp.util.FormatterUtil;
 )
 
 @Entity
+@Getter
+@Setter
 public class SSSContributionTableEntry {
 
 	@Id
@@ -48,50 +53,12 @@ public class SSSContributionTableEntry {
 	private BigDecimal employeeContribution;
     private BigDecimal employeeCompensation;
 	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+    private boolean household;
+    
 	public AmountInterval getCompensationRange() {
 		return new AmountInterval(compensationFrom, compensationTo);
 	}
 	
-	public BigDecimal getCompensationFrom() {
-		return compensationFrom;
-	}
-
-	public void setCompensationFrom(BigDecimal compensationFrom) {
-		this.compensationFrom = compensationFrom;
-	}
-
-	public BigDecimal getCompensationTo() {
-		return compensationTo;
-	}
-
-	public void setCompensationTo(BigDecimal compensationTo) {
-		this.compensationTo = compensationTo;
-	}
-
-	public BigDecimal getEmployerContribution() {
-		return employerContribution;
-	}
-
-	public void setEmployerContribution(BigDecimal employerContribution) {
-		this.employerContribution = employerContribution;
-	}
-
-	public BigDecimal getEmployeeContribution() {
-		return employeeContribution;
-	}
-
-	public void setEmployeeContribution(BigDecimal employeeContribution) {
-		this.employeeContribution = employeeContribution;
-	}
-
 	public boolean isCompensationToSpecified() {
 		return compensationTo != null;
 	}
@@ -138,12 +105,4 @@ public class SSSContributionTableEntry {
 				(compensationTo == null || compensation.compareTo(compensationTo) <= 0);
 	}
 
-    public BigDecimal getEmployeeCompensation() {
-        return employeeCompensation;
-    }
-
-    public void setEmployeeCompensation(BigDecimal employeeCompensation) {
-        this.employeeCompensation = employeeCompensation;
-    }
-	
 }
