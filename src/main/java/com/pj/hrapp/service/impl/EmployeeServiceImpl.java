@@ -177,8 +177,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> findAllEmployeesWithBirthdayWithin(Date from, Date to) {
         SimpleDateFormat formatter = new SimpleDateFormat("MMdd");
-        System.out.println("From: " + formatter.format(from));
-        System.out.println("To: " + formatter.format(to));
         return employeeRepository.findAllByBirthdayBetween(formatter.format(from), formatter.format(to));
     }
 	

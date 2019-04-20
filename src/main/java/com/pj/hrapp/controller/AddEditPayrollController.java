@@ -117,8 +117,6 @@ public class AddEditPayrollController extends AbstractController {
     private List<Employee> findAllEmployeesWithBirthdaySinceLastPayrollUpToThisPayroll() {
         Payroll previousPayroll = payrollService.getPreviousPayroll(payroll);
         
-        System.out.println("Previous payroll: " + previousPayroll.getBatchNumber());
-        
         return employeeService.findAllEmployeesWithBirthdayWithin(
                 DateUtils.addDays(previousPayroll.getPeriodCoveredTo(),  1),
                 payroll.getPeriodCoveredTo());
