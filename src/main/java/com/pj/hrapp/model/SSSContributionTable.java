@@ -58,12 +58,12 @@ public class SSSContributionTable {
 	}
 
 	public BigDecimal getEmployeeContribution(BigDecimal compensation) {
-	    Optional<SSSContributionTableEntry> selectedEntry = entries.stream()
+	    Optional<SSSContributionTableEntry> matchingEntry = entries.stream()
             .filter(entry -> entry.contains(compensation))
             .findFirst();
 	    
-	    if (selectedEntry.isPresent()) {
-	        return selectedEntry.get().getEmployeeContribution();
+	    if (matchingEntry.isPresent()) {
+	        return matchingEntry.get().getEmployeeContribution();
 	    } else {
 	        throw new NoMatchingSssContributionTableEntryException("No SSS contribution table entry defined for compensation " + FormatterUtil.formatAmount(compensation));
 	    }
