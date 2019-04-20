@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.pj.hrapp.Constants;
 import com.pj.hrapp.Parameter;
+import com.pj.hrapp.exception.NoMatchingSssContributionTableEntryException;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.service.PayrollService;
@@ -59,6 +60,9 @@ public class AutoGeneratePayslipContributionsDialog extends AbstractDialog {
         
         try {
             payrollService.regenerateGovernmentContributions(payslip, month);
+        } catch (NoMatchingSssContributionTableEntryException e) {
+            ShowDialog.error(e.getMessage());
+            return;
         } catch (Exception e) {
             LOGGER.error("Unable to generate contributions", e);
             ShowDialog.unexpectedError();

@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
+import com.pj.hrapp.exception.NoMatchingSssContributionTableEntryException;
+import com.pj.hrapp.util.FormatterUtil;
 
 public class SSSContributionTable {
 
@@ -54,10 +58,15 @@ public class SSSContributionTable {
 	}
 
 	public BigDecimal getEmployeeContribution(BigDecimal compensation) {
-		return entries.stream()
-			.filter(entry -> entry.contains(compensation))
-			.findFirst()
-			.get().getEmployeeContribution();
+	    Optional<SSSContributionTableEntry> selectedEntry = entries.stream()
+            .filter(entry -> entry.contains(compensation))
+            .findFirst();
+	    
+	    if (selectedEntry.isPresent()) {
+	        return selectedEntry.get().getEmployeeContribution();
+	    } else {
+	        throw new NoMatchingSssContributionTableEntryException("No SSS contribution table entry defined for compensation " + FormatterUtil.formatAmount(compensation));
+	    }
 	}
 	
     public BigDecimal getEmployerContribution(BigDecimal compensation) {
