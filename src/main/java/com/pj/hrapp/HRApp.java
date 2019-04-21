@@ -41,12 +41,9 @@ public class HRApp extends Application {
 			ShowDialog.error("Database not found");
 		} else {
 			setupInitialDatabaseValues();
+			onStartup();
 			showMainMenuScreen();
 		}
-	}
-
-	private void setupInitialDatabaseValues() {
-		context.getBean(SystemSetup.class).run();
 	}
 
 	private boolean isDatabaseNotFound() {
@@ -60,6 +57,14 @@ public class HRApp extends Application {
 		
 		return false;
 	}
+
+    private void setupInitialDatabaseValues() {
+        context.getBean(SystemSetup.class).run();
+    }
+
+    private void onStartup() {
+        new OnStartup(context).fire();
+    }
 
 	private void showMainMenuScreen() {
 		StageController stageController = context.getBean(StageController.class);
