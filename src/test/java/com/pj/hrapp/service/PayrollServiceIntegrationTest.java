@@ -16,7 +16,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.pj.hrapp.SystemSetup;
 import com.pj.hrapp.dao.EmployeeAttendanceDao;
 import com.pj.hrapp.dao.EmployeeRepository;
 import com.pj.hrapp.dao.PayrollDao;

@@ -129,9 +129,9 @@ public class ReportServiceImpl implements ReportService {
         report.getNonHouseholdItems().stream()
             .filter(item -> SPECIAL_SSS_NUMBERS.contains(item.getSssNumber()))
             .forEach(item -> {
-                item.setEmployeeContribution(sssContributionTable.getEmployeeContribution(item.getMonthlyPay()));
-                item.setEmployerContribution(sssContributionTable.getEmployerContribution(item.getMonthlyPay()));
-                item.setEmployeeCompensation(sssContributionTable.getEmployeeCompensation(item.getMonthlyPay()));
+                item.setEmployeeContribution(sssContributionTable.getEmployeeContribution(item.getMonthlyPay(), false));
+                item.setEmployerContribution(sssContributionTable.getEmployerContribution(item.getMonthlyPay(), false));
+                item.setEmployeeCompensation(sssContributionTable.getEmployeeCompensation(item.getMonthlyPay(), false));
             });
         
         return report;

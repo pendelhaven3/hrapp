@@ -177,6 +177,19 @@ public class StageController {
 				Collections.singletonMap("entry", entry));
 	}
 
+    public void showSSSContributionTableForHouseholdScreen() {
+        loadSceneFromFXML("sssContributionTableForHousehold");
+    }
+
+    public void addSSSContributionTableEntryForHouseholdScreen() {
+        loadSceneFromFXML("sssContributionTableEntryForHousehold");
+    }
+
+    public void showEditSSSContributionTableEntryForHouseholdScreen(SSSContributionTableEntry entry) {
+        loadSceneFromFXML("sssContributionTableEntryForHousehold", 
+                Collections.singletonMap("entry", entry));
+    }
+
 	public void showPhilHealthContributionTableScreen() {
 		loadSceneFromFXML("philHealthContributionTable");
 	}

@@ -43,8 +43,8 @@
 				<TextField fx:id="employeeCompensationField"
 					GridPane.columnIndex="1" GridPane.rowIndex="4" />
 			</GridPane>
-		
-			<Label fx:id="householdField" text="N" visible="false" />
+			
+			<Label fx:id="householdField" text="Y" visible="false" />
 		
 			<HBox spacing="10" alignment="center">
 				<Button text="Save" onAction="#saveEntry" />

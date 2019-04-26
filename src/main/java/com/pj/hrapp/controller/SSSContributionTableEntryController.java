@@ -1,5 +1,7 @@
 package com.pj.hrapp.controller;
 
+import java.text.MessageFormat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import com.pj.hrapp.util.FormatterUtil;
 import com.pj.hrapp.util.NumberUtil;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 @Controller
@@ -31,11 +34,16 @@ public class SSSContributionTableEntryController extends AbstractController {
 	@FXML private TextField employeeContributionField;
 	@FXML private TextField employerContributionField;
     @FXML private TextField employeeCompensationField;
-	
-	@Parameter private SSSContributionTableEntry entry;
-	
-	@Override
-	public void updateDisplay() {
+    @FXML private Label householdField;
+    
+    @Parameter private SSSContributionTableEntry entry;
+    
+    private boolean household;
+    
+    @Override
+    public void updateDisplay() {
+        household = "Y".equals(householdField.getText());
+        
 		setTitle();
 		
 		if (entry != null) {
@@ -57,11 +65,10 @@ public class SSSContributionTableEntryController extends AbstractController {
 	}
 
 	private void setTitle() {
-		if (entry == null) {
-			stageController.setTitle("Add New SSS Contribution Table Entry");
-		} else {
-			stageController.setTitle("Edit SSS Contribution Table Entry");
-		}
+        String operationText = (entry == null) ? "Add New" : "Edit";
+        String householdText = (household) ? " For Household" : "";
+        
+        stageController.setTitle(MessageFormat.format("{0} SSS Contribution Table{1} Entry", operationText, householdText));
 	}
 
 	@FXML public void saveEntry() {
@@ -79,6 +86,7 @@ public class SSSContributionTableEntryController extends AbstractController {
 		entry.setEmployeeContribution(NumberUtil.toBigDecimal(employeeContributionField.getText()));
         entry.setEmployerContribution(NumberUtil.toBigDecimal(employerContributionField.getText()));
 		entry.setEmployeeCompensation(NumberUtil.toBigDecimal(employeeCompensationField.getText()));
+		entry.setHousehold(household);
 		
 		try {
 			sssService.save(entry);
@@ -89,7 +97,7 @@ public class SSSContributionTableEntryController extends AbstractController {
 		}
 		
 		ShowDialog.info("SSS contribution table entry saved");
-		stageController.showSSSContributionTableScreen();
+        returnToSSSContributionTableScreen();
 	}
 
 	private boolean validateFields() {
@@ -156,6 +164,7 @@ public class SSSContributionTableEntryController extends AbstractController {
 		other.setCompensationFrom(NumberUtil.toBigDecimal(compensationFromField.getText()));
 		other.setCompensationTo(
 				isCompensationToSpecified() ? NumberUtil.toBigDecimal(compensationToField.getText()) : null);
+		other.setHousehold(household);
 		
 		return !sssService.getSSSContributionTable().isValidEntry(other);
 	}
@@ -197,11 +206,11 @@ public class SSSContributionTableEntryController extends AbstractController {
     }
     
 	@FXML public void cancel() {
-		stageController.showSSSContributionTableScreen();
+        returnToSSSContributionTableScreen();
 	}
 
 	@FXML public void doOnBack() {
-		stageController.showSSSContributionTableScreen();
+        returnToSSSContributionTableScreen();
 	}
 
 	@FXML public void deleteEntry() {
@@ -218,7 +227,15 @@ public class SSSContributionTableEntryController extends AbstractController {
 		}
 		
 		ShowDialog.info("SSS contribution table entry deleted");
-		stageController.showSSSContributionTableScreen();
+        returnToSSSContributionTableScreen();
 	}
 
+    private void returnToSSSContributionTableScreen() {
+        if (household) {
+            stageController.showSSSContributionTableForHouseholdScreen();
+        } else {
+            stageController.showSSSContributionTableScreen();
+        }
+    }
+	
 }

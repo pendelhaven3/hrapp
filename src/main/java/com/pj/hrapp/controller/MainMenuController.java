@@ -56,4 +56,9 @@ public class MainMenuController extends AbstractController {
 		stageController.showCompanyProfileScreen();
 	}
 
+    @FXML
+    public void goToSSSContributionTableForHousehold() {
+        stageController.showSSSContributionTableForHouseholdScreen();
+    }
+
 }

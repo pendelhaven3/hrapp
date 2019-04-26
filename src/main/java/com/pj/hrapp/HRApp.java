@@ -40,7 +40,6 @@ public class HRApp extends Application {
 		if (isDatabaseNotFound()) {
 			ShowDialog.error("Database not found");
 		} else {
-			onStartup();
 			showMainMenuScreen();
 		}
 	}
@@ -56,10 +55,6 @@ public class HRApp extends Application {
 		
 		return false;
 	}
-
-    private void onStartup() {
-        new OnStartup(context).fire();
-    }
 
 	private void showMainMenuScreen() {
 		StageController stageController = context.getBean(StageController.class);

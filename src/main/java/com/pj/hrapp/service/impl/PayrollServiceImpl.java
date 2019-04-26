@@ -128,7 +128,7 @@ public class PayrollServiceImpl implements PayrollService {
 		case WEEKLY:
 			BigDecimal employeeCompensation = getEmployeeContributionReferenceCompensationForMonthYear(
 					payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
-			sssContribution = sssContributionTable.getEmployeeContribution(employeeCompensation);
+			sssContribution = sssContributionTable.getEmployeeContribution(employeeCompensation, payslip.getEmployee().isHousehold());
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(employeeCompensation);
 			break;
 		case SEMIMONTHLY: {
@@ -142,7 +142,7 @@ public class PayrollServiceImpl implements PayrollService {
 				                .getRate().multiply(BigDecimal.valueOf(2L));
 			}
 			
-			sssContribution = sssContributionTable.getEmployeeContribution(referenceCompensation);
+			sssContribution = sssContributionTable.getEmployeeContribution(referenceCompensation, payslip.getEmployee().isHousehold());
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(referenceCompensation);
 			break;
 		}

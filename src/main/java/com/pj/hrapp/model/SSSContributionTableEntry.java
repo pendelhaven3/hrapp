@@ -45,9 +45,7 @@ public class SSSContributionTableEntry {
 	@GeneratedValue
 	private Long id;
 	
-	@Column(nullable = false)
 	private BigDecimal compensationFrom;
-	
 	private BigDecimal compensationTo;
 	private BigDecimal employerContribution;
 	private BigDecimal employeeContribution;
@@ -93,11 +91,18 @@ public class SSSContributionTableEntry {
 	}
 	
 	public String getCompensationRangeAsString() {
-		return new StringBuilder()
-				.append(FormatterUtil.formatAmount(compensationFrom))
-				.append(" - ")
-				.append(compensationTo != null ? FormatterUtil.formatAmount(compensationTo) : "over")
-				.toString();
+	    if (compensationFrom == null) {
+	        return new StringBuilder().append("below ").append(FormatterUtil.formatAmount(compensationTo)).toString();
+	    } else if (compensationTo == null) {
+            return new StringBuilder().append(FormatterUtil.formatAmount(compensationFrom)).append(" and above").toString();
+	    } else {
+	        return new StringBuilder()
+	                .append(FormatterUtil.formatAmount(compensationFrom))
+	                .append(" - ")
+	                .append(FormatterUtil.formatAmount(compensationTo))
+	                .toString();
+	    }
+	    
 	}
 	
 	public boolean contains(BigDecimal compensation) {
