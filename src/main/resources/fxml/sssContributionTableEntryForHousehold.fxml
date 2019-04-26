@@ -30,13 +30,13 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
 				<TextField fx:id="compensationToField"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Label text="Employee Contribution:" 
-					GridPane.columnIndex="0" GridPane.rowIndex="2" />
-				<TextField fx:id="employeeContributionField"
-					GridPane.columnIndex="1" GridPane.rowIndex="2" />
 				<Label text="Employer Contribution:" 
-					GridPane.columnIndex="0" GridPane.rowIndex="3" />
+					GridPane.columnIndex="0" GridPane.rowIndex="2" />
 				<TextField fx:id="employerContributionField"
+					GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Employee Contribution:" 
+					GridPane.columnIndex="0" GridPane.rowIndex="3" />
+				<TextField fx:id="employeeContributionField"
 					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 				<Label text="Employee Compensation:" 
 					GridPane.columnIndex="0" GridPane.rowIndex="4" />

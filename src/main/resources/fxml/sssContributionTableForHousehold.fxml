@@ -28,14 +28,14 @@
 					<AppPropertyValueFactory property="compensationRangeAsString" />
 				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="EE" styleClass="center">
-				<cellValueFactory>
-					<AppPropertyValueFactory property="employeeContribution" />
-				</cellValueFactory>
-			</TableColumn>
 			<TableColumn text="ER" styleClass="center">
 				<cellValueFactory>
 					<AppPropertyValueFactory property="employerContribution" />
+				</cellValueFactory>
+			</TableColumn>
+			<TableColumn text="EE" styleClass="center">
+				<cellValueFactory>
+					<AppPropertyValueFactory property="employeeContribution" />
 				</cellValueFactory>
 			</TableColumn>
 			<TableColumn text="EC" styleClass="center">
