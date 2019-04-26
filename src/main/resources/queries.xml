@@ -263,6 +263,7 @@ LEFT JOIN (
 	  AND d.type = 'SSS'
 	LEFT JOIN sssContributionTableEntry e
 	  on e.employeeContribution = -d.amount
+	  and e.household = true
 	WHERE a.household = true
 	AND (a.resignDate is null OR a.resignDate >= DATE_ADD(:firstDayOfMonth, INTERVAL 1 MONTH))
 	AND d.contributionMonth = :contributionMonth

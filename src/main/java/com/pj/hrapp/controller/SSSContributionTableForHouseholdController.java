@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 
 @Controller
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class SSSContributionTableController extends AbstractController {
+public class SSSContributionTableForHouseholdController extends AbstractController {
 
 	@Autowired private SSSService sssService;
 	
@@ -27,11 +27,11 @@ public class SSSContributionTableController extends AbstractController {
 	
 	@Override
 	public void updateDisplay() {
-        stageController.setTitle("SSS Contribution Table");
+        stageController.setTitle("SSS Contribution Table for Household");
 	    
 		SSSContributionTable sssContributionTable = sssService.getSSSContributionTable();
 		
-		entriesTable.setItems(FXCollections.observableList(sssContributionTable.getEntries()));
+		entriesTable.setItems(FXCollections.observableList(sssContributionTable.getHouseholdEntries()));
 		entriesTable.setOnMouseClicked(new DoubleClickEventHandler() {
 			
 			@Override
@@ -42,7 +42,7 @@ public class SSSContributionTableController extends AbstractController {
 	}
 
 	protected void editSelectedEntry() {
-		stageController.showEditSSSContributionTableEntryScreen(
+		stageController.showEditSSSContributionTableEntryForHouseholdScreen(
 				entriesTable.getSelectedItem());
 	}
 
@@ -51,7 +51,7 @@ public class SSSContributionTableController extends AbstractController {
 	}
 
 	@FXML public void addEntry() {
-		stageController.addSSSContributionTableEntryScreen();
+		stageController.addSSSContributionTableEntryForHouseholdScreen();
 	}
 
 }

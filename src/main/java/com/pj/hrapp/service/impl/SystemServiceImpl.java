@@ -22,6 +22,7 @@ public class SystemServiceImpl implements SystemService {
 	
 	@Override
 	public BigDecimal getPagibigContributionValue() {
+	    // TODO: If null, insert SystemParameter record.
 		return NumberUtil.toBigDecimal(
 				systemParameterRepository.findByName(SystemParameter.PAGIBIG_CONTRIBUTION_VALUE_PARAMETER_NAME)
 				.getValue());

@@ -40,13 +40,8 @@ public class HRApp extends Application {
 		if (isDatabaseNotFound()) {
 			ShowDialog.error("Database not found");
 		} else {
-			setupInitialDatabaseValues();
 			showMainMenuScreen();
 		}
-	}
-
-	private void setupInitialDatabaseValues() {
-		context.getBean(SystemSetup.class).run();
 	}
 
 	private boolean isDatabaseNotFound() {
