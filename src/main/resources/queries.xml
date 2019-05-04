@@ -247,8 +247,8 @@ SELECT
 	d.sssNumber,
 	IFNULL(c.monthlyPay, 0) AS monthlyPay,
 	IFNULL(a.employeeContribution, 0) AS employeeContribution,
-	IFNULL(a.employerContribution, 0) AS employerContribution,
-	IFNULL(a.employeeCompensation, 0) AS employeeCompensation
+	(CASE IFNULL(a.employeeContribution, 0) WHEN 0 THEN (select employerContribution FROM sssContributionTableEntry WHERE household = true AND compensationFrom <= IFNULL(c.monthlyPay, 0) AND compensationTo >= IFNULL(c.monthlyPay, 0)) ELSE a.employerContribution END) AS employerContribution,
+	(CASE IFNULL(a.employeeContribution, 0) WHEN 0 THEN (select employeeCompensation FROM sssContributionTableEntry WHERE household = true AND compensationFrom <= IFNULL(c.monthlyPay, 0) AND compensationTo >= IFNULL(c.monthlyPay, 0)) ELSE a.employeeCompensation END) AS employeeCompensation
 FROM employee d
 LEFT JOIN (
 	SELECT a.id AS employeeId, MAX(-d.amount) as employeeContribution, MAX(e.employerContribution) AS employerContribution,
