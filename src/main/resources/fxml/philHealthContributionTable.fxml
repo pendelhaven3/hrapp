@@ -21,7 +21,7 @@
 	<center>
 		<VBox spacing="10" alignment="center">
 			<GridPane vgap="10" alignment="center">
-				<Label text="Floor" prefWidth="100"
+				<Label text="Floor" prefWidth="300"
 					GridPane.columnIndex="0" GridPane.rowIndex="0" />
 				<TextField fx:id="floorField"
 					GridPane.columnIndex="1" GridPane.rowIndex="0" />
@@ -29,10 +29,14 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
 				<TextField fx:id="ceilingField"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
-				<Label text="Multiplier (%)" prefWidth="120"
+				<Label text="Multiplier (%)"
 					GridPane.columnIndex="0" GridPane.rowIndex="2" />
 				<TextField fx:id="multiplierField"
 					GridPane.columnIndex="1" GridPane.rowIndex="2" />
+				<Label text="Household Monthly Contribution"
+					GridPane.columnIndex="0" GridPane.rowIndex="3" />
+				<TextField fx:id="householdMonthlyContributionField"
+					GridPane.columnIndex="1" GridPane.rowIndex="3" />
 			</GridPane>
 			
 			<HBox spacing="10" alignment="center">

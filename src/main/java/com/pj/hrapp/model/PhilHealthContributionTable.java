@@ -26,6 +26,9 @@ public class PhilHealthContributionTable {
     @Column(precision = 9, scale = 2, nullable = false)
     private BigDecimal multiplier;
     
+    @Column(precision = 9, scale = 0, nullable = false)
+    private BigDecimal householdMonthlyContribution;
+    
     @Transient
     private BigDecimal floorPremium;
     
@@ -35,7 +38,11 @@ public class PhilHealthContributionTable {
     @Transient
     private BigDecimal actualMultiplier;
 	
-    public BigDecimal getEmployeeShare(BigDecimal salary) {
+    public BigDecimal getEmployeeShare(BigDecimal salary, boolean household) {
+        if (household) {
+            return householdMonthlyContribution.divide(BigDecimal.valueOf(2L));
+        }
+        
         if (salary.compareTo(floor) <= 0) {
             return getFloorPremium();
         } else if (salary.compareTo(ceiling) >= 0) {
@@ -108,4 +115,12 @@ public class PhilHealthContributionTable {
         this.multiplier = multiplier;
     }
 
+    public BigDecimal getHouseholdMonthlyContribution() {
+        return householdMonthlyContribution;
+    }
+
+    public void setHouseholdMonthlyContribution(BigDecimal householdMonthlyContribution) {
+        this.householdMonthlyContribution = householdMonthlyContribution;
+    }
+    
 }

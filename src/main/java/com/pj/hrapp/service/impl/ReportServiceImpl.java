@@ -148,7 +148,7 @@ public class ReportServiceImpl implements ReportService {
         report.getNonHouseholdItems().stream()
             .filter(item -> SPECIAL_PHILHEALTH_NUMBERS.contains(item.getPhilHealthNumber()))
             .forEach(item -> {
-                item.setDue(philHealthContributionTable.getEmployeeShare(item.getMonthlyPay()));
+                item.setDue(philHealthContributionTable.getEmployeeShare(item.getMonthlyPay(), false));
             });
         
         return report;

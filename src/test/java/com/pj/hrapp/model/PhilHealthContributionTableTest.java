@@ -22,27 +22,27 @@ public class PhilHealthContributionTableTest {
 	
 	@Test
 	public void salaryEqualsFloor() {
-	    assertTrue(NumberUtil.equals(new BigDecimal("137.50"), table.getEmployeeShare(new BigDecimal("10000"))));
+	    assertTrue(NumberUtil.equals(new BigDecimal("137.50"), table.getEmployeeShare(new BigDecimal("10000"), false)));
 	}
 
     @Test
     public void salaryLowerThanFloor() {
-        assertTrue(NumberUtil.equals(new BigDecimal("137.50"), table.getEmployeeShare(new BigDecimal("5000"))));
+        assertTrue(NumberUtil.equals(new BigDecimal("137.50"), table.getEmployeeShare(new BigDecimal("5000"), false)));
     }
     
     @Test
     public void salaryBetweenFloorAndCeiling() {
-        assertTrue(NumberUtil.equals(new BigDecimal("343.75"), table.getEmployeeShare(new BigDecimal("25000"))));
+        assertTrue(NumberUtil.equals(new BigDecimal("343.75"), table.getEmployeeShare(new BigDecimal("25000"), false)));
     }
     
     @Test
     public void salaryEqualsCeiling() {
-        assertTrue(NumberUtil.equals(new BigDecimal("550"), table.getEmployeeShare(new BigDecimal("40000"))));
+        assertTrue(NumberUtil.equals(new BigDecimal("550"), table.getEmployeeShare(new BigDecimal("40000"), false)));
     }
 	
     @Test
     public void salaryMoreThanCeiling() {
-        assertTrue(NumberUtil.equals(new BigDecimal("550"), table.getEmployeeShare(new BigDecimal("50000"))));
+        assertTrue(NumberUtil.equals(new BigDecimal("550"), table.getEmployeeShare(new BigDecimal("50000"), false)));
     }
     
 }

@@ -28,6 +28,7 @@ public class PhilHealthContributionTableController extends AbstractController {
 	@FXML private TextField floorField;
     @FXML private TextField ceilingField;
     @FXML private TextField multiplierField;
+    @FXML private TextField householdMonthlyContributionField;
 	
     private PhilHealthContributionTable philHealthContributionTable;
     
@@ -40,6 +41,7 @@ public class PhilHealthContributionTableController extends AbstractController {
 		floorField.setText(philHealthContributionTable.getFloor().toString());
         ceilingField.setText(philHealthContributionTable.getCeiling().toString());
         multiplierField.setText(philHealthContributionTable.getMultiplier().toString());
+        householdMonthlyContributionField.setText(philHealthContributionTable.getHouseholdMonthlyContribution().toString());
         
         floorField.requestFocus();
 	}
@@ -58,6 +60,7 @@ public class PhilHealthContributionTableController extends AbstractController {
         philHealthContributionTable.setFloor(NumberUtil.toBigDecimal(floorField.getText()));
         philHealthContributionTable.setCeiling(NumberUtil.toBigDecimal(ceilingField.getText()));
         philHealthContributionTable.setMultiplier(NumberUtil.toBigDecimal(multiplierField.getText()));
+        philHealthContributionTable.setHouseholdMonthlyContribution(NumberUtil.toBigDecimal(householdMonthlyContributionField.getText()));
         
         try {
             philHealthService.save(philHealthContributionTable);
