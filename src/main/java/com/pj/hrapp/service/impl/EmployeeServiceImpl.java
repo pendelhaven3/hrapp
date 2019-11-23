@@ -57,6 +57,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeEvaluationAlertRepository.save(
                     new EmployeeEvaluationAlert(employee, DateUtils.addMonths(employee.getHireDate(), 3), "3 months"));
             employeeEvaluationAlertRepository.save(
+                    new EmployeeEvaluationAlert(employee, DateUtils.addMonths(employee.getHireDate(), 6), "6 months"));
+            employeeEvaluationAlertRepository.save(
                     new EmployeeEvaluationAlert(employee, DateUtils.addYears(employee.getHireDate(), 1), "1 year"));
 		}
 	}
