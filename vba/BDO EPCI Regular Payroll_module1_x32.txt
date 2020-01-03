@@ -1,0 +1,143 @@
+Declare Function GetSaveFileName Lib "comdlg32.dll" Alias "GetSaveFileNameA" (pOpenfilename As OPENFILENAME) As Long
+Private Type OPENFILENAME
+    lStructSize As Long
+    hwndOwner As Long
+    hInstance As Long
+    lpstrFilter As String
+    lpstrCustomFilter As String
+    nMaxCustFilter As Long
+    nFilterIndex As Long
+    lpstrFile As String
+    nMaxFile As Long
+    lpstrFileTitle As String
+    nMaxFileTitle As Long
+    lpstrInitialDir As String
+    lpstrTitle As String
+    flags As Long
+    nFileOffset As Integer
+    nFileExtension As Integer
+    lpstrDefExt As String
+    lCustData As Long
+    lpfnHook As Long
+    lpTemplateName As String
+    
+End Type
+
+Function ShowSave(vPrefix As String) As String
+Dim OFName As OPENFILENAME
+Dim sPayFile As String
+
+    sPayFile = vPrefix & Format(Sheet1.Cells(2, 2), "mmddyy") & Format(Sheet1.Cells(5, 2), "00") & ".txt"
+    OFName.lStructSize = Len(OFName) '-- Set the structure size
+    'OFName.hwndOwner = Me.Hwnd '-- Set the owner window
+    'OFName.hInstance = Application.hInstance '-- Set the application's instance
+    'Set the filet
+    OFName.lpstrFilter = "Payroll File (*.txt)" + Chr$(0) + "*.txt" + Chr$(0) + "All Files (*.*)" + Chr$(0) + "*.*" + Chr$(0)
+    'OFName.lpstrFile = Space$(254)  '-- Create a buffer
+    OFName.lpstrFile = sPayFile & Space$(254 - Len(sPayFile))
+    OFName.nMaxFile = 255          '-- Set the maximum number of chars
+    OFName.lpstrFileTitle = Space$(254) '-- Create a buffer
+    OFName.nMaxFileTitle = 255          '-- Set the maximum number of chars
+    OFName.lpstrInitialDir = ThisWorkbook.Path     '-- Set the initial directory
+    OFName.lpstrTitle = "Payroll File"  'Set the dialog title
+    OFName.flags = 0                    'no extra flags
+    'Show the 'Save File'-dialog
+    
+    If GetSaveFileName(OFName) Then
+        ShowSave = Trim$(OFName.lpstrFile)
+    Else
+        ShowSave = ""
+    End If
+    
+End Function
+
+Function udfCheckDigitValid(pSource As String) As Integer
+Dim i, pCardNo
+Dim iCardDigit As Integer, iCardSum As Long
+    
+    pCardNo = "601853" & Right(pSource, 10)
+    iCardSum = 0
+    For i = 16 To 1 Step -1 '-- Read backward
+        If (i Mod 2) = 0 Then
+            iCardDigit = Val(Mid(pCardNo, i, 1)) * 1
+        Else
+            iCardDigit = Val(Mid(pCardNo, i, 1)) * 2
+        End If
+        If iCardDigit < 10 Then
+            iCardSum = iCardSum + iCardDigit
+        Else
+            iCardSum = iCardSum + (Int(iCardDigit / 10) + (iCardDigit Mod 10))
+        End If
+    Next
+    
+    If (iCardSum Mod 10) = 0 Then
+        udfCheckDigitValid = 0   '-- Ok
+    Else
+        udfCheckDigitValid = 1   '-- Invalid Card No.
+    End If
+End Function
+
+Function udfValidAccount(strAcct As String) As Boolean
+   Dim lngSAWeights(10) As Long
+   Dim lngCAWeights(10) As Long
+   Dim bolSA  As Boolean
+   Dim lngCtr As Long
+   Dim dblSum As Double
+   Dim lngMod As Long
+   Dim lngCheckDigit As Long
+   
+   lngSAWeights(1) = 1
+   lngSAWeights(2) = 2
+   lngSAWeights(3) = 3
+   lngSAWeights(4) = 4
+   lngSAWeights(5) = 5
+   lngSAWeights(6) = 6
+   lngSAWeights(7) = 7
+   lngSAWeights(8) = 8
+   lngSAWeights(9) = 9
+   lngSAWeights(10) = 1
+   
+   lngCAWeights(1) = 1
+   lngCAWeights(2) = 2
+   lngCAWeights(3) = 3
+   lngCAWeights(4) = 4
+   lngCAWeights(5) = 5
+   lngCAWeights(6) = 6
+   lngCAWeights(7) = 0
+   lngCAWeights(8) = 0
+   lngCAWeights(9) = 7
+   lngCAWeights(10) = 8
+   
+   udfValidAccount = True
+   
+   If Val(Mid(strAcct, 4, 1)) < 8 Then
+      bolSA = True
+   Else
+      bolSA = False
+   End If
+   
+   lngCtr = 1
+   dblSum = 0
+   
+   Do While lngCtr <= 9
+      If bolSA Then
+         dblSum = dblSum + (Val(Mid(strAcct, lngCtr, 1)) * lngSAWeights(11 - lngCtr))
+      Else
+         dblSum = dblSum + (Val(Mid(strAcct, lngCtr, 1)) * lngCAWeights(11 - lngCtr))
+      End If
+      
+      lngCtr = lngCtr + 1
+   Loop
+   
+   lngMod = dblSum Mod 11
+   
+   If lngMod > 0 Then
+      lngCheckDigit = 11 - lngMod
+   Else
+      lngCheckDigit = 0
+   End If
+   
+   If lngCheckDigit <> Val(Mid(strAcct, 10, 1)) Then
+      udfValidAccount = False
+   End If
+End Function
