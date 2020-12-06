@@ -1,7 +1,9 @@
 package com.pj.hrapp.service.impl;
 
 import java.math.BigDecimal;
+import java.time.Month;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,10 +25,13 @@ import com.pj.hrapp.model.SSSContributionTable;
 import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.BasicSalaryReportItem;
 import com.pj.hrapp.model.report.LatesReport;
+import com.pj.hrapp.model.report.MonthlyCompensation;
 import com.pj.hrapp.model.report.PagIbigReport;
 import com.pj.hrapp.model.report.PhilHealthReport;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
 import com.pj.hrapp.model.report.SSSReport;
+import com.pj.hrapp.model.report.ThirteenthMonthReport;
+import com.pj.hrapp.model.report.ThirteenthMonthReportItem;
 import com.pj.hrapp.service.PhilHealthService;
 import com.pj.hrapp.service.ReportService;
 import com.pj.hrapp.service.SSSService;
@@ -168,5 +173,30 @@ public class ReportServiceImpl implements ReportService {
         
         return report;
     }
+
+	@Override
+	public ThirteenthMonthReport generateThirteenthMonthReport(Integer year) {
+		ThirteenthMonthReport report = new ThirteenthMonthReport();
+		report.setYear(year);
+		
+		YearMonth yearMonthFrom = YearMonth.of(year - 1, Month.DECEMBER);
+		YearMonth yearMonthTo = YearMonth.of(year, Month.DECEMBER);
+		
+		for (Employee employee : employeeRepository.findAllByResigned(false)) {
+			List<MonthlyCompensation> monthlyCompensations = new ArrayList<>();
+			
+			YearMonth yearMonth = yearMonthFrom;
+			while (yearMonth.isBefore(yearMonthTo)) {
+				monthlyCompensations.add(new MonthlyCompensation(
+						yearMonth, salaryDao.getEmployeeCompensationForMonthYear(employee, yearMonth)));
+				yearMonth = yearMonth.plusMonths(1);
+			}
+			
+			ThirteenthMonthReportItem item = new ThirteenthMonthReportItem(employee, monthlyCompensations);
+			report.getItems().add(item);
+		}
+		
+		return report;
+	}
 	
 }

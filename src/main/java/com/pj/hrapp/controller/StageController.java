@@ -282,4 +282,8 @@ public class StageController {
         loadSceneFromFXML("pagIbigLoanPaymentsReport");
     }
 
+	public void showThirteenthMonthReportScreen() {
+        loadSceneFromFXML("thirteenthMonthReport");
+	}
+
 }

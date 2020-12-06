@@ -12,6 +12,7 @@ import com.pj.hrapp.model.report.PagIbigReport;
 import com.pj.hrapp.model.report.PhilHealthReport;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
 import com.pj.hrapp.model.report.SSSReport;
+import com.pj.hrapp.model.report.ThirteenthMonthReport;
 
 public interface ReportService {
 
@@ -28,5 +29,7 @@ public interface ReportService {
     PhilHealthReport generatePhilHealthReport(YearMonth yearMonthCriteria);
 
     PagIbigReport generatePagIbigReport(YearMonth yearMonthCriteria);
+
+	ThirteenthMonthReport generateThirteenthMonthReport(Integer value);
 
 }
