@@ -52,6 +52,7 @@ public class EmployeeController extends AbstractController {
 	@FXML private DatePicker birthdayDatePicker;
 	@FXML private TextField addressField;
 	@FXML private TextField contactNumberField;
+	@FXML private TextField emailAddressField;
 	@FXML private TextField sssNumberField;
 	@FXML private TextField philHealthNumberField;
 	@FXML private TextField pagibigNumberField;
@@ -85,6 +86,7 @@ public class EmployeeController extends AbstractController {
 			birthdayDatePicker.setValue(DateUtil.toLocalDate(employee.getBirthday()));
 			addressField.setText(employee.getAddress());
 			contactNumberField.setText(employee.getContactNumber());
+			emailAddressField.setText(employee.getEmailAddress());
 			sssNumberField.setText(employee.getSssNumber());
 			philHealthNumberField.setText(employee.getPhilHealthNumber());
 			pagibigNumberField.setText(employee.getPagibigNumber());
@@ -158,6 +160,7 @@ public class EmployeeController extends AbstractController {
 		employee.setBirthday(DateUtil.toDate(birthdayDatePicker.getValue()));
 		employee.setAddress(addressField.getText());
 		employee.setContactNumber(contactNumberField.getText());
+		employee.setEmailAddress(emailAddressField.getText());
 		employee.setSssNumber(sssNumberField.getText());
 		employee.setPhilHealthNumber(philHealthNumberField.getText());
 		employee.setPagibigNumber(pagibigNumberField.getText());

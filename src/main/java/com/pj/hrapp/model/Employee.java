@@ -30,6 +30,7 @@ public class Employee implements Comparable<Employee> {
 	
 	private String address;
 	private String contactNumber;
+	private String emailAddress;
 	private String sssNumber;
 	private String philHealthNumber;
 	private String pagibigNumber;
@@ -276,6 +277,14 @@ public class Employee implements Comparable<Employee> {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 	
 }

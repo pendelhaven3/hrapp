@@ -82,10 +82,14 @@
 												GridPane.columnIndex="0" GridPane.rowIndex="7" />
 											<UppercaseTextField fx:id="contactNumberField"
 												GridPane.columnIndex="1" GridPane.rowIndex="7" />
-											<Label text="Household"
-												GridPane.columnIndex="0" GridPane.rowIndex="8" />
-											<CheckBox fx:id="householdCheckBox"
+                                            <Label text="Email Address"
+                                                GridPane.columnIndex="0" GridPane.rowIndex="8" />
+											<UppercaseTextField fx:id="emailAddressField"
 												GridPane.columnIndex="1" GridPane.rowIndex="8" />
+											<Label text="Household"
+												GridPane.columnIndex="0" GridPane.rowIndex="9" />
+											<CheckBox fx:id="householdCheckBox"
+												GridPane.columnIndex="1" GridPane.rowIndex="9" />
 										</GridPane>
 										<GridPane vgap="10" alignment="center">
 											<Label text="SSS Number" prefWidth="200"
