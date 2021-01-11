@@ -50,6 +50,8 @@ public class SSSContributionTableEntry {
 	private BigDecimal employerContribution;
 	private BigDecimal employeeContribution;
     private BigDecimal employeeCompensation;
+    private BigDecimal employerProvidentFundContribution;
+    private BigDecimal employeeProvidentFundContribution;
 	
     private boolean household;
     

@@ -34,6 +34,8 @@ public class SSSContributionTableEntryController extends AbstractController {
 	@FXML private TextField employeeContributionField;
 	@FXML private TextField employerContributionField;
     @FXML private TextField employeeCompensationField;
+	@FXML private TextField employerProvidentFundContributionField;
+    @FXML private TextField employeeProvidentFundContributionField;
     @FXML private Label householdField;
     
     @Parameter private SSSContributionTableEntry entry;
@@ -59,6 +61,8 @@ public class SSSContributionTableEntryController extends AbstractController {
             employeeCompensationField.setText(
                     entry.getEmployeeCompensation() != null ? 
                             FormatterUtil.formatAmount(entry.getEmployeeCompensation()) : null);
+			employerProvidentFundContributionField.setText(FormatterUtil.formatAmount(entry.getEmployerProvidentFundContribution()));
+			employeeProvidentFundContributionField.setText(FormatterUtil.formatAmount(entry.getEmployeeProvidentFundContribution()));
 		}
 		
 		compensationFromField.requestFocus();
@@ -86,6 +90,14 @@ public class SSSContributionTableEntryController extends AbstractController {
 		entry.setEmployeeContribution(NumberUtil.toBigDecimal(employeeContributionField.getText()));
         entry.setEmployerContribution(NumberUtil.toBigDecimal(employerContributionField.getText()));
 		entry.setEmployeeCompensation(NumberUtil.toBigDecimal(employeeCompensationField.getText()));
+		
+		if (isEmployerProvidentFundContributionSpecified()) {
+	        entry.setEmployerProvidentFundContribution(NumberUtil.toBigDecimal(employerProvidentFundContributionField.getText()));
+		}
+		if (isEmployeeProvidentFundContributionSpecified()) {
+	        entry.setEmployeeProvidentFundContribution(NumberUtil.toBigDecimal(employeeProvidentFundContributionField.getText()));
+		}
+		
 		entry.setHousehold(household);
 		
 		try {
@@ -155,6 +167,18 @@ public class SSSContributionTableEntryController extends AbstractController {
             return false;
         }
         
+        if (isEmployerProvidentFundContributionSpecified() && isEmployerProvidentFundContributionNotAValidAmount()) {
+            ShowDialog.error("Employer Provident Fund Contribution must be a valid amount");
+            employerProvidentFundContributionField.requestFocus();
+            return false;
+        }
+        
+        if (isEmployeeProvidentFundContributionSpecified() && isEmployeeProvidentFundContributionNotAValidAmount()) {
+            ShowDialog.error("Employee Provident Fund Contribution must be a valid amount");
+            employeeProvidentFundContributionField.requestFocus();
+            return false;
+        }
+        
 		return true;
 	}
 
@@ -204,6 +228,22 @@ public class SSSContributionTableEntryController extends AbstractController {
     private boolean isEmployeeCompensationNotAValidAmount() {
         return !NumberUtil.isAmount(employeeCompensationField.getText());
     }
+    
+    private boolean isEmployerProvidentFundContributionNotAValidAmount() {
+        return !NumberUtil.isAmount(employerProvidentFundContributionField.getText());
+    }
+    
+    private boolean isEmployeeProvidentFundContributionNotAValidAmount() {
+        return !NumberUtil.isAmount(employeeProvidentFundContributionField.getText());
+    }
+    
+	private boolean isEmployerProvidentFundContributionSpecified() {
+		return !StringUtils.isEmpty(employerProvidentFundContributionField.getText());
+	}
+    
+	private boolean isEmployeeProvidentFundContributionSpecified() {
+		return !StringUtils.isEmpty(employeeProvidentFundContributionField.getText());
+	}
     
 	@FXML public void cancel() {
         returnToSSSContributionTableScreen();

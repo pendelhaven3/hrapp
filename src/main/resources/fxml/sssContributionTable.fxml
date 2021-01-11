@@ -13,7 +13,7 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" 
 		fx:controller="com.pj.hrapp.controller.SSSContributionTableController" 
-	alignment="center" spacing="10">
+	alignment="center">
 	
 	<ToolBar>
 		<Button text="Back" onAction="#doOnBack" />
@@ -43,6 +43,16 @@
 					<AppPropertyValueFactory property="employeeCompensation" />
 				</cellValueFactory>
 			</TableColumn>
+            <TableColumn text="Provident Fund ER" styleClass="center">
+                <cellValueFactory>
+                    <AppPropertyValueFactory property="employerProvidentFundContribution" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Provident Fund EE" styleClass="center">
+                <cellValueFactory>
+                    <AppPropertyValueFactory property="employeeProvidentFundContribution" />
+                </cellValueFactory>
+            </TableColumn>
 		</columns>
 	</AppTableView>
 	
