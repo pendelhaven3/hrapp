@@ -1,8 +1,10 @@
 package com.pj.hrapp.util;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -46,6 +48,11 @@ public class SSSReportExcelGenerator {
         nextRow();
         
         cell = row.createCell(0);
+        cell.setCellValue(getReportCode(report));
+        
+        nextRow();
+        
+        cell = row.createCell(0);
         cell.setCellValue(companyProfile.getSssNumber());
         
         nextRow();
@@ -83,7 +90,7 @@ public class SSSReportExcelGenerator {
         
         return workbook;
     }
-    
+
     private void createStyles(Workbook workbook) {
         numberStyle = workbook.createCellStyle();
         numberStyle.setDataFormat((short)4);
@@ -246,5 +253,14 @@ public class SSSReportExcelGenerator {
     private void nextRow() {
         row = row.getSheet().createRow(row.getRowNum() + 1);
     }
+    
+	private String getReportCode(SSSReport report) {
+		int month = report.getYearMonth().getMonthValue();
+		int year = report.getYearMonth().getYear();
+		
+		return MessageFormat.format("SSS REPORT_{0}_{1}",
+				StringUtils.leftPad(String.valueOf(month), 2, '0'),
+				String.valueOf(year));
+	}
     
 }

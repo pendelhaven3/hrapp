@@ -107,7 +107,7 @@ public class PagIbigLoanPaymentsReportController extends AbstractController {
         Collections.sort(items, (o1, o2) -> o1.getLoan().getEmployee().getFullName().compareTo(o2.getLoan().getEmployee().getFullName()));
         
         try (
-            Workbook workbook = excelGenerator.generate(items);
+            Workbook workbook = excelGenerator.generate(items, yearMonth);
             FileOutputStream out = new FileOutputStream(file);
         ) {
             workbook.write(out);

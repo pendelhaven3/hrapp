@@ -2,8 +2,11 @@ package com.pj.hrapp.util;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
+import java.time.YearMonth;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -24,7 +27,7 @@ public class PagIbigLoanPaymentsReportExcelGenerator {
     private CellStyle boldStyle;
     private CellStyle dateStyle;
     
-    public Workbook generate(List<EmployeeLoanPayment> items) throws IOException {
+    public Workbook generate(List<EmployeeLoanPayment> items, YearMonth yearMonth) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         
         Sheet sheet = workbook.createSheet();
@@ -37,6 +40,11 @@ public class PagIbigLoanPaymentsReportExcelGenerator {
         createStyles(workbook);
         
         row = sheet.createRow(0);
+        
+        addReportCodeRow(yearMonth);
+        
+        nextRow();
+        nextRow();
         
         addHeaders();
         
@@ -51,6 +59,11 @@ public class PagIbigLoanPaymentsReportExcelGenerator {
         return workbook;
     }
     
+    private void addReportCodeRow(YearMonth yearMonth) {
+        cell = row.createCell(0);
+        cell.setCellValue(getReportCode(yearMonth));
+	}
+
     private void createStyles(Workbook workbook) {
         numberStyle = workbook.createCellStyle();
         numberStyle.setDataFormat((short)4);
@@ -130,5 +143,14 @@ public class PagIbigLoanPaymentsReportExcelGenerator {
         cell.setCellStyle(numberBoldStyle);
         cell.setCellValue(items.stream().map(item -> item.getAmount()).reduce(BigDecimal.ZERO, (x,y) -> x.add(y)).doubleValue());
     }    
+    
+	private String getReportCode(YearMonth yearMonth) {
+		int month = yearMonth.getMonthValue();
+		int year = yearMonth.getYear();
+		
+		return MessageFormat.format("PAGIBIG LOAN PAYMENTS REPORT_{0}_{1}",
+				StringUtils.leftPad(String.valueOf(month), 2, '0'),
+				String.valueOf(year));
+	}
     
 }

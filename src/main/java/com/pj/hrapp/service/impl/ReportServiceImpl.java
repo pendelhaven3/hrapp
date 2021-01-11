@@ -126,6 +126,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public SSSReport generateSSSReport(YearMonth yearMonth) {
         SSSReport report = new SSSReport();
+        report.setYearMonth(yearMonth);
         report.setNonHouseholdItems(reportDao.getSSSNonHouseholdReportItems(yearMonth));
         report.setHouseholdItems(reportDao.getSSSHouseholdReportItems(yearMonth));
         
@@ -145,6 +146,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public PhilHealthReport generatePhilHealthReport(YearMonth yearMonth) {
         PhilHealthReport report = new PhilHealthReport();
+        report.setYearMonth(yearMonth);
         report.setNonHouseholdItems(reportDao.getPhilHealthNonHouseholdReportItems(yearMonth));
         report.setHouseholdItems(reportDao.getPhilHealthHouseholdReportItems(yearMonth));
         
@@ -162,6 +164,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public PagIbigReport generatePagIbigReport(YearMonth yearMonth) {
         PagIbigReport report = new PagIbigReport();
+        report.setYearMonth(yearMonth);
         report.setItems(reportDao.getPagIbigReportItems(yearMonth));
         
         report.getItems().stream()

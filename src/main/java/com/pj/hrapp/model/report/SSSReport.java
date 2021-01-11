@@ -1,11 +1,13 @@
 package com.pj.hrapp.model.report;
 
 import java.math.BigDecimal;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SSSReport {
 
+	private YearMonth yearMonth;
     private List<SSSReportItem> nonHouseholdItems = new ArrayList<>();
     private List<SSSReportItem> householdItems = new ArrayList<>();
 
@@ -109,4 +111,12 @@ public class SSSReport {
         this.householdItems = householdItems;
     }
 
+	public YearMonth getYearMonth() {
+		return yearMonth;
+	}
+
+	public void setYearMonth(YearMonth yearMonth) {
+		this.yearMonth = yearMonth;
+	}
+    
 }

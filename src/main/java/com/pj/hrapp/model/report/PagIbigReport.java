@@ -1,11 +1,13 @@
 package com.pj.hrapp.model.report;
 
 import java.math.BigDecimal;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PagIbigReport {
 
+	private YearMonth yearMonth;
     private List<PagIbigReportItem> items = new ArrayList<>();
 
     public boolean isEmpty() {
@@ -32,4 +34,12 @@ public class PagIbigReport {
         this.items = items;
     }
 
+	public YearMonth getYearMonth() {
+		return yearMonth;
+	}
+
+	public void setYearMonth(YearMonth yearMonth) {
+		this.yearMonth = yearMonth;
+	}
+    
 }
