@@ -45,6 +45,24 @@ public class SSSReport {
                 .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
     }
     
+    public BigDecimal getTotalNonHouseholdEmployeeProvidentFundContribution() {
+        return nonHouseholdItems.stream()
+                .map(item -> item.getEmployeeProvidentFundContribution())
+                .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+    }
+    
+    public BigDecimal getTotalNonHouseholdEmployerProvidentFundContribution() {
+        return nonHouseholdItems.stream()
+                .map(item -> item.getEmployerProvidentFundContribution())
+                .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+    }
+    
+    public BigDecimal getTotalNonHouseholdProvidentFundContribution() {
+        return nonHouseholdItems.stream()
+                .map(item -> item.getTotalProvidentFundContribution())
+                .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+    }
+    
     public BigDecimal getTotalHouseholdMonthlyPay() {
         return householdItems.stream()
                 .map(item -> item.getMonthlyPay())
@@ -75,6 +93,24 @@ public class SSSReport {
                 .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
     }
     
+    public BigDecimal getTotalHouseholdEmployeeProvidentFundContribution() {
+        return householdItems.stream()
+                .map(item -> item.getEmployeeProvidentFundContribution())
+                .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+    }
+    
+    public BigDecimal getTotalHouseholdEmployerProvidentFundContribution() {
+        return householdItems.stream()
+                .map(item -> item.getEmployerProvidentFundContribution())
+                .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+    }
+    
+    public BigDecimal getTotalHouseholdProvidentFundContribution() {
+        return householdItems.stream()
+                .map(item -> item.getTotalProvidentFundContribution())
+                .reduce(BigDecimal.ZERO, (x,y) -> x.add(y));
+    }
+    
     public BigDecimal getTotalMonthlyPay() {
         return getTotalNonHouseholdMonthlyPay().add(getTotalHouseholdMonthlyPay());
     }
@@ -95,6 +131,18 @@ public class SSSReport {
         return getTotalNonHouseholdEmployeeCompensation().add(getTotalHouseholdEmployeeCompensation());
     }
     
+	public BigDecimal getTotalEmployeeProvidentFundContribution() {
+		return getTotalNonHouseholdEmployeeProvidentFundContribution().add(getTotalHouseholdEmployeeProvidentFundContribution());
+	}
+    
+	public BigDecimal getTotalEmployerProvidentFundContribution() {
+		return getTotalNonHouseholdEmployerProvidentFundContribution().add(getTotalHouseholdEmployerProvidentFundContribution());
+	}
+
+	public BigDecimal getTotalProvidentFundContribution() {
+		return getTotalEmployeeProvidentFundContribution().add(getTotalEmployerProvidentFundContribution());
+	}
+
     public List<SSSReportItem> getNonHouseholdItems() {
         return nonHouseholdItems;
     }
@@ -118,5 +166,5 @@ public class SSSReport {
 	public void setYearMonth(YearMonth yearMonth) {
 		this.yearMonth = yearMonth;
 	}
-    
+
 }

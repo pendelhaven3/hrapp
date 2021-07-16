@@ -78,4 +78,18 @@ public class SSSContributionTable {
                 .get().getEmployeeCompensation();
     }
 
+	public BigDecimal getEmployeeProvidentFundContribution(BigDecimal compensation, boolean household) {
+	    List<SSSContributionTableEntry> entriesToCheck = household ? householdEntries : entries;
+	    
+	    Optional<SSSContributionTableEntry> matchingEntry = entriesToCheck.stream()
+            .filter(entry -> entry.contains(compensation))
+            .findFirst();
+	    
+	    if (matchingEntry.isPresent()) {
+	        return matchingEntry.get().getEmployeeProvidentFundContribution();
+	    } else {
+	        throw new NoMatchingSssContributionTableEntryException("No SSS contribution table entry defined for compensation " + FormatterUtil.formatAmount(compensation));
+	    }
+	}
+
 }

@@ -87,6 +87,21 @@
 											<AppPropertyValueFactory property="employeeCompensation" />
 										</cellValueFactory>
 									</TableColumn>
+                                    <TableColumn text="PF EE" styleClass="right">
+                                        <cellValueFactory>
+                                            <AppPropertyValueFactory property="employeeProvidentFundContribution" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="PF ER" styleClass="right">
+                                        <cellValueFactory>
+                                            <AppPropertyValueFactory property="employerProvidentFundContribution" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="PF Total" styleClass="right">
+                                        <cellValueFactory>
+                                            <AppPropertyValueFactory property="totalProvidentFundContribution" />
+                                        </cellValueFactory>
+                                    </TableColumn>
 								</columns>
 							</AppTableView>
 							
@@ -101,6 +116,12 @@
 									GridPane.columnIndex="3" GridPane.rowIndex="0" />
 								<Label fx:id="totalNonHouseholdEmployeeContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                                <Region prefWidth="50"
+                                    GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                                <Label text="Total PF EE:" prefWidth="175"
+                                    GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                                <Label fx:id="totalNonHouseholdEmployeeProvidentFundContributionField" prefWidth="100" alignment="center_right"
+                                    GridPane.columnIndex="7" GridPane.rowIndex="0" />
 								<Label text="Total EC:"
 									GridPane.columnIndex="0" GridPane.rowIndex="1" />
 								<Label fx:id="totalNonHouseholdEmployeeCompensationField" prefWidth="100" alignment="center_right"
@@ -109,10 +130,18 @@
 									GridPane.columnIndex="3" GridPane.rowIndex="1" />
 								<Label fx:id="totalNonHouseholdEmployerContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                <Label text="Total PF ER:" prefWidth="175"
+                                    GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                <Label fx:id="totalNonHouseholdEmployerProvidentFundContributionField" prefWidth="100" alignment="center_right"
+                                    GridPane.columnIndex="7" GridPane.rowIndex="1" />
 								<Label text="Total Contribution:"
 									GridPane.columnIndex="3" GridPane.rowIndex="2" />
 								<Label fx:id="totalNonHouseholdContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                <Label text="Total PF Contribution:" prefWidth="175"
+                                    GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                <Label fx:id="totalNonHouseholdProvidentFundContributionField" prefWidth="100" alignment="center_right"
+                                    GridPane.columnIndex="7" GridPane.rowIndex="2" />
 							</GridPane>
 						</VBox>
 					</Tab>
@@ -156,6 +185,21 @@
 											<AppPropertyValueFactory property="employeeCompensation" />
 										</cellValueFactory>
 									</TableColumn>
+                                    <TableColumn text="PF EE" styleClass="right">
+                                        <cellValueFactory>
+                                            <AppPropertyValueFactory property="employeeProvidentFundContribution" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="PF ER" styleClass="right">
+                                        <cellValueFactory>
+                                            <AppPropertyValueFactory property="employerProvidentFundContribution" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn text="PF Total" styleClass="right">
+                                        <cellValueFactory>
+                                            <AppPropertyValueFactory property="totalProvidentFundContribution" />
+                                        </cellValueFactory>
+                                    </TableColumn>
 								</columns>
 							</AppTableView>
 							
@@ -168,8 +212,14 @@
 									GridPane.columnIndex="2" GridPane.rowIndex="0" />
 								<Label text="Total EE:" prefWidth="175"
 									GridPane.columnIndex="3" GridPane.rowIndex="0" />
-								<Label fx:id="totalHouseholdEmployeeContributionField" prefWidth="100" alignment="center_right"
-									GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                                <Label fx:id="totalHouseholdEmployeeContributionField" prefWidth="100" alignment="center_right"
+                                    GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                                <Region prefWidth="50"
+                                    GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                                <Label text="Total PF EE:" prefWidth="175"
+                                    GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                                <Label fx:id="totalHouseholdEmployeeProvidentFundContributionField" prefWidth="100" alignment="center_right"
+                                    GridPane.columnIndex="7" GridPane.rowIndex="0" />
 								<Label text="Total EC:"
 									GridPane.columnIndex="0" GridPane.rowIndex="1" />
 								<Label fx:id="totalHouseholdEmployeeCompensationField" prefWidth="100" alignment="center_right"
@@ -178,10 +228,18 @@
 									GridPane.columnIndex="3" GridPane.rowIndex="1" />
 								<Label fx:id="totalHouseholdEmployerContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                <Label text="Total PF ER:"
+                                    GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                <Label fx:id="totalHouseholdEmployerProvidentFundContributionField" prefWidth="100" alignment="center_right"
+                                    GridPane.columnIndex="7" GridPane.rowIndex="1" />
 								<Label text="Total Contribution:"
 									GridPane.columnIndex="3" GridPane.rowIndex="2" />
 								<Label fx:id="totalHouseholdContributionField" prefWidth="100" alignment="center_right"
 									GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                <Label text="Total PF Contribution:" prefWidth="175"
+                                    GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                <Label fx:id="totalHouseholdProvidentFundContributionField" prefWidth="100" alignment="center_right"
+                                    GridPane.columnIndex="7" GridPane.rowIndex="2" />
 							</GridPane>
 						</VBox>
 					</Tab>

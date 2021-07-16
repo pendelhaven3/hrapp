@@ -120,6 +120,7 @@ public class PayrollServiceImpl implements PayrollService {
 	
 	private void addSSSPagibigPhilHealthContributionAdjustments(Payslip payslip, String contributionMonth) {
 		BigDecimal sssContribution = null;
+		BigDecimal sssProvidentFundContribution = null;
 		BigDecimal philHealthContribution = null;
 		SSSContributionTable sssContributionTable = sssService.getSSSContributionTable();
 		PhilHealthContributionTable philHealthContributionTable = philHealthService.getContributionTable();
@@ -129,6 +130,7 @@ public class PayrollServiceImpl implements PayrollService {
 			BigDecimal employeeCompensation = getEmployeeContributionReferenceCompensationForMonthYear(
 					payslip.getEmployee(), DateUtil.toYearMonth(contributionMonth));
 			sssContribution = sssContributionTable.getEmployeeContribution(employeeCompensation, payslip.getEmployee().isHousehold());
+			sssProvidentFundContribution = sssContributionTable.getEmployeeProvidentFundContribution(employeeCompensation, payslip.getEmployee().isHousehold());
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(employeeCompensation, payslip.getEmployee().isHousehold());
 			break;
 		case SEMIMONTHLY: {
@@ -143,6 +145,7 @@ public class PayrollServiceImpl implements PayrollService {
 			}
 			
 			sssContribution = sssContributionTable.getEmployeeContribution(referenceCompensation, payslip.getEmployee().isHousehold());
+			sssProvidentFundContribution = sssContributionTable.getEmployeeProvidentFundContribution(referenceCompensation, payslip.getEmployee().isHousehold());
 			philHealthContribution = philHealthContributionTable.getEmployeeShare(referenceCompensation, payslip.getEmployee().isHousehold());
 			break;
 		}
@@ -160,6 +163,16 @@ public class PayrollServiceImpl implements PayrollService {
 		adjustment.setContributionMonth(contributionMonth);
 		payslipAdjustmentDao.save(adjustment);
 
+		if (sssProvidentFundContribution != null) {
+			adjustment = new PayslipAdjustment();
+			adjustment.setPayslip(payslip);
+			adjustment.setType(PayslipAdjustmentType.SSS_PROVIDENT_FUND);
+			adjustment.setDescription("SSS Provident Fund");
+			adjustment.setAmount(sssProvidentFundContribution.negate());
+			adjustment.setContributionMonth(contributionMonth);
+			payslipAdjustmentDao.save(adjustment);
+		}
+		
 		adjustment = new PayslipAdjustment();
 		adjustment.setPayslip(payslip);
 		adjustment.setType(PayslipAdjustmentType.PHILHEALTH);
@@ -352,6 +365,7 @@ public class PayrollServiceImpl implements PayrollService {
 
 	private void deleteGovernmentContributions(Payslip payslip) {
 		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.SSS);
+		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.SSS_PROVIDENT_FUND);
 		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.PHILHEALTH);
 		payslipAdjustmentDao.deleteByPayslipAndType(payslip, PayslipAdjustmentType.PAGIBIG);
 	}

@@ -137,6 +137,18 @@ public class SSSReportExcelGenerator {
         cell = row.createCell(6);
         cell.setCellStyle(headerStyle);
         cell.setCellValue("EC");
+        
+        cell = row.createCell(7);
+        cell.setCellStyle(headerStyle);
+        cell.setCellValue("PF EE");
+        
+        cell = row.createCell(8);
+        cell.setCellStyle(headerStyle);
+        cell.setCellValue("PF ER");
+        
+        cell = row.createCell(9);
+        cell.setCellStyle(headerStyle);
+        cell.setCellValue("Total PF");
     }
 
     private void addDataRows(List<SSSReportItem> items) {
@@ -170,6 +182,18 @@ public class SSSReportExcelGenerator {
             cell.setCellStyle(numberStyle);
             cell.setCellValue(item.getEmployeeCompensation().doubleValue());
             
+            cell = row.createCell(7);
+            cell.setCellStyle(numberStyle);
+            cell.setCellValue(item.getEmployeeProvidentFundContribution().doubleValue());
+            
+            cell = row.createCell(8);
+            cell.setCellStyle(numberStyle);
+            cell.setCellValue(item.getEmployerProvidentFundContribution().doubleValue());
+            
+            cell = row.createCell(9);
+            cell.setCellStyle(numberStyle);
+            cell.setCellValue(item.getTotalProvidentFundContribution().doubleValue());
+            
             nextRow();
         }
     }
@@ -197,6 +221,18 @@ public class SSSReportExcelGenerator {
         cell = row.createCell(6);
         cell.setCellStyle(numberStyle);
         cell.setCellValue(report.getTotalNonHouseholdEmployeeCompensation().doubleValue());
+        
+        cell = row.createCell(7);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalNonHouseholdEmployeeProvidentFundContribution().doubleValue());
+        
+        cell = row.createCell(8);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalNonHouseholdEmployerProvidentFundContribution().doubleValue());
+        
+        cell = row.createCell(9);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalNonHouseholdProvidentFundContribution().doubleValue());
     }
 
     private void addHouseholdSubTotalRow(SSSReport report) {
@@ -222,6 +258,18 @@ public class SSSReportExcelGenerator {
         cell = row.createCell(6);
         cell.setCellStyle(numberStyle);
         cell.setCellValue(report.getTotalHouseholdEmployeeCompensation().doubleValue());
+        
+        cell = row.createCell(7);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalHouseholdEmployeeProvidentFundContribution().doubleValue());
+        
+        cell = row.createCell(8);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalHouseholdEmployerProvidentFundContribution().doubleValue());
+        
+        cell = row.createCell(9);
+        cell.setCellStyle(numberStyle);
+        cell.setCellValue(report.getTotalHouseholdProvidentFundContribution().doubleValue());
     }
     
     private void addGrandTotalRow(SSSReport report) {
@@ -248,6 +296,18 @@ public class SSSReportExcelGenerator {
         cell = row.createCell(6);
         cell.setCellStyle(numberBoldStyle);
         cell.setCellValue(report.getTotalEmployeeCompensation().doubleValue());
+        
+        cell = row.createCell(7);
+        cell.setCellStyle(numberBoldStyle);
+        cell.setCellValue(report.getTotalEmployeeProvidentFundContribution().doubleValue());
+        
+        cell = row.createCell(8);
+        cell.setCellStyle(numberBoldStyle);
+        cell.setCellValue(report.getTotalEmployerProvidentFundContribution().doubleValue());
+        
+        cell = row.createCell(9);
+        cell.setCellStyle(numberBoldStyle);
+        cell.setCellValue(report.getTotalProvidentFundContribution().doubleValue());
     }
 
     private void nextRow() {

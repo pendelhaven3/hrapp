@@ -16,11 +16,12 @@ public enum PayslipAdjustmentType {
 	PAGIBIG_LOAN,
 	PHILHEALTH,
 	SSS,
+	SSS_PROVIDENT_FUND,
 	SSS_LOAN,
 	VALE_CASH,
 	VALE_PRODUCT;
 	
-	private static List<PayslipAdjustmentType> CONTRIBUTION_TYPES = Arrays.asList(SSS, PHILHEALTH, PAGIBIG);
+	private static List<PayslipAdjustmentType> CONTRIBUTION_TYPES = Arrays.asList(SSS, SSS_PROVIDENT_FUND, PHILHEALTH, PAGIBIG);
 	
 	public boolean isContributionType() {
 		return CONTRIBUTION_TYPES.contains(this);

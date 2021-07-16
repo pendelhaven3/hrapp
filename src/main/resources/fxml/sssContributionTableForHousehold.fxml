@@ -43,6 +43,16 @@
 					<AppPropertyValueFactory property="employeeCompensation" />
 				</cellValueFactory>
 			</TableColumn>
+            <TableColumn text="PF ER" styleClass="center">
+                <cellValueFactory>
+                    <AppPropertyValueFactory property="employerProvidentFundContribution" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="PF EE" styleClass="center">
+                <cellValueFactory>
+                    <AppPropertyValueFactory property="employeeProvidentFundContribution" />
+                </cellValueFactory>
+            </TableColumn>
 		</columns>
 	</AppTableView>
 	

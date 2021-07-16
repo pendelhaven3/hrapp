@@ -184,11 +184,15 @@ SELECT
 	IFNULL(c.monthlyPay, 0) AS monthlyPay,
 	IFNULL(a.employeeContribution, 0) AS employeeContribution,
 	IFNULL(a.employerContribution, 0) AS employerContribution,
-	IFNULL(a.employeeCompensation, 0) AS employeeCompensation
+	IFNULL(a.employeeCompensation, 0) AS employeeCompensation,
+    IFNULL(a.employeeProvidentFundContribution, 0) AS employeeProvidentFundContribution,
+    IFNULL(a.employerProvidentFundContribution, 0) AS employerProvidentFundContribution    
 FROM employee d
 LEFT JOIN (
 	SELECT a.id AS employeeId, MAX(-d.amount) as employeeContribution, MAX(e.employerContribution) AS employerContribution,
-		MAX(e.employeeCompensation) as employeeCompensation
+		MAX(e.employeeCompensation) as employeeCompensation,
+		MAX(e.employeeProvidentFundContribution) as employeeProvidentFundContribution,
+        MAX(e.employerProvidentFundContribution) as employerProvidentFundContribution
 	FROM employee a
 	JOIN payslip b
 	  ON b.employee_id = a.id
@@ -248,11 +252,15 @@ SELECT
 	IFNULL(c.monthlyPay, 0) AS monthlyPay,
 	IFNULL(a.employeeContribution, 0) AS employeeContribution,
 	(CASE IFNULL(a.employeeContribution, 0) WHEN 0 THEN (select employerContribution FROM sssContributionTableEntry WHERE household = true AND compensationFrom <= IFNULL(c.monthlyPay, 0) AND compensationTo >= IFNULL(c.monthlyPay, 0)) ELSE a.employerContribution END) AS employerContribution,
-	(CASE IFNULL(a.employeeContribution, 0) WHEN 0 THEN (select employeeCompensation FROM sssContributionTableEntry WHERE household = true AND compensationFrom <= IFNULL(c.monthlyPay, 0) AND compensationTo >= IFNULL(c.monthlyPay, 0)) ELSE a.employeeCompensation END) AS employeeCompensation
+	(CASE IFNULL(a.employeeContribution, 0) WHEN 0 THEN (select employeeCompensation FROM sssContributionTableEntry WHERE household = true AND compensationFrom <= IFNULL(c.monthlyPay, 0) AND compensationTo >= IFNULL(c.monthlyPay, 0)) ELSE a.employeeCompensation END) AS employeeCompensation,
+    IFNULL(a.employeeProvidentFundContribution, 0) AS employeeProvidentFundContribution,
+    IFNULL(a.employerProvidentFundContribution, 0) AS employerProvidentFundContribution
 FROM employee d
 LEFT JOIN (
 	SELECT a.id AS employeeId, MAX(-d.amount) as employeeContribution, MAX(e.employerContribution) AS employerContribution,
-		MAX(e.employeeCompensation) as employeeCompensation
+		MAX(e.employeeCompensation) as employeeCompensation,
+		MAX(e.employeeProvidentFundContribution) as employeeProvidentFundContribution,
+        MAX(e.employerProvidentFundContribution) as employerProvidentFundContribution
 	FROM employee a
 	JOIN payslip b
 	  ON b.employee_id = a.id

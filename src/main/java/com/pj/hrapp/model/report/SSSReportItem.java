@@ -16,7 +16,9 @@ import javax.persistence.SqlResultSetMapping;
             @ColumnResult(name = "monthlyPay", type = BigDecimal.class),
             @ColumnResult(name = "employeeContribution", type = BigDecimal.class),
             @ColumnResult(name = "employerContribution", type = BigDecimal.class),
-            @ColumnResult(name = "employeeCompensation", type = BigDecimal.class)
+            @ColumnResult(name = "employeeCompensation", type = BigDecimal.class),
+            @ColumnResult(name = "employeeProvidentFundContribution", type = BigDecimal.class),
+            @ColumnResult(name = "employerProvidentFundContribution", type = BigDecimal.class)
         })
     }
 )
@@ -33,21 +35,31 @@ public class SSSReportItem {
     private BigDecimal employeeContribution;
     private BigDecimal employerContribution;
     private BigDecimal employeeCompensation;
+    private BigDecimal employeeProvidentFundContribution;
+    private BigDecimal employerProvidentFundContribution;
  
     public SSSReportItem() { }
 
     public SSSReportItem(String employeeName, String sssNumber, BigDecimal monthlyPay, BigDecimal employeeContribution,
-            BigDecimal employerContribution, BigDecimal employeeCompensation) {
+            BigDecimal employerContribution, BigDecimal employeeCompensation,
+            BigDecimal employeeProvidentFundContribution, BigDecimal employerProvidentFundContribution
+    ) {
         this.employeeName = employeeName;
         this.sssNumber = sssNumber;
         this.monthlyPay = monthlyPay;
         this.employeeContribution = employeeContribution;
         this.employerContribution = employerContribution;
         this.employeeCompensation = employeeCompensation;
+        this.employeeProvidentFundContribution = employeeProvidentFundContribution;
+        this.employerProvidentFundContribution = employerProvidentFundContribution;
     }
 
     public BigDecimal getTotalContribution() {
         return employeeContribution.add(employerContribution);
+    }
+    
+    public BigDecimal getTotalProvidentFundContribution() {
+        return employeeProvidentFundContribution.add(employerProvidentFundContribution);
     }
     
     public String getEmployeeName() {
@@ -97,5 +109,21 @@ public class SSSReportItem {
     public void setEmployeeCompensation(BigDecimal employeeCompensation) {
         this.employeeCompensation = employeeCompensation;
     }
+
+	public BigDecimal getEmployeeProvidentFundContribution() {
+		return employeeProvidentFundContribution;
+	}
+
+	public void setEmployeeProvidentFundContribution(BigDecimal employeeProvidentFundContribution) {
+		this.employeeProvidentFundContribution = employeeProvidentFundContribution;
+	}
+
+	public BigDecimal getEmployerProvidentFundContribution() {
+		return employerProvidentFundContribution;
+	}
+
+	public void setEmployerProvidentFundContribution(BigDecimal employerProvidentFundContribution) {
+		this.employerProvidentFundContribution = employerProvidentFundContribution;
+	}
     
 }

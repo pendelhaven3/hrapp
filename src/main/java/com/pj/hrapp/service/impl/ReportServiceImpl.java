@@ -115,6 +115,9 @@ public class ReportServiceImpl implements ReportService {
 			case PAGIBIG:
 				loanDescription = "PAGIBIG LOAN";
 				break;
+			case PAGIBIG_CALAMITY:
+				loanDescription = "PAGIBIG LOAN- CALAMITY";
+				break;
 			}
 			
 			return employeeLoanPaymentRepository.findAllByPaymentDateBetweenAndLoanDescription(from, to, loanDescription);

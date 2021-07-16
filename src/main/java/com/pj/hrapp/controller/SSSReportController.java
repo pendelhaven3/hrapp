@@ -52,6 +52,9 @@ public class SSSReportController extends AbstractController {
     @FXML private Label totalNonHouseholdEmployerContributionField2;
     @FXML private Label totalNonHouseholdContributionField2;
     @FXML private Label totalNonHouseholdEmployeeCompensationField2;
+    @FXML private Label totalNonHouseholdEmployeeProvidentFundContributionField;
+    @FXML private Label totalNonHouseholdEmployerProvidentFundContributionField;
+    @FXML private Label totalNonHouseholdProvidentFundContributionField;
     @FXML private Label totalHouseholdMonthlyPayField;
     @FXML private Label totalHouseholdEmployeeContributionField;
     @FXML private Label totalHouseholdEmployerContributionField;
@@ -62,11 +65,17 @@ public class SSSReportController extends AbstractController {
     @FXML private Label totalHouseholdEmployerContributionField2;
     @FXML private Label totalHouseholdContributionField2;
     @FXML private Label totalHouseholdEmployeeCompensationField2;
+    @FXML private Label totalHouseholdEmployeeProvidentFundContributionField;
+    @FXML private Label totalHouseholdEmployerProvidentFundContributionField;
+    @FXML private Label totalHouseholdProvidentFundContributionField;
     @FXML private Label totalMonthlyPayField;
     @FXML private Label totalEmployeeContributionField;
     @FXML private Label totalEmployerContributionField;
     @FXML private Label totalContributionField;
     @FXML private Label totalEmployeeCompensationField;
+    @FXML private Label totalEmployeeProvidentFundContributionField;
+    @FXML private Label totalEmployerProvidentContributionField;
+    @FXML private Label totalProvidentFundContributionField;
     
     private SSSReportExcelGenerator excelGenerator = new SSSReportExcelGenerator();
     
@@ -107,6 +116,11 @@ public class SSSReportController extends AbstractController {
         totalNonHouseholdEmployerContributionField2.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdEmployerContribution()));
         totalNonHouseholdContributionField2.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdContribution()));
         totalNonHouseholdEmployeeCompensationField2.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdEmployeeCompensation()));
+        totalNonHouseholdEmployeeProvidentFundContributionField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdEmployeeProvidentFundContribution()));
+        totalNonHouseholdEmployerProvidentFundContributionField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdEmployerProvidentFundContribution()));
+        totalNonHouseholdEmployeeProvidentFundContributionField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdEmployeeProvidentFundContribution()));
+        totalNonHouseholdEmployerProvidentFundContributionField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdEmployerProvidentFundContribution()));
+        totalNonHouseholdProvidentFundContributionField.setText(FormatterUtil.formatAmount(report.getTotalNonHouseholdProvidentFundContribution()));
         totalHouseholdMonthlyPayField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdMonthlyPay()));
         totalHouseholdEmployeeContributionField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdEmployeeContribution()));
         totalHouseholdEmployerContributionField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdEmployerContribution()));
@@ -117,6 +131,9 @@ public class SSSReportController extends AbstractController {
         totalHouseholdEmployerContributionField2.setText(FormatterUtil.formatAmount(report.getTotalHouseholdEmployerContribution()));
         totalHouseholdContributionField2.setText(FormatterUtil.formatAmount(report.getTotalHouseholdContribution()));
         totalHouseholdEmployeeCompensationField2.setText(FormatterUtil.formatAmount(report.getTotalHouseholdEmployeeCompensation()));
+        totalHouseholdEmployeeProvidentFundContributionField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdEmployeeProvidentFundContribution()));
+        totalHouseholdEmployerProvidentFundContributionField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdEmployerProvidentFundContribution()));
+        totalHouseholdProvidentFundContributionField.setText(FormatterUtil.formatAmount(report.getTotalHouseholdProvidentFundContribution()));
         totalMonthlyPayField.setText(FormatterUtil.formatAmount(report.getTotalMonthlyPay()));
         totalEmployeeContributionField.setText(FormatterUtil.formatAmount(report.getTotalEmployeeContribution()));
         totalEmployerContributionField.setText(FormatterUtil.formatAmount(report.getTotalEmployerContribution()));

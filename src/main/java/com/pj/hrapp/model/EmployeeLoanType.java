@@ -4,7 +4,8 @@ public enum EmployeeLoanType {
 
 	COMPANY("Company Loan"),
 	SSS("SSS Loan"),
-	PAGIBIG("Pag-IBIG Loan");
+	PAGIBIG("Pag-IBIG Loan"),
+	PAGIBIG_CALAMITY("PAGIBIG LOAN- CALAMITY");
 	
 	private String name;
 	
