@@ -44,7 +44,7 @@
 			</HBox>
 			
 			<HBox alignment="center">
-				<Button text="Close" onAction="#close" />
+				<Button text="Close" onAction="#closeDialog" />
 			</HBox>
 		</VBox>
 	</center>

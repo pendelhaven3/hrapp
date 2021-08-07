@@ -34,6 +34,8 @@ public interface EmployeeService {
 	List<EmployeeAttendance> searchEmployeeAttendances(EmployeeAttendanceSearchCriteria criteria);
 
 	List<Employee> getAllActiveEmployees();
+	
+	List<Employee> getAllActiveEmployeesSortedByNickname();
 
 	int getNextEmployeeNumber();
 	

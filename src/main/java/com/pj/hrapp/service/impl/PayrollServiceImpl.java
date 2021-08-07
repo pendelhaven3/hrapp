@@ -39,6 +39,7 @@ import com.pj.hrapp.model.search.PayslipAdjustmentSearchCriteria;
 import com.pj.hrapp.model.search.PayslipSearchCriteria;
 import com.pj.hrapp.model.search.SalarySearchCriteria;
 import com.pj.hrapp.service.EmployeeLoanService;
+import com.pj.hrapp.service.EmployeeSavingsService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.PhilHealthService;
 import com.pj.hrapp.service.SSSService;
@@ -63,6 +64,7 @@ public class PayrollServiceImpl implements PayrollService {
 	@Autowired private SystemService systemService;
 	@Autowired private EmployeeLoanService employeeLoanService;
 	@Autowired private EmployeeEvaluationAlertRepository employeeEvaluationAlertRepository;
+	@Autowired private EmployeeSavingsService employeeSavingsService;
 	
 	@Override
 	public List<Payroll> getAllPayroll() {
@@ -330,6 +332,8 @@ public class PayrollServiceImpl implements PayrollService {
 		markEmployeeLoansWithLastPaymentInPayrollAsPaid(payroll);
 		
 		employeeEvaluationAlertRepository.deleteAllByAlertDateLessThanEqual(payroll.getPeriodCoveredTo());
+		
+		postDepositsToEmployeeSavings(payroll);
 	}
 
 	private void markEmployeeLoansWithLastPaymentInPayrollAsPaid(Payroll payroll) {
@@ -455,5 +459,15 @@ public class PayrollServiceImpl implements PayrollService {
     public Payroll getPreviousPayroll(Payroll referencePayroll) {
         return payrollDao.findPreviousPayroll(referencePayroll);
     }
+    
+	private void postDepositsToEmployeeSavings(Payroll payroll) {
+		for (Payslip payslip : payroll.getPayslips()) {
+			for (PayslipAdjustment payslipAdjustment : payslip.getAdjustments()) {
+				if (payslipAdjustment.getType() == PayslipAdjustmentType.SAVINGS) {
+					employeeSavingsService.postDeposit(payslip.getEmployee(), payslipAdjustment.getAmount().negate());
+				}
+			}
+		}
+	}
     
 }

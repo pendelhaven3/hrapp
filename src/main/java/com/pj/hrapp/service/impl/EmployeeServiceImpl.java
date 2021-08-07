@@ -181,5 +181,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         SimpleDateFormat formatter = new SimpleDateFormat("MMdd");
         return employeeRepository.findAllByBirthdayBetween(formatter.format(from), formatter.format(to));
     }
+
+	@Override
+	public List<Employee> getAllActiveEmployeesSortedByNickname() {
+		return employeeRepository.findByResignedOrderByNicknameAsc(false);
+	}
 	
 }

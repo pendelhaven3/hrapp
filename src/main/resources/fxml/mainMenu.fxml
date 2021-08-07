@@ -8,8 +8,9 @@
 	
 	<Button text="Employees" onAction="#goToEmployeeList" />
 	<Button text="Salaries" onAction="#goToSalaryList" />
+    <Button text="Payroll" onAction="#goToPayrollList" />
 	<Button text="Employee Loans" onAction="#goToEmployeeLoanList" />
-	<Button text="Payroll" onAction="#goToPayrollList" />
+    <Button text="Employee Savings" onAction="#goToEmployeeSavingsList" />
 	<Button text="SSS Contribution Table" onAction="#goToSSSContributionTable" />
 	<Button text="SSS Contribution Table for Household" onAction="#goToSSSContributionTableForHousehold" />
 	<Button text="PhilHealth Contribution Table" onAction="#goToPhilHealthContributionTable" />

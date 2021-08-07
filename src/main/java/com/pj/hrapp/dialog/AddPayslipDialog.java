@@ -1,5 +1,6 @@
 package com.pj.hrapp.dialog;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,13 +16,17 @@ import com.pj.hrapp.gui.component.SelectableTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
+import com.pj.hrapp.model.EmployeeSavings;
 import com.pj.hrapp.model.Payroll;
 import com.pj.hrapp.model.Payslip;
+import com.pj.hrapp.model.PayslipAdjustment;
+import com.pj.hrapp.model.PayslipAdjustmentType;
 import com.pj.hrapp.model.Salary;
 import com.pj.hrapp.model.ValeProduct;
 import com.pj.hrapp.model.util.DateInterval;
 import com.pj.hrapp.model.util.TableItem;
 import com.pj.hrapp.service.EmployeeLoanService;
+import com.pj.hrapp.service.EmployeeSavingsService;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.service.PayrollService;
 import com.pj.hrapp.service.SalaryService;
@@ -39,6 +44,7 @@ public class AddPayslipDialog extends AbstractDialog {
 	@Autowired private ValeProductService valeProductService;
 	@Autowired private EmployeeLoanService employeeLoanService;
 	@Autowired private SalaryService salaryService;
+	@Autowired private EmployeeSavingsService employeeSavingsService;
 	
 	@FXML private AppTableView<Employee> employeesTable;
 	@FXML private SelectableTableView<ValeProduct> valeProductsTable;
@@ -180,9 +186,23 @@ public class AddPayslipDialog extends AbstractDialog {
 		}
 		
 		ShowDialog.info("Vale Products saved");
+		
+		addSavingsAdjustment();
 		hide();
 	}
 	
+	private void addSavingsAdjustment() {
+		EmployeeSavings savings = employeeSavingsService.findSavingsByEmployee(payslip.getEmployee());
+		if (savings != null && savings.getSavedAmountPerPayday().compareTo(BigDecimal.ZERO) > 0) {
+			PayslipAdjustment adjustment = new PayslipAdjustment();
+			adjustment.setPayslip(payslip);
+			adjustment.setType(PayslipAdjustmentType.SAVINGS);
+			adjustment.setDescription("savings");
+			adjustment.setAmount(savings.getSavedAmountPerPayday().negate());
+			payrollService.save(adjustment);
+		}
+	}
+
 	@FXML
 	public void addAllLoanPayments() {
 		if (employeeHasNoUnpaidLoans()) {
@@ -225,6 +245,18 @@ public class AddPayslipDialog extends AbstractDialog {
 
 	public Payslip getPayslip() {
 		return payslip;
+	}
+	
+	@FXML
+	public void switchToEmployeeSavingsScreen() {
+		changeScene("addPayslipDialog-savings");
+		setTitle("Add Payslip - Employee Savings");
+	}
+	
+	@FXML
+	public void closeDialog() {
+		addSavingsAdjustment();
+		close();
 	}
 	
 }

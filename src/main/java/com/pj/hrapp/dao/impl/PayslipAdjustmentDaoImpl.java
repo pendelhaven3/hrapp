@@ -89,6 +89,11 @@ public class PayslipAdjustmentDaoImpl implements PayslipAdjustmentDao {
             paramMap.put("description", criteria.getDescription());
         }
 
+        if (criteria.getPosted() != null) {
+            sql.append(" and pa.payslip.payroll.posted = :posted");
+            paramMap.put("posted", criteria.getPosted());
+        }
+
         TypedQuery<PayslipAdjustment> query = entityManager.createQuery(sql.toString(), PayslipAdjustment.class);
         for (String key : paramMap.keySet()) {
             query.setParameter(key, paramMap.get(key));

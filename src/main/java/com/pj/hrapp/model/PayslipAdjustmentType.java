@@ -19,7 +19,8 @@ public enum PayslipAdjustmentType {
 	SSS_PROVIDENT_FUND,
 	SSS_LOAN,
 	VALE_CASH,
-	VALE_PRODUCT;
+	VALE_PRODUCT,
+	SAVINGS;
 	
 	private static List<PayslipAdjustmentType> CONTRIBUTION_TYPES = Arrays.asList(SSS, SSS_PROVIDENT_FUND, PHILHEALTH, PAGIBIG);
 	

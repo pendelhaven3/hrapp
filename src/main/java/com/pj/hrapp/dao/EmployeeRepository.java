@@ -36,5 +36,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
 	
 	@Query(value = "select e.* from Employee e where date_format(e.birthday, '%m%d') between :from and :to and resigned = false order by date_format(e.birthday, '%m%d')", nativeQuery = true)
 	List<Employee> findAllByBirthdayBetween(@Param("from") String monthDayFrom, @Param("to") String monthDayTo);
+
+	List<Employee> findByResignedOrderByNicknameAsc(boolean resigned);
 	
 }
