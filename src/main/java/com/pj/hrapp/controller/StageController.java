@@ -106,7 +106,7 @@ public class StageController {
 	}
 	
 	public void setTitle(String title) {
-		stage.setTitle("HR App v2.12.0 - " + title);
+		stage.setTitle("HR App v2.13.0 - " + title);
 	}
 
 	public void showMainMenuScreen() {
