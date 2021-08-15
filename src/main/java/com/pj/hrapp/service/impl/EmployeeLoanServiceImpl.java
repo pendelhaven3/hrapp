@@ -14,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pj.hrapp.dao.EmployeeLoanPaymentRepository;
 import com.pj.hrapp.dao.EmployeeLoanRepository;
+import com.pj.hrapp.dao.EmployeeLoanTypeRepository;
 import com.pj.hrapp.exception.EmployeeAlreadyResignedException;
+import com.pj.hrapp.exception.EmployeeLoanTypeUsedException;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.EmployeeLoanPayment;
+import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.search.EmployeeLoanSearchCriteria;
 import com.pj.hrapp.service.EmployeeLoanService;
@@ -27,6 +30,7 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 
 	@Autowired private EmployeeLoanRepository employeeLoanRepository;
 	@Autowired private EmployeeLoanPaymentRepository employeeLoanPaymentRepository;
+	@Autowired private EmployeeLoanTypeRepository employeeLoanTypeRepository;
 	
 	@Override
 	public List<EmployeeLoan> findAllUnpaidEmployeeLoans() {
@@ -118,8 +122,8 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 			specifications = specifications.and(withEmployee(criteria.getEmployee()));
 		}
 		
-		if (criteria.getEmployeeLoanType() != null) {
-			specifications = specifications.and(withLoanType(criteria.getEmployeeLoanType()));
+		if (criteria.getLoanType() != null) {
+			specifications = specifications.and(withLoanType(criteria.getLoanType()));
 		}
 		
 		if (criteria.getPaid() != null) {
@@ -145,6 +149,30 @@ public class EmployeeLoanServiceImpl implements EmployeeLoanService {
 		criteria.setPaymentDate(paymentDate);
 		
 		return searchEmployeeLoans(criteria);
+	}
+
+	@Override
+	public List<EmployeeLoanType> getAllEmployeeLoanTypes() {
+		return employeeLoanTypeRepository.findAllByOrderByDescriptionAsc();
+	}
+
+	@Override
+	public EmployeeLoanType findEmployeeLoanType(Long id) {
+		return employeeLoanTypeRepository.findOne(id);
+	}
+
+	@Override
+	public void delete(EmployeeLoanType loanType) {
+		if (employeeLoanRepository.findFirstByLoanType(loanType) != null) {
+			throw new EmployeeLoanTypeUsedException();
+		}
+		
+		employeeLoanTypeRepository.delete(loanType);
+	}
+
+	@Override
+	public void save(EmployeeLoanType loanType) {
+		employeeLoanTypeRepository.save(loanType);
 	}
 
 }

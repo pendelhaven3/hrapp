@@ -36,6 +36,7 @@ public class EmployeeLoanController extends AbstractController {
 	@Autowired private EmployeeLoanPaymentDialog employeeLoanPaymentDialog;
 	
 	@FXML private Label employeeLabel;
+	@FXML private Label loanTypeLabel;
 	@FXML private Label descriptionLabel;
 	@FXML private Label loanDateLabel;
 	@FXML private Label amountLabel;
@@ -60,6 +61,7 @@ public class EmployeeLoanController extends AbstractController {
 		
 		loan = employeeLoanService.findEmployeeLoan(loan.getId());
 		employeeLabel.setText(loan.getEmployee().toString());
+		loanTypeLabel.setText(loan.getLoanType().getDescription());
 		descriptionLabel.setText(loan.getDescription());
 		loanDateLabel.setText(FormatterUtil.formatDate(loan.getLoanDate()));
 		amountLabel.setText(FormatterUtil.formatAmount(loan.getAmount()));

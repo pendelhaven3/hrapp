@@ -17,6 +17,7 @@ import com.pj.hrapp.exception.EmployeeAlreadyResignedException;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
+import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.EmployeeService;
 import com.pj.hrapp.util.DateUtil;
@@ -40,6 +41,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	@Autowired private EmployeeLoanService employeeLoanService;
 	
 	@FXML private ComboBox<Employee> employeeComboBox;
+	@FXML private ComboBox<EmployeeLoanType> loanTypeComboBox;
 	@FXML private TextField descriptionField;
 	@FXML private TextField amountField;
     @FXML private TextField loanAmountField; // TODO: Add description here
@@ -56,12 +58,14 @@ public class AddEditEmployeeLoanController extends AbstractController {
 	public void updateDisplay() {
 		setTitle();
 		employeeComboBox.getItems().setAll(employeeService.getAllActiveEmployees());
+		loanTypeComboBox.getItems().setAll(employeeLoanService.getAllEmployeeLoanTypes());
 		updatePaymentAmountWhenLoanAmountChanges();
 		updatePaymentAmountWhenNumberOfPaymentsChanges();
 		
 		if (loan != null) {
 			loan = employeeLoanService.findEmployeeLoan(loan.getId());
 			employeeComboBox.setValue(loan.getEmployee());
+			loanTypeComboBox.setValue(loan.getLoanType());
 			descriptionField.setText(loan.getDescription());
 			amountField.setText(FormatterUtil.formatAmount(loan.getAmount()));
             loanAmountField.setText(FormatterUtil.formatAmount(loan.getLoanAmount()));
@@ -142,6 +146,7 @@ public class AddEditEmployeeLoanController extends AbstractController {
 			loan = new EmployeeLoan();
 		}
 		loan.setEmployee(employeeComboBox.getValue());
+		loan.setLoanType(loanTypeComboBox.getValue());
 		loan.setDescription(descriptionField.getText());
 		loan.setAmount(NumberUtil.toBigDecimal(amountField.getText()));
         loan.setLoanAmount(NumberUtil.toBigDecimal(loanAmountField.getText()));
@@ -169,6 +174,12 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		if (isEmployeeNotSpecified()) {
 			ShowDialog.error("Employee must be specified");
 			employeeComboBox.requestFocus();
+			return false;
+		}
+		
+		if (isLoanTypeNotSpecified()) {
+			ShowDialog.error("Loan Type must be specified");
+			loanTypeComboBox.requestFocus();
 			return false;
 		}
 		
@@ -227,6 +238,10 @@ public class AddEditEmployeeLoanController extends AbstractController {
 		}
 		
 		return true;
+	}
+
+	private boolean isLoanTypeNotSpecified() {
+		return loanTypeComboBox.getValue() == null;
 	}
 
 	private boolean isDescriptionNotSpecified() {

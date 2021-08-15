@@ -1,24 +1,23 @@
 package com.pj.hrapp.model;
 
-public enum EmployeeLoanType {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-	COMPANY("Company Loan"),
-	SSS("SSS Loan"),
-	PAGIBIG("Pag-IBIG Loan"),
-	PAGIBIG_CALAMITY("PAGIBIG LOAN- CALAMITY");
+import lombok.Data;
+
+@Entity
+@Data
+public class EmployeeLoanType {
+
+	@Id
+	@GeneratedValue
+	private Long id;
 	
-	private String name;
-	
-	private EmployeeLoanType(String name) {
-		this.name = name;
-	}
-	
-	public String getName() {
-		return name;
-	}
+	private String description;
 	
 	public String toString() {
-		return name;
+		return description;
 	}
 	
 }

@@ -13,6 +13,7 @@ import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.EmployeeLoanType;
+import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.ReportService;
 import com.pj.hrapp.util.DateUtil;
 
@@ -25,6 +26,7 @@ import javafx.scene.control.ComboBox;
 public class EmployeeLoanPaymentsReportController extends AbstractController {
 
 	@Autowired private ReportService reportService;
+	@Autowired private EmployeeLoanService employeeLoanService;
 	
 	@FXML private AppDatePicker fromDateDatePicker;
 	@FXML private AppDatePicker toDateDatePicker;
@@ -34,7 +36,7 @@ public class EmployeeLoanPaymentsReportController extends AbstractController {
 	@Override
 	public void updateDisplay() {
 		stageController.setTitle("Employee Loan Payments Report");
-		loanTypeComboBox.setItems(FXCollections.observableArrayList(EmployeeLoanType.values()));
+		loanTypeComboBox.getItems().addAll(employeeLoanService.getAllEmployeeLoanTypes());
 	}
 
 	@FXML 

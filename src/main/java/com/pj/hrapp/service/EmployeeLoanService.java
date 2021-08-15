@@ -6,6 +6,7 @@ import java.util.List;
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
 import com.pj.hrapp.model.EmployeeLoanPayment;
+import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.Payslip;
 import com.pj.hrapp.model.search.EmployeeLoanSearchCriteria;
 
@@ -34,5 +35,13 @@ public interface EmployeeLoanService {
 	List<EmployeeLoan> searchEmployeeLoans(EmployeeLoanSearchCriteria criteria);
 
 	List<EmployeeLoan> findAllPayableLoansByEmployeeAndPaymentDate(Employee employee, Date paymentDate);
+	
+	List<EmployeeLoanType> getAllEmployeeLoanTypes();
+
+	EmployeeLoanType findEmployeeLoanType(Long id);
+
+	void delete(EmployeeLoanType loanType);
+
+	void save(EmployeeLoanType loanType);
 
 }

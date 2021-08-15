@@ -36,6 +36,10 @@
 					GridPane.columnIndex="0" GridPane.rowIndex="1" />
 				<ComboBox fx:id="yearComboBox"
 					GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="Loan Type"
+                    GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <ComboBox fx:id="loanTypeComboBox"
+                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
 			</GridPane>
 		
 			<HBox alignment="center" spacing="10">

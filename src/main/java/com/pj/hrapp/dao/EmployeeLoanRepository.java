@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoan;
+import com.pj.hrapp.model.EmployeeLoanType;
 
 public interface EmployeeLoanRepository extends JpaRepository<EmployeeLoan, Long>, 
 		JpaSpecificationExecutor<EmployeeLoan> {
@@ -17,5 +18,7 @@ public interface EmployeeLoanRepository extends JpaRepository<EmployeeLoan, Long
 	List<EmployeeLoan> findAllByPaid(@Param("paid") Boolean paid);
 
 	List<EmployeeLoan> findAllByEmployeeAndPaid(Employee employee, boolean paid);
+
+	EmployeeLoan findFirstByLoanType(EmployeeLoanType loanType);
 	
 }

@@ -10,6 +10,7 @@ import java.time.YearMonth;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.EmployeeLoanType;
+import com.pj.hrapp.service.EmployeeLoanService;
 import com.pj.hrapp.service.ReportService;
 import com.pj.hrapp.util.DateUtil;
 import com.pj.hrapp.util.ExcelUtil;
@@ -38,9 +40,11 @@ public class SssLoanPaymentsReportController extends AbstractController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SssLoanPaymentsReportController.class);
     
     @Autowired private ReportService reportService;
+    @Autowired private EmployeeLoanService employeeLoanService;
     
     @FXML private ComboBox<Month> monthComboBox;
     @FXML private ComboBox<Integer> yearComboBox;
+	@FXML private ComboBox<EmployeeLoanType> loanTypeComboBox;
     @FXML private AppTableView<EmployeeLoanPayment> loanPaymentsTable;
     @FXML private Label totalAmortizationsLabel;
     
@@ -52,6 +56,13 @@ public class SssLoanPaymentsReportController extends AbstractController {
         monthComboBox.getItems().setAll(Month.values());
         yearComboBox.getItems().setAll(DateUtil.getYearDropdownValues());
         yearComboBox.setValue(Calendar.getInstance().get(Calendar.YEAR));
+		loanTypeComboBox.getItems().addAll(getAllSssEmployeeLoanTypes());
+    }
+
+    private List<EmployeeLoanType> getAllSssEmployeeLoanTypes() {
+    	return employeeLoanService.getAllEmployeeLoanTypes().stream()
+    			.filter(loanType -> loanType.getDescription().toLowerCase().contains("sss"))
+    			.collect(Collectors.toList());
     }
 
     @FXML
@@ -62,13 +73,13 @@ public class SssLoanPaymentsReportController extends AbstractController {
     @FXML
     public void generateReport() {
         if (isCriteriaNotSpecified()) {
-            ShowDialog.error("Month and Year must be specified");
+            ShowDialog.error("Month, Year, and Loan Type must be specified");
             return;
         }
         
         YearMonth yearMonth = getYearMonthCriteria();
         List<EmployeeLoanPayment> items = reportService.generateEmployeeLoanPaymentsReport(
-                DateUtil.toDate(yearMonth.atDay(1)), DateUtil.toDate(yearMonth.atEndOfMonth()), EmployeeLoanType.SSS);
+                DateUtil.toDate(yearMonth.atDay(1)), DateUtil.toDate(yearMonth.atEndOfMonth()), loanTypeComboBox.getValue());
         Collections.sort(items, (o1, o2) -> o1.getLoan().getEmployee().getFullName().compareTo(o2.getLoan().getEmployee().getFullName()));
         loanPaymentsTable.setItems(items);
         if (items.isEmpty()) {
@@ -79,7 +90,7 @@ public class SssLoanPaymentsReportController extends AbstractController {
     }
 
     private boolean isCriteriaNotSpecified() {
-        return monthComboBox.getValue() == null || yearComboBox.getValue() == null;
+        return monthComboBox.getValue() == null || yearComboBox.getValue() == null || loanTypeComboBox.getValue() == null;
     }
 
     private YearMonth getYearMonthCriteria() {
@@ -91,7 +102,7 @@ public class SssLoanPaymentsReportController extends AbstractController {
     @FXML 
     public void generateExcelReport() {
         if (isCriteriaNotSpecified()) {
-            ShowDialog.error("Month and Year must be specified");
+            ShowDialog.error("Month, Year, and Loan Type must be specified");
             return;
         }
         
@@ -103,7 +114,7 @@ public class SssLoanPaymentsReportController extends AbstractController {
         
         YearMonth yearMonth = getYearMonthCriteria();
         List<EmployeeLoanPayment> items = reportService.generateEmployeeLoanPaymentsReport(
-                DateUtil.toDate(yearMonth.atDay(1)), DateUtil.toDate(yearMonth.atEndOfMonth()), EmployeeLoanType.SSS);
+                DateUtil.toDate(yearMonth.atDay(1)), DateUtil.toDate(yearMonth.atEndOfMonth()), loanTypeComboBox.getValue());
         Collections.sort(items, (o1, o2) -> o1.getLoan().getEmployee().getFullName().compareTo(o2.getLoan().getEmployee().getFullName()));
         
         try (

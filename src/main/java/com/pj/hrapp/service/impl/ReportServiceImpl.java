@@ -104,23 +104,7 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public List<EmployeeLoanPayment> generateEmployeeLoanPaymentsReport(Date from, Date to, EmployeeLoanType loanType) {
 		if (loanType != null) {
-			String loanDescription = null;
-			switch (loanType) {
-			case COMPANY:
-				loanDescription = "CO LOAN";
-				break;
-			case SSS:
-				loanDescription = "SSS LOAN";
-				break;
-			case PAGIBIG:
-				loanDescription = "PAGIBIG LOAN";
-				break;
-			case PAGIBIG_CALAMITY:
-				loanDescription = "PAGIBIG LOAN- CALAMITY";
-				break;
-			}
-			
-			return employeeLoanPaymentRepository.findAllByPaymentDateBetweenAndLoanDescription(from, to, loanDescription);
+			return employeeLoanPaymentRepository.findAllByPaymentDateBetweenAndLoanType(from, to, loanType);
 		} else {
 			return employeeLoanPaymentRepository.findAllByPaymentDateBetween(from, to);
 		}
