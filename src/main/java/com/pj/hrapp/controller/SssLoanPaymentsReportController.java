@@ -106,19 +106,21 @@ public class SssLoanPaymentsReportController extends AbstractController {
             return;
         }
         
-        FileChooser fileChooser = ExcelUtil.getSaveExcelFileChooser(getExcelFilename());
+        EmployeeLoanType loanType = loanTypeComboBox.getValue();
+        YearMonth yearMonth = getYearMonthCriteria();
+        
+        FileChooser fileChooser = ExcelUtil.getSaveExcelFileChooser(getExcelFilename(loanType, yearMonth));
         File file = fileChooser.showSaveDialog(stageController.getStage());
         if (file == null) {
             return;
         }
         
-        YearMonth yearMonth = getYearMonthCriteria();
         List<EmployeeLoanPayment> items = reportService.generateEmployeeLoanPaymentsReport(
-                DateUtil.toDate(yearMonth.atDay(1)), DateUtil.toDate(yearMonth.atEndOfMonth()), loanTypeComboBox.getValue());
+                DateUtil.toDate(yearMonth.atDay(1)), DateUtil.toDate(yearMonth.atEndOfMonth()), loanType);
         Collections.sort(items, (o1, o2) -> o1.getLoan().getEmployee().getFullName().compareTo(o2.getLoan().getEmployee().getFullName()));
         
         try (
-            Workbook workbook = excelGenerator.generate(items, yearMonth);
+            Workbook workbook = excelGenerator.generate(items, loanType, yearMonth);
             FileOutputStream out = new FileOutputStream(file);
         ) {
             workbook.write(out);
@@ -133,10 +135,11 @@ public class SssLoanPaymentsReportController extends AbstractController {
         }
     }
 
-    private String getExcelFilename() {
-        YearMonth yearMonth = getYearMonthCriteria();
-        return MessageFormat.format("sss_loan_payments_{0}_{1}.xlsx", 
-                String.valueOf(yearMonth.getYear()), yearMonth.getMonth().getValue());
+    private String getExcelFilename(EmployeeLoanType loanType, YearMonth yearMonth) {
+        return MessageFormat.format("{0}_payments_{1}_{2}.xlsx",
+        		loanType.getDescription().toLowerCase().replaceAll(" ", "_"),
+                String.valueOf(yearMonth.getYear()),
+                yearMonth.getMonth().getValue());
     }
     
 }

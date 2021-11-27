@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.pj.hrapp.model.EmployeeLoanPayment;
+import com.pj.hrapp.model.EmployeeLoanType;
 
 public class SSSLoanPaymentsReportExcelGenerator {
 
@@ -27,7 +28,7 @@ public class SSSLoanPaymentsReportExcelGenerator {
     private CellStyle boldStyle;
     private CellStyle dateStyle;
     
-    public Workbook generate(List<EmployeeLoanPayment> items, YearMonth yearMonth) throws IOException {
+    public Workbook generate(List<EmployeeLoanPayment> items, EmployeeLoanType loanType, YearMonth yearMonth) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         
         Sheet sheet = workbook.createSheet();
@@ -41,7 +42,7 @@ public class SSSLoanPaymentsReportExcelGenerator {
         
         row = sheet.createRow(0);
         
-        addReportCodeRow(yearMonth);
+        addReportCodeRow(loanType, yearMonth);
         
         nextRow();
         nextRow();
@@ -59,9 +60,9 @@ public class SSSLoanPaymentsReportExcelGenerator {
         return workbook;
     }
     
-    private void addReportCodeRow(YearMonth yearMonth) {
+    private void addReportCodeRow(EmployeeLoanType loanType, YearMonth yearMonth) {
         cell = row.createCell(0);
-        cell.setCellValue(getReportCode(yearMonth));
+        cell.setCellValue(getReportCode(loanType, yearMonth));
 	}
 
 	private void createStyles(Workbook workbook) {
@@ -145,11 +146,12 @@ public class SSSLoanPaymentsReportExcelGenerator {
         cell.setCellValue(items.stream().map(item -> item.getAmount()).reduce(BigDecimal.ZERO, (x,y) -> x.add(y)).doubleValue());
     }
     
-	private String getReportCode(YearMonth yearMonth) {
+	private String getReportCode(EmployeeLoanType loanType, YearMonth yearMonth) {
 		int month = yearMonth.getMonthValue();
 		int year = yearMonth.getYear();
 		
-		return MessageFormat.format("SSS LOAN PAYMENTS REPORT_{0}_{1}",
+		return MessageFormat.format("{0} PAYMENTS REPORT_{1}_{2}",
+				loanType.getDescription().toUpperCase(),
 				StringUtils.leftPad(String.valueOf(month), 2, '0'),
 				String.valueOf(year));
 	}
