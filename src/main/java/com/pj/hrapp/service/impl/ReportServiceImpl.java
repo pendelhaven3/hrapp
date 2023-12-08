@@ -125,6 +125,8 @@ public class ReportServiceImpl implements ReportService {
                 item.setEmployeeContribution(sssContributionTable.getEmployeeContribution(item.getMonthlyPay(), false));
                 item.setEmployerContribution(sssContributionTable.getEmployerContribution(item.getMonthlyPay(), false));
                 item.setEmployeeCompensation(sssContributionTable.getEmployeeCompensation(item.getMonthlyPay(), false));
+                item.setEmployeeProvidentFundContribution(sssContributionTable.getEmployeeCompensation(item.getMonthlyPay(), false));
+                item.setEmployerProvidentFundContribution(sssContributionTable.getEmployeeCompensation(item.getMonthlyPay(), false));
             });
         
         return report;
