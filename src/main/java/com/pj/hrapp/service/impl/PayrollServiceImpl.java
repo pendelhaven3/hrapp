@@ -423,16 +423,14 @@ public class PayrollServiceImpl implements PayrollService {
     }
     
     private PayslipAdjustment getHolidayPayAdjustment(Payslip payslip, Date date) {
-        PayslipAdjustmentSearchCriteria criteria = new PayslipAdjustmentSearchCriteria();
-        criteria.setType(PayslipAdjustmentType.HOLIDAY_PAY);
-        criteria.setDescription("holiday " + DateUtil.toMonthDateString(date));
-        criteria.setEmployee(payslip.getEmployee());
-        
-        List<PayslipAdjustment> adjustments = payslipAdjustmentDao.search(criteria);
-        if (adjustments.size() > 1) {
-            throw new IllegalStateException("There can only be one holiday pay adjustment record per date");
+        List<PayslipAdjustment> adjustments = payslipAdjustmentDao.findAllByPayslip(payslip);
+        for (PayslipAdjustment adjustment : adjustments) {
+        	if (adjustment.getType() == PayslipAdjustmentType.HOLIDAY_PAY
+        			&& adjustment.getDescription().equals("holiday " + DateUtil.toMonthDateString(date))) {
+        		return adjustment;
+        	}
         }
-        return !adjustments.isEmpty() ? adjustments.get(0) : null;
+        return null;
     }
     
     private BigDecimal getSingleDayPay(Employee employee, Payslip payslip, Date date) {
