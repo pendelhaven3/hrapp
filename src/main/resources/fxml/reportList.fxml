@@ -14,7 +14,10 @@
 	</top>
 	<center>
 		<VBox alignment="center" spacing="10">
+			<!--
 			<Button text="SSS/PhilHealth Report" onAction="#goToSSSPhilHealthReportScreen" />
+			-->
+			<Button text="Payroll Report" onAction="#goToPayrollReportScreen" />
 			<Button text="SSS Report" onAction="#goToSSSReportScreen" />
 			<Button text="PhilHealth Report" onAction="#goToPhilHealthReportScreen" />
 			<Button text="Pag-IBIG Report" onAction="#goToPagIbigReportScreen" />

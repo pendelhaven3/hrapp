@@ -4,11 +4,13 @@ import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
 
+import com.pj.hrapp.model.Employee;
 import com.pj.hrapp.model.EmployeeLoanPayment;
 import com.pj.hrapp.model.EmployeeLoanType;
 import com.pj.hrapp.model.report.BasicSalaryReport;
 import com.pj.hrapp.model.report.LatesReport;
 import com.pj.hrapp.model.report.PagIbigReport;
+import com.pj.hrapp.model.report.PayrollReport;
 import com.pj.hrapp.model.report.PhilHealthReport;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
 import com.pj.hrapp.model.report.SSSReport;
@@ -31,5 +33,7 @@ public interface ReportService {
     PagIbigReport generatePagIbigReport(YearMonth yearMonthCriteria);
 
 	ThirteenthMonthReport generateThirteenthMonthReport(Integer value);
+
+	PayrollReport generatePayrollReport(YearMonth yearMonthCriteria, Employee employee);
 
 }

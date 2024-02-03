@@ -8,9 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.SqlResultSetMapping;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @SqlResultSetMapping(name = "pagIbigReportItemMapping", 
     classes = {
         @ConstructorResult(targetClass = PagIbigReportItem.class, columns = {
+            @ColumnResult(name = "employeeId", type = Long.class),
             @ColumnResult(name = "employeeName"),
             @ColumnResult(name = "pagIbigNumber"),
             @ColumnResult(name = "employeeContribution", type = BigDecimal.class),
@@ -20,11 +24,14 @@ import javax.persistence.SqlResultSetMapping;
 )
 
 @Entity // DUMMY
+@Getter
+@Setter
 public class PagIbigReportItem {
 
     @Id
     private Long id;
     
+    private Long employeeId;
     private String employeeName;
     private String pagIbigNumber;
     private BigDecimal employeeContribution;
@@ -32,8 +39,14 @@ public class PagIbigReportItem {
  
     public PagIbigReportItem() { }
 
-    public PagIbigReportItem(String employeeName, String pagIbigNumber, BigDecimal employeeContribution, BigDecimal employerContribution) {
-        this.employeeName = employeeName;
+    public PagIbigReportItem(
+    		Long employeeId,
+    		String employeeName,
+    		String pagIbigNumber,
+    		BigDecimal employeeContribution,
+    		BigDecimal employerContribution) {
+    	this.employeeId = employeeId;
+    	this.employeeName = employeeName;
         this.pagIbigNumber = pagIbigNumber;
         this.employeeContribution = employeeContribution;
         this.employerContribution = employerContribution;
@@ -43,36 +56,4 @@ public class PagIbigReportItem {
         return employeeContribution.add(employerContribution);
     }
     
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
-    public String getPagIbigNumber() {
-        return pagIbigNumber;
-    }
-
-    public void setPagIbigNumber(String pagIbigNumber) {
-        this.pagIbigNumber = pagIbigNumber;
-    }
-
-    public BigDecimal getEmployeeContribution() {
-        return employeeContribution;
-    }
-
-    public void setEmployeeContribution(BigDecimal employeeContribution) {
-        this.employeeContribution = employeeContribution;
-    }
-
-    public BigDecimal getEmployerContribution() {
-        return employerContribution;
-    }
-
-    public void setEmployerContribution(BigDecimal employerContribution) {
-        this.employerContribution = employerContribution;
-    }
-
 }

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +29,14 @@ import com.pj.hrapp.model.report.BasicSalaryReportItem;
 import com.pj.hrapp.model.report.LatesReport;
 import com.pj.hrapp.model.report.MonthlyCompensation;
 import com.pj.hrapp.model.report.PagIbigReport;
+import com.pj.hrapp.model.report.PagIbigReportItem;
+import com.pj.hrapp.model.report.PayrollReport;
+import com.pj.hrapp.model.report.PayrollReportItem;
 import com.pj.hrapp.model.report.PhilHealthReport;
+import com.pj.hrapp.model.report.PhilHealthReportItem;
 import com.pj.hrapp.model.report.SSSPhilHealthReport;
 import com.pj.hrapp.model.report.SSSReport;
+import com.pj.hrapp.model.report.SSSReportItem;
 import com.pj.hrapp.model.report.ThirteenthMonthReport;
 import com.pj.hrapp.model.report.ThirteenthMonthReportItem;
 import com.pj.hrapp.service.PhilHealthService;
@@ -186,6 +193,53 @@ public class ReportServiceImpl implements ReportService {
 			
 			ThirteenthMonthReportItem item = new ThirteenthMonthReportItem(employee, monthlyCompensations);
 			report.getItems().add(item);
+		}
+		
+		return report;
+	}
+
+	@Override
+	public PayrollReport generatePayrollReport(YearMonth yearMonth, Employee employee) {
+		SSSReport sssReport = generateSSSReport(yearMonth);
+		PhilHealthReport philHealthReport = generatePhilHealthReport(yearMonth);
+		PagIbigReport pagIbigReport = generatePagIbigReport(yearMonth);
+		
+		List<PayrollReportItem> payrollReportItems = new ArrayList<>();
+		
+		for (SSSReportItem item : sssReport.getNonHouseholdItems()) {
+			PayrollReportItem payrollReportItem = new PayrollReportItem();
+			payrollReportItem.setEmployee(item.getEmployee());
+			payrollReportItem.setSssReportItem(item);
+			
+			payrollReportItems.add(payrollReportItem);
+		}
+		
+		Map<Long, PayrollReportItem> itemMapping =
+				payrollReportItems.stream().collect(Collectors.toMap(item -> item.getEmployee().getId(), item -> item));
+		
+		for (PhilHealthReportItem item : philHealthReport.getNonHouseholdItems()) {
+			PayrollReportItem payrollReportItem = itemMapping.get(item.getEmployeeId());
+			if (payrollReportItem != null) {
+				payrollReportItem.setPhilHealthReportItem(item);
+			}
+		}
+		
+		for (PagIbigReportItem item : pagIbigReport.getItems()) {
+			PayrollReportItem payrollReportItem = itemMapping.get(item.getEmployeeId());
+			if (payrollReportItem != null) {
+				payrollReportItem.setPagIbigReportItem(item);
+			}
+		}
+		
+		PayrollReport report = new PayrollReport();
+		report.setYearMonth(yearMonth);
+		
+		if (employee != null) {
+			report.setItems(payrollReportItems.stream()
+					.filter(item -> item.getEmployee().equals(employee))
+					.collect(Collectors.toList()));
+		} else {
+			report.setItems(payrollReportItems);
 		}
 		
 		return report;

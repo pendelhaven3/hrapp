@@ -316,4 +316,8 @@ public class StageController {
 		loadSceneFromFXML("addEditEmployeeLoanType", Collections.singletonMap("loanType", loanType));
 	}
 
+	public void showPayrollReportScreen() {
+		loadSceneFromFXML("payrollReport");
+	}
+
 }

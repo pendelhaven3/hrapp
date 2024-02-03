@@ -178,7 +178,11 @@ FROM (
 	</entry>
 	<entry name="sssNonHouseholdReport">
 	<![CDATA[
-SELECT 
+SELECT
+    d.id as employeeId,
+    d.firstName as employeeFirstName,
+    d.lastName as employeeLastName,
+    d.tin as employeeTin,
 	CONCAT(d.lastName, ', ', d.firstName) AS employeeName,
 	d.sssNumber,
 	IFNULL(c.monthlyPay, 0) AS monthlyPay,
@@ -246,7 +250,11 @@ ORDER BY d.lastName, d.firstName
 	</entry>
 	<entry name="sssHouseholdReport">
 	<![CDATA[
-SELECT 
+SELECT
+    d.id as employeeId,
+    d.firstName as employeeFirstName,
+    d.lastName as employeeLastName,
+    d.tin as employeeTin,
 	CONCAT(d.lastName, ', ', d.firstName) AS employeeName,
 	d.sssNumber,
 	IFNULL(c.monthlyPay, 0) AS monthlyPay,
@@ -314,7 +322,8 @@ ORDER BY d.lastName, d.firstName
 	</entry>
 	<entry name="philHealthNonHouseholdReport">
 	<![CDATA[
-SELECT 
+SELECT
+    d.id as employeeId,
 	CONCAT(d.lastName, ', ', d.firstName) AS employeeName,
 	d.philHealthNumber,
 	IFNULL(c.monthlyPay, 0) AS monthlyPay,
@@ -373,7 +382,8 @@ ORDER BY d.lastName, d.firstName
 	</entry>
 	<entry name="philHealthHouseholdReport">
 	<![CDATA[
-SELECT 
+SELECT
+    d.id as employeeId,
 	CONCAT(d.lastName, ', ', d.firstName) AS employeeName,
 	d.philHealthNumber,
 	IFNULL(c.monthlyPay, 0) AS monthlyPay,
@@ -431,7 +441,8 @@ ORDER BY d.lastName, d.firstName
 	</entry>
 	<entry name="pagIbigReport">
 	<![CDATA[
-SELECT 
+SELECT
+    d.id as employeeId,
 	CONCAT(d.lastName, ', ', d.firstName) AS employeeName,
 	d.pagIbigNumber,
 	IFNULL(a.employeeContribution, 0) AS employeeContribution,

@@ -7,10 +7,20 @@ import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.SqlResultSetMapping;
+import javax.persistence.Transient;
+
+import com.pj.hrapp.model.Employee;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @SqlResultSetMapping(name = "sssReportItemMapping", 
     classes = {
         @ConstructorResult(targetClass = SSSReportItem.class, columns = {
+            @ColumnResult(name = "employeeId", type = Long.class),
+            @ColumnResult(name = "employeeFirstName"),
+            @ColumnResult(name = "employeeLastName"),
+            @ColumnResult(name = "employeeTin"),
             @ColumnResult(name = "employeeName"),
             @ColumnResult(name = "sssNumber"),
             @ColumnResult(name = "monthlyPay", type = BigDecimal.class),
@@ -24,10 +34,15 @@ import javax.persistence.SqlResultSetMapping;
 )
 
 @Entity // DUMMY
+@Getter
+@Setter
 public class SSSReportItem {
 
     @Id
     private Long id;
+    
+    @Transient
+    private Employee employee;
     
     private String employeeName;
     private String sssNumber;
@@ -40,10 +55,25 @@ public class SSSReportItem {
  
     public SSSReportItem() { }
 
-    public SSSReportItem(String employeeName, String sssNumber, BigDecimal monthlyPay, BigDecimal employeeContribution,
-            BigDecimal employerContribution, BigDecimal employeeCompensation,
-            BigDecimal employeeProvidentFundContribution, BigDecimal employerProvidentFundContribution
+    public SSSReportItem(
+    		Long employeeId,
+    		String employeeFirstName,
+    		String employeeLastName,
+    		String employeeTin,
+    		String employeeName,
+    		String sssNumber,
+    		BigDecimal monthlyPay,
+    		BigDecimal employeeContribution,
+            BigDecimal employerContribution,
+            BigDecimal employeeCompensation,
+            BigDecimal employeeProvidentFundContribution,
+            BigDecimal employerProvidentFundContribution
     ) {
+    	this.employee = new Employee(employeeId);
+    	employee.setFirstName(employeeFirstName);
+    	employee.setLastName(employeeLastName);
+    	employee.setTin(employeeTin);
+    	
         this.employeeName = employeeName;
         this.sssNumber = sssNumber;
         this.monthlyPay = monthlyPay;
@@ -61,69 +91,5 @@ public class SSSReportItem {
     public BigDecimal getTotalProvidentFundContribution() {
         return employeeProvidentFundContribution.add(employerProvidentFundContribution);
     }
-    
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
-    public String getSssNumber() {
-        return sssNumber;
-    }
-
-    public void setSssNumber(String sssNumber) {
-        this.sssNumber = sssNumber;
-    }
-
-    public BigDecimal getMonthlyPay() {
-        return monthlyPay;
-    }
-
-    public void setMonthlyPay(BigDecimal monthlyPay) {
-        this.monthlyPay = monthlyPay;
-    }
-
-    public BigDecimal getEmployeeContribution() {
-        return employeeContribution;
-    }
-
-    public void setEmployeeContribution(BigDecimal employeeContribution) {
-        this.employeeContribution = employeeContribution;
-    }
-
-    public BigDecimal getEmployerContribution() {
-        return employerContribution;
-    }
-
-    public void setEmployerContribution(BigDecimal employerContribution) {
-        this.employerContribution = employerContribution;
-    }
-
-    public BigDecimal getEmployeeCompensation() {
-        return employeeCompensation;
-    }
-
-    public void setEmployeeCompensation(BigDecimal employeeCompensation) {
-        this.employeeCompensation = employeeCompensation;
-    }
-
-	public BigDecimal getEmployeeProvidentFundContribution() {
-		return employeeProvidentFundContribution;
-	}
-
-	public void setEmployeeProvidentFundContribution(BigDecimal employeeProvidentFundContribution) {
-		this.employeeProvidentFundContribution = employeeProvidentFundContribution;
-	}
-
-	public BigDecimal getEmployerProvidentFundContribution() {
-		return employerProvidentFundContribution;
-	}
-
-	public void setEmployerProvidentFundContribution(BigDecimal employerProvidentFundContribution) {
-		this.employerProvidentFundContribution = employerProvidentFundContribution;
-	}
     
 }
