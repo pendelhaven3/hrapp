@@ -23,7 +23,8 @@
 			<Button text="Back" onAction="#doOnBack" />
 			<Button text="Delete" onAction="#deletePayroll" fx:id="deletePayrollButton" />
 			<Button text="Generate Excel" onAction="#generateExcel" />
-			<Button text="Generate BDO Excel" onAction="#generateBdoExcel" />
+			<Button text="Generate BDO Excel - Ate Joy" onAction="#generateBdoExcelForAteJoy" />
+			<Button text="Generate BDO Excel - Ate Irene" onAction="#generateBdoExcelForAteIrene" />
 		</ToolBar>
 	</top>
 	<center>

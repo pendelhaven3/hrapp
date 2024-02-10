@@ -220,7 +220,16 @@ public class PayrollController extends AbstractController {
 	}
 
 	@FXML 
-	public void generateBdoExcel() {
+	public void generateBdoExcelForAteJoy() {
+		generateBdoExcel("JOY-NEW");
+	}
+	
+	@FXML 
+	public void generateBdoExcelForAteIrene() {
+		generateBdoExcel("IRENE");
+	}
+	
+	public void generateBdoExcel(String version) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         fileChooser.setInitialDirectory(Paths.get(System.getProperty("user.home"), "Desktop").toFile());
@@ -232,7 +241,7 @@ public class PayrollController extends AbstractController {
         }
 		
 		try (
-			Workbook workbook = bdoExcelGenerator.generate(payroll);
+			Workbook workbook = bdoExcelGenerator.generate(payroll, version);
 			FileOutputStream out = new FileOutputStream(file);
 		) {
 			workbook.write(out);

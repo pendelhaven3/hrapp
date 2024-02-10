@@ -19,10 +19,10 @@ public class PayrollToBdoExcelGenerator {
 
 	@Autowired private PayrollService payrollService;
 	
-	public Workbook generate(Payroll payroll) throws IOException {
+	public Workbook generate(Payroll payroll, String version) throws IOException {
 		Workbook workbook = null;
 		try {
-			workbook = WorkbookFactory.create(getClass().getResourceAsStream("/excel/BDO EPCI Regular Payroll.xlsm"));
+			workbook = WorkbookFactory.create(getClass().getResourceAsStream("/excel/BDO EPCI Regular Payroll - " + version + ".xlsm"));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
