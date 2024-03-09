@@ -166,8 +166,8 @@ public class ReportServiceImpl implements ReportService {
         report.getItems().stream()
             .filter(item -> SPECIAL_PAGIBIG_NUMBERS.contains(item.getPagIbigNumber()))
             .forEach(item -> {
-                item.setEmployeeContribution(BigDecimal.valueOf(100L));
-                item.setEmployerContribution(BigDecimal.valueOf(100L));
+                item.setEmployeeContribution(BigDecimal.valueOf(200L));
+                item.setEmployerContribution(BigDecimal.valueOf(200L));
             });
         
         return report;
