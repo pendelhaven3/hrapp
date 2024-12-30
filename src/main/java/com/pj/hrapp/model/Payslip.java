@@ -137,6 +137,7 @@ public class Payslip {
 			item.setRate(salary.getRate());
 			item.setPeriod(getPeriodCovered().overlap(salary.getEffectivePeriod()));
 			item.setNumberOfDays(getNumberOfDaysWorked(salary.getEffectivePeriod()));
+			item.setPayslip(this);
 			items.add(item);
 		}
 		return items;

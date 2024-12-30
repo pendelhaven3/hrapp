@@ -5,11 +5,17 @@ import java.text.SimpleDateFormat;
 
 import com.pj.hrapp.model.util.DateInterval;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public abstract class PayslipBasicPayItem {
 
 	protected BigDecimal rate;
 	protected DateInterval period;
 	protected double numberOfDays;
+	protected Payslip payslip;
 
 	public abstract BigDecimal getAmount();
 	
@@ -23,28 +29,4 @@ public abstract class PayslipBasicPayItem {
 			.toString();
 	}
 	
-	public BigDecimal getRate() {
-		return rate;
-	}
-
-	public void setRate(BigDecimal rate) {
-		this.rate = rate;
-	}
-
-	public DateInterval getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(DateInterval period) {
-		this.period = period;
-	}
-
-	public double getNumberOfDays() {
-		return numberOfDays;
-	}
-
-	public void setNumberOfDays(double numberOfDays) {
-		this.numberOfDays = numberOfDays;
-	}
-
 }
