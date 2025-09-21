@@ -1,4 +1,4 @@
-package com.pj.hrapp.excelgenerator;
+package com.pj.hrapp.excel;
 
 import java.text.MessageFormat;
 

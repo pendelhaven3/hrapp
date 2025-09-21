@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import com.pj.hrapp.Parameter;
 import com.pj.hrapp.dialog.AddPayslipDialog;
 import com.pj.hrapp.dialog.AutoGeneratePayrollContributionsDialog;
+import com.pj.hrapp.excel.PayrollToBdoExcelGeneratorV2;
 import com.pj.hrapp.exception.ConnectToMagicException;
 import com.pj.hrapp.gui.component.AppTableView;
 import com.pj.hrapp.gui.component.ShowDialog;
@@ -278,4 +279,40 @@ public class PayrollController extends AbstractController {
         }
 	}
 	
+	@FXML
+	public void generateBdoExcelV2() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.setInitialDirectory(Paths.get(System.getProperty("user.home"), "Desktop").toFile());
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("Excel Workbooks", "*.xls"));
+        fileChooser.setInitialFileName(getBdoExcelV2Filename());
+        File file = fileChooser.showSaveDialog(stageController.getStage());
+        if (file == null) {
+        	return;
+        }
+		
+		try (
+			Workbook workbook = new PayrollToBdoExcelGeneratorV2(payrollService).generate(payroll);
+			FileOutputStream out = new FileOutputStream(file);
+		) {
+			workbook.write(out);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			ShowDialog.unexpectedError();
+			return;
+		}
+		
+		if (ShowDialog.confirm("Excel file generated.\nDo you wish to open the file?")) {
+			ExcelUtil.openExcelFile(file);
+		}
+	}
+	
+	private String getBdoExcelV2Filename() {
+		return new StringBuilder()
+				.append("BDO EPCI Regular Payroll ")
+				.append(new SimpleDateFormat("MM-dd").format(payroll.getPayDate()))
+				.append(".xls")
+				.toString();
+	}
+
 }

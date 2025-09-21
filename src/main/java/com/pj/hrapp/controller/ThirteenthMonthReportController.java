@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.pj.hrapp.excelgenerator.ThirteenthMonthReportExcelGenerator;
+import com.pj.hrapp.excel.ThirteenthMonthReportExcelGenerator;
 import com.pj.hrapp.gui.component.ShowDialog;
 import com.pj.hrapp.model.report.ThirteenthMonthReport;
 import com.pj.hrapp.service.ReportService;

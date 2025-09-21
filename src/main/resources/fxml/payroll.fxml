@@ -25,6 +25,7 @@
 			<Button text="Generate Excel" onAction="#generateExcel" />
 			<Button text="Generate BDO Excel - Ate Joy" onAction="#generateBdoExcelForAteJoy" />
 			<Button text="Generate BDO Excel - Ate Irene" onAction="#generateBdoExcelForAteIrene" />
+			<Button text="Generate BDO Excel v2" onAction="#generateBdoExcelV2" />
 		</ToolBar>
 	</top>
 	<center>
