@@ -34,10 +34,13 @@ public class PayrollToBdoExcelGeneratorV2 {
 		cell = sheet.getRow(1).getCell(1);
 		cell.setCellValue(payroll.getPayDate());
 		
+		cell = sheet.getRow(2).getCell(1);
+		cell.setCellValue("B08F");
+		
 		for (int i = 0; i < payroll.getPayslips().size(); i++) {
 			Payslip payslip = payrollService.getPayslip(payroll.getPayslips().get(i).getId());
 			
-			row = sheet.getRow(6 + i);
+			row = sheet.createRow(6 + i);
 			
 			cell = row.getCell(0, Row.CREATE_NULL_AS_BLANK);
 			cell.setCellValue(payslip.getEmployee().getAtmAccountNumber());
